@@ -1,6 +1,5 @@
 #include "LurenjiaEngine.h"
 #include "EngineFactory.h"
-#include "Debug/Log/SimpleLog.h"
 
 int Init(FEngine* InEngine, HINSTANCE InhInstance, HINSTANCE InprevInstance, PSTR IncmdLine, int InshowCmd)
 {
@@ -79,7 +78,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	int ReturnValue = 0;
 	if (FEngine* Engine = FEngineFactory::CreateEngine())
 	{
-		
 		ReturnValue = Init(Engine, hInstance, prevInstance, cmdLine, showCmd);
 		
 		while (true)

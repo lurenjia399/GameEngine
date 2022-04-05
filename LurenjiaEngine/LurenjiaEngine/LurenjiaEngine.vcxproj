@@ -19,8 +19,10 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
     <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp" />
+    <ClCompile Include="Engine\Debug\EngineDebug.cpp" />
     <ClCompile Include="Engine\EngineFactory.cpp" />
     <ClCompile Include="Engine\LurenjiaEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
@@ -63,8 +65,10 @@
     <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_color.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
     <ClInclude Include="Engine\Core\Engine.h" />
     <ClInclude Include="Engine\Core\WinMainCommandParameters.h" />
+    <ClInclude Include="Engine\Debug\EngineDebug.h" />
     <ClInclude Include="Engine\Debug\Log\SimpleLog.h" />
     <ClInclude Include="Engine\EngineFactory.h" />
     <ClInclude Include="Engine\LurenjiaEngine.h" />
@@ -196,6 +200,7 @@
     <Link>
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <StackReserveSize>1000000000</StackReserveSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
