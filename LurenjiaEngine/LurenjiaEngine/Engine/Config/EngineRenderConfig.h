@@ -1,5 +1,4 @@
 #pragma once
-
 struct FEngineRenderConfig
 {
 	int ScreenWidth;
@@ -13,4 +12,3 @@ private:
 	FEngineRenderConfig();
 	static FEngineRenderConfig* RenderConfig;
 };
-FEngineRenderConfig* FEngineRenderConfig::RenderConfig = nullptr;

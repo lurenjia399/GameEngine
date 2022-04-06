@@ -8,18 +8,26 @@ FWindowsEngine::FWindowsEngine()
 {
 	M4XQualityLevels = 0;
 	bMSAA4XEnabled = false;
-	BufferFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+	BackBufferFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
+	}
+	
 }
-int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
+int FWindowsEngine::PreInit(FWinMainCommandParameters& InParameters)
 {
-
 	//初始化日志系统
 	const char LogPath[] = "../log";
 	init_log_system(LogPath);
-	Engine_Log("Log Init.");
-
+	Engine_Log("Log PreInit.");
+	Engine_Log("Engine pre initialization complete");
+	return 0;
+}
+int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
+{
+	PreInit(InParameters);
 	//处理命令
-
 	if (InitWindows(InParameters))
 	{
 
@@ -28,17 +36,33 @@ int FWindowsEngine::PreInit(FWinMainCommandParameters InParameters)
 	{
 
 	}
-
-	Engine_Log("Engine pre initialization complete");
-	return 0;
-}
-int FWindowsEngine::Init()
-{
 	Engine_Log("Engine initialization complete");
+	PostInit();
 	return 0;
 }
 int FWindowsEngine::PostInit()
 {
+	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChainBuffer[i].Reset();
+	}
+	DepthStencilBuffer.Reset();
+	SwapChain->ResizeBuffers(
+		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
+		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
+		FEngineRenderConfig::GetRenderConfig()->ScreenHeight,
+		BackBufferFormat,
+		DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
+
+	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	D3D12_CPU_DESCRIPTOR_HANDLE HeapHandle = RTVHeap->GetCPUDescriptorHandleForHeapStart();
+	HeapHandle.ptr = 0;
+	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
+	{
+		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));
+		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), NULL, HeapHandle);
+		HeapHandle.ptr += RTVDescriptorSize;
+	}
 	Engine_Log("Engine post initialization complete");
 	return 0;
 }
@@ -52,7 +76,9 @@ int FWindowsEngine::PreExit()
 }
 int FWindowsEngine::Exit()
 {
+	PreExit();
 	Engine_Log("Engine Exit complete");
+	PostExit();
 	return 0;
 }
 int FWindowsEngine::PostExit()
@@ -217,13 +243,35 @@ bool FWindowsEngine::InitDirect3D()
 	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_DISCARD;//将旧的交换链丢弃
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;//自由切换窗口
 	//格式纹理
-	SwapChainDesc.BufferDesc.Format = BufferFormat;
+	SwapChainDesc.BufferDesc.Format = BackBufferFormat;
 	//多重采样在交换链中的设置
 	SwapChainDesc.SampleDesc.Count = bMSAA4XEnabled ? 4 : 1;
 	SwapChainDesc.SampleDesc.Quality = bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
 	ANALYSIS_HRESULT(DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf()));
 //----------创建完成交换链-----
-	
+//----------创建资源描述堆-----
+	/*
+	* D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV（constant buffer view,shader resource view, unorder access view）
+	* D3D12_DESCRIPTOR_HEAP_TYPE_SAMPLER 采样器描述符
+	* D3D12_DESCRIPTOR_HEAP_TYPE_RTV 渲染到目标描述符
+	* D3D12_DESCRIPTOR_HEAP_TYPE_DSV 深度模板描述符
+	*/
+	//create Runtime Target view
+	D3D12_DESCRIPTOR_HEAP_DESC RTVDescriptorHeapDesc;
+	RTVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_RTV;
+	RTVDescriptorHeapDesc.NumDescriptors = FEngineRenderConfig::GetRenderConfig()->SwapChainCount;
+	RTVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	RTVDescriptorHeapDesc.NodeMask = 0;
+	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&RTVDescriptorHeapDesc, IID_PPV_ARGS(RTVHeap.GetAddressOf())));
+
+	//create Depth stencil View
+	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
+	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
+	DSVDescriptorHeapDesc.NumDescriptors = 1;
+	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAGS::D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
+	DSVDescriptorHeapDesc.NodeMask = 0;
+	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&DSVDescriptorHeapDesc, IID_PPV_ARGS(DSVHeap.GetAddressOf())));
+//----------创建完成资源描述堆-----
 	return true;
 }
 #endif

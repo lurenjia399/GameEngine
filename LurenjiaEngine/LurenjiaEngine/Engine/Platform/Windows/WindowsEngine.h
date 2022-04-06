@@ -8,8 +8,8 @@ class FWindowsEngine : public FEngine
 public:
 	FWindowsEngine();
 
-	virtual int PreInit(FWinMainCommandParameters InParameters);
-	virtual int Init();
+	virtual int PreInit(FWinMainCommandParameters& InParameters);
+	virtual int Init(FWinMainCommandParameters InParameters);
 	virtual int PostInit();
 
 	virtual void Tick();
@@ -36,11 +36,15 @@ protected:
 	ComPtr<ID3D12DescriptorHeap> RTVHeap;//(running target view) 渲染目标纹理
 	ComPtr<ID3D12DescriptorHeap> DSVHeap;//(depth stencil view) 渲染目标深度/模板共享纹理
 
+	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;//交换链buffer
+	ComPtr<ID3D12Resource> DepthStencilBuffer;			//深度模板buffer
+
 protected:
 	HWND MyWindowsHandle;		//主窗口句柄
 	UINT M4XQualityLevels;		//多重采样的质量等级
 	bool bMSAA4XEnabled;		//多重采样是否开启
-	DXGI_FORMAT BufferFormat;	//格式纹理
+	DXGI_FORMAT BackBufferFormat;	//格式纹理
+	UINT RTVDescriptorSize;		//rtv描述符大小
 
 };
 #endif

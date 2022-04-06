@@ -1,58 +1,65 @@
 #include "LurenjiaEngine.h"
 #include "EngineFactory.h"
 
-int Init(FEngine* InEngine, HINSTANCE InhInstance, HINSTANCE InprevInstance, PSTR IncmdLine, int InshowCmd)
+static int Init(FEngine* InEngine, HINSTANCE InhInstance, HINSTANCE InprevInstance, PSTR IncmdLine, int InshowCmd)
 {
-	int ReturnValue = InEngine->PreInit(
 #if defined(_WIN32)
-		FWinMainCommandParameters(InhInstance, InprevInstance, IncmdLine, InshowCmd)
+	FWinMainCommandParameters WinMainParameters(InhInstance, InprevInstance, IncmdLine, InshowCmd);
+#endif
+//	int ReturnValue = InEngine->PreInit(
+//#if defined(_WIN32)
+//		WinMainParameters
+//#endif
+//	);
+//	if (ReturnValue != 0)
+//	{
+//		Engine_Log_Error("[%i]Engine Pre initialization error, please check and initialization problem.", ReturnValue);
+//		return ReturnValue;
+//	}
+	int ReturnValue = InEngine->Init(
+#if defined(_WIN32)
+		WinMainParameters
 #endif
 	);
-	if (ReturnValue != 0)
-	{
-		Engine_Log_Error("[%i]Engine Pre initialization error, please check and initialization problem.", ReturnValue);
-		return ReturnValue;
-	}
-	ReturnValue = InEngine->Init();
 	if (ReturnValue != 0)
 	{
 		Engine_Log_Error("[%i]Engine initialization error, please check and initialization problem.", ReturnValue);
 		return ReturnValue;
 	}
-	ReturnValue = InEngine->PostInit();
-	if (ReturnValue != 0)
-	{
-		Engine_Log_Error("[%i]Engine post initialization error, please check and initialization problem.", ReturnValue);
-		return ReturnValue;
-	}
+	//ReturnValue = InEngine->PostInit();
+	//if (ReturnValue != 0)
+	//{
+	//	Engine_Log_Error("[%i]Engine post initialization error, please check and initialization problem.", ReturnValue);
+	//	return ReturnValue;
+	//}
 	return ReturnValue;
 }
 
-void Tick(FEngine* InEngine)
+static void Tick(FEngine* InEngine)
 {
 	InEngine->Tick();
 }
 
-int Exit(FEngine* InEngine)
+static int Exit(FEngine* InEngine)
 {
-	int ReturnValue = InEngine->PreExit();
-	if (ReturnValue != 0)
-	{
-		Engine_Log_Error("[%i]Engine pre exit failed", ReturnValue);
-		return ReturnValue;
-	}
-	ReturnValue = InEngine->Exit();
+	//int ReturnValue = InEngine->PreExit();
+	//if (ReturnValue != 0)
+	//{
+	//	Engine_Log_Error("[%i]Engine pre exit failed", ReturnValue);
+	//	return ReturnValue;
+	//}
+	int ReturnValue = InEngine->Exit();
 	if (ReturnValue != 0)
 	{
 		Engine_Log_Error("[%i]Engine exit failed", ReturnValue);
 		return ReturnValue;
 	}
-	ReturnValue = InEngine->PostExit();
-	if (ReturnValue != 0)
-	{
-		Engine_Log_Error("[%i]Engine post exit failed", ReturnValue);
-		return ReturnValue;
-	}
+	//ReturnValue = InEngine->PostExit();
+	//if (ReturnValue != 0)
+	//{
+	//	Engine_Log_Error("[%i]Engine post exit failed", ReturnValue);
+	//	return ReturnValue;
+	//}
 	return ReturnValue;
 }
 
