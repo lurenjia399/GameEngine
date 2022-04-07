@@ -9,6 +9,8 @@ FWindowsEngine::FWindowsEngine()
 	M4XQualityLevels = 0;
 	bMSAA4XEnabled = false;
 	BackBufferFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
+	DepthStencilFormat = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+	RTVDescriptorSize = 0;
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
@@ -42,6 +44,7 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 }
 int FWindowsEngine::PostInit()
 {
+//----------初始化交换链buffer开始-----
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChainBuffer[i].Reset();
@@ -55,14 +58,63 @@ int FWindowsEngine::PostInit()
 		DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 
 	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
-	D3D12_CPU_DESCRIPTOR_HANDLE HeapHandle = RTVHeap->GetCPUDescriptorHandleForHeapStart();
-	HeapHandle.ptr = 0;
+	CD3DX12_CPU_DESCRIPTOR_HANDLE RTVHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));
-		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), NULL, HeapHandle);
-		HeapHandle.ptr += RTVDescriptorSize;
+		//创建交换链资源描述符，，，后台和前台两个
+		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), nullptr, RTVHandle);
+		RTVHandle.Offset(1, RTVDescriptorSize);
 	}
+//----------初始化交换链buffer结束-----
+//----------初始化深度模板buffer开始-----
+	D3D12_RESOURCE_DESC ResourceDesc;//depthstencilbuffer的描述
+	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	ResourceDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
+	ResourceDesc.Alignment = 0;//资源的对齐方式
+	ResourceDesc.MipLevels = 1;
+	ResourceDesc.DepthOrArraySize = 1;
+	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION::D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	ResourceDesc.SampleDesc.Count = bMSAA4XEnabled ? 4 : 1;
+	ResourceDesc.SampleDesc.Quality = bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
+	ResourceDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS;
+	ResourceDesc.Flags = D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_UNKNOWN;
+
+	D3D12_CLEAR_VALUE ClearValue;//depthstencilbuffer的清除规则描述
+	ClearValue.DepthStencil.Depth = 1;
+	ClearValue.DepthStencil.Stencil = 0;
+	ClearValue.Format = DepthStencilFormat;
+	
+	D3D12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_DEFAULT);
+	D3dDevice->CreateCommittedResource(//首先用d3dDevice提交DepthStencilBuffer资源
+		&HeapProperties,
+		D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE,
+		&ResourceDesc,
+		D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON,
+		&ClearValue,
+		IID_PPV_ARGS(DepthStencilBuffer.GetAddressOf()));
+
+	D3D12_DEPTH_STENCIL_VIEW_DESC DSVDesc;
+	DSVDesc.Flags = D3D12_DSV_FLAGS::D3D12_DSV_FLAG_NONE;
+	DSVDesc.Format = DepthStencilFormat;
+	DSVDesc.Texture2D.MipSlice = 0;
+	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION::D3D12_DSV_DIMENSION_TEXTURE2D;
+
+	D3D12_CPU_DESCRIPTOR_HANDLE DSVHandle = DSVHeap->GetCPUDescriptorHandleForHeapStart();
+	//创建深度模板资源描述符
+	D3dDevice->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVHandle);
+//----------初始化深度模板buffer结束-----
+
+	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	GraphicsCommamdList->ResourceBarrier(1,&ResourceBarrier);
+	GraphicsCommamdList->Close();
+
+	//提交命令
+	ID3D12CommandList* CommandList[] = { GraphicsCommamdList.Get() };
+	//计算指令数量，然后执行
+	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
+
 	Engine_Log("Engine post initialization complete");
 	return 0;
 }
@@ -155,6 +207,12 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 }
 bool FWindowsEngine::InitDirect3D()
 {
+	//添加调试信息
+	ComPtr<ID3D12Debug> D3D12Debug;
+	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(D3D12Debug.GetAddressOf()))))
+	{
+		D3D12Debug->EnableDebugLayer();
+	}
 //----------创建DXGIFactory, D3dDevice, Fence-----
 	//HRESULT			返回值	是一个ENUM
 	//S_OK				0x00000000 成功
@@ -200,25 +258,33 @@ bool FWindowsEngine::InitDirect3D()
 	QueueDesc.NodeMask = 0;
 	ANALYSIS_HRESULT(D3dDevice->CreateCommandQueue(&QueueDesc, IID_PPV_ARGS(&CommandQueue)));
 	ANALYSIS_HRESULT(D3dDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(CommandAllocator.GetAddressOf())));
-	ANALYSIS_HRESULT(D3dDevice->CreateCommandList(
+	HRESULT CMDResult = D3dDevice->CreateCommandList(
 		0,//默认单个gpu
 		D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT,
 		CommandAllocator.Get(),//关联到命令分配器
 		NULL,//ID3D12PipelineState 管线状态
 		IID_PPV_ARGS(GraphicsCommamdList.GetAddressOf())
-	));
+	);
+	if (FAILED(CMDResult))
+	{
+		Engine_Log_Error("create GraphicsCommandList failed = %i", (int)CMDResult);
+	}
 	GraphicsCommamdList->Close();
 //----------创建命令完成GraphicsCommandList, CommandQueue, CommandAllocator-----
 //----------创建多重采样-----
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevels;
+	QualityLevels.Format = BackBufferFormat;
 	QualityLevels.SampleCount = 4;
 	QualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVEL_FLAGS::D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
 	QualityLevels.NumQualityLevels = 0;
-	ANALYSIS_HRESULT(D3dDevice->CheckFeatureSupport(
+	HRESULT ResultFeatureSupport = D3dDevice->CheckFeatureSupport(
 		D3D12_FEATURE::D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
 		&QualityLevels,
-		sizeof(QualityLevels)
-	));
+		sizeof(QualityLevels));
+	if (FAILED(ResultFeatureSupport))
+	{
+		Engine_Log_Error("create FeaTureSupport failed = %i", (int)ResultFeatureSupport);
+	}
 	M4XQualityLevels = QualityLevels.NumQualityLevels;
 //----------创建完成多重采样-----
 //----------创建交换链-----
@@ -240,14 +306,18 @@ bool FWindowsEngine::InitDirect3D()
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;//使用表面或资源作为输出渲染目标
 	SwapChainDesc.OutputWindow = MyWindowsHandle;				//指定windows句柄
 	SwapChainDesc.Windowed = true;								//以窗口运行
-	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_DISCARD;//将旧的交换链丢弃
+	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_DISCARD;//将旧的交换链丢弃
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;//自由切换窗口
 	//格式纹理
 	SwapChainDesc.BufferDesc.Format = BackBufferFormat;
 	//多重采样在交换链中的设置
 	SwapChainDesc.SampleDesc.Count = bMSAA4XEnabled ? 4 : 1;
 	SwapChainDesc.SampleDesc.Quality = bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
-	ANALYSIS_HRESULT(DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf()));
+	HRESULT ResultSwapChain = DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf());
+	if (FAILED(ResultSwapChain))
+	{
+		Engine_Log_Error("create SwapChain failed = %i", (int)ResultSwapChain);
+	}
 //----------创建完成交换链-----
 //----------创建资源描述堆-----
 	/*

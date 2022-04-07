@@ -329,5 +329,11 @@
     <ClInclude Include="Engine\Config\EngineRenderConfig.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Rendering\DX\d3d12.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

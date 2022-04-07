@@ -74,6 +74,8 @@
     <ClInclude Include="Engine\LurenjiaEngine.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
+    <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h" />
+    <ClInclude Include="Engine\Rendering\DX\d3d12.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.h" />

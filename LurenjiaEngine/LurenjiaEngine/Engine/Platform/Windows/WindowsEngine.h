@@ -43,7 +43,8 @@ protected:
 	HWND MyWindowsHandle;		//主窗口句柄
 	UINT M4XQualityLevels;		//多重采样的质量等级
 	bool bMSAA4XEnabled;		//多重采样是否开启
-	DXGI_FORMAT BackBufferFormat;	//格式纹理
+	DXGI_FORMAT BackBufferFormat;	//后台缓冲区格式
+	DXGI_FORMAT DepthStencilFormat;	//深度模板格式
 	UINT RTVDescriptorSize;		//rtv描述符大小
 
 };
