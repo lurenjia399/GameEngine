@@ -32,7 +32,7 @@ protected:
 
 	ComPtr<IDXGISwapChain> SwapChain;
 
-	//创建描述符和堆
+	//创建描述符堆
 	ComPtr<ID3D12DescriptorHeap> RTVHeap;//(running target view) 渲染目标纹理
 	ComPtr<ID3D12DescriptorHeap> DSVHeap;//(depth stencil view) 渲染目标深度/模板共享纹理
 
