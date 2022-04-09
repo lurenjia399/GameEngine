@@ -37,7 +37,9 @@ static int Init(FEngine* InEngine, HINSTANCE InhInstance, HINSTANCE InprevInstan
 
 static void Tick(FEngine* InEngine)
 {
-	InEngine->Tick();
+	float DeltaTime = 0.03f;
+	InEngine->Tick(DeltaTime);
+	Sleep(30);
 }
 
 static int Exit(FEngine* InEngine)
@@ -87,11 +89,27 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, in
 	{
 		ReturnValue = Init(Engine, hInstance, prevInstance, cmdLine, showCmd);
 		
-		while (true)
-		{
-			Tick(Engine);
-		}
+		MSG EngineMsg = { 0 };
 
+		while (EngineMsg.message != WM_QUIT)
+		{
+			//PM_NOREMOVE		消息不移除消息队列
+			//PM_REMOVE			消息移除消息队列
+			//PM_NOYIELD		此标志使系统不释放等待调用程序空闲的线程
+			//PM_QS_INPUT		鼠标键盘输入消息
+			//PM_QS_PAINT		处理画图信息
+			//PM_QS_POSTMESSAGE	处理所有被寄送的消息，包括计时器和热键
+			//PM_QS_SENDMESSAGE	处理我们发送的消息
+			if (PeekMessage(&EngineMsg, 0, 0, 0, PM_REMOVE))
+			{
+				//将信息翻译成字符串
+				TranslateMessage(&EngineMsg);
+				DispatchMessage(&EngineMsg);
+			}
+			else {
+				Tick(Engine);
+			}
+		}
 		ReturnValue = Exit(Engine);
 	}
 	else {

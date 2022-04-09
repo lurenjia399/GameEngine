@@ -4,18 +4,19 @@
 
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
-FWindowsEngine::FWindowsEngine()
+FWindowsEngine::FWindowsEngine():
+	CurrentFenceIndex(0),
+	CurrentSwapBufferIndex(0),
+	M4XQualityLevels(0),
+	bMSAA4XEnabled(false),
+	BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM),
+	DepthStencilFormat(DXGI_FORMAT_D24_UNORM_S8_UINT),//24位深度缓冲区，映射到 0 - 1 之间。8位模板缓冲区，映射到0 - 255 之间。
+	RTVDescriptorSize(0)
 {
-	M4XQualityLevels = 0;
-	bMSAA4XEnabled = false;
-	BackBufferFormat = DXGI_FORMAT::DXGI_FORMAT_R8G8B8A8_UNORM;
-	DepthStencilFormat = DXGI_FORMAT_D24_UNORM_S8_UINT;//24位深度缓冲区，映射到 0 - 1 之间。8位模板缓冲区，映射到0 - 255 之间。
-	RTVDescriptorSize = 0;
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
 	}
-	
 }
 int FWindowsEngine::PreInit(FWinMainCommandParameters& InParameters)
 {
@@ -44,6 +45,9 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 }
 int FWindowsEngine::PostInit()
 {
+	//cpu等待gpu执行
+	WaitGPUCommandQueueComplete();
+
 //----------为交换链中两个缓冲区创建资源描述符开始-----
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
@@ -120,18 +124,69 @@ int FWindowsEngine::PostInit()
 	//设置资源屏障，也就是将切换资源的状态，
 	//现在将深度模板缓冲从状态1（访问不同引擎资源）transition to 状态2（深度模板可写状态）
 	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
-	GraphicsCommamdList->ResourceBarrier(1,&ResourceBarrier);
-	GraphicsCommamdList->Close();
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier);
+	GraphicsCommandList->Close();
 
-	ID3D12CommandList* CommandList[] = { GraphicsCommamdList.Get() };
+	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
 	//将命令列表里的命令一条一条的添加到命令队列中，，，也就是提交命令列表
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
+
+	//这些会覆盖原先的windows画布
+	ViewPortInfo.TopLeftX = 0;
+	ViewPortInfo.TopLeftY = 0;
+	ViewPortInfo.Width = (float)FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	ViewPortInfo.Height = (float)FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
+	ViewPortInfo.MinDepth = 0;
+	ViewPortInfo.MaxDepth = 1;
+
+	//设置视口的大小，原点在左上角
+	ViewPortRect.left = 0;
+	ViewPortRect.top = 0;
+	ViewPortRect.right = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	ViewPortRect.bottom = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
+
+	//cpu等待gpu执行
+	WaitGPUCommandQueueComplete();
 
 	Engine_Log("Engine post initialization complete");
 	return 0;
 }
-void FWindowsEngine::Tick()
+void FWindowsEngine::Tick(float DeltaTime)
 {
+//----------clear old different data start-----
+	ANALYSIS_HRESULT(CommandAllocator->Reset());
+	GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr);
+
+	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier);
+
+	GraphicsCommandList->RSSetViewports(1, &ViewPortInfo);
+	GraphicsCommandList->RSSetScissorRects(1, &ViewPortRect);
+	//clear curr SwapChainResourceDescriptor
+	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(), DirectX::Colors::RoyalBlue, 0, nullptr);
+	//clear curr DepthSencilResourceDesciptor
+	GraphicsCommandList->ClearDepthStencilView(GetCurrentDSBufferView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+//----------clear old different data finish-----
+// 
+	//给RenderTarget和DepthSencil设置Resource Descriptor handle
+	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
+	D3D12_CPU_DESCRIPTOR_HANDLE DSBufferView = GetCurrentDSBufferView();
+	GraphicsCommandList->OMSetRenderTargets(1,&SwapBufferView, true, &DSBufferView);
+
+	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier2);
+
+	//close commandlist and commit to commandqueue
+	GraphicsCommandList->Close();
+	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };
+	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
+
+	//swap SwapChain
+	SwapChain->Present(0, 0);
+	CurrentSwapBufferIndex = (CurrentSwapBufferIndex + 1) % 2;
+
+	//cpu等待gpu执行
+	WaitGPUCommandQueueComplete();
 }
 int FWindowsEngine::PreExit()
 {
@@ -150,6 +205,37 @@ int FWindowsEngine::PostExit()
 	FEngineRenderConfig::Destroy();
 	Engine_Log("Engine post Exit complete");
 	return 0;
+}
+ID3D12Resource* FWindowsEngine::GetCurrentSwapBuffer() const
+{
+	return SwapChainBuffer[CurrentSwapBufferIndex].Get();
+}
+D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentSwapBufferView() const
+{
+	return CD3DX12_CPU_DESCRIPTOR_HANDLE(RTVHeap->GetCPUDescriptorHandleForHeapStart(), CurrentSwapBufferIndex, RTVDescriptorSize);;
+}
+D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentDSBufferView() const
+{
+	return CD3DX12_CPU_DESCRIPTOR_HANDLE(DSVHeap->GetCPUDescriptorHandleForHeapStart());
+}
+void FWindowsEngine::WaitGPUCommandQueueComplete()
+{
+	//增加围栏值，，，将接下来的命令标记到此围栏点
+	CurrentFenceIndex++;
+	//向命令队列中添加设置围栏点的命令，并且由gpu执行
+	//在gpu处理完此signal命令之前的命令，，之前不会设置新的围栏点
+	ANALYSIS_HRESULT(CommandQueue->Signal(Fence.Get(), CurrentFenceIndex));
+	//cpu等待gpu，知道后者完成此围栏点之前的所有命令
+	if (Fence->GetCompletedValue() < CurrentFenceIndex)
+	{
+		HANDLE eventHandle = CreateEventEx(nullptr, nullptr, false, EVENT_ALL_ACCESS);
+		//如果gpu执行了signal命令，则激发预定事件
+		Fence->SetEventOnCompletion(CurrentFenceIndex, eventHandle);
+		//等待gpu执行signal命令，触发事件
+		ANALYSIS_HRESULT(WaitForSingleObject(eventHandle, INFINITE));
+		CloseHandle(eventHandle);
+	}
+
 }
 bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 {
@@ -240,7 +326,7 @@ bool FWindowsEngine::InitDirect3D()
 	//E_ACCESSDENIED	0x80070005 一般的访问被拒绝
 	ANALYSIS_HRESULT(CreateDXGIFactory(IID_PPV_ARGS(&DXGIFactory)));
 
-	HRESULT D3dDeviceResult = D3D12CreateDevice(NULL, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&D3dDevice));
+	HRESULT D3dDeviceResult = D3D12CreateDevice(nullptr, D3D_FEATURE_LEVEL_11_0, IID_PPV_ARGS(&D3dDevice));
 	if (FAILED(D3dDeviceResult))
 	{
 		// 如果没法创建基于硬件的Device，那就创建一个
@@ -270,18 +356,14 @@ bool FWindowsEngine::InitDirect3D()
 	QueueDesc.NodeMask = 0;
 	ANALYSIS_HRESULT(D3dDevice->CreateCommandQueue(&QueueDesc, IID_PPV_ARGS(&CommandQueue)));
 	ANALYSIS_HRESULT(D3dDevice->CreateCommandAllocator(D3D12_COMMAND_LIST_TYPE_DIRECT, IID_PPV_ARGS(CommandAllocator.GetAddressOf())));
-	HRESULT CMDResult = D3dDevice->CreateCommandList(
+	ANALYSIS_HRESULT(D3dDevice->CreateCommandList(
 		0,//默认单个gpu
 		D3D12_COMMAND_LIST_TYPE::D3D12_COMMAND_LIST_TYPE_DIRECT,
 		CommandAllocator.Get(),//关联到命令分配器
-		NULL,//ID3D12PipelineState 管线状态
-		IID_PPV_ARGS(GraphicsCommamdList.GetAddressOf())
-	);
-	if (FAILED(CMDResult))
-	{
-		Engine_Log_Error("create GraphicsCommandList failed = %i", (int)CMDResult);
-	}
-	GraphicsCommamdList->Close();
+		nullptr,//ID3D12PipelineState 管线状态
+		IID_PPV_ARGS(GraphicsCommandList.GetAddressOf())
+	));
+	//GraphicsCommandList->Close();
 //----------创建命令完成GraphicsCommandList, CommandQueue, CommandAllocator-----
 //----------检测当前驱动对多重采样的支持-----
 	D3D12_FEATURE_DATA_MULTISAMPLE_QUALITY_LEVELS QualityLevels;
@@ -289,14 +371,10 @@ bool FWindowsEngine::InitDirect3D()
 	QualityLevels.SampleCount = 4;
 	QualityLevels.Flags = D3D12_MULTISAMPLE_QUALITY_LEVELS_FLAG_NONE;
 	QualityLevels.NumQualityLevels = 0;
-	HRESULT ResultFeatureSupport = D3dDevice->CheckFeatureSupport(
+	ANALYSIS_HRESULT(D3dDevice->CheckFeatureSupport(
 		D3D12_FEATURE_MULTISAMPLE_QUALITY_LEVELS,
 		&QualityLevels,
-		sizeof(QualityLevels));
-	if (FAILED(ResultFeatureSupport))
-	{
-		Engine_Log_Error("create FeaTureSupport failed = %i", (int)ResultFeatureSupport);
-	}
+		sizeof(QualityLevels)));
 	M4XQualityLevels = QualityLevels.NumQualityLevels;
 //----------检测当前驱动对多重采样的支持结束-----
 //----------创建交换链-----
@@ -326,11 +404,7 @@ bool FWindowsEngine::InitDirect3D()
 	//多重采样在交换链中的设置
 	SwapChainDesc.SampleDesc.Count = bMSAA4XEnabled ? 4 : 1;
 	SwapChainDesc.SampleDesc.Quality = bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
-	HRESULT ResultSwapChain = DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf());
-	if (FAILED(ResultSwapChain))
-	{
-		Engine_Log_Error("create SwapChain failed = %i", (int)ResultSwapChain);
-	}
+	ANALYSIS_HRESULT(DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf()));
 //----------创建完成交换链-----
 //----------创建资源描述堆-----
 	/*
