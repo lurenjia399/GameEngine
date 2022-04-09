@@ -36,8 +36,8 @@ protected:
 	ComPtr<ID3D12DescriptorHeap> RTVHeap;//(running target view) 渲染目标纹理
 	ComPtr<ID3D12DescriptorHeap> DSVHeap;//(depth stencil view) 渲染目标深度/模板共享纹理
 
-	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;//交换链buffer
-	ComPtr<ID3D12Resource> DepthStencilBuffer;			//深度模板buffer
+	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;//交换链资源
+	ComPtr<ID3D12Resource> DepthStencilBuffer;			//深度模板资源
 
 protected:
 	HWND MyWindowsHandle;		//主窗口句柄

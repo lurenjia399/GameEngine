@@ -44,12 +44,11 @@ int FWindowsEngine::Init(FWinMainCommandParameters InParameters)
 }
 int FWindowsEngine::PostInit()
 {
-//----------初始化交换链buffer开始-----
+//----------为交换链中两个缓冲区创建资源描述符开始-----
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChainBuffer[i].Reset();
 	}
-	DepthStencilBuffer.Reset();
 	SwapChain->ResizeBuffers(
 		FEngineRenderConfig::GetRenderConfig()->SwapChainCount,
 		FEngineRenderConfig::GetRenderConfig()->ScreenWidth,
@@ -57,17 +56,20 @@ int FWindowsEngine::PostInit()
 		BackBufferFormat,
 		DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH);
 
-	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE::D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	RTVDescriptorSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	//从资源描述堆中拿到第一个资源描述符，，，通过句柄的形式引用资源描述符
 	CD3DX12_CPU_DESCRIPTOR_HANDLE RTVHandle(RTVHeap->GetCPUDescriptorHandleForHeapStart());
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
+		//获得交换链中第i个缓冲区
 		SwapChain->GetBuffer(i, IID_PPV_ARGS(&SwapChainBuffer[i]));
-		//创建交换链资源描述符，，，后台和前台两个
+		//为此缓冲区创建一个RTV（资源描述符）
 		D3dDevice->CreateRenderTargetView(SwapChainBuffer[i].Get(), nullptr, RTVHandle);
 		RTVHandle.Offset(1, RTVDescriptorSize);
 	}
-//----------初始化交换链buffer结束-----
-//----------初始化深度模板buffer开始-----
+//----------为交换链中两个缓冲区创建资源描述符开始-----
+//----------创建深度模板缓冲区及其资源描述符开始-----
+	DepthStencilBuffer.Reset();
 	D3D12_RESOURCE_DESC ResourceDesc;//depthstencilbuffer的描述
 	ResourceDesc.Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
 	ResourceDesc.Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
@@ -86,12 +88,20 @@ int FWindowsEngine::PostInit()
 	ClearValue.DepthStencil.Stencil = 0;
 	ClearValue.Format = DepthStencilFormat;
 	
-	D3D12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_DEFAULT);
-	D3dDevice->CreateCommittedResource(//首先用d3dDevice提交DepthStencilBuffer资源
+	//创建堆的属性
+	/*
+	* D3D12_HEAP_TYPE_DEFAULT 默认堆，只可以gpu访问，比如DepthStencilBuffer
+	* D3D12_HEAP_TYPE_UPLOAD 上传堆，向此堆里的提交都必须是由cpu提交上来的
+	* D3D12_HEAP_TYPE_READBACK	回读堆，向此堆里的提交都是由cpu读取的资源
+	*/
+	D3D12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	//gpu资源都存储在堆中
+	//创建一个深度模板缓冲区和一个堆，，，将此缓冲区提交到堆中
+	D3dDevice->CreateCommittedResource(
 		&HeapProperties,
-		D3D12_HEAP_FLAGS::D3D12_HEAP_FLAG_NONE,
+		D3D12_HEAP_FLAG_NONE,
 		&ResourceDesc,
-		D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON,
+		D3D12_RESOURCE_STATE_COMMON,
 		&ClearValue,
 		IID_PPV_ARGS(DepthStencilBuffer.GetAddressOf()));
 
@@ -104,9 +114,11 @@ int FWindowsEngine::PostInit()
 	D3D12_CPU_DESCRIPTOR_HANDLE DSVHandle = DSVHeap->GetCPUDescriptorHandleForHeapStart();
 	//创建深度模板资源描述符
 	D3dDevice->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVHandle);
-//----------初始化深度模板buffer结束-----
+//----------创建深度模板缓冲区及其资源描述符结束-----
 
 	//向命令列表中添加命令，在添加完成必须记得关闭命令列表
+	//设置资源屏障，也就是将切换资源的状态，
+	//现在将深度模板缓冲从状态1（访问不同引擎资源）transition to 状态2（深度模板可写状态）
 	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 	GraphicsCommamdList->ResourceBarrier(1,&ResourceBarrier);
 	GraphicsCommamdList->Close();
