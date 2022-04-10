@@ -25,8 +25,13 @@
     <ClCompile Include="Engine\Debug\EngineDebug.cpp" />
     <ClCompile Include="Engine\EngineFactory.cpp" />
     <ClCompile Include="Engine\LurenjiaEngine.cpp" />
+    <ClCompile Include="Engine\Math\EngineMath.cpp" />
+    <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
+    <ClCompile Include="Engine\Mesh\Core\Mesh.cpp" />
+    <ClCompile Include="Engine\Mesh\Core\MeshType.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_net_channel\simple_channel.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion.cpp" />
@@ -72,8 +77,13 @@
     <ClInclude Include="Engine\Debug\Log\SimpleLog.h" />
     <ClInclude Include="Engine\EngineFactory.h" />
     <ClInclude Include="Engine\LurenjiaEngine.h" />
+    <ClInclude Include="Engine\Math\EngineMath.h" />
+    <ClInclude Include="Engine\Mesh\BoxMesh.h" />
+    <ClInclude Include="Engine\Mesh\Core\Mesh.h" />
+    <ClInclude Include="Engine\Mesh\Core\MeshType.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
+    <ClInclude Include="Engine\Rendering\Core\Rendering.h" />
     <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h" />
     <ClInclude Include="Engine\Rendering\DX\d3d12.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h" />

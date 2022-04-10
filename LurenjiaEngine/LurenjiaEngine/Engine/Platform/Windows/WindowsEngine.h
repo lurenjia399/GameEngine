@@ -2,9 +2,12 @@
 
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
+#include "../../Rendering/Core/Rendering.h"
 
 class FWindowsEngine : public FEngine
 {
+	friend ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice();
+	friend ComPtr<ID3D12GraphicsCommandList> IRenderingInterface::GetGraphicsCommandList();
 public:
 	FWindowsEngine();
 

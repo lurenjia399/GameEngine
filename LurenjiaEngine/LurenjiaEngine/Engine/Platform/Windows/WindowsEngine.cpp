@@ -1,6 +1,7 @@
 #include "WindowsEngine.h"
-#include "../../Debug/EngineDebug.h"
 #include "../../Config/EngineRenderConfig.h"
+#include "../../Rendering/Core/Rendering.h"
+#include "../../Mesh/BoxMesh.h"
 
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
@@ -149,6 +150,10 @@ int FWindowsEngine::PostInit()
 	WaitGPUCommandQueueComplete();
 
 	Engine_Log("Engine post initialization complete");
+
+	//¹¹½¨mesh
+	FBoxMesh* BoxMesh = FBoxMesh::CreateMesh();
+
 	return 0;
 }
 void FWindowsEngine::Tick(float DeltaTime)
@@ -172,6 +177,12 @@ void FWindowsEngine::Tick(float DeltaTime)
 	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
 	D3D12_CPU_DESCRIPTOR_HANDLE DSBufferView = GetCurrentDSBufferView();
 	GraphicsCommandList->OMSetRenderTargets(1,&SwapBufferView, true, &DSBufferView);
+
+	//Draw other content
+	for (auto& temp : IRenderingInterface::RenderingInterface)
+	{
+		temp->Draw(DeltaTime);
+	}
 
 	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier2);

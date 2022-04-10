@@ -65,6 +65,7 @@ static int Exit(FEngine* InEngine)
 	return ReturnValue;
 }
 
+FEngine* Engine = nullptr;
 /*
 * hInstance 自己的实列
 * prevInstance 上次的实例
@@ -85,7 +86,8 @@ static int Exit(FEngine* InEngine)
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE prevInstance, PSTR cmdLine, int showCmd)
 {
 	int ReturnValue = 0;
-	if (FEngine* Engine = FEngineFactory::CreateEngine())
+	Engine = FEngineFactory::CreateEngine();
+	if (Engine)
 	{
 		ReturnValue = Init(Engine, hInstance, prevInstance, cmdLine, showCmd);
 		

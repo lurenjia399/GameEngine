@@ -2,6 +2,7 @@
 
 #include "../simple_library/public/simple_library.h"
 #include "Debug/Log/SimpleLog.h"
+#include "Debug/EngineDebug.h"
 
 #include <vector>
 
@@ -19,3 +20,6 @@
 #include <DirectXCollision.h>
 
 using namespace Microsoft::WRL;
+using namespace DirectX;
+
+extern class FEngine* Engine;
