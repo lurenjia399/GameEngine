@@ -23,7 +23,7 @@ IRenderingInterface::~IRenderingInterface()
 
 ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT InDataSize)
 {
-	ComPtr<ID3D12Resource> Buffer;
+	ComPtr<ID3D12Resource> Buffer;//返回结果
 	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InDataSize);
 	D3D12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
@@ -32,6 +32,7 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
 		Engine_Log_Error("IRenderingInterface::ConstructDefaultBuffer D3dDevice is nullptr");
 		return nullptr;
 	}
+	//首先将返回结果提交到堆中
 	ANALYSIS_HRESULT(D3dDevice->CreateCommittedResource(
 		&HeapProperties,
 		D3D12_HEAP_FLAG_NONE,
@@ -40,7 +41,7 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
 		nullptr,
 		IID_PPV_ARGS(Buffer.GetAddressOf())));
 
-	//将OutTempBuffer放入可读堆中
+	//将OutTempBuffer放入默认堆，资源的状态是可读的
 	D3D12_HEAP_PROPERTIES UpdataBufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
 	ANALYSIS_HRESULT(D3dDevice->CreateCommittedResource(
 		&UpdataBufferProperties,
@@ -67,10 +68,13 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
 	GraphicsCommandList->ResourceBarrier(1, &CopyDestBarrier);
 	
 	UpdateSubresources<1>(
-		GraphicsCommandList.Get(),
-		Buffer.Get(),
-		OutTempBuffer.Get(),
-		0, 0, 1, &SubRresourceData);
+		GraphicsCommandList.Get(),	//命令列表
+		Buffer.Get(),				//目标资源
+		OutTempBuffer.Get(),		//中间资源
+		0,							//中间资源的位置偏移
+		0,							//资源中第一个子资源索引
+		1,							//子资源的数量
+		&SubRresourceData);			//资源来源
 
 	D3D12_RESOURCE_BARRIER ReadDestBarrier = CD3DX12_RESOURCE_BARRIER::Transition(Buffer.Get(),
 		D3D12_RESOURCE_STATE_COPY_DEST, D3D12_RESOURCE_STATE_GENERIC_READ);

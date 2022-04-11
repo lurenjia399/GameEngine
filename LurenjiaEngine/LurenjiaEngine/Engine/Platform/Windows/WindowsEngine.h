@@ -31,6 +31,7 @@ protected:
 private:
 	bool InitWindows(FWinMainCommandParameters InParameters);
 	bool InitDirect3D();
+	bool PostInitDirect3D();
 protected:
 
 	UINT CurrentFenceIndex;					//当前的围栏值
