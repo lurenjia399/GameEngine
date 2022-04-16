@@ -80,7 +80,7 @@ void FMesh::BuildMesh(const FMeshRenderingData& InRenderingData)
 		D3D_ROOT_SIGNATURE_VERSION_1,
 		SerializeRootSignature.GetAddressOf(),
 		errorSerializeRootSignature.GetAddressOf());
-	if (!errorSerializeRootSignature)
+	if (errorSerializeRootSignature != nullptr)
 	{
 		Engine_Log_Error("root signature error = %s", (char*)errorSerializeRootSignature->GetBufferPointer());
 		return;

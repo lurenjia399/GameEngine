@@ -12,7 +12,7 @@ FEngineRenderConfig::FEngineRenderConfig():
 
 FEngineRenderConfig* FEngineRenderConfig::GetRenderConfig()
 {
-	if (!RenderConfig)
+	if (RenderConfig == nullptr)
 	{
 		RenderConfig = new FEngineRenderConfig();
 	}
