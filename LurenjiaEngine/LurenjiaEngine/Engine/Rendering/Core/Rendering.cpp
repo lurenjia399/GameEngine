@@ -112,3 +112,45 @@ ComPtr<ID3D12GraphicsCommandList> IRenderingInterface::GetGraphicsCommandList()
 	}
 	return nullptr;
 }
+
+FRenderingResourcesUpdate::FRenderingResourcesUpdate()
+{
+}
+
+FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
+{
+	if (UploadBuffer)
+	{
+		UploadBuffer->Unmap(0, nullptr);
+		UploadBuffer = nullptr;
+	}
+}
+
+void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount)
+{
+	assert(InDevice);
+
+	ElementSize = InElemetSize;
+
+	D3D12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD);
+	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElemetSize * InElemetCount);
+	InDevice->CreateCommittedResource(
+		&HeapPropertie,
+		D3D12_HEAP_FLAG_NONE,
+		&ResourceDesc,
+		D3D12_RESOURCE_STATE_GENERIC_READ,
+		nullptr,
+		IID_PPV_ARGS(UploadBuffer.GetAddressOf()));
+	ANALYSIS_HRESULT(UploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&Data)));
+}
+
+void FRenderingResourcesUpdate::Update(int Index, const void* InData)
+{
+	memcpy(&Data[Index * ElementSize], InData, ElementSize);
+}
+
+UINT FRenderingResourcesUpdate::GetConstantBufferByteSize(UINT InTypeSize)
+{
+	//这边规定取256的整数倍
+	return (InTypeSize + 255) & ~255;
+}

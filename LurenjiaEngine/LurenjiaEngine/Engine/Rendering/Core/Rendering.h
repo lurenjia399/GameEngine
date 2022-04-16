@@ -26,3 +26,24 @@ private:
 	static vector<IRenderingInterface*> RenderingInterface;
 	simple_c_guid Guid;
 };
+
+class FRenderingResourcesUpdate : public enable_shared_from_this<FRenderingResourcesUpdate>
+{
+public:
+	FRenderingResourcesUpdate();
+	~FRenderingResourcesUpdate();
+
+	void Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount);
+
+	void Update(int Index, const void* InData);
+
+	UINT GetConstantBufferByteSize(UINT InTypeSize);
+	UINT GetConstantBufferByteSize() { return GetConstantBufferByteSize(ElementSize); }
+
+	ID3D12Resource* GetBuffer() { return UploadBuffer.Get(); }
+private:
+
+	ComPtr<ID3D12Resource> UploadBuffer;
+	UINT ElementSize;
+	BYTE* Data;
+};

@@ -1,6 +1,15 @@
 #pragma once
 #include "../../Rendering/Core/Rendering.h"
 #include "MeshType.h"
+#include "../../Shader/Core/Shader.h"
+
+struct FObjectTransformation
+{
+	FObjectTransformation();
+
+	XMFLOAT4X4 World;
+};
+
 
 class FMesh :public IRenderingInterface
 {
@@ -24,6 +33,14 @@ protected:
 	ComPtr<ID3D12Resource> VertexBufferTempPtr;		//临时mesh的顶点缓冲区
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;		//临时mesh的索引缓冲区
 
+	ComPtr<ID3D12DescriptorHeap> CBVHeap;					//常量描述堆
+	shared_ptr<FRenderingResourcesUpdate> objectConstants;	//常量缓冲区
+
+	ComPtr<ID3D12RootSignature> RootSignature;		//根签名
+
+	FShader VertexShader;							//顶点着色器
+	FShader PixelShader;						
+	vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;
 protected:
 	
 	UINT VertexSizeInBytes;							//顶点资源所占内存大小

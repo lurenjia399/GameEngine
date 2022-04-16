@@ -162,6 +162,12 @@
     <ClCompile Include="Engine\Mesh\BoxMesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Shader\Core\Shader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Shader\ShaderManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -363,6 +369,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Mesh\BoxMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Shader\Core\Shader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Shader\ShaderManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
