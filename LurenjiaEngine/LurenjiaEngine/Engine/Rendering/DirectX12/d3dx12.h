@@ -200,6 +200,19 @@ struct CD3DX12_RASTERIZER_DESC : public D3D12_RASTERIZER_DESC
     explicit CD3DX12_RASTERIZER_DESC( const D3D12_RASTERIZER_DESC& o ) :
         D3D12_RASTERIZER_DESC( o )
     {}
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="FillMode">填充模式</param>
+    /// <param name="CullMode">剪裁方式（背面/正面）</param>
+    /// <param name="FrontCounterClockwise">确定三角形是正面还是背面</param>
+    /// <param name="DepthBias">深度偏移</param>
+    /// <param name="DepthBiasClamp">深度偏移的范围</param>
+    /// <param name="SlopeScaledDepthBias">深度偏移的大小</param>
+    /// <param name="DepthClipEnable">是否深度剪裁</param>
+    /// <param name="MultisampleEnable">是否多重采样</param>
+    /// <param name="ForcedSampleCount">强制采样数量</param>
+    /// <param name="ConservativeRaster">是否保守光栅化</param>
     explicit CD3DX12_RASTERIZER_DESC( CD3DX12_DEFAULT )
     {
         FillMode = D3D12_FILL_MODE_SOLID;

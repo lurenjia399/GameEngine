@@ -1,5 +1,6 @@
 #pragma once
 #include "../../Core/Engine.h"
+#include "../../Platform/Windows/WindowsEngine.h"
 
 class IRenderingInterface
 {
@@ -9,7 +10,10 @@ public:
 	virtual ~IRenderingInterface() = 0;//纯虚析构函数需要写实现
 
 	virtual void Init() = 0;
+
+	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime) = 0;
+	virtual void PostDraw(float DeltaTime);
 
 	bool operator==(const IRenderingInterface& other)
 	{
@@ -22,6 +26,14 @@ protected:
 protected:
 	ComPtr<ID3D12Device> GetD3dDevice();
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
+	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
+
+#if defined(_WIN32)
+	FWindowsEngine* GetEngine();
+#else
+	Engien* GetEngine();
+#endif
+	
 private:
 	static vector<IRenderingInterface*> RenderingInterface;
 	simple_c_guid Guid;

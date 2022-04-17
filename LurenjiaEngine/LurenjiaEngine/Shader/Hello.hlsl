@@ -1,26 +1,26 @@
 
-cbuffer ConstBuffer : register(b0)//b0->b14
+cbuffer ConstBuffer : register(b0)
 {
 	float4x4 World;
 }
-struct MeshVertex
+struct MeshVertexIn
 {
 	float3 Position : POSITION;
 	float4 Color : COLOR;
 };
 struct MeshVertexOut
 {
-    float3 Position : POSITION;
+    float4 Position : SV_POSITION;
     float4 Color : COLOR;
 };
-MeshVertexOut VertexShader(MeshVertex mv)
+MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 {
     MeshVertexOut MV_out;
-    MV_out.Position = mul(float4(mv.Position, 1.0f), World); //ÐÐÏòÁ¿ ×ó³Ë ¾ØÕó
-    MV_out.Color = mv.Color;
+    MV_out.Position = mul(float4(mv.Position, 1.0f), World);
+    MV_out.Color = float4(1.0f, 0, 0, 1.0f); //mv.Color;
     return MV_out;
 }
-float4 PixelShader(MeshVertexOut mvOut) : SV_Target
+float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
     return mvOut.Color;
 }

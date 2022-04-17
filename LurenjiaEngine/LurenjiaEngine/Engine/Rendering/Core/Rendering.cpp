@@ -1,5 +1,4 @@
 #include "Rendering.h"
-#include "../../Platform/Windows/WindowsEngine.h"
 
 vector<IRenderingInterface*> IRenderingInterface::RenderingInterface = vector<IRenderingInterface*>();
 
@@ -19,6 +18,15 @@ IRenderingInterface::~IRenderingInterface()
 			break;
 		}
 	}
+}
+
+void IRenderingInterface::PreDraw(float DeltaTime)
+{
+	GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), nullptr);
+}
+
+void IRenderingInterface::PostDraw(float DeltaTime)
+{
 }
 
 ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT InDataSize)
@@ -86,32 +94,54 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
 
 ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice()
 {
-
-	if (Engine)
+	FWindowsEngine* WindowsEngine = GetEngine();
+	if (WindowsEngine)
 	{
-		FWindowsEngine* WindowsEngine = dynamic_cast<FWindowsEngine*>(Engine);
-		if (WindowsEngine)
-		{
-			return WindowsEngine->D3dDevice;
-		}
-		return nullptr;
+		return WindowsEngine->GetD3dDevice();
 	}
 	return nullptr;
 }
 
 ComPtr<ID3D12GraphicsCommandList> IRenderingInterface::GetGraphicsCommandList()
 {
-	if (Engine)
+	FWindowsEngine* WindowsEngine = GetEngine();
+	if (WindowsEngine)
 	{
-		FWindowsEngine* WindowsEngine = dynamic_cast<FWindowsEngine*>(Engine);
-		if (WindowsEngine)
-		{
-			return WindowsEngine->GraphicsCommandList;
-		}
-		return nullptr;
+		return WindowsEngine->GetGraphicsCommandList();
 	}
 	return nullptr;
 }
+ComPtr<ID3D12CommandAllocator> IRenderingInterface::GetCommandAllocator()
+{
+	FWindowsEngine* WindowsEngine = GetEngine();
+	if (WindowsEngine)
+	{
+		return WindowsEngine->GetCommandAllocator();
+	}
+	return nullptr;
+}
+#if defined(_WIN32)
+FWindowsEngine* IRenderingInterface::GetEngine()
+{
+	if (Engine != nullptr)
+	{
+		FWindowsEngine* WindowsEngine = dynamic_cast<FWindowsEngine*>(Engine);
+		if (WindowsEngine != nullptr)
+		{
+			return WindowsEngine;
+		}
+		return WindowsEngine;
+	}
+	return nullptr;
+}
+#else
+Engine* IRenderingInterface::GetEngine()
+{
+	return Engine != nullptr ? Engine : nullptr;
+}
+#endif
+
+
 
 FRenderingResourcesUpdate::FRenderingResourcesUpdate()
 {
@@ -133,7 +163,7 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, 
 	ElementSize = InElemetSize;
 
 	D3D12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD);
-	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElemetSize * InElemetCount);
+	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElemetSize * InElemetCount);//InElemetSize * InElemetCount
 	InDevice->CreateCommittedResource(
 		&HeapPropertie,
 		D3D12_HEAP_FLAG_NONE,

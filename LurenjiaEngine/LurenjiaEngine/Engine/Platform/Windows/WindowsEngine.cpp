@@ -71,7 +71,11 @@ void FWindowsEngine::Tick(float DeltaTime)
 {
 //----------clear old different data start-----
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
-	GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr);
+
+	for (auto& temp : IRenderingInterface::RenderingInterface)
+	{
+		temp->PreDraw(DeltaTime);
+	}
 
 	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier);
@@ -79,7 +83,7 @@ void FWindowsEngine::Tick(float DeltaTime)
 	GraphicsCommandList->RSSetViewports(1, &ViewPortInfo);
 	GraphicsCommandList->RSSetScissorRects(1, &ViewPortRect);
 	//clear curr SwapChainResourceDescriptor
-	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(), DirectX::Colors::RoyalBlue, 0, nullptr);
+	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(), DirectX::Colors::Black, 0, nullptr);
 	//clear curr DepthSencilResourceDesciptor
 	GraphicsCommandList->ClearDepthStencilView(GetCurrentDSBufferView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
 //----------clear old different data finish-----
@@ -93,6 +97,7 @@ void FWindowsEngine::Tick(float DeltaTime)
 	for (auto& temp : IRenderingInterface::RenderingInterface)
 	{
 		temp->Draw(DeltaTime);
+		temp->PostDraw(DeltaTime);
 	}
 
 	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
@@ -128,6 +133,18 @@ int FWindowsEngine::PostExit()
 	Engine_Log("Engine post Exit complete");
 	return 0;
 }
+ComPtr<ID3D12Device> FWindowsEngine::GetD3dDevice() const
+{
+	return D3dDevice;
+}
+ComPtr<ID3D12GraphicsCommandList> FWindowsEngine::GetGraphicsCommandList() const
+{
+	return GraphicsCommandList;
+}
+ComPtr<ID3D12CommandAllocator> FWindowsEngine::GetCommandAllocator() const
+{
+	return CommandAllocator;
+}
 ID3D12Resource* FWindowsEngine::GetCurrentSwapBuffer() const
 {
 	return SwapChainBuffer[CurrentSwapBufferIndex].Get();
@@ -139,6 +156,22 @@ D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentSwapBufferView() const
 D3D12_CPU_DESCRIPTOR_HANDLE FWindowsEngine::GetCurrentDSBufferView() const
 {
 	return CD3DX12_CPU_DESCRIPTOR_HANDLE(DSVHeap->GetCPUDescriptorHandleForHeapStart());
+}
+DXGI_FORMAT FWindowsEngine::GetBackBufferFormat() const
+{
+	return BackBufferFormat;
+}
+DXGI_FORMAT FWindowsEngine::GetDepthStencilFormat() const
+{
+	return DepthStencilFormat;
+}
+UINT FWindowsEngine::GetDXGISampleCount() const
+{
+	return bMSAA4XEnabled ? 4 : 1;
+}
+UINT FWindowsEngine::GetDXGISampleQuality() const
+{
+	return bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
 }
 void FWindowsEngine::WaitGPUCommandQueueComplete()
 {
@@ -162,18 +195,18 @@ void FWindowsEngine::WaitGPUCommandQueueComplete()
 bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 {
 	// 注册窗口
-	WNDCLASSEX WindowsClass;
+	WNDCLASSEX WindowsClass = {};
 	WindowsClass.cbSize = sizeof(WNDCLASSEX);			//该对象实际占用多大内存
 	WindowsClass.cbClsExtra = 0;						//是否需要额外空间
 	WindowsClass.cbWndExtra = 0;						//是否需要额外内存
-	WindowsClass.hbrBackground = nullptr;				//如果有设置就是GDI擦除
+	WindowsClass.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);		//防止无聊的背景重绘
 	WindowsClass.hCursor = LoadCursor(NULL, IDC_ARROW);	//设置一个箭头光标
 	WindowsClass.hIcon = nullptr;						//应用程序放在磁盘上显示的图标
 	WindowsClass.hIconSm = nullptr;						//应用程序显示在左上角的图标
 	WindowsClass.hInstance = InParameters.HInstance;	//传递自己的窗口实例
 	WindowsClass.lpszClassName = L"LurenjiaEngine";		//窗口名称
 	WindowsClass.lpszMenuName = nullptr;				//设置菜单的名称
-	WindowsClass.style = CS_VREDRAW | CS_HREDRAW;		//怎么绘制窗口，垂直或者水平
+	WindowsClass.style = CS_GLOBALCLASS;				//怎么绘制窗口，垂直或者水平
 	WindowsClass.lpfnWndProc = EngineWindowProc;		//绑定消息处理函数
 
 	//注册窗口
@@ -227,12 +260,15 @@ bool FWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 }
 bool FWindowsEngine::InitDirect3D()
 {
+#if defined(_DEBUG)
 	//添加调试信息
 	ComPtr<ID3D12Debug> D3D12Debug;
 	if (SUCCEEDED(D3D12GetDebugInterface(IID_PPV_ARGS(D3D12Debug.GetAddressOf()))))
 	{
 		D3D12Debug->EnableDebugLayer();
 	}
+#endif // define(_DEBUG)
+
 //----------创建DXGIFactory, D3dDevice, Fence-----
 	//HRESULT			返回值	是一个ENUM
 	//S_OK				0x00000000 成功
@@ -324,8 +360,8 @@ bool FWindowsEngine::InitDirect3D()
 	//格式纹理
 	SwapChainDesc.BufferDesc.Format = BackBufferFormat;
 	//多重采样在交换链中的设置
-	SwapChainDesc.SampleDesc.Count = bMSAA4XEnabled ? 4 : 1;
-	SwapChainDesc.SampleDesc.Quality = bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
+	SwapChainDesc.SampleDesc.Count = GetDXGISampleCount();
+	SwapChainDesc.SampleDesc.Quality = GetDXGISampleQuality();
 	ANALYSIS_HRESULT(DXGIFactory->CreateSwapChain(CommandQueue.Get(), &SwapChainDesc, SwapChain.GetAddressOf()));
 //----------创建完成交换链-----
 //----------创建资源描述堆-----
@@ -391,8 +427,8 @@ bool FWindowsEngine::PostInitDirect3D()
 	ResourceDesc.MipLevels = 1;
 	ResourceDesc.DepthOrArraySize = 1;
 	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION::D3D12_RESOURCE_DIMENSION_TEXTURE2D;
-	ResourceDesc.SampleDesc.Count = bMSAA4XEnabled ? 4 : 1;
-	ResourceDesc.SampleDesc.Quality = bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
+	ResourceDesc.SampleDesc.Count = GetDXGISampleCount();
+	ResourceDesc.SampleDesc.Quality = GetDXGISampleQuality();
 	ResourceDesc.Format = DXGI_FORMAT::DXGI_FORMAT_R24G8_TYPELESS;
 	ResourceDesc.Flags = D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
 	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_UNKNOWN;
@@ -423,7 +459,7 @@ bool FWindowsEngine::PostInitDirect3D()
 	DSVDesc.Flags = D3D12_DSV_FLAGS::D3D12_DSV_FLAG_NONE;
 	DSVDesc.Format = DepthStencilFormat;
 	DSVDesc.Texture2D.MipSlice = 0;
-	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION::D3D12_DSV_DIMENSION_TEXTURE2D;
+	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION::D3D12_DSV_DIMENSION_TEXTURE2D;//深度模板缓冲的尺寸
 
 	D3D12_CPU_DESCRIPTOR_HANDLE DSVHandle = DSVHeap->GetCPUDescriptorHandleForHeapStart();
 	//创建深度模板资源描述符

@@ -3,13 +3,13 @@
 void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion)
 {
     ComPtr<ID3DBlob> ErrorShaderMsg;
-    D3DCompileFromFile(
+    HRESULT R = D3DCompileFromFile(
         InFileName.c_str(),
         nullptr,
         D3D_COMPILE_STANDARD_FILE_INCLUDE,
         InEntryFunName.c_str(),
         InShadersVersion.c_str(),
-#if _DEBUG
+#if defined(_DEBUG)
         D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION,
 #else
         0,
@@ -17,8 +17,23 @@ void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunNam
         0,//如何编译我们的效果
         ShaderCode.GetAddressOf(),
         ErrorShaderMsg.GetAddressOf());
-    if (ErrorShaderMsg)
+
+
+    if (ErrorShaderMsg != nullptr)
     {
         Engine_Log_Error("FShader::BuildShader error[%s]", (char*)ErrorShaderMsg->GetBufferPointer());
     }
+    ANALYSIS_HRESULT(R);
+}
+
+LPVOID FShader::GetBufferPointer(void)
+{
+    assert(ShaderCode.Get() != nullptr);
+    return ShaderCode->GetBufferPointer();
+}
+
+SIZE_T FShader::GetBufferSize(void)
+{
+    assert(ShaderCode.Get() != nullptr);
+    return ShaderCode->GetBufferSize();
 }

@@ -2,12 +2,9 @@
 
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
-#include "../../Rendering/Core/Rendering.h"
 
 class FWindowsEngine : public FEngine
 {
-	friend ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice();
-	friend ComPtr<ID3D12GraphicsCommandList> IRenderingInterface::GetGraphicsCommandList();
 public:
 	FWindowsEngine();
 
@@ -22,11 +19,29 @@ public:
 	virtual int PostExit();
 //----------interface-----
 public:
-	ID3D12Resource* GetCurrentSwapBuffer() const;	//获取交换链中的buffer
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentSwapBufferView() const; //获取当前的资源描述符
-	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDSBufferView() const; //获取当前的深度模板描述符
+	//获取引擎驱动
+	ComPtr<ID3D12Device> GetD3dDevice() const;
+	//获取命令列表
+	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList() const;
+	//获取命令分配器
+	ComPtr<ID3D12CommandAllocator> GetCommandAllocator() const;
+	//获取交换链中的buffer
+	ID3D12Resource* GetCurrentSwapBuffer() const;
+	//获取当前的资源描述符
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentSwapBufferView() const;
+	//获取当前的深度模板描述符
+	D3D12_CPU_DESCRIPTOR_HANDLE GetCurrentDSBufferView() const;
+	//获取当前的后缓冲描述符
+	DXGI_FORMAT GetBackBufferFormat() const;
+	//获取当前的深度模板描述符
+	DXGI_FORMAT GetDepthStencilFormat() const;
+	//获取当前采样数量
+	UINT GetDXGISampleCount() const;
+	//获取当前采样质量
+	UINT GetDXGISampleQuality() const;
 protected:
-	void WaitGPUCommandQueueComplete();//等待gpu处理完名列队列中的数据
+	//等待gpu处理完名列队列中的数据
+	void WaitGPUCommandQueueComplete();
 //----------interface-----
 private:
 	bool InitWindows(FWinMainCommandParameters InParameters);
@@ -63,6 +78,5 @@ protected:
 	DXGI_FORMAT BackBufferFormat;	//后台缓冲区格式
 	DXGI_FORMAT DepthStencilFormat;	//深度模板格式
 	UINT RTVDescriptorSize;		//rtv描述符大小
-
 };
 #endif
