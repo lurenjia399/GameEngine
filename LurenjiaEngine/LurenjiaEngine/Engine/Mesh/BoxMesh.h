@@ -10,5 +10,5 @@ public:
 
 	static FBoxMesh* CreateMesh();
 private:
-	virtual void BuildMesh(const FMeshRenderingData& InRenderingData);
+	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 };

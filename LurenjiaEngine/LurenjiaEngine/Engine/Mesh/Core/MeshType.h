@@ -5,7 +5,7 @@ struct FVertex
 {
 	FVertex(const XMFLOAT3& InPos, const XMFLOAT4& InColor);
 
-	XMFLOAT3 Location;
+	XMFLOAT3 Pos;
 	XMFLOAT4 Color;
 };
 

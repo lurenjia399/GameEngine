@@ -5,7 +5,7 @@ void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunNam
     ComPtr<ID3DBlob> ErrorShaderMsg;
     HRESULT R = D3DCompileFromFile(
         InFileName.c_str(),
-        nullptr,
+        NULL,
         D3D_COMPILE_STANDARD_FILE_INCLUDE,
         InEntryFunName.c_str(),
         InShadersVersion.c_str(),
@@ -15,8 +15,8 @@ void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunNam
         0,
 #endif  
         0,//如何编译我们的效果
-        ShaderCode.GetAddressOf(),
-        ErrorShaderMsg.GetAddressOf());
+        &ShaderCode,
+        &ErrorShaderMsg);
 
 
     if (ErrorShaderMsg != nullptr)

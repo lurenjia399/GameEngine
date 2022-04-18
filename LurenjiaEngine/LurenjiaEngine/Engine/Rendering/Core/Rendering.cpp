@@ -29,7 +29,7 @@ void IRenderingInterface::PostDraw(float DeltaTime)
 {
 }
 
-ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT InDataSize)
+ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT64 InDataSize)
 {
 	ComPtr<ID3D12Resource> Buffer;//返回结果
 	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InDataSize);
@@ -50,7 +50,7 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructDefaultBuffer(ComPtr<ID3D12
 		IID_PPV_ARGS(Buffer.GetAddressOf())));
 
 	//将OutTempBuffer放入默认堆，资源的状态是可读的
-	D3D12_HEAP_PROPERTIES UpdataBufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	D3D12_HEAP_PROPERTIES UpdataBufferProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	ANALYSIS_HRESULT(D3dDevice->CreateCommittedResource(
 		&UpdataBufferProperties,
 		D3D12_HEAP_FLAG_NONE,
@@ -149,7 +149,7 @@ FRenderingResourcesUpdate::FRenderingResourcesUpdate()
 
 FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
 {
-	if (UploadBuffer)
+	if (UploadBuffer != nullptr)
 	{
 		UploadBuffer->Unmap(0, nullptr);
 		UploadBuffer = nullptr;
@@ -162,15 +162,15 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, 
 
 	ElementSize = InElemetSize;
 
-	D3D12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE::D3D12_HEAP_TYPE_UPLOAD);
-	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElemetSize * InElemetCount);//InElemetSize * InElemetCount
-	InDevice->CreateCommittedResource(
+	D3D12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
+	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElemetSize * InElemetCount);//GetConstantBufferByteSize()InElemetSize * InElemetCount
+	ANALYSIS_HRESULT(InDevice->CreateCommittedResource(
 		&HeapPropertie,
 		D3D12_HEAP_FLAG_NONE,
 		&ResourceDesc,
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
-		IID_PPV_ARGS(UploadBuffer.GetAddressOf()));
+		IID_PPV_ARGS(&UploadBuffer)));
 	ANALYSIS_HRESULT(UploadBuffer->Map(0, nullptr, reinterpret_cast<void**>(&Data)));
 }
 
@@ -183,4 +183,9 @@ UINT FRenderingResourcesUpdate::GetConstantBufferByteSize(UINT InTypeSize)
 {
 	//这边规定取256的整数倍
 	return (InTypeSize + 255) & ~255;
+}
+
+UINT FRenderingResourcesUpdate::GetConstantBufferByteSize()
+{
+	return GetConstantBufferByteSize(ElementSize);
 }

@@ -65,24 +65,26 @@ void FMesh::Draw(float DeltaTime)
 
 void FMesh::PostDraw(float DeltaTime)
 {
-	XMUINT3 MeshPos = XMUINT3(5.0f, 5.0f, 5.0f);
+	XMUINT3 MeshPos = XMUINT3(6.0f, 6.0f, 6.0f);
 	XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
 	XMVECTOR ViewTarget = XMVectorZero();
 	XMVECTOR ViewUp = XMVectorSet(0, 1.0f, 0, 0);
 	XMMATRIX ViewLookAt = XMMatrixLookAtLH(Pos, ViewTarget, ViewUp);
-	XMStoreFloat4x4(&ViewMatrix, ViewLookAt);						//创建摄像机矩阵,,,行优先
+	XMStoreFloat4x4(&ViewMatrix, ViewLookAt);						//创建摄像机矩阵,,,行优先（表示存储的顺序）
 
 	XMMATRIX MatrixWorld = XMLoadFloat4x4(&WorldMatrix);
 	XMMATRIX MatrixProject = XMLoadFloat4x4(&ProjectMatrix);
-	XMMATRIX mvp = MatrixWorld * ViewLookAt * MatrixProject;		//行优先所以是右乘，，，列优先是左乘
+	//XMMATRIX mvp = XMMatrixTranspose(MatrixProject) * (XMMatrixTranspose(ViewLookAt) * XMMatrixTranspose(MatrixWorld));列优先是左乘
+	XMMATRIX mvp = MatrixWorld * ViewLookAt * MatrixProject;		//行优先所以是右乘
 
 	FObjectTransformation ObjectTransformation;
-	XMStoreFloat4x4(&ObjectTransformation.World, XMMatrixTranspose(mvp));//装置是从行优先变成列优先
-
+	XMStoreFloat4x4(&ObjectTransformation.World, mvp);				//行优先所表示的矩阵，正是理解的那种
+	//XMStoreFloat4x4(&ObjectTransformation.World, XMMatrixTranspose(mvp));//如果是列优先，需要转置成行优先
+	
 	objectConstants->Update(0, &ObjectTransformation);
 }
 
-void FMesh::BuildMesh(const FMeshRenderingData& InRenderingData)
+void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 //----------常量缓冲区的创建开始-----
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
@@ -91,18 +93,22 @@ void FMesh::BuildMesh(const FMeshRenderingData& InRenderingData)
 		Engine_Log_Error("FMesh::BuildMesh D3dDevice is nullptr");
 		return;
 	}
-	objectConstants = make_shared<FRenderingResourcesUpdate>();
-	objectConstants->Init(D3dDevice.Get(), sizeof(FObjectTransformation) , 1);
-	D3D12_GPU_VIRTUAL_ADDRESS objadd = objectConstants->GetBuffer()->GetGPUVirtualAddress();
-	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc = {};
-	CBVDesc.BufferLocation = objadd;
-	CBVDesc.SizeInBytes = objectConstants->GetConstantBufferByteSize();
+	//创建常量缓冲区描述堆
 	D3D12_DESCRIPTOR_HEAP_DESC CBVDescriptorHeapDesc = {};
 	CBVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
 	CBVDescriptorHeapDesc.NumDescriptors = 1;
 	CBVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	CBVDescriptorHeapDesc.NodeMask = 0;
 	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&CBVDescriptorHeapDesc, IID_PPV_ARGS(&CBVHeap)));
+
+	//常量缓冲区的构建
+	objectConstants = make_shared<FRenderingResourcesUpdate>();
+	objectConstants->Init(D3dDevice.Get(), sizeof(FObjectTransformation) , 1);
+
+	D3D12_GPU_VIRTUAL_ADDRESS objadd = objectConstants.get()->GetBuffer()->GetGPUVirtualAddress();
+	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc = {};
+	CBVDesc.BufferLocation = objadd;
+	CBVDesc.SizeInBytes = objectConstants->GetConstantBufferByteSize();
 	D3dDevice->CreateConstantBufferView(&CBVDesc, CBVHeap->GetCPUDescriptorHandleForHeapStart());
 //----------常量缓冲区的创建结束-----
 //----------根签名的创建开始-----
@@ -113,7 +119,7 @@ void FMesh::BuildMesh(const FMeshRenderingData& InRenderingData)
 	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeCBV);
 
 	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-		_countof(RootParam), RootParam, 0, nullptr,
+		1, RootParam, 0, nullptr,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 	);
 	ComPtr<ID3DBlob> SerializeRootSignature;
@@ -132,7 +138,7 @@ void FMesh::BuildMesh(const FMeshRenderingData& InRenderingData)
 		0,
 		SerializeRootSignature->GetBufferPointer(),
 		SerializeRootSignature->GetBufferSize(),
-		IID_PPV_ARGS(RootSignature.GetAddressOf())));
+		IID_PPV_ARGS(&RootSignature)));
 //----------根签名的创建结束-----
 //----------shader的创建开始-----
 	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/Hello.hlsl", "VertexShaderMain", "vs_5_0");
@@ -142,20 +148,20 @@ void FMesh::BuildMesh(const FMeshRenderingData& InRenderingData)
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
 	};
 //----------shader的创建结束-----
-	IndexSize = InRenderingData.IndexData.size();
 	VertexStrideInBytes = sizeof(FVertex);
+	IndexSize = InRenderingData->IndexData.size();
 	//获取顶点数据和索引的大小
-	VertexSizeInBytes = InRenderingData.VertexData.size() * VertexStrideInBytes;
+	VertexSizeInBytes = InRenderingData->VertexData.size() * VertexStrideInBytes;
 	IndexSizeInBytes = IndexSize * sizeof(uint16_t);
 
 	//为将顶点索引数据 传递给cpuBuffer
 	ANALYSIS_HRESULT(D3DCreateBlob(VertexSizeInBytes, &CPUVertexBufferPtr));
-	memcpy(CPUVertexBufferPtr->GetBufferPointer(), InRenderingData.VertexData.data(), VertexSizeInBytes);
+	memcpy(CPUVertexBufferPtr->GetBufferPointer(), InRenderingData->VertexData.data(), VertexSizeInBytes);
 	ANALYSIS_HRESULT(D3DCreateBlob(IndexSizeInBytes, &CPUIndexBufferPtr));
-	memcpy(CPUIndexBufferPtr->GetBufferPointer(), InRenderingData.IndexData.data(), IndexSizeInBytes);
+	memcpy(CPUIndexBufferPtr->GetBufferPointer(), InRenderingData->IndexData.data(), IndexSizeInBytes);
 
-	GPUVertexBufferPtr = ConstructDefaultBuffer(VertexBufferTempPtr, InRenderingData.VertexData.data(), VertexSizeInBytes);
-	GPUIndexBufferPtr = ConstructDefaultBuffer(IndexBufferTempPtr, InRenderingData.IndexData.data(), IndexSizeInBytes);
+	GPUVertexBufferPtr = ConstructDefaultBuffer(VertexBufferTempPtr, InRenderingData->VertexData.data(), VertexSizeInBytes);
+	GPUIndexBufferPtr = ConstructDefaultBuffer(IndexBufferTempPtr, InRenderingData->IndexData.data(), IndexSizeInBytes);
 	if (GPUIndexBufferPtr == nullptr || GPUVertexBufferPtr == nullptr)
 	{
 		Engine_Log_Error("FMesh::BuildMesh discover error");
@@ -173,7 +179,7 @@ void FMesh::BuildMesh(const FMeshRenderingData& InRenderingData)
 	GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(VertexShader.GetBufferPointer());
 	GPSDesc.VS.BytecodeLength = VertexShader.GetBufferSize();
 	//绑定片元着色器
-	GPSDesc.PS.pShaderBytecode = reinterpret_cast<BYTE*>(PixelShader.GetBufferPointer());
+	GPSDesc.PS.pShaderBytecode = PixelShader.GetBufferPointer();
 	GPSDesc.PS.BytecodeLength = PixelShader.GetBufferSize();
 	//配置光栅化状态
 	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
@@ -222,9 +228,8 @@ D3D12_INDEX_BUFFER_VIEW FMesh::GetIndexBufferView()
 }
 
 FObjectTransformation::FObjectTransformation()
-	: World(IdentityMatrix4x4())
-{
-}
+	: World(FObjectTransformation::IdentityMatrix4x4())
+{}
 
 XMFLOAT4X4 FObjectTransformation::IdentityMatrix4x4()
 {

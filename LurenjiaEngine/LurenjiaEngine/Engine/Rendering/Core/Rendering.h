@@ -22,7 +22,7 @@ public:
 
 	simple_c_guid GetGuid() { return Guid; }
 protected:
-	ComPtr<ID3D12Resource> ConstructDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT InDataSize);
+	ComPtr<ID3D12Resource> ConstructDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT64 InDataSize);
 protected:
 	ComPtr<ID3D12Device> GetD3dDevice();
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
@@ -50,11 +50,10 @@ public:
 	void Update(int Index, const void* InData);
 
 	UINT GetConstantBufferByteSize(UINT InTypeSize);
-	UINT GetConstantBufferByteSize() { return GetConstantBufferByteSize(ElementSize); }
+	UINT GetConstantBufferByteSize();
 
 	ID3D12Resource* GetBuffer() { return UploadBuffer.Get(); }
 private:
-
 	ComPtr<ID3D12Resource> UploadBuffer;
 	UINT ElementSize;
 	BYTE* Data;

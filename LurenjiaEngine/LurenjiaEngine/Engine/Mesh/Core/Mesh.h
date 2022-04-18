@@ -21,7 +21,7 @@ public:
 	virtual void Draw(float DeltaTime);		//重写父类纯虚函数
 	virtual void PostDraw(float DeltaTime);	//重写父类虚函数
 
-	virtual void BuildMesh(const FMeshRenderingData& InRenderingData);
+	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
