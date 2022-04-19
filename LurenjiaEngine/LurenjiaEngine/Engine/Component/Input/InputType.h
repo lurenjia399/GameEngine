@@ -1,0 +1,16 @@
+#pragma once
+#include "../../LurenjiaEngine.h"
+
+enum EPressState
+{
+	PRESS,	//°´ÏÂ
+	RELEASE	//ËÉ¿ª
+};
+
+struct FInputKey
+{
+	FInputKey();
+
+	string KeyName;
+	EPressState PressState;
+};

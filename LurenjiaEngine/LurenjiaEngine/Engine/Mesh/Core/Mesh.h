@@ -12,14 +12,14 @@ struct FObjectTransformation
 };
 
 
-class FMesh :public IRenderingInterface
+class CMesh :public CCoreMinimalObject, public IRenderingInterface
 {
 public:
-	FMesh();
-	virtual void Init();					//重写父类纯虚函数
-	virtual void PreDraw(float DeltaTime);	//重写父类虚函数
-	virtual void Draw(float DeltaTime);		//重写父类纯虚函数
-	virtual void PostDraw(float DeltaTime);	//重写父类虚函数
+	CMesh();
+	virtual void Init() override;//重写父类纯虚函数
+	virtual void PreDraw(float DeltaTime) override;
+	virtual void Draw(float DeltaTime) override;//重写父类纯虚函数
+	virtual void PostDraw(float DeltaTime) override;
 
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 

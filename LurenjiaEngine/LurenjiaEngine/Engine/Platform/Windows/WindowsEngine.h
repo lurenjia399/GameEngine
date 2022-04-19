@@ -3,20 +3,20 @@
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
 
-class FWindowsEngine : public FEngine
+class CWindowsEngine : public CEngine
 {
 public:
-	FWindowsEngine();
+	CWindowsEngine();
 
-	virtual int PreInit(FWinMainCommandParameters& InParameters);
-	virtual int Init(FWinMainCommandParameters InParameters);
-	virtual int PostInit();
+	virtual int PreInit(FWinMainCommandParameters& InParameters) override;//重写父类的纯虚函数
+	virtual int Init(FWinMainCommandParameters InParameters) override;//重写父类的纯虚函数
+	virtual int PostInit() override;//重写父类的纯虚函数
 
-	virtual void Tick(float DeltaTime);
+	virtual void Tick(float DeltaTime) override;//重写父类的纯虚函数
 
-	virtual int PreExit();
-	virtual int Exit();
-	virtual int PostExit();
+	virtual int PreExit() override;//重写父类的纯虚函数
+	virtual int Exit() override;//重写父类的纯虚函数
+	virtual int PostExit() override;//重写父类的纯虚函数
 //----------interface-----
 public:
 	//获取引擎驱动
@@ -69,7 +69,7 @@ protected:
 	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;//交换链资源
 	ComPtr<ID3D12Resource> DepthStencilBuffer;			//深度模板资源
 
-	D3D12_VIEWPORT ViewPortInfo;
+	D3D12_VIEWPORT ViewPortInfo;		//Describes the dimensions of a viewport
 	D3D12_RECT ViewPortRect;
 protected:
 	HWND MyWindowsHandle;		//主窗口句柄

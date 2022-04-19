@@ -7,10 +7,12 @@ FEngineFactory::FEngineFactory()
 {
 }
 
-FEngine* FEngineFactory::CreateEngine()
+CEngine* FEngineFactory::CreateEngine()
 {
 #if defined(_WIN32)
-	return new FWindowsEngine();
+	 CWindowsEngine * wEngine = new CWindowsEngine();
+	 wEngine->ResetGuid("wEngine");
+	 return wEngine;
 #elif defined(__linux__)
 
 #endif

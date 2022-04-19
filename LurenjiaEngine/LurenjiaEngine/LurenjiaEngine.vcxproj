@@ -19,9 +19,20 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Engine\Component\Core\Component.cpp" />
+    <ClCompile Include="Engine\Component\InputComponent.cpp" />
+    <ClCompile Include="Engine\Component\Input\InputType.cpp" />
+    <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
+    <ClCompile Include="Engine\Core\Camera.cpp" />
+    <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
+    <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
+    <ClCompile Include="Engine\Core\Viewport.cpp" />
     <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp" />
+    <ClCompile Include="Engine\Core\Word.cpp">
+      <AdditionalOptions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">/d1 reportSingleClassLayoutCWord %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
     <ClCompile Include="Engine\Debug\EngineDebug.cpp" />
     <ClCompile Include="Engine\EngineFactory.cpp" />
     <ClCompile Include="Engine\LurenjiaEngine.cpp" />
@@ -29,6 +40,7 @@
     <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
     <ClCompile Include="Engine\Mesh\Core\Mesh.cpp" />
     <ClCompile Include="Engine\Mesh\Core\MeshType.cpp" />
+    <ClCompile Include="Engine\Mesh\SphereMesh.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
@@ -72,9 +84,19 @@
     <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_color.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
+    <ClInclude Include="Engine\Component\Core\Component.h" />
+    <ClInclude Include="Engine\Component\InputComponent.h" />
+    <ClInclude Include="Engine\Component\Input\InputType.h" />
+    <ClInclude Include="Engine\Component\TransformationComponent.h" />
     <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
+    <ClInclude Include="Engine\Core\Camera.h" />
+    <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h" />
+    <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="Engine\Core\Engine.h" />
+    <ClInclude Include="Engine\Core\Viewport.h" />
     <ClInclude Include="Engine\Core\WinMainCommandParameters.h" />
+    <ClInclude Include="Engine\Core\Word.h" />
     <ClInclude Include="Engine\Debug\EngineDebug.h" />
     <ClInclude Include="Engine\Debug\Log\SimpleLog.h" />
     <ClInclude Include="Engine\EngineFactory.h" />
@@ -83,8 +105,10 @@
     <ClInclude Include="Engine\Mesh\BoxMesh.h" />
     <ClInclude Include="Engine\Mesh\Core\Mesh.h" />
     <ClInclude Include="Engine\Mesh\Core\MeshType.h" />
+    <ClInclude Include="Engine\Mesh\SphereMesh.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
+    <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
     <ClInclude Include="Engine\Rendering\Core\Rendering.h" />
     <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h" />
     <ClInclude Include="Engine\Rendering\DX\d3d12.h" />
@@ -141,6 +165,9 @@
     <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4d.h" />
     <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4id.h" />
     <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_color.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>

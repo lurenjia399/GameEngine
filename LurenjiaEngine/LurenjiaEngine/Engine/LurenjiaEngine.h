@@ -22,4 +22,4 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-extern class FEngine* Engine;
+extern class CEngine* Engine;

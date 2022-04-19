@@ -2,12 +2,12 @@
 #include "../../Core/Engine.h"
 #include "../../Platform/Windows/WindowsEngine.h"
 
-class IRenderingInterface
+class IRenderingInterface :virtual public IGuidInterface
 {
-	friend class FWindowsEngine;
+	friend class CWindowsEngine;
 public:
 	IRenderingInterface();
-	virtual ~IRenderingInterface() = 0;//纯虚析构函数需要写实现
+	virtual ~IRenderingInterface() = 0;//纯虚析构函数需要写实现，并且此类无法实例化
 
 	virtual void Init() = 0;
 
@@ -15,28 +15,21 @@ public:
 	virtual void Draw(float DeltaTime) = 0;
 	virtual void PostDraw(float DeltaTime);
 
-	bool operator==(const IRenderingInterface& other)
-	{
-		return guid_equal(&this->Guid, &other.Guid);
-	}
-
-	simple_c_guid GetGuid() { return Guid; }
 protected:
-	ComPtr<ID3D12Resource> ConstructDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT64 InDataSize);
+	ComPtr<ID3D12Resource> ConstructGPUDefaultBuffer(ComPtr<ID3D12Resource>& OutTempBuffer, const void* InData, UINT64 InDataSize);
 protected:
 	ComPtr<ID3D12Device> GetD3dDevice();
 	ComPtr<ID3D12GraphicsCommandList> GetGraphicsCommandList();
 	ComPtr<ID3D12CommandAllocator> GetCommandAllocator();
 
 #if defined(_WIN32)
-	FWindowsEngine* GetEngine();
+	CWindowsEngine* GetEngine();
 #else
 	Engien* GetEngine();
 #endif
 	
 private:
 	static vector<IRenderingInterface*> RenderingInterface;
-	simple_c_guid Guid;
 };
 
 class FRenderingResourcesUpdate : public enable_shared_from_this<FRenderingResourcesUpdate>

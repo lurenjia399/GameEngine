@@ -13,15 +13,25 @@
 
 但是不能将命令分配器清空，因为在将命令提交给命令队列后，命令队列有可能会引用命令分配器中的数据，再加上gpu并不一定会立即执行，所以必须保证gpu在执行完名列队列中的命令后，再将命令分配器清空。
 
+### 为什么要有commandallocator呢？
+
+gpu通过执行命令来实现渲染的操作，而这些命令是通过cpu传过来的。也就是说cpu需要将命令列表中的命令放到显存中 ，而gpu需要从显存中读取命令在执行，这样就对显存有了一读一取的操作，，，在多线程的情况下就会有同步的问题，所以就有了commandallocator来管理显存这块存放命令的区域。这就好比我在饭店点菜，服务员将我点的菜记录到纸上，点完之后，服务员将菜单递交给后厨，后厨根据每道菜依次做，这里的纸就好比是commandallocator。
+
 ## D3dDevice
 
 驱动可做的事情很多：
 
 可以帮助我们来创建一些东西：CreateCommandList，CreateCommandQueue，CreateCommandAllocator，CreateFence，CreateDepthStencilView
 
-## Fence
+## 围栏Fence（cpu线程和gpu线程间的同步）
 
-主要是用于cpu和gpu之间的同步，cpu将命令放到命令（设置模型的位置L1）队列中，在gpu执行这条命令之前，如果cpu又将一条命令（设置模型的位置L2）放入命令队列中，这样gpu就不会执行设置L1的位置了。Fence的作用就是设置标志位，给命令队列添加signal，也就是fence值，当gpu执行完所需命令后，会刷新fence值，告诉cpu已经执行完了，可以添加下一条命令了。
+为了充分利用多线程渲染的高性能，draw call 变成异步的，executeCommandlists也变成异步的了（cpu在将这些命令放到命令队列中后，就不管了，可以执行其他的操作了。gpu就可以根据自己的顺序来执行这些命令。），那么就会有一个问题：cpu如何知道我的这些命令（或者是哪写命令）被执行了? 这就引出了围栏的概念。Fence就是一个同步对象，用来同步gpu线程和cpu线程。
+
+主要实现原理就是，为gpu线程设置一个初始的围栏值，接着为这个值在设置一个cpu事件句柄，然后gpu继续执行任务，而cpu就等待，等到gpu达到这个围栏值的时候，，就唤醒事件，cpu就知道gpu的工作已经做完了，改cpu执行操作了。
+
+## 资源屏障 resource barrier（gpu线程间的同步）
+
+在渲染流程的中，我们可能对某个资源先读后写，比如DepthStencilBuffer，但是当gpu还没有对资源写完，就读取的化，就会造成**资源冒险**，有可能引发问题。所以就有了ResourceBarrier，告诉gpu当前资源是正在处于资源转换状态，从状态1 transition to 状态2。
 
 ## 超级采样SSAA 多重采样MSAA
 
@@ -41,9 +51,7 @@ resource descriptor：这些资源对gpu来说只是一堆数据，gpu无法分�
 
 descriptor heap：用来存储同一种资源描述符资源描述符，可以看成资源描述符数组
 
-## 资源屏障转换 resource barrier
 
-在渲染流程的中，我们可能对某个资源先读后写，比如DepthStencilBuffer，但是当gpu还没有对资源写完，就读取的化，就会造成**资源冒险**，有可能引发问题。所以就有了ResourceBarrier，告诉gpu当前资源是正在处于资源转换状态，从状态1 transition to 状态2。
 
 # 渲染流水线
 

@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include "../../Config/EngineRenderConfig.h"
 
-FMesh::FMesh():
+CMesh::CMesh():
 	VertexSizeInBytes(0),
 	VertexStrideInBytes(0),
 	IndexSizeInBytes(0),
@@ -13,19 +13,19 @@ FMesh::FMesh():
 {
 }
 
-void FMesh::Init()
+void CMesh::Init()
 {
 	float AspectRatio = static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenWidth) / FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
 	XMMATRIX Project = XMMatrixPerspectiveFovLH(0.25f * 3.1415926535f, AspectRatio, 1.0f, 1000.f);
 	XMStoreFloat4x4(&ProjectMatrix, Project);
 }
 
-void FMesh::PreDraw(float DeltaTime)
+void CMesh::PreDraw(float DeltaTime)
 {
 	GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get());
 }
 
-void FMesh::Draw(float DeltaTime)
+void CMesh::Draw(float DeltaTime)
 {
 	ComPtr<ID3D12GraphicsCommandList> GraphicsCommandList = GetGraphicsCommandList();
 	if (GraphicsCommandList == nullptr)
@@ -63,7 +63,7 @@ void FMesh::Draw(float DeltaTime)
 	GraphicsCommandList->DrawIndexedInstanced(IndexSize, 1, 0, 0, 0);
 }
 
-void FMesh::PostDraw(float DeltaTime)
+void CMesh::PostDraw(float DeltaTime)
 {
 	XMUINT3 MeshPos = XMUINT3(6.0f, 6.0f, 6.0f);
 	XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
@@ -84,7 +84,7 @@ void FMesh::PostDraw(float DeltaTime)
 	objectConstants->Update(0, &ObjectTransformation);
 }
 
-void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void CMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 //----------常量缓冲区的创建开始-----
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
@@ -103,7 +103,7 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 
 	//常量缓冲区的构建
 	objectConstants = make_shared<FRenderingResourcesUpdate>();
-	objectConstants->Init(D3dDevice.Get(), sizeof(FObjectTransformation) , 1);
+	objectConstants->Init(D3dDevice.Get(), sizeof(FObjectTransformation), 1);
 
 	D3D12_GPU_VIRTUAL_ADDRESS objadd = objectConstants.get()->GetBuffer()->GetGPUVirtualAddress();
 	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc = {};
@@ -154,14 +154,15 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 	VertexSizeInBytes = InRenderingData->VertexData.size() * VertexStrideInBytes;
 	IndexSizeInBytes = IndexSize * sizeof(uint16_t);
 
-	//为将顶点索引数据 传递给cpuBuffer
+	//在cpu中创建资源缓冲区（目前这段没有用）
 	ANALYSIS_HRESULT(D3DCreateBlob(VertexSizeInBytes, &CPUVertexBufferPtr));
 	memcpy(CPUVertexBufferPtr->GetBufferPointer(), InRenderingData->VertexData.data(), VertexSizeInBytes);
 	ANALYSIS_HRESULT(D3DCreateBlob(IndexSizeInBytes, &CPUIndexBufferPtr));
 	memcpy(CPUIndexBufferPtr->GetBufferPointer(), InRenderingData->IndexData.data(), IndexSizeInBytes);
 
-	GPUVertexBufferPtr = ConstructDefaultBuffer(VertexBufferTempPtr, InRenderingData->VertexData.data(), VertexSizeInBytes);
-	GPUIndexBufferPtr = ConstructDefaultBuffer(IndexBufferTempPtr, InRenderingData->IndexData.data(), IndexSizeInBytes);
+	//在gpu中创建资源缓冲区
+	GPUVertexBufferPtr = ConstructGPUDefaultBuffer(VertexBufferTempPtr, InRenderingData->VertexData.data(), VertexSizeInBytes);
+	GPUIndexBufferPtr = ConstructGPUDefaultBuffer(IndexBufferTempPtr, InRenderingData->IndexData.data(), IndexSizeInBytes);
 	if (GPUIndexBufferPtr == nullptr || GPUVertexBufferPtr == nullptr)
 	{
 		Engine_Log_Error("FMesh::BuildMesh discover error");
@@ -170,7 +171,7 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 //----------pos 流水线绑定开始-----
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc = {};
 	memset(&GPSDesc, 0, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-	//绑定输入布局
+	//绑定着色器输入布局
 	GPSDesc.InputLayout.pInputElementDescs = InputElementDesc.data();
 	GPSDesc.InputLayout.NumElements = (UINT)InputElementDesc.size();
 	//绑定根签名
@@ -207,7 +208,7 @@ void FMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 //----------pos 流水线绑定结束-----
 }
 
-D3D12_VERTEX_BUFFER_VIEW FMesh::GetVertexBufferView()
+D3D12_VERTEX_BUFFER_VIEW CMesh::GetVertexBufferView()
 {
 	D3D12_VERTEX_BUFFER_VIEW VBV = {};
 	VBV.BufferLocation = GPUVertexBufferPtr->GetGPUVirtualAddress();
@@ -217,7 +218,7 @@ D3D12_VERTEX_BUFFER_VIEW FMesh::GetVertexBufferView()
 	return VBV;
 }
 
-D3D12_INDEX_BUFFER_VIEW FMesh::GetIndexBufferView()
+D3D12_INDEX_BUFFER_VIEW CMesh::GetIndexBufferView()
 {
 	D3D12_INDEX_BUFFER_VIEW IBV = {};
 	IBV.SizeInBytes = IndexSizeInBytes;

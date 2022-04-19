@@ -1,16 +1,17 @@
 #include "BoxMesh.h"
+#include "../Core/CoreObject/CoreMinimalObject.h"
 
-void FBoxMesh::Init()
+void CBoxMesh::Init()
 {
 	Super::Init();
 }
 
-void FBoxMesh::Draw(float DeltaTime)
+void CBoxMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);
 }
 
-FBoxMesh* FBoxMesh::CreateMesh()
+CBoxMesh* CBoxMesh::CreateMesh()
 {
 	//构建顶点数据
 	FMeshRenderingData BoxMeshInfo;
@@ -42,14 +43,16 @@ FBoxMesh* FBoxMesh::CreateMesh()
 	BoxMeshInfo.IndexData.emplace_back(4);BoxMeshInfo.IndexData.emplace_back(0);BoxMeshInfo.IndexData.emplace_back(3);
 	BoxMeshInfo.IndexData.emplace_back(4);BoxMeshInfo.IndexData.emplace_back(3);BoxMeshInfo.IndexData.emplace_back(7);
 
-	FBoxMesh* BoxMesh = new FBoxMesh();
+	CBoxMesh* BoxMesh = new CBoxMesh();
+	//CBoxMesh* BoxMesh = CreateObject<CBoxMesh>("BoxMesh"); 在静态方法中无法使用非静态方法
 	BoxMesh->BuildMesh(&BoxMeshInfo);
+	BoxMesh->ResetGuid("BoxMesh");
 
 	BoxMesh->Init();
 	return BoxMesh;
 }
 
-void FBoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void CBoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 	Super::BuildMesh(InRenderingData);
 }

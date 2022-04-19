@@ -5,5 +5,5 @@ class FEngineFactory
 {
 public:
 	FEngineFactory();
-	static FEngine* CreateEngine();
+	static CEngine* CreateEngine();
 };
