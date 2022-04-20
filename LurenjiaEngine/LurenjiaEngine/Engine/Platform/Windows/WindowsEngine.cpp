@@ -2,6 +2,8 @@
 #include "../../Config/EngineRenderConfig.h"
 #include "../../Rendering/Core/Rendering.h"
 #include "../../Mesh/BoxMesh.h"
+#include "../../Mesh/SphereMesh.h"
+#include "../../Mesh/CylinderMesh.h"
 #include "../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../Core/Word.h"
 
@@ -60,7 +62,9 @@ int CWindowsEngine::PostInit()
 {
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr));
 	//构建mesh
-	CBoxMesh* BoxMesh = CBoxMesh::CreateMesh();		//构建模型
+	//CBoxMesh* BoxMesh = CBoxMesh::CreateMesh();		//构建模型
+	//CSphereMesh* BoxMesh = CSphereMesh::CreateMesh(1, 20, 20);//半径，轴分割度，高度分割度
+	CCylinderMesh* BoxMesh = CCylinderMesh::CreateMesh(1, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
 	for (CCoreMinimalObject* temp : ObjectPool)
 	{
 		temp->BeginInit();

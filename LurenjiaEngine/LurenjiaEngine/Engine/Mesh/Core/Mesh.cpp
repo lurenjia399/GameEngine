@@ -16,7 +16,7 @@ CMesh::CMesh():
 void CMesh::Init()
 {
 	float AspectRatio = static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenWidth) / FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
-	XMMATRIX Project = XMMatrixPerspectiveFovLH(0.25f * 3.1415926535f, AspectRatio, 1.0f, 1000.f);
+	XMMATRIX Project = XMMatrixPerspectiveFovLH(0.25f * XM_PI, AspectRatio, 1.0f, 1000.f);
 	XMStoreFloat4x4(&ProjectMatrix, Project);
 }
 
@@ -184,6 +184,8 @@ void CMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 	GPSDesc.PS.BytecodeLength = PixelShader.GetBufferSize();
 	//配置光栅化状态
 	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
+	//GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
 	//采样掩码
 	GPSDesc.SampleMask = UINT_MAX;
 	//拓扑类型
