@@ -4,6 +4,8 @@
 #include "../../Mesh/BoxMesh.h"
 #include "../../Mesh/SphereMesh.h"
 #include "../../Mesh/CylinderMesh.h"
+#include "../../Mesh/PlaneMesh.h"
+#include "../../Mesh/CustomMesh.h"
 #include "../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../Core/Word.h"
 
@@ -62,9 +64,12 @@ int CWindowsEngine::PostInit()
 {
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr));
 	//构建mesh
-	//CBoxMesh* BoxMesh = CBoxMesh::CreateMesh();		//构建模型
-	//CSphereMesh* BoxMesh = CSphereMesh::CreateMesh(1, 20, 20);//半径，轴分割度，高度分割度
-	CCylinderMesh* BoxMesh = CCylinderMesh::CreateMesh(1, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
+	//CBoxMesh* BoxMesh = CBoxMesh::CreateMesh(2, 4, 2);		//box 高度，宽度，深度
+	//CSphereMesh* SphereMesh = CSphereMesh::CreateMesh(1, 20, 20);//半径，轴分割度，高度分割度
+	//CCylinderMesh* CylinderMesh = CCylinderMesh::CreateMesh(2, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
+	//CPlaneMesh* PlaneMesh = CPlaneMesh::CreateMesh(2, 2, 10, 10);//高度，宽度，高度细分，宽度细分
+	string path = "../LurenjiaEngine/ObjModels/diban_lqc_louti.obj";
+	CCustomMesh* CustomMesh = CCustomMesh::CreateMesh(path);
 	for (CCoreMinimalObject* temp : ObjectPool)
 	{
 		temp->BeginInit();

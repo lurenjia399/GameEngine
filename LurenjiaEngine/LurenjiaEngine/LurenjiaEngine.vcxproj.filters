@@ -201,6 +201,12 @@
     <ClCompile Include="Engine\Mesh\CylinderMesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Mesh\PlaneMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Mesh\CustomMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -447,6 +453,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Mesh\CylinderMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\PlaneMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\CustomMesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

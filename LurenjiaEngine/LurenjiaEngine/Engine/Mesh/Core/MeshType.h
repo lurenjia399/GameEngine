@@ -3,6 +3,7 @@
 #include "../../Math/EngineMath.h"
 struct FVertex
 {
+	//FVertex(const XMFLOAT3& InPos, XMFLOAT4 InColor = XMFLOAT4(Colors::White));
 	FVertex(const XMFLOAT3& InPos, const XMFLOAT4& InColor);
 
 	XMFLOAT3 Pos;

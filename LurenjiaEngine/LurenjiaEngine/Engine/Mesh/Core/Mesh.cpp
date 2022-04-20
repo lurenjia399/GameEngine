@@ -65,7 +65,7 @@ void CMesh::Draw(float DeltaTime)
 
 void CMesh::PostDraw(float DeltaTime)
 {
-	XMUINT3 MeshPos = XMUINT3(6.0f, 6.0f, 6.0f);
+	XMUINT3 MeshPos = XMUINT3(30.0f, 30.0f, 30.0f);
 	XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
 	XMVECTOR ViewTarget = XMVectorZero();
 	XMVECTOR ViewUp = XMVectorSet(0, 1.0f, 0, 0);
@@ -185,6 +185,7 @@ void CMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 	//配置光栅化状态
 	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
+	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
 	//GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
 	//采样掩码
 	GPSDesc.SampleMask = UINT_MAX;

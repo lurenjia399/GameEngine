@@ -11,18 +11,21 @@ void CBoxMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-CBoxMesh* CBoxMesh::CreateMesh()
+CBoxMesh* CBoxMesh::CreateMesh(float Inheight, float Inwidth, float Indepth)
 {
 	//构建顶点数据
 	FMeshRenderingData BoxMeshInfo;
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(0.f, 0.f, 0.f),XMFLOAT4(Colors::LightGoldenrodYellow)));	//0
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(0.f, 1.f, 0.f),XMFLOAT4(Colors::MidnightBlue)));			//1
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(1.f, 1.f, 0.f),XMFLOAT4(Colors::Bisque)));					//2
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(1.f, 0.f, 0.f),XMFLOAT4(Colors::DarkMagenta)));			//3
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(0.f, 0.f, 1.f),XMFLOAT4(Colors::PaleVioletRed)));			//4
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(0.f, 1.f, 1.f),XMFLOAT4(Colors::BlueViolet)));				//5
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(1.f, 1.f, 1.f),XMFLOAT4(Colors::AliceBlue)));				//6
-	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(1.f, 0.f, 1.f),XMFLOAT4(Colors::Violet)));					//7
+	float cheight = Inheight / 2;
+	float cwidth = Inwidth / 2;
+	float cdepth = Indepth / 2;
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, -cheight, -cdepth),XMFLOAT4(Colors::LightGoldenrodYellow)));	//0
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, cheight, -cdepth),XMFLOAT4(Colors::MidnightBlue)));			//1
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, cheight, -cdepth),XMFLOAT4(Colors::Bisque)));					//2
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, -cheight, -cdepth),XMFLOAT4(Colors::DarkMagenta)));			//3
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, -cheight, cdepth),XMFLOAT4(Colors::PaleVioletRed)));			//4
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, cheight, cdepth),XMFLOAT4(Colors::BlueViolet)));				//5
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, cheight, cdepth),XMFLOAT4(Colors::AliceBlue)));				//6
+	BoxMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, -cheight, cdepth),XMFLOAT4(Colors::Violet)));					//7
 
 	//front
 	BoxMeshInfo.IndexData.emplace_back(0);BoxMeshInfo.IndexData.emplace_back(1);BoxMeshInfo.IndexData.emplace_back(2);
