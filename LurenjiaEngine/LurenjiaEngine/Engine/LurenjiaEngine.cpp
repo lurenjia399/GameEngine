@@ -5,33 +5,17 @@ static int Init(CEngine* InEngine, HINSTANCE InhInstance, HINSTANCE InprevInstan
 {
 #if defined(_WIN32)
 	FWinMainCommandParameters WinMainParameters(InhInstance, InprevInstance, IncmdLine, InshowCmd);
+	int ReturnValue = InEngine->Init(WinMainParameters);
+#else
+	int ReturnValue = -1;
 #endif
-//	int ReturnValue = InEngine->PreInit(
-//#if defined(_WIN32)
-//		WinMainParameters
-//#endif
-//	);
-//	if (ReturnValue != 0)
-//	{
-//		Engine_Log_Error("[%i]Engine Pre initialization error, please check and initialization problem.", ReturnValue);
-//		return ReturnValue;
-//	}
-	int ReturnValue = InEngine->Init(
-#if defined(_WIN32)
-		WinMainParameters
-#endif
-	);
+
 	if (ReturnValue != 0)
 	{
 		Engine_Log_Error("[%i]Engine initialization error, please check and initialization problem.", ReturnValue);
 		return ReturnValue;
 	}
-	//ReturnValue = InEngine->PostInit();
-	//if (ReturnValue != 0)
-	//{
-	//	Engine_Log_Error("[%i]Engine post initialization error, please check and initialization problem.", ReturnValue);
-	//	return ReturnValue;
-	//}
+
 	return ReturnValue;
 }
 

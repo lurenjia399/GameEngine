@@ -192,7 +192,7 @@
     <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Word.cpp">
+    <ClCompile Include="Engine\Core\World.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Mesh\SphereMesh.cpp">
@@ -205,6 +205,18 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Mesh\CustomMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Engine\Core\RenderingEngine.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Mesh\Core\MeshManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Mesh\Core\ObjectTransformation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -446,7 +458,7 @@
     <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\Word.h">
+    <ClInclude Include="Engine\Core\World.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Mesh\SphereMesh.h">
@@ -459,6 +471,18 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Mesh\CustomMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Engine\Core\RenderingEngine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\MeshManage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\ObjectTransformation.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

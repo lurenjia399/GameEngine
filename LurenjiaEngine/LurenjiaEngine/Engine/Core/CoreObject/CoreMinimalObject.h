@@ -4,7 +4,7 @@
 #include "../../Platform/Windows/WindowsPlatform.h"
 #include "../../CodeReflection/CodeReflectionMacroTag.h"		//反射头文件
 
-class CCoreMinimalObject : virtual public IGuidInterface
+class CCoreMinimalObject : public IGuidInterface
 {
 public:
 	virtual void BeginInit() {}

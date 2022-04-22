@@ -11,11 +11,8 @@ void CCustomMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-CCustomMesh* CCustomMesh::CreateMesh(const string& InPath)
+void CCustomMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const string& InPath)
 {
-	//构建顶点数据
-	FMeshRenderingData CustomMeshInfo;
-
 	//局部代码块
 	{
 		unsigned int FileSize = get_file_size_by_filename(InPath.c_str());
@@ -23,7 +20,7 @@ CCustomMesh* CCustomMesh::CreateMesh(const string& InPath)
 		char* Buffer = new char[FileSize + 1]();//永远记住字符数组的长度需要加1，，，'\0'需要占位
 		get_file_buf(InPath.c_str(), Buffer);
 
-		if (!LoadObjFileBuffer(Buffer, FileSize, CustomMeshInfo))
+		if (!LoadObjFileBuffer(Buffer, FileSize, InRenderingData))
 		{
 			Engine_Log_Error("load obj mesh failed !!!");
 		}
@@ -34,13 +31,6 @@ CCustomMesh* CCustomMesh::CreateMesh(const string& InPath)
  		delete[] Buffer;
 		_ASSERTE(_CrtCheckMemory());//检测对堆的数据操作是否溢出
 	}
-	
-	CCustomMesh* CustomMesh = new CCustomMesh();
-	CustomMesh->BuildMesh(&CustomMeshInfo);
-	CustomMesh->ResetGuid("BoxMesh");
-
-	CustomMesh->Init();
-	return CustomMesh;
 }
 
 bool CCustomMesh::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData)
@@ -95,14 +85,26 @@ bool CCustomMesh::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMesh
 						memset(TempBuffer, 0, 257);
 						int pivotIndex = 0;
 						int PosIndex = find_string(SaveLineString, "/", pivotIndex);
-						char* vPosIndex = string_mid(SaveLineString, TempBuffer, pivotIndex, PosIndex - pivotIndex);
-						InRenderingData.IndexData.emplace_back(atoi(vPosIndex));
+						if (PosIndex < 0)
+						{
+							InRenderingData.IndexData.emplace_back(atoi(SaveLineString) - 1);
+						}
+						else {
+							char* vPosIndex = string_mid(SaveLineString, TempBuffer, pivotIndex, PosIndex - pivotIndex);
+							InRenderingData.IndexData.emplace_back(atoi(vPosIndex) - 1);
+						}
 
 						//纹理索引
 						memset(TempBuffer, 0, 257);
 						pivotIndex = PosIndex + 1;
 						int TextureIndex = find_string(SaveLineString, "/", pivotIndex);
-						char* vTextureIndex = string_mid(SaveLineString, TempBuffer, pivotIndex, TextureIndex - pivotIndex);
+						if (TextureIndex < 0)
+						{
+
+						}
+						else {
+							char* vTextureIndex = string_mid(SaveLineString, TempBuffer, pivotIndex, TextureIndex - pivotIndex);
+						}
 					
 						//法线索引
 						memset(TempBuffer, 0, 257);

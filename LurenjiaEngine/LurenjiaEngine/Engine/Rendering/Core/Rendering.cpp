@@ -1,22 +1,23 @@
 #include "Rendering.h"
+#include "../Engine/DirectX/Core/DirectXRenderingEngine.h"
 
-vector<IRenderingInterface*> IRenderingInterface::RenderingInterface = vector<IRenderingInterface*>();
+//vector<IRenderingInterface*> IRenderingInterface::RenderingInterface = vector<IRenderingInterface*>();
 
 IRenderingInterface::IRenderingInterface()
 {
-	RenderingInterface.emplace_back(this);
+	//RenderingInterface.emplace_back(this);
 }
 
 IRenderingInterface::~IRenderingInterface()
 {
-	for (vector<IRenderingInterface*>::const_iterator iter = RenderingInterface.begin(); iter != RenderingInterface.end(); iter++)
+	/*for (vector<IRenderingInterface*>::const_iterator iter = RenderingInterface.begin(); iter != RenderingInterface.end(); iter++)
 	{
 		if (*iter == this)
 		{
 			RenderingInterface.erase(iter);
 			break;
 		}
-	}
+	}*/
 }
 
 void IRenderingInterface::PreDraw(float DeltaTime)
@@ -96,9 +97,9 @@ ComPtr<ID3D12Resource> IRenderingInterface::ConstructGPUDefaultBuffer(ComPtr<ID3
 ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice()
 {
 	CWindowsEngine* WindowsEngine = GetEngine();
-	if (WindowsEngine)
+	if (WindowsEngine && WindowsEngine->GetRenderingEngine())
 	{
-		return WindowsEngine->GetD3dDevice();
+		return WindowsEngine->GetRenderingEngine()->GetD3dDevice();
 	}
 	return nullptr;
 }
@@ -106,18 +107,18 @@ ComPtr<ID3D12Device> IRenderingInterface::GetD3dDevice()
 ComPtr<ID3D12GraphicsCommandList> IRenderingInterface::GetGraphicsCommandList()
 {
 	CWindowsEngine* WindowsEngine = GetEngine();
-	if (WindowsEngine)
+	if (WindowsEngine && WindowsEngine->GetRenderingEngine())
 	{
-		return WindowsEngine->GetGraphicsCommandList();
+		return WindowsEngine->GetRenderingEngine()->GetGraphicsCommandList();
 	}
 	return nullptr;
 }
 ComPtr<ID3D12CommandAllocator> IRenderingInterface::GetCommandAllocator()
 {
 	CWindowsEngine* WindowsEngine = GetEngine();
-	if (WindowsEngine)
+	if (WindowsEngine && WindowsEngine->GetRenderingEngine())
 	{
-		return WindowsEngine->GetCommandAllocator();
+		return WindowsEngine->GetRenderingEngine()->GetCommandAllocator();
 	}
 	return nullptr;
 }

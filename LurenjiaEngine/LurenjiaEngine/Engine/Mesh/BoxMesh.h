@@ -9,7 +9,7 @@ public:
 	virtual void Init() override;
 	virtual void Draw(float DeltaTime) override;
 
-	static CBoxMesh* CreateMesh(float Inheight, float Inwidth, float Indepth);
+	void CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth);
 private:
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData) override;
 };

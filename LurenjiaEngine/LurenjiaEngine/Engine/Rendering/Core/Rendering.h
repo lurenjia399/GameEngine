@@ -2,7 +2,7 @@
 #include "../../Core/Engine.h"
 #include "../../Platform/Windows/WindowsEngine.h"
 
-class IRenderingInterface :virtual public IGuidInterface
+class IRenderingInterface //:virtual public IGuidInterface
 {
 	friend class CWindowsEngine;
 public:
@@ -28,8 +28,8 @@ protected:
 	Engien* GetEngine();
 #endif
 	
-private:
-	static vector<IRenderingInterface*> RenderingInterface;
+//private:
+//	static vector<IRenderingInterface*> RenderingInterface;
 };
 
 class FRenderingResourcesUpdate : public enable_shared_from_this<FRenderingResourcesUpdate>

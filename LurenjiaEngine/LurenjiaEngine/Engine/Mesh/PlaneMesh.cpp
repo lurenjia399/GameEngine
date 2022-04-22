@@ -11,7 +11,7 @@ void CPlaneMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-CPlaneMesh* CPlaneMesh::CreateMesh(float Inheight, float Inwidth, uint32_t InHeightSubdivide, uint32_t InwidthSubdivide)
+void CPlaneMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
 {
 	std::function<float(float, uint32_t)> getStep = [&](const float& InValue, const uint32_t& InSubValue) ->float
 	{
@@ -21,10 +21,6 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float Inheight, float Inwidth, uint32_t InHei
 		}
 		return InValue / InSubValue;
 	};
-
-
-	//构建顶点数据
-	FMeshRenderingData PlaneMeshInfo;
 
 	float pHeight = Inheight / 2;
 	float pWidth = Inwidth / 2;
@@ -42,7 +38,7 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float Inheight, float Inwidth, uint32_t InHei
 			float x = PivotPoint.x + i * widthStep;
 			float y = PivotPoint.y;
 			float z = PivotPoint.z - j * heightStep;
-			PlaneMeshInfo.VertexData.emplace_back(FVertex(XMFLOAT3(x, y, z), XMFLOAT4(Colors::CadetBlue)));
+			InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(x, y, z), XMFLOAT4(Colors::CadetBlue)));
 			
 		}
 	}
@@ -53,17 +49,10 @@ CPlaneMesh* CPlaneMesh::CreateMesh(float Inheight, float Inwidth, uint32_t InHei
 		{
 			uint32_t leftUp = i + j * (InwidthSubdivide + 1);uint32_t rightUp = leftUp + 1;
 			uint32_t leftDown = leftUp + (InwidthSubdivide + 1);uint32_t rightDown = leftDown + 1;
-			PlaneMeshInfo.IndexData.emplace_back(leftDown);PlaneMeshInfo.IndexData.emplace_back(leftUp);PlaneMeshInfo.IndexData.emplace_back(rightUp);
-			PlaneMeshInfo.IndexData.emplace_back(leftDown);PlaneMeshInfo.IndexData.emplace_back(rightUp);PlaneMeshInfo.IndexData.emplace_back(rightDown);
+			InRenderingData.IndexData.emplace_back(leftDown);InRenderingData.IndexData.emplace_back(leftUp);InRenderingData.IndexData.emplace_back(rightUp);
+			InRenderingData.IndexData.emplace_back(leftDown);InRenderingData.IndexData.emplace_back(rightUp);InRenderingData.IndexData.emplace_back(rightDown);
 		}
 	}
-
-	CPlaneMesh* PlaneMesh = new CPlaneMesh();
-	PlaneMesh->BuildMesh(&PlaneMeshInfo);
-	PlaneMesh->ResetGuid("PlaneMesh");
-
-	PlaneMesh->Init();
-	return PlaneMesh;
 }
 
 void CPlaneMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
