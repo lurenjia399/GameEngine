@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Engine\Component\Core\Component.cpp" />
     <ClCompile Include="Engine\Component\InputComponent.cpp" />
+    <ClCompile Include="Engine\Component\Input\Input.cpp" />
     <ClCompile Include="Engine\Component\Input\InputType.cpp" />
     <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
@@ -28,11 +29,15 @@
     <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
-    <ClCompile Include="Engine\Core\Viewport.cpp" />
+    <ClCompile Include="Engine\Core\Viewport\Viewport.cpp" />
+    <ClCompile Include="Engine\Core\Viewport\ViewportInfo.cpp" />
+    <ClCompile Include="Engine\Core\Viewport\ViewportTransformation.cpp" />
     <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp" />
     <ClCompile Include="Engine\Core\World.cpp" />
     <ClCompile Include="Engine\Debug\EngineDebug.cpp" />
     <ClCompile Include="Engine\EngineFactory.cpp" />
+    <ClCompile Include="Engine\Interface\DirectXDeviceInterface.cpp" />
+    <ClCompile Include="Engine\Interface\OpenGLDeviceInterface.cpp" />
     <ClCompile Include="Engine\LurenjiaEngine.cpp" />
     <ClCompile Include="Engine\Math\EngineMath.cpp" />
     <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
@@ -46,7 +51,9 @@
     <ClCompile Include="Engine\Mesh\SphereMesh.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\RenderingResourcesUpdate.cpp" />
     <ClCompile Include="Engine\Rendering\Engine\Core\RenderingEngine.cpp" />
     <ClCompile Include="Engine\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp" />
     <ClCompile Include="Engine\Shader\Core\Shader.cpp" />
@@ -92,6 +99,7 @@
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="Engine\Component\Core\Component.h" />
     <ClInclude Include="Engine\Component\InputComponent.h" />
+    <ClInclude Include="Engine\Component\Input\Input.h" />
     <ClInclude Include="Engine\Component\Input\InputType.h" />
     <ClInclude Include="Engine\Component\TransformationComponent.h" />
     <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
@@ -99,12 +107,16 @@
     <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h" />
     <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="Engine\Core\Engine.h" />
-    <ClInclude Include="Engine\Core\Viewport.h" />
+    <ClInclude Include="Engine\Core\Viewport\Viewport.h" />
+    <ClInclude Include="Engine\Core\Viewport\ViewportInfo.h" />
+    <ClInclude Include="Engine\Core\Viewport\ViewportTransformation.h" />
     <ClInclude Include="Engine\Core\WinMainCommandParameters.h" />
     <ClInclude Include="Engine\Core\World.h" />
     <ClInclude Include="Engine\Debug\EngineDebug.h" />
     <ClInclude Include="Engine\Debug\Log\SimpleLog.h" />
     <ClInclude Include="Engine\EngineFactory.h" />
+    <ClInclude Include="Engine\Interface\DirectXDeviceInterface.h" />
+    <ClInclude Include="Engine\Interface\OpenGLDeviceInterface.h" />
     <ClInclude Include="Engine\LurenjiaEngine.h" />
     <ClInclude Include="Engine\Math\EngineMath.h" />
     <ClInclude Include="Engine\Mesh\BoxMesh.h" />
@@ -119,7 +131,9 @@
     <ClInclude Include="Engine\Platform\Windows\WindowsEngine.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
+    <ClInclude Include="Engine\Rendering\Core\Buffer\ConstructBuffer.h" />
     <ClInclude Include="Engine\Rendering\Core\Rendering.h" />
+    <ClInclude Include="Engine\Rendering\Core\RenderingResourcesUpdate.h" />
     <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h" />
     <ClInclude Include="Engine\Rendering\DX\d3d12.h" />
     <ClInclude Include="Engine\Rendering\Engine\Core\RenderingEngine.h" />

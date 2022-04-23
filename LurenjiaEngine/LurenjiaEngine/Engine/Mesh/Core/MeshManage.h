@@ -1,12 +1,18 @@
 #pragma once
 #include "../../Core/CoreObject/CoreMinimalObject.h"
-#include "../../Rendering/Core/Rendering.h"
+//#include "../../Rendering/Core/Rendering.h"
+#include "../../Rendering/Core/RenderingResourcesUpdate.h"
 #include "MeshType.h"
 #include "../../Shader/Core/Shader.h"
 #include "Mesh.h"
+#include "../../Interface/DirectXDeviceInterface.h"
+#include "../../Rendering/Core/Buffer/ConstructBuffer.h"
 
 
-class CMeshManage :public CCoreMinimalObject, public IRenderingInterface
+class CMeshManage
+	: public CCoreMinimalObject
+	, public IRenderingInterface
+	, public ConstructBuffer::FConstructBuffer
 {
 public:
 	CMeshManage();
@@ -18,6 +24,7 @@ public:
 	virtual void Draw(float DeltaTime) override;
 	virtual void PostDraw(float DeltaTime) override;
 
+	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 public:
 	/// <summary>
 	/// 创建BoxMesh
@@ -83,7 +90,8 @@ private:
 
 
 	ComPtr<ID3D12DescriptorHeap> CBVHeap;					//常量描述堆
-	shared_ptr<FRenderingResourcesUpdate> objectConstants;	//常量缓冲区
+	shared_ptr<FRenderingResourcesUpdate> objectConstants;	//对象的常量缓冲区
+	shared_ptr<FRenderingResourcesUpdate> viewportConstants;	//viewport的常量缓冲区
 
 	ComPtr<ID3D12RootSignature> RootSignature;				//根签名
 
@@ -102,8 +110,6 @@ private:
 	UINT IndexSize;											//顶点的数量
 
 	XMFLOAT4X4 WorldMatrix;									//mvp变换矩阵
-	XMFLOAT4X4 ViewMatrix;
-	XMFLOAT4X4 ProjectMatrix;
 };
 //----------模板实现-----
 template<typename T>

@@ -56,7 +56,7 @@ void CSphereMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, cons
 	for (uint32_t i = 1; i <= InAxialSubdivision;i++)
 	{
 		uint32_t left_up = i + (InHeightSubdivision - 1) * InAxialSubdivision;uint32_t right_up = (i == InAxialSubdivision) ? left_up - InAxialSubdivision + 1 : left_up + 1;
-		InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);InRenderingData.IndexData.emplace_back(InRenderingData.VertexData.size()-1);
+		InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);InRenderingData.IndexData.emplace_back(InRenderingData.VertexData.size() - 1);
 	}
 }
 

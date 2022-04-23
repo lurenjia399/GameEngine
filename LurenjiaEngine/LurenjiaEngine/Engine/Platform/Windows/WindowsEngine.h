@@ -3,6 +3,8 @@
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
 
+
+class CWorld;
 class CDirectXRenderingEngine;
 class CWindowsEngine : public CEngine
 {
@@ -36,5 +38,6 @@ private:
 protected:
 	HWND MyWindowsHandle;		//Ö÷´°¿Ú¾ä±ú
 	CDirectXRenderingEngine* RenderingEngine;
+	CWorld* World;
 };
 #endif

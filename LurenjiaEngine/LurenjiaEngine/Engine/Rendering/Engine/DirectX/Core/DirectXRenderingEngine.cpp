@@ -19,6 +19,7 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
 	}
 	MeshManage = new CMeshManage();
+	MeshManage->ResetGuid("MeshManage");
 }
 
 int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters& InParameters)
@@ -86,7 +87,7 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 
 	//Draw other content
 	MeshManage->Draw(DeltaTime);	//将图形渲染命令添加到commandList中
-	MeshManage->PostDraw(DeltaTime);//设置图形的mvp矩阵
+	MeshManage->PostDraw(DeltaTime);
 
 	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
 	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier2);
@@ -124,6 +125,11 @@ int CDirectXRenderingEngine::PostExit()
 	FEngineRenderConfig::Destroy();
 	Engine_Log("Engine post Exit complete");
 	return 0;
+}
+
+void CDirectXRenderingEngine::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	MeshManage->UpdateCalculations(DeltaTime, ViewportInfo);
 }
 
 ComPtr<ID3D12Device> CDirectXRenderingEngine::GetD3dDevice() const
@@ -290,7 +296,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	* DXGI_USAGE_UNORDERED_ACCESS	无序访问
 	*/
 	SwapChainDesc.BufferUsage = DXGI_USAGE_RENDER_TARGET_OUTPUT;//被用作渲染到目标
-	SwapChainDesc.OutputWindow = MianWindowsHandle;				//指定windows句柄
+	SwapChainDesc.OutputWindow = MainWindowsHandle;				//指定windows句柄
 	SwapChainDesc.Windowed = true;								//以窗口运行
 	SwapChainDesc.SwapEffect = DXGI_SWAP_EFFECT::DXGI_SWAP_EFFECT_FLIP_DISCARD;//将旧的交换链丢弃
 	SwapChainDesc.Flags = DXGI_SWAP_CHAIN_FLAG::DXGI_SWAP_CHAIN_FLAG_ALLOW_MODE_SWITCH;//自由切换窗口

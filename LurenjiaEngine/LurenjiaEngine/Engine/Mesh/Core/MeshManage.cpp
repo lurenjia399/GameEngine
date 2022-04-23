@@ -2,11 +2,13 @@
 #include "../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
 #include "ObjectTransformation.h"
 #include "../../Config/EngineRenderConfig.h"
+#include "../../Rendering/Core/Buffer/ConstructBuffer.h"
 #include "../BoxMesh.h"
 #include "../PlaneMesh.h"
 #include "../CylinderMesh.h"
 #include "../CustomMesh.h"
 #include "../SphereMesh.h"
+#include "../../Math/EngineMath.h"
 
 CMeshManage::CMeshManage()
 	: VertexSizeInBytes(0)
@@ -14,22 +16,18 @@ CMeshManage::CMeshManage()
 	, IndexSizeInBytes(0)
 	, IndexFormat(DXGI_FORMAT_R16_UINT)
 	, IndexSize(0)
-	, WorldMatrix(FObjectTransformation::IdentityMatrix4x4())
-	, ViewMatrix(FObjectTransformation::IdentityMatrix4x4())
-	, ProjectMatrix(FObjectTransformation::IdentityMatrix4x4())
+	, WorldMatrix(EngineMath::IdentityMatrix4x4())
 {
 }
 
 void CMeshManage::Init()
 {
-	float AspectRatio = static_cast<float>(FEngineRenderConfig::GetRenderConfig()->ScreenWidth) / FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
-	XMMATRIX Project = XMMatrixPerspectiveFovLH(0.25f * XM_PI, AspectRatio, 1.0f, 1000.f);
-	XMStoreFloat4x4(&ProjectMatrix, Project);
+	
 }
 
 void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
-//----------常量缓冲区的创建开始-----
+//----------object常量缓冲区的创建开始-----
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
 	{
@@ -53,16 +51,32 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 	CBVDesc.BufferLocation = objadd;
 	CBVDesc.SizeInBytes = objectConstants->GetConstantBufferByteSize();
 	D3dDevice->CreateConstantBufferView(&CBVDesc, CBVHeap->GetCPUDescriptorHandleForHeapStart());
-//----------常量缓冲区的创建结束-----
+//----------object常量缓冲区的创建结束-----
+	//viewport常量缓冲区的构建
+	viewportConstants = make_shared<FRenderingResourcesUpdate>();
+	viewportConstants->Init(D3dDevice.Get(), sizeof(FObjectTransformation), 1);
+	D3D12_GPU_VIRTUAL_ADDRESS viewportobjadd = viewportConstants.get()->GetBuffer()->GetGPUVirtualAddress();
+	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc = {};
+	CBVDesc.BufferLocation = viewportobjadd;
+	CBVDesc.SizeInBytes = viewportConstants->GetConstantBufferByteSize();
+	D3dDevice->CreateConstantBufferView(&CBVDesc, CBVHeap->GetCPUDescriptorHandleForHeapStart());
+
 //----------根签名的创建开始-----
 		//创建根签名
-	CD3DX12_ROOT_PARAMETER RootParam[1];
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCBV;
-	DescriptorRangeCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
-	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeCBV);
+	CD3DX12_ROOT_PARAMETER RootParam[2];
+	//对象的的descriptorRange
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV;
+	DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
+
+	//viewport的descriptorRange
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV;
+	DescriptorRangeViewportCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
+
+	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeObjCBV);
+	RootParam[1].InitAsDescriptorTable(1, &DescriptorRangeViewportCBV);
 
 	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-		1, RootParam, 0, nullptr,
+		2, RootParam, 0, nullptr,
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 	);
 	ComPtr<ID3DBlob> SerializeRootSignature;
@@ -198,15 +212,20 @@ void CMeshManage::Draw(float DeltaTime)
 
 void CMeshManage::PostDraw(float DeltaTime)
 {
+	
+}
+
+void CMeshManage::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
 	XMUINT3 MeshPos = XMUINT3(4.0f, 4.0f, 4.0f);
 	XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
 	XMVECTOR ViewTarget = XMVectorZero();
 	XMVECTOR ViewUp = XMVectorSet(0, 1.0f, 0, 0);
 	XMMATRIX ViewLookAt = XMMatrixLookAtLH(Pos, ViewTarget, ViewUp);
-	XMStoreFloat4x4(&ViewMatrix, ViewLookAt);						//创建摄像机矩阵,,,行优先（表示存储的顺序）
+	//XMStoreFloat4x4(ViewportInfo.ViewMatrix, ViewLookAt);						//创建摄像机矩阵,,,行优先（表示存储的顺序）
 
 	XMMATRIX MatrixWorld = XMLoadFloat4x4(&WorldMatrix);
-	XMMATRIX MatrixProject = XMLoadFloat4x4(&ProjectMatrix);
+	XMMATRIX MatrixProject = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
 	//XMMATRIX mvp = XMMatrixTranspose(MatrixProject) * (XMMatrixTranspose(ViewLookAt) * XMMatrixTranspose(MatrixWorld));列优先是左乘
 	XMMATRIX mvp = MatrixWorld * ViewLookAt * MatrixProject;		//行优先所以是右乘
 
