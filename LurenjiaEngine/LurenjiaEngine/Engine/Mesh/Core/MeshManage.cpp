@@ -9,6 +9,7 @@
 #include "../CustomMesh.h"
 #include "../SphereMesh.h"
 #include "../../Math/EngineMath.h"
+#include "../../Core/Viewport/ViewportTransformation.h"
 
 CMeshManage::CMeshManage()
 	: VertexSizeInBytes(0)
@@ -17,6 +18,11 @@ CMeshManage::CMeshManage()
 	, IndexFormat(DXGI_FORMAT_R16_UINT)
 	, IndexSize(0)
 	, WorldMatrix(EngineMath::IdentityMatrix4x4())
+	//	1,0,0,0,
+	//	0,1,0,0,
+	//	0,0,1,-5,
+	//	0,0,0,1
+	//)
 {
 }
 
@@ -37,7 +43,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 	//创建常量缓冲区描述堆
 	D3D12_DESCRIPTOR_HEAP_DESC CBVDescriptorHeapDesc = {};
 	CBVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	CBVDescriptorHeapDesc.NumDescriptors = 1;
+	CBVDescriptorHeapDesc.NumDescriptors = 2;
 	CBVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
 	CBVDescriptorHeapDesc.NodeMask = 0;
 	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&CBVDescriptorHeapDesc, IID_PPV_ARGS(&CBVHeap)));
@@ -53,13 +59,17 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 	D3dDevice->CreateConstantBufferView(&CBVDesc, CBVHeap->GetCPUDescriptorHandleForHeapStart());
 //----------object常量缓冲区的创建结束-----
 	//viewport常量缓冲区的构建
-	viewportConstants = make_shared<FRenderingResourcesUpdate>();
-	viewportConstants->Init(D3dDevice.Get(), sizeof(FObjectTransformation), 1);
+	viewportConstants = make_shared<FRenderingResourcesUpdate>();	//创建常量缓冲区资源
+	viewportConstants->Init(D3dDevice.Get(), sizeof(FViewportTransformation), 1);
 	D3D12_GPU_VIRTUAL_ADDRESS viewportobjadd = viewportConstants.get()->GetBuffer()->GetGPUVirtualAddress();
-	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc = {};
-	CBVDesc.BufferLocation = viewportobjadd;
-	CBVDesc.SizeInBytes = viewportConstants->GetConstantBufferByteSize();
-	D3dDevice->CreateConstantBufferView(&CBVDesc, CBVHeap->GetCPUDescriptorHandleForHeapStart());
+	int descriptorIndex = 1;
+	UINT HandleSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(CBVHeap->GetCPUDescriptorHandleForHeapStart());
+	Handle.Offset(1, HandleSize);
+	D3D12_CONSTANT_BUFFER_VIEW_DESC viewportDesc = {};
+	viewportDesc.BufferLocation = viewportobjadd;
+	viewportDesc.SizeInBytes = viewportConstants->GetConstantBufferByteSize();
+	D3dDevice->CreateConstantBufferView(&viewportDesc, Handle);
 
 //----------根签名的创建开始-----
 		//创建根签名
@@ -142,7 +152,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 	//配置光栅化状态
 	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
-	//GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
+	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
 	//GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
 	//采样掩码
 	GPSDesc.SampleMask = UINT_MAX;
@@ -197,6 +207,12 @@ void CMeshManage::Draw(float DeltaTime)
 	//向命令列表中 添加将描述符表添加到根签名中 命令
 	GraphicsCommandList->SetGraphicsRootDescriptorTable(0, CBVHeap->GetGPUDescriptorHandleForHeapStart());
 
+	int descriptorIndex = 1;
+	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(CBVHeap->GetGPUDescriptorHandleForHeapStart());
+	Handle.Offset(1, HandleSize);
+	GraphicsCommandList->SetGraphicsRootDescriptorTable(1, Handle);
+
 	/// <summary>
 	/// [in] UINT IndexCountPerInstance,每个绘制实例中索引的数量
 	///	[in] UINT InstanceCount,		需要绘制的实例数量
@@ -217,23 +233,19 @@ void CMeshManage::PostDraw(float DeltaTime)
 
 void CMeshManage::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	XMUINT3 MeshPos = XMUINT3(4.0f, 4.0f, 4.0f);
-	XMVECTOR Pos = XMVectorSet(MeshPos.x, MeshPos.y, MeshPos.z, 1.0f);
-	XMVECTOR ViewTarget = XMVectorZero();
-	XMVECTOR ViewUp = XMVectorSet(0, 1.0f, 0, 0);
-	XMMATRIX ViewLookAt = XMMatrixLookAtLH(Pos, ViewTarget, ViewUp);
-	//XMStoreFloat4x4(ViewportInfo.ViewMatrix, ViewLookAt);						//创建摄像机矩阵,,,行优先（表示存储的顺序）
-
 	XMMATRIX MatrixWorld = XMLoadFloat4x4(&WorldMatrix);
-	XMMATRIX MatrixProject = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
-	//XMMATRIX mvp = XMMatrixTranspose(MatrixProject) * (XMMatrixTranspose(ViewLookAt) * XMMatrixTranspose(MatrixWorld));列优先是左乘
-	XMMATRIX mvp = MatrixWorld * ViewLookAt * MatrixProject;		//行优先所以是右乘
 
+	//object常量缓冲区传入模型变换矩阵
 	FObjectTransformation ObjectTransformation;
-	XMStoreFloat4x4(&ObjectTransformation.World, mvp);				//行优先所表示的矩阵，正是理解的那种
-	//XMStoreFloat4x4(&ObjectTransformation.World, XMMatrixTranspose(mvp));//如果是列优先，需要转置成行优先
-
+	XMStoreFloat4x4(&ObjectTransformation.World, MatrixWorld);
 	objectConstants->Update(0, &ObjectTransformation);
+	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵
+	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
+	XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
+	XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix;//切记需要转置，，，主列的矩阵无法乘主行的矩阵
+	FViewportTransformation ViewportTransformation;
+	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, ViewProjection);//注意constBuffer中读取矩阵是按照列读取的
+	viewportConstants->Update(0, &ViewportTransformation);
 }
 
 CMesh* CMeshManage::CreateBoxMesh(string InName, const float& Inheight, const float& Inwidth, const float& Indepth)

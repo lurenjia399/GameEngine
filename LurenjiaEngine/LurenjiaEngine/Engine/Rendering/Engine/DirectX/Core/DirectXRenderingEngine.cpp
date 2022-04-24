@@ -43,10 +43,10 @@ int CDirectXRenderingEngine::PostInit()
 {
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr));
 	//构建mesh
-	//CMesh* BoxMesh = MeshManage->CreateBoxMesh("BoxMesh", 2, 4, 2);		//box 高度，宽度，深度
+	//CMesh* BoxMesh = MeshManage->CreateBoxMesh("BoxMesh", 10, 10, 10);		//box 高度，宽度，深度
 	//CMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 1, 20, 20);//半径，轴分割度，高度分割度
-	//CMesh* CylinderMesh = MeshManage->CreateCylinderMesh("CylinderMesh", 2, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
-	CPlaneMesh* PlaneMesh = dynamic_cast<CPlaneMesh*>(MeshManage->CreatePlaneMesh("PlaneMesh", 2, 2, 10, 10)) ;//高度，宽度，高度细分，宽度细分
+	CMesh* CylinderMesh = MeshManage->CreateCylinderMesh("CylinderMesh", 2, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
+	//CPlaneMesh* PlaneMesh = dynamic_cast<CPlaneMesh*>(MeshManage->CreatePlaneMesh("PlaneMesh", 2, 2, 10, 10)) ;//高度，宽度，高度细分，宽度细分
 	string path = "../LurenjiaEngine/ObjModels/maya.obj";
 	//CMesh* CustomMesh = MeshManage->CreateCustomMesh("CustomMesh", path);
 

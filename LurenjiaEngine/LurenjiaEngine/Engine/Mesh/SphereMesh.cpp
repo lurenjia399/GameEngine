@@ -17,7 +17,7 @@ void CSphereMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, cons
 	float verticalAngle = XM_PI / InHeightSubdivision;
 
 	//创建顶点
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::BlueViolet)));//北极点
+	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::Red)));//北极点
 	for (uint32_t j = 1; j <= InHeightSubdivision;j++)
 	{
 		float vertical = j * verticalAngle;

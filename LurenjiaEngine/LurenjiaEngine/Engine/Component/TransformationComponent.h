@@ -18,6 +18,7 @@ public:
 
 	void CorrectionVector(fvector_3d& InV3);
 	void GetCorrectionPosition(fvector_3d& InV3);
+	void UpdateCameraInfo();
 private:
 	XMFLOAT3 Position;
 

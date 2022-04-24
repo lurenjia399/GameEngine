@@ -19,7 +19,8 @@ struct MeshVertexOut
 MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 {
     MeshVertexOut MV_out;
-    MV_out.Position = mul(WorldMatrix, float4(mv.Position, 1.0f));
+    float4x4 mvp = mul(ViewProjectionMatrix, WorldMatrix);
+    MV_out.Position = mul(mvp, float4(mv.Position, 1.0f));
     MV_out.Color = mv.Color;
     return MV_out;
 }
