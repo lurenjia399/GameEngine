@@ -3,7 +3,7 @@
 #include "Input/InputType.h"
 
 DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureKeyboardInforDelegate, void, const FInputKey&);
-DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureOnMouseDelegate, void, int, int);
+DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureOnMouseDelegate, void, int, int, string);
 
 class CInputComponent : public CComponent
 {
@@ -24,7 +24,7 @@ public:
 	virtual void BeginInit() override;
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void OnMouseButtonDown(int X, int Y);
-	virtual void OnMouseButtonUp(int X, int Y);
-	virtual void OnMouseMove(int X, int Y);
+	void OnMouseButtonDown(int X, int Y, string buttonType);
+	void OnMouseButtonUp(int X, int Y, string buttonType);
+	void OnMouseMove(int X, int Y, string buttonType);
 };

@@ -9,7 +9,7 @@ CTransformationComponent::CTransformationComponent()
 {
 }
 
-void CTransformationComponent::CorrectionVector(fvector_3d& InV3)
+void CTransformationComponent::NormalizeTransformationVector()
 {
 	XMVECTOR Right = XMLoadFloat3(&RightVector);
 	XMVECTOR Up = XMLoadFloat3(&UpVector);
@@ -24,19 +24,6 @@ void CTransformationComponent::CorrectionVector(fvector_3d& InV3)
 	XMStoreFloat3(&UpVector, Up);
 	XMStoreFloat3(&ForwardVector, Forward);
 
-}
-
-void CTransformationComponent::GetCorrectionPosition(fvector_3d& InV3)
-{
-	XMVECTOR Right = XMLoadFloat3(&RightVector);
-	XMVECTOR Up = XMLoadFloat3(&UpVector);
-	XMVECTOR Forward = XMLoadFloat3(&ForwardVector);
-
-	XMVECTOR NewPosition = XMLoadFloat3(&Position);
-
-	InV3.x = XMVectorGetX(XMVector3Dot(Right, NewPosition));
-	InV3.y = XMVectorGetX(XMVector3Dot(Up, NewPosition));
-	InV3.z = XMVectorGetX(XMVector3Dot(Forward, NewPosition));
 }
 
 void CTransformationComponent::UpdateCameraInfo()

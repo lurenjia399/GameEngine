@@ -29,6 +29,18 @@ void CInputComponent::Tick(float DeltaTime)
 		{
 			InputKey.KeyName = "D";
 		}
+		else if (GetAsyncKeyState('E') & 0x8000)
+		{
+			InputKey.KeyName = "E";
+		}
+		else if (GetAsyncKeyState('Q') & 0x8000)
+		{
+			InputKey.KeyName = "Q";
+		}
+		else if (GetAsyncKeyState('F') & 0x8000)
+		{
+			InputKey.KeyName = "F";
+		}
 		else {
 			return;
 		}
@@ -36,26 +48,26 @@ void CInputComponent::Tick(float DeltaTime)
 	}
 }
 
-void CInputComponent::OnMouseButtonDown(int X, int Y)
+void CInputComponent::OnMouseButtonDown(int X, int Y, string buttonType)
 {
 	if (OnMouseButtonDownDelegate.IsBound())
 	{
-		OnMouseButtonDownDelegate.Execute(X, Y);
+		OnMouseButtonDownDelegate.Execute(X, Y, buttonType);
 	}
 }
 
-void CInputComponent::OnMouseButtonUp(int X, int Y)
+void CInputComponent::OnMouseButtonUp(int X, int Y, string buttonType)
 {
 	if (OnMouseButtonUpDelegate.IsBound())
 	{
-		OnMouseButtonUpDelegate.Execute(X, Y);
+		OnMouseButtonUpDelegate.Execute(X, Y, buttonType);
 	}
 }
 
-void CInputComponent::OnMouseMove(int X, int Y)
+void CInputComponent::OnMouseMove(int X, int Y, string buttonType)
 {
 	if (OnMouseMoveDelegate.IsBound())
 	{
-		OnMouseMoveDelegate.Execute(X, Y);
+		OnMouseMoveDelegate.Execute(X, Y, buttonType);
 	}
 }
