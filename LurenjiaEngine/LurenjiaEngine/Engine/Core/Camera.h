@@ -3,7 +3,7 @@
 #include "CoreObject/CoreMinimalObject.h"
 #include "../Interface/DirectXDeviceInterface.h"
 
-
+enum ECameraType;
 struct FInputKey;
 class CTransformationComponent;
 class CInputComponent;
@@ -36,7 +36,7 @@ private:
 	void RotateAroundPitchAxis(float InRotateDegrees);
 
 	void BulidViewMatrix(float DeltaTime);
-	void FocusMeshUpdateViewMatrix();
+	void FocusMeshUpdateCameraInfo(float InValue);
 private:
 	CVARIABLE()
 	CTransformationComponent* TransformationComponent;
@@ -54,4 +54,5 @@ private:
 	float Radius;			//球面半径
 	float horizontalAngle;	//水平角
 	float verticalAngle;	//竖直角
+	ECameraType CameraType;	//暂时的摄像机模式
 };

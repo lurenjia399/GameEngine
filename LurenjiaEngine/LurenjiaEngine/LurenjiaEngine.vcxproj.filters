@@ -240,6 +240,9 @@
     <ClCompile Include="Engine\Core\Viewport\ViewportTransformation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Core\CameraType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -525,6 +528,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Viewport\ViewportTransformation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\CameraType.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

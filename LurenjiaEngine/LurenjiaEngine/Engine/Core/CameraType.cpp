@@ -1,0 +1,1 @@
+#include "CameraType.h"

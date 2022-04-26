@@ -37,9 +37,13 @@ void CInputComponent::Tick(float DeltaTime)
 		{
 			InputKey.KeyName = "Q";
 		}
+		else if (GetAsyncKeyState('R') & 0x8000)
+		{
+			InputKey.KeyName = "R";			//暂时 进入旋转模型模式
+		}
 		else if (GetAsyncKeyState('F') & 0x8000)
 		{
-			InputKey.KeyName = "F";
+			InputKey.KeyName = "F";			//暂时 退出旋转模型模式
 		}
 		else {
 			return;
