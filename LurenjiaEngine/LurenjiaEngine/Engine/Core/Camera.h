@@ -26,6 +26,7 @@ private:
 	void OnMouseButtonDown(int X, int Y, string buttonType);
 	void OnMouseButtonUp(int X, int Y, string buttonType);
 	void OnMouseMove(int X, int Y, string buttonType);
+	void OnMouseWheel(int X, int Y, float InValue);
 
 	void MoveForward(float InValue);
 	void MoveRight(float InValue);
@@ -43,7 +44,7 @@ private:
 	CVARIABLE()
 	CInputComponent* InputComponent;
 private:
-	POINT LastMousePosition;
+	POINT LastMousePosition = {};
 	bool bRightMouseDown = false;
 	bool bLeftMouseDown = false;
 	bool bFoucsMode = false;

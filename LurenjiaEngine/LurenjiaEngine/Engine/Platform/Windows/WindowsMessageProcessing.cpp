@@ -24,6 +24,9 @@ LRESULT CALLBACK EngineWindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 	case WM_MOUSEMOVE:
 		MouseMoveDelegate.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), "RandL");
 		return 0;
+	case WM_MOUSEWHEEL:
+		MouseWheelDelegate.Broadcast(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam), (short)HIWORD(wParam));
+		return 0;
 		
 	}
 	//交给windows自己处理完成

@@ -22,6 +22,7 @@ void CCamera::BeginInit()
 	InputComponent->OnMouseButtonDownDelegate.Bind(this, &CCamera::OnMouseButtonDown);
 	InputComponent->OnMouseButtonUpDelegate.Bind(this, &CCamera::OnMouseButtonUp);
 	InputComponent->OnMouseMoveDelegate.Bind(this, &CCamera::OnMouseMove);
+	InputComponent->OnMouseWheelDelegate.Bind(this, &CCamera::OnMouseWheel);
 }
 
 void CCamera::Tick(float DeltaTime)
@@ -31,8 +32,9 @@ void CCamera::Tick(float DeltaTime)
 
 void CCamera::BulidViewMatrix(float DeltaTime)
 {
-	if (CameraType == ECameraType::ObservationObject && bLeftMouseDown)
+	if (CameraType == ECameraType::ObservationObject )//&& bLeftMouseDown)
 	{
+		
 		XMFLOAT3 MeshPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
 		XMFLOAT3 cameraForward = {};
 		XMFLOAT3 cameraPosition = {};
@@ -49,11 +51,33 @@ void CCamera::BulidViewMatrix(float DeltaTime)
 		//归一化摄像机三向量
 		XMVECTOR forward = XMLoadFloat3(&cameraForward);
 		forward = XMVector3Normalize(forward);
+
+		int per = floor(verticalAngle / XM_PI);
 		XMFLOAT3 WordUpfloat3 = XMFLOAT3(0, 0, 1);
+		if (verticalAngle > 0)
+		{
+			if (per % 2 == 1)
+			{
+				WordUpfloat3.z = -1;
+			}
+		}
+		else if (verticalAngle < 0)
+		{
+			if (per % 2 == 0)
+			{
+				WordUpfloat3.z = -1;
+			}
+		}
 		XMVECTOR WordUp = XMLoadFloat3(&WordUpfloat3);
 		XMVECTOR right = XMVector3Cross(WordUp, forward);
 		right = XMVector3Normalize(right);
+		if (verticalAngle <= 0.000001)
+		{
+			XMFLOAT3 Right = XMFLOAT3(1, 0, 0);
+			right = XMLoadFloat3(&Right);
+		}
 		WordUp = XMVector3Cross(forward, right);
+
 
 		XMMATRIX rotateMatrix =
 		{
@@ -71,6 +95,7 @@ void CCamera::BulidViewMatrix(float DeltaTime)
 			0.f, 0.f, 0.f, 1.f
 		};
 		XMStoreFloat4x4(&ViewMatrix, rotateMatrix * TranslateMatrix);
+
 	}
 	else if (CameraType == ECameraType::CameraRoaming)
 	{
@@ -105,7 +130,6 @@ void CCamera::FocusMeshUpdateCameraInfo(float InValue)
 	if (InValue > 0)	//进入观察模式
 	{
 		CameraType = ECameraType::ObservationObject;
-
 		XMFLOAT3 cameraForward = TransformationComponent->GetForward();
 		XMFLOAT3 cameraPosition = TransformationComponent->GetPosition();
 
@@ -117,19 +141,20 @@ void CCamera::FocusMeshUpdateCameraInfo(float InValue)
 		cameraForward.y = MeshPosition.y - cameraPosition.y;
 		cameraForward.z = MeshPosition.z - cameraPosition.z;
 
-		//归一化摄像机三向量
 		XMFLOAT3 WordUpfloat3 = XMFLOAT3(0, 0, 1);
+		XMVECTOR forward = XMLoadFloat3(&cameraForward);
+		forward = XMVector3Normalize(forward);
 		XMVECTOR WordUp = XMLoadFloat3(&WordUpfloat3);
-		XMVECTOR right = XMVector3Cross(WordUp, XMLoadFloat3(&cameraForward));
+		XMVECTOR right = XMVector3Cross(WordUp, forward);
 		right = XMVector3Normalize(right);
-		XMVECTOR forward = XMVector3Cross(right, WordUp);
+		WordUp = XMVector3Cross(forward, right);
 
 		XMMATRIX rotateMatrix =
 		{
 			right.m128_f32[0],	WordUp.m128_f32[0], forward.m128_f32[0],	0.f,
 			right.m128_f32[1],	WordUp.m128_f32[1], forward.m128_f32[1],	0.f,
 			right.m128_f32[2],	WordUp.m128_f32[2], forward.m128_f32[2],	0.f,
-			0,				0,			0,					1.f
+			0,					0,					0,						1.f
 		};
 		rotateMatrix = XMMatrixTranspose(rotateMatrix);
 		XMMATRIX TranslateMatrix =
@@ -143,11 +168,25 @@ void CCamera::FocusMeshUpdateCameraInfo(float InValue)
 	}
 	else {	//恢复漫游模式
 		CameraType = ECameraType::CameraRoaming;
+
+		Radius = 20.0f;
+		verticalAngle = XM_PI / 2;
+		horizontalAngle = XM_PI / 2;
 	}
 }
 
 void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
 {
+	if (InputKey.KeyName == "R")
+	{
+		FocusMeshUpdateCameraInfo(1.0f);
+	}
+	if (InputKey.KeyName == "F")
+	{
+		FocusMeshUpdateCameraInfo(-1.0f);
+	}
+	if (CameraType == ECameraType::ObservationObject) return;
+
 	if (InputKey.KeyName == "W")
 	{
 		MoveForward(1.f);
@@ -171,14 +210,6 @@ void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
 	if (InputKey.KeyName == "Q")
 	{
 		MoveUp(-1.0f);
-	}
-	if (InputKey.KeyName == "R")
-	{
-		FocusMeshUpdateCameraInfo(1.0f);
-	}
-	if (InputKey.KeyName == "F")
-	{
-		FocusMeshUpdateCameraInfo(-1.0f);
 	}
 }
 
@@ -217,12 +248,24 @@ void CCamera::OnMouseMove(int X, int Y, string buttonType)
 	}
 	else if (bLeftMouseDown)
 	{
-		//horizontalAngle += xRadians * MouseSensitity;
-		verticalAngle += yRadians * MouseSensitity;
+		horizontalAngle += xRadians * MouseSensitity;
+		verticalAngle += -yRadians * MouseSensitity;
+
+		verticalAngle = math_libray::Clamp(verticalAngle, 0.f, XM_2PI);
+		horizontalAngle = math_libray::Clamp(horizontalAngle, 0.f, XM_2PI);
 	}
 
 	LastMousePosition.x = X;
 	LastMousePosition.y = Y;
+}
+
+void CCamera::OnMouseWheel(int X, int Y, float InValue)
+{
+	if (CameraType == ECameraType::ObservationObject)
+	{
+		Radius += InValue / 100.f;
+		Radius = math_libray::Clamp(Radius, 5.0f, 40.f);
+	}
 }
 
 void CCamera::MoveForward(float InValue)
