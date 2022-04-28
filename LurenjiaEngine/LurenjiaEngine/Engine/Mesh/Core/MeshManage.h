@@ -7,6 +7,7 @@
 #include "Mesh.h"
 #include "../../Interface/DirectXDeviceInterface.h"
 #include "../../Rendering/Core/Buffer/ConstructBuffer.h"
+#include "../../Rendering/Core/DirectX/RenderingPipeline/RenderingPipeline.h"
 
 
 class CMeshManage
@@ -93,23 +94,13 @@ private:
 	shared_ptr<FRenderingResourcesUpdate> objectConstants;	//对象的常量缓冲区
 	shared_ptr<FRenderingResourcesUpdate> viewportConstants;	//viewport的常量缓冲区
 
+	FRenderingPipeline RenderingPipeline;					//渲染管线对象
+
 	ComPtr<ID3D12RootSignature> RootSignature;				//根签名
 
-	FShader VertexShader;									//顶点着色器
-	FShader PixelShader;									//片元着色器
-	vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;		//着色器输入布局
 
-	ComPtr<ID3D12PipelineState> PSO;						//管线状态
 
-private:
-	UINT VertexSizeInBytes;									//顶点资源所占内存大小
-	UINT VertexStrideInBytes;								//顶点步径大小（也就是每个顶点数据大小）
-	UINT IndexSizeInBytes;									//索引资源所占内存大小
-private:
-	DXGI_FORMAT IndexFormat;								//索引资源格式
-	UINT IndexSize;											//顶点的数量
 
-	XMFLOAT4X4 WorldMatrix;									//mvp变换矩阵
 };
 //----------模板实现-----
 template<typename T>
@@ -127,7 +118,7 @@ T* CMeshManage::CreateMesh(const S& name, ParamTypes&&... Params)
 	mesh->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
 	mesh->BeginInit();
 
-	BuildMesh(&MeshRenderingData);
+	RenderingPipeline->BuildMesh(mesh, &MeshRenderingData);
 
 	mesh->Init();
 	return mesh;

@@ -11,6 +11,10 @@ struct FVertex
 	XMFLOAT3 Normal;
 };
 
+/// <summary>
+/// 模型渲染所需要的数据
+/// 也就是顶点数组和索引数组
+/// </summary>
 struct FMeshRenderingData
 {
 	vector<FVertex> VertexData;

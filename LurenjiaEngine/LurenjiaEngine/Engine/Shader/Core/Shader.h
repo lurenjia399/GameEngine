@@ -11,8 +11,8 @@ public:
 	/// <param name="InEntryFunName">着色器文件的入口函数</param>
 	/// <param name="InShadersVersion">着色器版本</param>
 	void BuildShader(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion);
-	LPVOID GetBufferPointer(void);
-	SIZE_T GetBufferSize(void);
+	LPVOID GetBufferPointer(void) const;
+	SIZE_T GetBufferSize(void) const;
 private:
 	ComPtr<ID3DBlob> ShaderCode;
 };

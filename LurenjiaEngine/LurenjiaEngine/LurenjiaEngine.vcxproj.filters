@@ -243,6 +243,24 @@
     <ClCompile Include="Engine\Core\CameraType.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -531,6 +549,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\CameraType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

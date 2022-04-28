@@ -33,6 +33,11 @@ void CMeshManage::Init()
 
 void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
+	RenderingPipeline.BuildPipeline();
+
+	return;
+
+
 //----------object常量缓冲区的创建开始-----
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
@@ -136,44 +141,7 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 		return;
 	}
 //----------pos 流水线绑定开始-----
-	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc = {};
-	memset(&GPSDesc, 0, sizeof(D3D12_GRAPHICS_PIPELINE_STATE_DESC));
-	//绑定着色器输入布局
-	GPSDesc.InputLayout.pInputElementDescs = InputElementDesc.data();
-	GPSDesc.InputLayout.NumElements = (UINT)InputElementDesc.size();
-	//绑定根签名
-	GPSDesc.pRootSignature = RootSignature.Get();
-	//绑定顶点着色器
-	GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(VertexShader.GetBufferPointer());
-	GPSDesc.VS.BytecodeLength = VertexShader.GetBufferSize();
-	//绑定片元着色器
-	GPSDesc.PS.pShaderBytecode = PixelShader.GetBufferPointer();
-	GPSDesc.PS.BytecodeLength = PixelShader.GetBufferSize();
-	//配置光栅化状态
-	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
-	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
-	//GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
-	//采样掩码
-	GPSDesc.SampleMask = UINT_MAX;
-	//拓扑类型
-	GPSDesc.PrimitiveTopologyType = D3D12_PRIMITIVE_TOPOLOGY_TYPE_TRIANGLE;
-	//渲染目标数量
-	GPSDesc.NumRenderTargets = 1;
-	//混合状态
-	GPSDesc.BlendState = CD3DX12_BLEND_DESC(D3D12_DEFAULT);
-	//深度模板
-	GPSDesc.DepthStencilState = CD3DX12_DEPTH_STENCIL_DESC(D3D12_DEFAULT);
-	//采样数量
-	GPSDesc.SampleDesc.Count = GetEngine()->GetRenderingEngine()->GetDXGISampleCount();
-	//采样质量
-	GPSDesc.SampleDesc.Quality = GetEngine()->GetRenderingEngine()->GetDXGISampleQuality();
-	//rtv格式
-	GPSDesc.RTVFormats[0] = GetEngine()->GetRenderingEngine()->GetBackBufferFormat();
-	//dsv格式
-	GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
-	//创建管线状态
-	ANALYSIS_HRESULT(D3dDevice->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO)));
+	//迁移到了RenderingResourcesUpdate中
 //----------pos 流水线绑定结束-----
 }
 

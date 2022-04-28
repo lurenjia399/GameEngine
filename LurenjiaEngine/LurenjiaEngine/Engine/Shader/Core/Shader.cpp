@@ -26,13 +26,13 @@ void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunNam
     ANALYSIS_HRESULT(R);
 }
 
-LPVOID FShader::GetBufferPointer(void)
+LPVOID FShader::GetBufferPointer(void) const
 {
     assert(ShaderCode.Get() != nullptr);
     return ShaderCode->GetBufferPointer();
 }
 
-SIZE_T FShader::GetBufferSize(void)
+SIZE_T FShader::GetBufferSize(void) const
 {
     assert(ShaderCode.Get() != nullptr);
     return ShaderCode->GetBufferSize();

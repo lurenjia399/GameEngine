@@ -53,6 +53,12 @@
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Buffer\ConstructBuffer.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
     <ClCompile Include="Engine\Rendering\Core\RenderingResourcesUpdate.cpp" />
     <ClCompile Include="Engine\Rendering\Engine\Core\RenderingEngine.cpp" />
@@ -134,6 +140,12 @@
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
     <ClInclude Include="Engine\Rendering\Core\Buffer\ConstructBuffer.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
     <ClInclude Include="Engine\Rendering\Core\Rendering.h" />
     <ClInclude Include="Engine\Rendering\Core\RenderingResourcesUpdate.h" />
     <ClInclude Include="Engine\Rendering\DirectX12\d3dx12.h" />
