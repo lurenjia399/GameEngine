@@ -36,8 +36,6 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 	RenderingPipeline.BuildPipeline();
 
 	return;
-
-
 //----------object常量缓冲区的创建开始-----
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
@@ -45,27 +43,12 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 		Engine_Log_Error("FMesh::BuildMesh D3dDevice is nullptr");
 		return;
 	}
-	//创建常量缓冲区描述堆
-	D3D12_DESCRIPTOR_HEAP_DESC CBVDescriptorHeapDesc = {};
-	CBVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	CBVDescriptorHeapDesc.NumDescriptors = 2;
-	CBVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	CBVDescriptorHeapDesc.NodeMask = 0;
-	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&CBVDescriptorHeapDesc, IID_PPV_ARGS(&CBVHeap)));
 
-	//常量缓冲区的构建
-	objectConstants = make_shared<FRenderingResourcesUpdate>();
-	objectConstants->Init(D3dDevice.Get(), sizeof(FObjectTransformation), 1);
-
-	D3D12_GPU_VIRTUAL_ADDRESS objadd = objectConstants.get()->GetBuffer()->GetGPUVirtualAddress();
-	D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc = {};
-	CBVDesc.BufferLocation = objadd;
-	CBVDesc.SizeInBytes = objectConstants->GetConstantBufferByteSize();
-	D3dDevice->CreateConstantBufferView(&CBVDesc, CBVHeap->GetCPUDescriptorHandleForHeapStart());
 //----------object常量缓冲区的创建结束-----
 	//viewport常量缓冲区的构建
 	viewportConstants = make_shared<FRenderingResourcesUpdate>();	//创建常量缓冲区资源
 	viewportConstants->Init(D3dDevice.Get(), sizeof(FViewportTransformation), 1);
+
 	D3D12_GPU_VIRTUAL_ADDRESS viewportobjadd = viewportConstants.get()->GetBuffer()->GetGPUVirtualAddress();
 	int descriptorIndex = 1;
 	UINT HandleSize = D3dDevice->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -77,69 +60,11 @@ void CMeshManage::BuildMesh(const FMeshRenderingData* InRenderingData)
 	D3dDevice->CreateConstantBufferView(&viewportDesc, Handle);
 
 //----------根签名的创建开始-----
-		//创建根签名
-	CD3DX12_ROOT_PARAMETER RootParam[2];
-	//对象的的descriptorRange
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV;
-	DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
-
-	//viewport的descriptorRange
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV;
-	DescriptorRangeViewportCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
-
-	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeObjCBV);
-	RootParam[1].InitAsDescriptorTable(1, &DescriptorRangeViewportCBV);
-
-	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-		2, RootParam, 0, nullptr,
-		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
-	);
-	ComPtr<ID3DBlob> SerializeRootSignature;
-	ComPtr<ID3DBlob> errorSerializeRootSignature;
-	D3D12SerializeRootSignature(
-		&RootSignatureDesc,
-		D3D_ROOT_SIGNATURE_VERSION_1,
-		SerializeRootSignature.GetAddressOf(),
-		errorSerializeRootSignature.GetAddressOf());
-	if (errorSerializeRootSignature != nullptr)
-	{
-		Engine_Log_Error("root signature error = %s", (char*)errorSerializeRootSignature->GetBufferPointer());
-		return;
-	}
-	ANALYSIS_HRESULT(D3dDevice->CreateRootSignature(
-		0,
-		SerializeRootSignature->GetBufferPointer(),
-		SerializeRootSignature->GetBufferSize(),
-		IID_PPV_ARGS(&RootSignature)));
 //----------根签名的创建结束-----
 //----------shader的创建开始-----
-	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/Hello.hlsl", "VertexShaderMain", "vs_5_0");
-	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/Hello.hlsl", "PixelShaderMain", "ps_5_0");
-	InputElementDesc = {
-		{"POSITION",0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
-	};
+	
 //----------shader的创建结束-----
-	VertexStrideInBytes = sizeof(FVertex);
-	IndexSize = InRenderingData->IndexData.size();
-	//获取顶点数据和索引的大小
-	VertexSizeInBytes = InRenderingData->VertexData.size() * VertexStrideInBytes;
-	IndexSizeInBytes = IndexSize * sizeof(uint16_t);
-
-	//在cpu中创建资源缓冲区（目前这段没有用）
-	ANALYSIS_HRESULT(D3DCreateBlob(VertexSizeInBytes, &CPUVertexBufferPtr));
-	memcpy(CPUVertexBufferPtr->GetBufferPointer(), InRenderingData->VertexData.data(), VertexSizeInBytes);
-	ANALYSIS_HRESULT(D3DCreateBlob(IndexSizeInBytes, &CPUIndexBufferPtr));
-	memcpy(CPUIndexBufferPtr->GetBufferPointer(), InRenderingData->IndexData.data(), IndexSizeInBytes);
-
-	//在gpu中创建资源缓冲区
-	GPUVertexBufferPtr = ConstructGPUDefaultBuffer(VertexBufferTempPtr, InRenderingData->VertexData.data(), VertexSizeInBytes);
-	GPUIndexBufferPtr = ConstructGPUDefaultBuffer(IndexBufferTempPtr, InRenderingData->IndexData.data(), IndexSizeInBytes);
-	if (GPUIndexBufferPtr == nullptr || GPUVertexBufferPtr == nullptr)
-	{
-		Engine_Log_Error("FMesh::BuildMesh discover error");
-		return;
-	}
+	
 //----------pos 流水线绑定开始-----
 	//迁移到了RenderingResourcesUpdate中
 //----------pos 流水线绑定结束-----

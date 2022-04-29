@@ -90,7 +90,7 @@ private:
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
 
 
-	ComPtr<ID3D12DescriptorHeap> CBVHeap;					//常量描述堆
+
 	shared_ptr<FRenderingResourcesUpdate> objectConstants;	//对象的常量缓冲区
 	shared_ptr<FRenderingResourcesUpdate> viewportConstants;	//viewport的常量缓冲区
 

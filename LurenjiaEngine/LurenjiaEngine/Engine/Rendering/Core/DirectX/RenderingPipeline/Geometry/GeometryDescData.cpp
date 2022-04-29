@@ -1,6 +1,6 @@
-#include "RenderingData.h"
+#include "GeometryDescData.h"
 
-FRenderingData::FRenderingData()
+FGeometryDescData::FGeometryDescData()
 	: IndexSize(0)
 	, VertexSize(0)
 	, IndexoffsetPosition(0)
@@ -10,12 +10,12 @@ FRenderingData::FRenderingData()
 {
 }
 
-UINT FRenderingData::GetVertexSizeInBytes() const
+UINT FGeometryDescData::GetVertexSizeInBytes() const
 {
 	return VertexSize * VertexTypeSize;
 }
 
-UINT FRenderingData::GetIndexSizeInBytes() const
+UINT FGeometryDescData::GetIndexSizeInBytes() const
 {
 	return IndexSize * IndexTypeSize;
 }

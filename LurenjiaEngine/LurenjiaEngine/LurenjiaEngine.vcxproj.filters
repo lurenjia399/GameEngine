@@ -252,13 +252,16 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.cpp">
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryDescData.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -560,13 +563,16 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\RenderingData.h">
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryDescData.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

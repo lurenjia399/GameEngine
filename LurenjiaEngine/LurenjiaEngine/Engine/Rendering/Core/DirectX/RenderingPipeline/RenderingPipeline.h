@@ -16,12 +16,11 @@ public:
 	void BuildPipeline();
 
 protected:
-protected:
 	FShader VertexShader;									//顶点着色器
 	FShader PixelShader;									//片元着色器
 	vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;		//着色器输入布局
 
-	FGeometryMap GeometryMap;
-	FDirectXRootSignature DirectXRootSignature;
-	FDirectXPiepelineState DirectXPiepelineState;
+	FGeometryMap GeometryMap;								//模型容器
+	FDirectXRootSignature DirectXRootSignature;				//根签名
+	FDirectXPiepelineState DirectXPiepelineState;			//pso
 };

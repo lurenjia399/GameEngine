@@ -5,10 +5,10 @@
 #include "../../../RenderingResourcesUpdate.h"
 #include "../../../../../Mesh/Core/Mesh.h"
 
-struct FRenderingData : public IDirectXDeviceInterface_struct
+struct FGeometryDescData : public IDirectXDeviceInterface_struct
 {
 public:
-	FRenderingData();
+	FGeometryDescData();
 
 public:
 	UINT GetVertexSizeInBytes() const;						//获取顶点数据大小

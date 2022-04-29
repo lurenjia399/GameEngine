@@ -40,7 +40,6 @@ void FDirectXPiepelineState::BindRasterizerState()
 
 void FDirectXPiepelineState::Build()
 {
-	ResetGPSDesc();
 	//采样掩码
 	GPSDesc.SampleMask = UINT_MAX;
 	//拓扑类型
