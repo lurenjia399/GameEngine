@@ -12,8 +12,12 @@ class FRenderingPipeline : public IDirectXDeviceInterface
 public:
 	FRenderingPipeline();
 
-	void BuildMesh(CMesh* InMesh, const FMeshRenderingData* InRenderingData);
+	void BuildMesh(CMesh* InMesh, const FMeshRenderingData& InRenderingData);
 	void BuildPipeline();
+	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void PreDraw(float DeltaTime);
+	void Draw(float DeltaTime);
+	void PostDraw(float DeltaTime);
 
 protected:
 	FShader VertexShader;									//¶¥µã×ÅÉ«Æ÷

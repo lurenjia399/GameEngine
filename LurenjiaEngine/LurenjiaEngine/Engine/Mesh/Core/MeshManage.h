@@ -19,7 +19,7 @@ public:
 	CMeshManage();
 	virtual void Init() override;
 
-	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
+	virtual void BuildMesh();
 
 	virtual void PreDraw(float DeltaTime) override;
 	virtual void Draw(float DeltaTime) override;
@@ -77,26 +77,7 @@ private:
 	template<typename T, typename S, typename ...ParamTypes>
 	T* CreateMesh(const S& name, ParamTypes&&... Params);
 private:
-	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
-	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
-private:
-	ComPtr<ID3DBlob> CPUVertexBufferPtr;					//CPU存放mesh的顶点缓冲区
-	ComPtr<ID3DBlob> CPUIndexBufferPtr;						//CPU存放mesh的索引缓冲区
-
-	ComPtr<ID3D12Resource> GPUVertexBufferPtr;				//GPUmesh的顶点缓冲区
-	ComPtr<ID3D12Resource> GPUIndexBufferPtr;				//GPUmesh的索引缓冲区
-
-	ComPtr<ID3D12Resource> VertexBufferTempPtr;				//临时mesh的顶点缓冲区
-	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
-
-
-
-	shared_ptr<FRenderingResourcesUpdate> objectConstants;	//对象的常量缓冲区
-	shared_ptr<FRenderingResourcesUpdate> viewportConstants;	//viewport的常量缓冲区
-
 	FRenderingPipeline RenderingPipeline;					//渲染管线对象
-
-	ComPtr<ID3D12RootSignature> RootSignature;				//根签名
 
 
 
@@ -118,7 +99,7 @@ T* CMeshManage::CreateMesh(const S& name, ParamTypes&&... Params)
 	mesh->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
 	mesh->BeginInit();
 
-	RenderingPipeline->BuildMesh(mesh, &MeshRenderingData);
+	RenderingPipeline.BuildMesh(mesh, MeshRenderingData);
 
 	mesh->Init();
 	return mesh;

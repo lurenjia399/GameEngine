@@ -7,6 +7,7 @@ FGeometryDescData::FGeometryDescData()
 	, VertexoffsetPostion(0)
 	, IndexTypeSize(sizeof(uint16_t))
 	, VertexTypeSize(sizeof(FVertex))
+	, WorldMatrix(EngineMath::IdentityMatrix4x4())
 {
 }
 

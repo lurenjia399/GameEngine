@@ -15,3 +15,10 @@ void FDirectXDescriptorHeap::BuildDescriptorHeap(const UINT& InHeapCount)
 	CBVDescriptorHeapDesc.NodeMask = 0;
 	ANALYSIS_HRESULT(GetD3dDevice()->CreateDescriptorHeap(&CBVDescriptorHeapDesc, IID_PPV_ARGS(&CBVHeap)));
 }
+
+void FDirectXDescriptorHeap::PreDraw(float DeltaTime)
+{
+	//ÏòÃüÁîÁÐ±íÖÐ Ìí¼ÓcbvÃèÊö·û¶Ñ ÃüÁî
+	ID3D12DescriptorHeap* DescriptorHeap[] = { CBVHeap.Get() };
+	GetGraphicsCommandList()->SetDescriptorHeaps(_countof(DescriptorHeap), DescriptorHeap);
+}

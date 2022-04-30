@@ -17,6 +17,8 @@ struct FVertex
 /// </summary>
 struct FMeshRenderingData
 {
+	UINT GetVertexSizeInBytes() const;						//获取顶点数据大小
+	UINT GetIndexSizeInBytes() const;						//获取索引数据大小
 	vector<FVertex> VertexData;
 	vector<uint16_t> IndexData;
 };

@@ -4,7 +4,7 @@ FRenderingPipeline::FRenderingPipeline()
 {
 }
 
-void FRenderingPipeline::BuildMesh(CMesh* InMesh, const FMeshRenderingData* InRenderingData)
+void FRenderingPipeline::BuildMesh(CMesh* InMesh, const FMeshRenderingData& InRenderingData)
 {
 	GeometryMap.BuildMeshDescData(InMesh, InRenderingData);
 }
@@ -12,7 +12,6 @@ void FRenderingPipeline::BuildMesh(CMesh* InMesh, const FMeshRenderingData* InRe
 void FRenderingPipeline::BuildPipeline()
 {
 	DirectXPiepelineState.ResetGPSDesc();
-	
 	//绑定根签名
 	if (!DirectXRootSignature.Build())
 	{
@@ -33,11 +32,33 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildMeshBuffer();
 	//创建描述符堆（用于存放常量缓冲描述符）
 	GeometryMap.BuildDescriptorHeap();
-
-
-	//绑定光栅化状态
-	DirectXPiepelineState.BindRasterizerState();
-
-
+	//构建模型的常量缓冲区
+	GeometryMap.BuildObjectConstantBufferView();
+	//构建视口的常量缓冲区
+	GeometryMap.BuildViewportConstantBufferView();
+	
 	DirectXPiepelineState.Build();
+}
+
+void FRenderingPipeline::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	GeometryMap.UpdateCalculations(DeltaTime, ViewportInfo);
+}
+
+void FRenderingPipeline::PreDraw(float DeltaTime)
+{
+	DirectXPiepelineState.PreDraw(DeltaTime);
+	
+}
+
+void FRenderingPipeline::Draw(float DeltaTime)
+{
+	GeometryMap.PreDraw(DeltaTime);
+	DirectXRootSignature.PreDraw(DeltaTime);
+	GeometryMap.Draw(DeltaTime);
+}
+
+void FRenderingPipeline::PostDraw(float DeltaTime)
+{
+	GeometryMap.PostDraw(DeltaTime);
 }

@@ -24,22 +24,20 @@ void FDirectXPiepelineState::BindRootSignature(ID3D12RootSignature* RootSignatur
 
 void FDirectXPiepelineState::BindShader(const FShader* VertexShader, const FShader* PixelShader)
 {
-	GPSDesc.VS.pShaderBytecode = VertexShader->GetBufferPointer();
+	GPSDesc.VS.pShaderBytecode = reinterpret_cast<BYTE*>(VertexShader->GetBufferPointer());
 	GPSDesc.VS.BytecodeLength = VertexShader->GetBufferSize();
 
 	GPSDesc.PS.pShaderBytecode = PixelShader->GetBufferPointer();
 	GPSDesc.PS.BytecodeLength = PixelShader->GetBufferSize();
 }
 
-void FDirectXPiepelineState::BindRasterizerState()
-{
-	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
-	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
-}
-
 void FDirectXPiepelineState::Build()
 {
+	//光栅化状态
+	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
+	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
+	//GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
+	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
 	//采样掩码
 	GPSDesc.SampleMask = UINT_MAX;
 	//拓扑类型
@@ -60,4 +58,17 @@ void FDirectXPiepelineState::Build()
 	GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
 	//创建管线状态
 	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO)));
+}
+
+void FDirectXPiepelineState::PreDraw(float DeltaTime)
+{
+	GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get());
+}
+
+void FDirectXPiepelineState::Draw(float DeltaTime)
+{
+}
+
+void FDirectXPiepelineState::PostDraw(float DeltaTime)
+{
 }

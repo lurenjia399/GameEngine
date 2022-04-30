@@ -26,12 +26,12 @@ public:
 	/// <param name="VertexShader">顶点着色器</param>
 	/// <param name="PixelShader">片元着色器</param>
 	void BindShader(const FShader* VertexShader, const FShader* PixelShader);
-	/// <summary>
-	/// 配置光栅化参数
-	/// </summary>
-	void BindRasterizerState();
 
 	void Build();
+
+	void PreDraw(float DeltaTime);
+	void Draw(float DeltaTime);
+	void PostDraw(float DeltaTime);
 private:
 	ComPtr<ID3D12PipelineState> PSO;						//管线状态
 	

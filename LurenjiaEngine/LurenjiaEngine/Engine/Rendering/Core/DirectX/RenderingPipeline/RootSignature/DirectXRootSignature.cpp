@@ -46,3 +46,17 @@ ID3D12RootSignature* FDirectXRootSignature::GetRootSignature()
 {
 	return RootSignature.Get();
 }
+
+void FDirectXRootSignature::PreDraw(float DeltaTime)
+{
+	//向命令列表中 添加根签名 命令
+	GetGraphicsCommandList()->SetGraphicsRootSignature(RootSignature.Get());
+}
+
+void FDirectXRootSignature::Draw(float DeltaTime)
+{
+}
+
+void FDirectXRootSignature::PostDraw(float DeltaTime)
+{
+}

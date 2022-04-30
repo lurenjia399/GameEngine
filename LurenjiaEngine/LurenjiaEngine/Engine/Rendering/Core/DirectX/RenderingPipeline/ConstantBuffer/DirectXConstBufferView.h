@@ -12,7 +12,8 @@ struct FDirectXConstBufferView : public IDirectXDeviceInterface_struct
 {
 public:
 	void CreateConstant(UINT BufferSize, UINT BufferCount);
-	void BuildConstantBuffer(CD3DX12_CPU_DESCRIPTOR_HANDLE Handle, UINT ConstantBufferCount);
+	void BuildConstantBuffer(CD3DX12_CPU_DESCRIPTOR_HANDLE InHandle, UINT ConstantBufferCount, UINT HandleOffset);
+	void Update(int Index, const void* InData);
 private:
 	shared_ptr<FRenderingResourcesUpdate> ConstantBufferView;	//对象的常量缓冲区
 };
