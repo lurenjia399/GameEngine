@@ -1,17 +1,17 @@
 #include "CustomMesh.h"
 #include "../Core/CoreObject/CoreMinimalObject.h"
 
-void CCustomMesh::Init()
+void ACustomMesh::Init()
 {
 	Super::Init();
 }
 
-void CCustomMesh::Draw(float DeltaTime)
+void ACustomMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);
 }
 
-void CCustomMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const string& InPath)
+void ACustomMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const string& InPath)
 {
 	//¾Ö²¿´úÂë¿é
 	{
@@ -33,7 +33,7 @@ void CCustomMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, cons
 	}
 }
 
-bool CCustomMesh::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData)
+bool ACustomMesh::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData)
 {
 	if (InBufferSize > 0)
 	{
@@ -119,7 +119,7 @@ bool CCustomMesh::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMesh
 	return false;
 }
 
-void CCustomMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void ACustomMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 	Super::BuildMesh(InRenderingData);
 }

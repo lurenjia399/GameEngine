@@ -1,17 +1,17 @@
 #include "BoxMesh.h"
 #include "../Core/CoreObject/CoreMinimalObject.h"
 
-void CBoxMesh::Init()
+void ABoxMesh::Init()
 {
 	Super::Init();
 }
 
-void CBoxMesh::Draw(float DeltaTime)
+void ABoxMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);
 }
 
-void CBoxMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth)
+void ABoxMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth)
 {
 	//构建顶点数据
 	float cheight = Inheight / 2;
@@ -46,7 +46,7 @@ void CBoxMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const f
 	InRenderingData.IndexData.emplace_back(4);InRenderingData.IndexData.emplace_back(3);InRenderingData.IndexData.emplace_back(7);
 }
 
-void CBoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void ABoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 	Super::BuildMesh(InRenderingData);
 }

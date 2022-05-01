@@ -20,10 +20,10 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, 
 {
 	assert(InDevice);
 
-	ElementSize = InElemetSize;
+	ElementSize = GetConstantBufferByteSize(InElemetSize);
 
 	D3D12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
-	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(InElemetSize * InElemetCount);//GetConstantBufferByteSize()InElemetSize * InElemetCount
+	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(ElementSize * InElemetCount);//GetConstantBufferByteSize()InElemetSize * InElemetCount
 	ANALYSIS_HRESULT(InDevice->CreateCommittedResource(
 		&HeapPropertie,
 		D3D12_HEAP_FLAG_NONE,

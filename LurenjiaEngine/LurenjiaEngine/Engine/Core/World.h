@@ -2,14 +2,14 @@
 #include "../Core/Viewport/Viewport.h"
 #include "CoreObject/CoreMinimalObject.h"
 
-class CCamera;
+class ACamera;
 
 class CWorld : public CCoreMinimalObject
 {
 public:
 	CWorld();
-	CCamera* GetCamera()const { return camera; }
+	ACamera* GetCamera()const { return camera; }
 private:
 	CVARIABLE()
-	CCamera* camera;
+	ACamera* camera;
 };

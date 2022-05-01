@@ -1,29 +1,30 @@
 #include "Mesh.h"
 
-CMesh::CMesh()
-{
-}
-
-void CMesh::Init()
+AMesh::AMesh()
 {
 	
 }
 
-void CMesh::PreDraw(float DeltaTime)
+void AMesh::Init()
 {
 	
 }
 
-void CMesh::Draw(float DeltaTime)
+void AMesh::PreDraw(float DeltaTime)
 {
 	
 }
 
-void CMesh::PostDraw(float DeltaTime)
+void AMesh::Draw(float DeltaTime)
 {
 	
 }
 
-void CMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void AMesh::PostDraw(float DeltaTime)
+{
+	
+}
+
+void AMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 }

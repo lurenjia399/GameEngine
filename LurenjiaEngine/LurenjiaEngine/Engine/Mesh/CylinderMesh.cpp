@@ -1,16 +1,16 @@
 #include "CylinderMesh.h"
 
-void CCylinderMesh::Init()
+void ACylinderMesh::Init()
 {
 	Super::Init();
 }
 
-void CCylinderMesh::Draw(float DeltaTime)
+void ACylinderMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);
 }
 
-void CCylinderMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
+void ACylinderMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
 {
 	float horizontalAngle = XM_2PI / InAxialSubdivision;
 	float perHeight = InHeight / InHeightSubdivision;
@@ -96,7 +96,7 @@ void CCylinderMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, co
 	}
 }
 
-void CCylinderMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void ACylinderMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 	Super::BuildMesh(InRenderingData);
 }

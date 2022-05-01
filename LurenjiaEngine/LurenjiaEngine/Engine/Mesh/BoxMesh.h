@@ -1,9 +1,9 @@
 #pragma once
 #include "Core/Mesh.h"
 
-class CBoxMesh : public CMesh
+class ABoxMesh : public AMesh
 {
-	typedef CMesh Super;
+	typedef AMesh Super;
 public:
 
 	virtual void Init() override;

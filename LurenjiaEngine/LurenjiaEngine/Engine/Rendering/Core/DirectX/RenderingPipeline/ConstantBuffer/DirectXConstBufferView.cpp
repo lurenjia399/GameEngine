@@ -16,11 +16,11 @@ void FDirectXConstBufferView::BuildConstantBuffer(CD3DX12_CPU_DESCRIPTOR_HANDLE 
 	{
 		//每一帧都是起始地址
 		CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = InHandle;
-		D3D12_CONSTANT_BUFFER_VIEW_DESC viewportDesc = {};
-		viewportDesc.BufferLocation = ConstantBufferAddress + i * ConstantBufferView->GetConstantBufferByteSize();
-		viewportDesc.SizeInBytes = ConstantBufferView->GetConstantBufferByteSize();
+		D3D12_CONSTANT_BUFFER_VIEW_DESC CBVDesc = {};
+		CBVDesc.BufferLocation = ConstantBufferAddress + i * ConstantBufferView->GetConstantBufferByteSize();
+		CBVDesc.SizeInBytes = ConstantBufferView->GetConstantBufferByteSize();
 		Handle.Offset(i + HandleOffset, HandleSize);
-		GetD3dDevice()->CreateConstantBufferView(&viewportDesc, Handle);
+		GetD3dDevice()->CreateConstantBufferView(&CBVDesc, Handle);
 	}
 }
 

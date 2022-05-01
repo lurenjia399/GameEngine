@@ -12,8 +12,8 @@ struct FGeometry : public IDirectXDeviceInterface_struct
 	//friend void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	friend struct FGeometryMap;
 public:
-	bool isExitDescribeMeshRenderingData(CMesh* InKey);
-	void BuildMeshDescData(CMesh* InMesh, const FMeshRenderingData& MeshRenderData);
+	bool isExitDescribeMeshRenderingData(AMesh* InKey);
+	void BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& MeshRenderData);
 	void BuildMeshBuffer(const int& InIndex);
 	UINT GetDrawObjectNumber() const;
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
@@ -36,7 +36,7 @@ struct FGeometryMap : public IDirectXDeviceInterface_struct
 {
 public:
 	FGeometryMap();
-	void BuildMeshDescData(CMesh* InMesh, const FMeshRenderingData& InRenderingData);
+	void BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& InRenderingData);
 	void BuildMeshBuffer();
 	void BuildDescriptorHeap();
 	void BuildObjectConstantBufferView();

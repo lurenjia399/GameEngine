@@ -2,16 +2,17 @@
 #include "../Core/Viewport/Viewport.h"
 #include "CoreObject/CoreMinimalObject.h"
 #include "../Interface/DirectXDeviceInterface.h"
+#include "../Actor/Core/Actor.h"
 
 enum ECameraType;
 struct FInputKey;
 class CTransformationComponent;
 class CInputComponent;
 
-class CCamera : public CCoreMinimalObject, public FViewport, public IDirectXDeviceInterface
+class ACamera : public AActor, public FViewport, public IDirectXDeviceInterface
 {
 public:
-	CCamera();
+	ACamera();
 public:
 	virtual void BeginInit() override;
 	virtual void Tick(float DeltaTime) override;
@@ -19,7 +20,6 @@ public:
 	
 public:
 	FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
-	FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
 private:
 	//代理的执行函数
 	void ExecuteKeyboard(const FInputKey& InputKey);
@@ -39,8 +39,6 @@ private:
 	void BulidViewMatrix(float DeltaTime);
 	void FocusMeshUpdateCameraInfo(float InValue);
 private:
-	CVARIABLE()
-	CTransformationComponent* TransformationComponent;
 	CVARIABLE()
 	CInputComponent* InputComponent;
 private:

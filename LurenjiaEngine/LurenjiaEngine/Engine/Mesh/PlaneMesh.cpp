@@ -1,17 +1,17 @@
 #include "PlaneMesh.h"
 #include "../Core/CoreObject/CoreMinimalObject.h"
 
-void CPlaneMesh::Init()
+void APlaneMesh::Init()
 {
 	Super::Init();
 }
 
-void CPlaneMesh::Draw(float DeltaTime)
+void APlaneMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);
 }
 
-void CPlaneMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
+void APlaneMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
 {
 	std::function<float(float, uint32_t)> getStep = [&](const float& InValue, const uint32_t& InSubValue) ->float
 	{
@@ -55,7 +55,7 @@ void CPlaneMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const
 	}
 }
 
-void CPlaneMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void APlaneMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 	Super::BuildMesh(InRenderingData);
 }

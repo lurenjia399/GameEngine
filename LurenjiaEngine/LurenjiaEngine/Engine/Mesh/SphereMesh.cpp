@@ -1,23 +1,23 @@
 #include "SphereMesh.h"
 #include "../Core/CoreObject/CoreMinimalObject.h"
 
-void CSphereMesh::Init()
+void ASphereMesh::Init()
 {
 	Super::Init();
 }
 
-void CSphereMesh::Draw(float DeltaTime)
+void ASphereMesh::Draw(float DeltaTime)
 {
 	Super::Draw(DeltaTime);
 }
 
-void CSphereMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
+void ASphereMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
 {
 	float horizontalAngle = XM_2PI / InAxialSubdivision;
 	float verticalAngle = XM_PI / InHeightSubdivision;
 
 	//创建顶点
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::Red)));//北极点
+	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::BlueViolet)));//北极点
 	for (uint32_t j = 1; j <= InHeightSubdivision;j++)
 	{
 		float vertical = j * verticalAngle;
@@ -60,7 +60,7 @@ void CSphereMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, cons
 	}
 }
 
-void CSphereMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
+void ASphereMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 	Super::BuildMesh(InRenderingData);
 }

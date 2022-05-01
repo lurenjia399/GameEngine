@@ -9,7 +9,7 @@ FGeometryMap::FGeometryMap()
 	Geometrys.emplace(0, FGeometry());
 }
 
-void FGeometryMap::BuildMeshDescData(CMesh* InMesh, const FMeshRenderingData& InRenderingData)
+void FGeometryMap::BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& InRenderingData)
 {
 	FGeometry& Geometry = Geometrys[0];
 	Geometry.BuildMeshDescData(InMesh, InRenderingData);
@@ -54,7 +54,37 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	{
 		for (UINT i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
 		{
-			XMMATRIX MatrixWorld = XMLoadFloat4x4(&temp.second.DescribeMeshRenderingData[i].WorldMatrix);
+			FGeometryDescData& data = temp.second.DescribeMeshRenderingData[i];
+			const XMFLOAT3& Position = data.Mesh->GetPosition();
+			const XMFLOAT3& Scale = data.Mesh->GetScale();
+			const XMFLOAT3& RightVector = data.Mesh->GetRight();
+			const XMFLOAT3& UpVector = data.Mesh->GetUp();
+			const XMFLOAT3& ForwardVector = data.Mesh->GetForward();
+
+			XMMATRIX scaleMatrix =
+			{
+				Scale.y,	0.0f,		0.0f,		0.0f,
+				0.0f,		Scale.z,	0.0f,		0.0f,
+				0.0f,		0.0f,		Scale.x,	0.0f,
+				0.0f,		0.0f,		0.0f,		1.0f
+			};
+
+			XMMATRIX rotateMatrix =
+			{
+				RightVector.x,	UpVector.x, ForwardVector.x,	0.f,
+				RightVector.y,	UpVector.y, ForwardVector.y,	0.f,
+				RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
+				0,				0,			0,					1.f
+			};
+			XMMATRIX TranslateMatrix =
+			{
+				1.f, 0.f, 0.f, Position.x,
+				0.f, 1.f, 0.f, Position.y,
+				0.f, 0.f, 1.f, Position.z,
+				0.f, 0.f, 0.f, 1.f
+			};
+			XMStoreFloat4x4(&data.WorldMatrix, XMMatrixTranspose(TranslateMatrix * rotateMatrix * scaleMatrix));
+			XMMATRIX MatrixWorld = XMLoadFloat4x4(&data.WorldMatrix);
 
 			//object常量缓冲区传入模型变换矩阵
 			FObjectTransformation ObjectTransformation;
@@ -67,7 +97,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 	XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
 	XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix;//切记需要转置，，，主列的矩阵无法乘主行的矩阵
 	FViewportTransformation ViewportTransformation;
-	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, ViewProjection);//注意constBuffer中读取矩阵是按照列读取的
+	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, ViewProjection);//注意shader读取constBuffer中数据是按照列读取的
 	ViewportConstantBufferView.Update(0, &ViewportTransformation);
 }
 
@@ -87,6 +117,14 @@ void FGeometryMap::PostDraw(float DeltaTime)
 {
 }
 
+void FGeometryMap::DrawViewport(float DeltaTime)
+{
+	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+	Handle.Offset(GetDrawObjectNumber(), HandleSize);
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, Handle);
+}
+
 void FGeometryMap::DrawMesh(float DeltaTime)
 {
 	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -99,7 +137,7 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 		{
 			CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 			
-			FGeometryDescData& data = tem.second.DescribeMeshRenderingData[0];
+			FGeometryDescData& data = tem.second.DescribeMeshRenderingData[i];
 			//向命令列表中 添加顶点缓冲数据 命令
 			GetGraphicsCommandList()->IASetVertexBuffers(0, 1, &VBV);
 			//向命令列表中 添加索引缓冲数据 命令
@@ -121,15 +159,7 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 	}
 }
 
-void FGeometryMap::DrawViewport(float DeltaTime)
-{
-	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
-	Handle.Offset(GetDrawObjectNumber(), HandleSize);
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, Handle);
-}
-
-bool FGeometry::isExitDescribeMeshRenderingData(CMesh* InKey)
+bool FGeometry::isExitDescribeMeshRenderingData(AMesh* InKey)
 {
 	for (FGeometryDescData& data : DescribeMeshRenderingData)
 	{
@@ -141,7 +171,7 @@ bool FGeometry::isExitDescribeMeshRenderingData(CMesh* InKey)
 	return false;
 }
 
-void FGeometry::BuildMeshDescData(CMesh* InMesh, const FMeshRenderingData& MeshRenderData)
+void FGeometry::BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& MeshRenderData)
 {
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{

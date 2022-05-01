@@ -3,10 +3,9 @@
 #include "../Component/InputComponent.h"
 #include "CameraType.h"
 
-CCamera::CCamera()
+ACamera::ACamera()
 {
 	InputComponent = CreateObject<CInputComponent>("InputComponent");
-	TransformationComponent = CreateObject<CTransformationComponent>("TransformationComponent");
 
 	Radius = 20.0f;
 	verticalAngle = XM_PI/2;
@@ -14,23 +13,23 @@ CCamera::CCamera()
 	CameraType = ECameraType::CameraRoaming;
 }
 
-void CCamera::BeginInit()
+void ACamera::BeginInit()
 {
 	ViewportInit();	//初始化vp矩阵
 
-	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &CCamera::ExecuteKeyboard);
-	InputComponent->OnMouseButtonDownDelegate.Bind(this, &CCamera::OnMouseButtonDown);
-	InputComponent->OnMouseButtonUpDelegate.Bind(this, &CCamera::OnMouseButtonUp);
-	InputComponent->OnMouseMoveDelegate.Bind(this, &CCamera::OnMouseMove);
-	InputComponent->OnMouseWheelDelegate.Bind(this, &CCamera::OnMouseWheel);
+	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &ACamera::ExecuteKeyboard);
+	InputComponent->OnMouseButtonDownDelegate.Bind(this, &ACamera::OnMouseButtonDown);
+	InputComponent->OnMouseButtonUpDelegate.Bind(this, &ACamera::OnMouseButtonUp);
+	InputComponent->OnMouseMoveDelegate.Bind(this, &ACamera::OnMouseMove);
+	InputComponent->OnMouseWheelDelegate.Bind(this, &ACamera::OnMouseWheel);
 }
 
-void CCamera::Tick(float DeltaTime)
+void ACamera::Tick(float DeltaTime)
 {
 	BulidViewMatrix(DeltaTime);
 }
 
-void CCamera::BulidViewMatrix(float DeltaTime)
+void ACamera::BulidViewMatrix(float DeltaTime)
 {
 	if (CameraType == ECameraType::ObservationObject )//&& bLeftMouseDown)
 	{
@@ -124,7 +123,7 @@ void CCamera::BulidViewMatrix(float DeltaTime)
 	}
 }
 
-void CCamera::FocusMeshUpdateCameraInfo(float InValue)
+void ACamera::FocusMeshUpdateCameraInfo(float InValue)
 {
 	XMFLOAT3 MeshPosition = XMFLOAT3(0.0f, 0.0f, 0.0f);
 	if (InValue > 0)	//进入观察模式
@@ -175,7 +174,7 @@ void CCamera::FocusMeshUpdateCameraInfo(float InValue)
 	}
 }
 
-void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
+void ACamera::ExecuteKeyboard(const FInputKey& InputKey)
 {
 	if (InputKey.KeyName == "R")
 	{
@@ -213,7 +212,7 @@ void CCamera::ExecuteKeyboard(const FInputKey& InputKey)
 	}
 }
 
-void CCamera::OnMouseButtonDown(int X, int Y, string buttonType)
+void ACamera::OnMouseButtonDown(int X, int Y, string buttonType)
 {
 	if (buttonType == "R" && CameraType != ECameraType::ObservationObject)
 	{
@@ -229,7 +228,7 @@ void CCamera::OnMouseButtonDown(int X, int Y, string buttonType)
 	SetCapture(GetMainWindowsHandle());
 }
 
-void CCamera::OnMouseButtonUp(int X, int Y, string buttonType)
+void ACamera::OnMouseButtonUp(int X, int Y, string buttonType)
 {
 	bRightMouseDown = false;
 	bLeftMouseDown = false;
@@ -237,7 +236,7 @@ void CCamera::OnMouseButtonUp(int X, int Y, string buttonType)
 	ReleaseCapture();
 }
 
-void CCamera::OnMouseMove(int X, int Y, string buttonType)
+void ACamera::OnMouseMove(int X, int Y, string buttonType)
 {
 	float xRadians = XMConvertToRadians((float)(X - LastMousePosition.x));
 	float yRadians = XMConvertToRadians((float)(Y - LastMousePosition.y));
@@ -259,7 +258,7 @@ void CCamera::OnMouseMove(int X, int Y, string buttonType)
 	LastMousePosition.y = Y;
 }
 
-void CCamera::OnMouseWheel(int X, int Y, float InValue)
+void ACamera::OnMouseWheel(int X, int Y, float InValue)
 {
 	if (CameraType == ECameraType::ObservationObject)
 	{
@@ -268,7 +267,7 @@ void CCamera::OnMouseWheel(int X, int Y, float InValue)
 	}
 }
 
-void CCamera::MoveForward(float InValue)
+void ACamera::MoveForward(float InValue)
 {
 	XMFLOAT3& newPos = TransformationComponent->GetPosition();
 	XMFLOAT3& forward = TransformationComponent->GetForward();
@@ -280,7 +279,7 @@ void CCamera::MoveForward(float InValue)
 	XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Forward, Position));//从Positon点沿着Forward方向移动AmountMovement距离
 }
 
-void CCamera::MoveRight(float InValue)
+void ACamera::MoveRight(float InValue)
 {
 	XMFLOAT3& newPos = TransformationComponent->GetPosition();
 	XMFLOAT3& right = TransformationComponent->GetRight();
@@ -291,7 +290,7 @@ void CCamera::MoveRight(float InValue)
 	XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Right, Position));//从Positon点沿着Forward方向移动AmountMovement距离
 }
 
-void CCamera::MoveUp(float InValue)
+void ACamera::MoveUp(float InValue)
 {
 	XMFLOAT3& newPos = TransformationComponent->GetPosition();
 	XMFLOAT3& up = TransformationComponent->GetUp();
@@ -302,7 +301,7 @@ void CCamera::MoveUp(float InValue)
 	XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Up, Position));//从Positon点沿着Forward方向移动AmountMovement距离
 }
 
-void CCamera::RotateAroundPitchAxis(float InRotateDegrees)
+void ACamera::RotateAroundPitchAxis(float InRotateDegrees)
 {
 	/*
 	* 注意：摄像机在旋转的时候，Pitch方向选转->>>>>始终围绕的摄像机的局部坐标系中的Pitch方向
@@ -320,7 +319,7 @@ void CCamera::RotateAroundPitchAxis(float InRotateDegrees)
 	XMStoreFloat3(&TransformationComponent->GetForward(), XMVector3TransformNormal(XMLoadFloat3(&roll), RotatePitchMatrix));
 }
 
-void CCamera::RotateAroundYawAxis(float InRotateDegrees)
+void ACamera::RotateAroundYawAxis(float InRotateDegrees)
 {
 	/*
 	* 注意：摄像机在旋转的时候，Yaw方向选转->>>>>始终围绕的世界坐标系中的Yaw方向

@@ -41,16 +41,20 @@ int CDirectXRenderingEngine::Init(FWinMainCommandParameters InParameters)
 
 int CDirectXRenderingEngine::PostInit()
 {
-	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr));
+	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr)); 
 	//构建mesh
-	CMesh* BoxMesh = MeshManage->CreateBoxMesh("BoxMesh", 10, 10, 10);		//box 高度，宽度，深度
-	//CMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 1, 20, 20);//半径，轴分割度，高度分割度
-	//CMesh* CylinderMesh = MeshManage->CreateCylinderMesh("CylinderMesh", 2, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
-	CPlaneMesh* PlaneMesh = dynamic_cast<CPlaneMesh*>(MeshManage->CreatePlaneMesh("PlaneMesh", 2, 2, 10, 10)) ;//高度，宽度，高度细分，宽度细分
+	AMesh* BoxMesh = MeshManage->CreateBoxMesh("BoxMesh", 10, 10, 10);		//box 高度，宽度，深度
+	AMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 1, 20, 20);//半径，轴分割度，高度分割度
+	AMesh* CylinderMesh = MeshManage->CreateCylinderMesh("CylinderMesh", 2, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
+	//APlaneMesh* PlaneMesh = dynamic_cast<APlaneMesh*>(MeshManage->CreatePlaneMesh("PlaneMesh", 2, 2, 10, 10)) ;//高度，宽度，高度细分，宽度细分
 	string path = "../LurenjiaEngine/ObjModels/maya.obj";
-	//CMesh* CustomMesh = MeshManage->CreateCustomMesh("CustomMesh", path);
+	//AMesh* CustomMesh = MeshManage->CreateCustomMesh("CustomMesh", path);
 
-	MeshManage->BuildMesh();
+	BoxMesh->SetScale(XMFLOAT3(0.5, 1, 1));
+	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
+	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
+
+	MeshManage->BuildPipeline();
 
 	GraphicsCommandList->Close();
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };

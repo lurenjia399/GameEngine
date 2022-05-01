@@ -1,9 +1,9 @@
 #pragma once
 #include "Core/Mesh.h"
 
-class CCylinderMesh : public CMesh
+class ACylinderMesh : public AMesh
 {
-	typedef  CMesh Super;
+	typedef  AMesh Super;
 public:
 	virtual void Init() override;
 	virtual void Draw(float DeltaTime) override;

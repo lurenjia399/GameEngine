@@ -15,7 +15,7 @@ public:
 	UINT GetIndexSizeInBytes() const;						//获取索引数据大小
 
 
-	CMesh* Mesh;											//代表的模型
+	AMesh* Mesh;											//代表的模型
 
 public:
 	DXGI_FORMAT IndexFormat;								//索引资源格式
@@ -28,6 +28,6 @@ public:
 	UINT VertexTypeSize;									//顶点类型size
 
 
-	XMFLOAT4X4 WorldMatrix;									//mvp变换矩阵
+	XMFLOAT4X4 WorldMatrix;									//m变换矩阵
 	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;	//需要更新的资源
 };

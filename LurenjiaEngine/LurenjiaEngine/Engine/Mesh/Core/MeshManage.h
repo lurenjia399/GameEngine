@@ -19,7 +19,7 @@ public:
 	CMeshManage();
 	virtual void Init() override;
 
-	virtual void BuildMesh();
+	virtual void BuildPipeline();
 
 	virtual void PreDraw(float DeltaTime) override;
 	virtual void Draw(float DeltaTime) override;
@@ -35,7 +35,7 @@ public:
 	/// <param name="Inwidth">宽度</param>
 	/// <param name="Indepth">深度</param>
 	/// <returns>Mesh基类</returns>
-	CMesh* CreateBoxMesh(string InName, const float& Inheight, const float& Inwidth, const float& Indepth);
+	AMesh* CreateBoxMesh(string InName, const float& Inheight, const float& Inwidth, const float& Indepth);
 	/// <summary>
 	/// 创建平面Mesh
 	/// </summary>
@@ -45,7 +45,7 @@ public:
 	/// <param name="InHeightSubdivide">高度细分</param>
 	/// <param name="InwidthSubdivide">宽度细分</param>
 	/// <returns>Mesh基类</returns>
-	CMesh* CreatePlaneMesh(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide);
+	AMesh* CreatePlaneMesh(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide);
 	/// <summary>
 	/// 创建柱形Mesh
 	/// </summary>
@@ -56,14 +56,14 @@ public:
 	/// <param name="InHeight">高度</param>
 	/// <param name="InHeightSubdivision">高度细分</param>
 	/// <returns>Mesh基类</returns>
-	CMesh* CreateCylinderMesh(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision);
+	AMesh* CreateCylinderMesh(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision);
 	/// <summary>
 	/// 创建OBJMesh
 	/// </summary>
 	/// <param name="InName">名称</param>
 	/// <param name="InPath">模型路径</param>
 	/// <returns>Mesh基类</returns>
-	CMesh* CreateCustomMesh(string InName, const string& InPath);
+	AMesh* CreateCustomMesh(string InName, const string& InPath);
 	/// <summary>
 	/// 创建球
 	/// </summary>
@@ -72,7 +72,7 @@ public:
 	/// <param name="InAxialSubdivision">轴向细分</param>
 	/// <param name="InHeightSubdivision">高度细分</param>
 	/// <returns>Mesh基类</returns>
-	CMesh* CreateSphereMesh(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
+	AMesh* CreateSphereMesh(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
 private:
 	template<typename T, typename S, typename ...ParamTypes>
 	T* CreateMesh(const S& name, ParamTypes&&... Params);
