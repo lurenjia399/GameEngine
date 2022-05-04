@@ -2,8 +2,13 @@
 #include "../../../../../Platform/Windows/WindowsEngine.h"
 #include "../../../../Engine/DirectX/Core/DirectXRenderingEngine.h"
 
+
 FDirectXPiepelineState::FDirectXPiepelineState()
 {
+	PSO.emplace(ERenderingPiepelineState::WIREFRAME, ComPtr<ID3D12PipelineState>());//线框pso
+	PSO.emplace(ERenderingPiepelineState::GRAYMODEL, ComPtr<ID3D12PipelineState>());//模型pso
+	CurrPipelineType = ERenderingPiepelineState::WIREFRAME;
+	GPSDesc = {};
 }
 
 void FDirectXPiepelineState::ResetGPSDesc()
@@ -57,18 +62,34 @@ void FDirectXPiepelineState::Build()
 	//dsv格式
 	GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
 	//创建管线状态
-	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO)));
+	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[static_cast<int>(ERenderingPiepelineState::WIREFRAME)])));
+	
+	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
+	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[static_cast<int>(ERenderingPiepelineState::GRAYMODEL)])));
 }
 
 void FDirectXPiepelineState::PreDraw(float DeltaTime)
 {
-	GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO.Get());
+	GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO[static_cast<int>(CurrPipelineType)].Get());
 }
 
 void FDirectXPiepelineState::Draw(float DeltaTime)
 {
+	CaptureKeyboardKeys();
 }
 
 void FDirectXPiepelineState::PostDraw(float DeltaTime)
 {
+}
+
+void FDirectXPiepelineState::CaptureKeyboardKeys()
+{
+	if ((GetAsyncKeyState('4') & 0x8000) && CurrPipelineType != ERenderingPiepelineState::WIREFRAME)
+	{
+		CurrPipelineType = ERenderingPiepelineState::WIREFRAME;
+	}
+	else if ((GetAsyncKeyState('5') & 0x8000) && CurrPipelineType != ERenderingPiepelineState::GRAYMODEL)
+	{
+		CurrPipelineType = ERenderingPiepelineState::GRAYMODEL;
+	}
 }

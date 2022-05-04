@@ -617,6 +617,9 @@
     <ClInclude Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPiepelineType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />
