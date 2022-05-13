@@ -78,7 +78,7 @@ void CWindowsEngine::Tick(float DeltaTime)
 		FViewportInfo ViewportInfo = {};
 		ViewportInfo.ViewMatrix = World->GetCamera()->ViewMatrix;
 		ViewportInfo.ProjectMatrix = World->GetCamera()->ProjectMatrix;
-		RenderingEngine->UpdateCalculations(DeltaTime, ViewportInfo);
+		RenderingEngine->UpdateConstantView(DeltaTime, ViewportInfo);
 		RenderingEngine->Tick(DeltaTime);
 	}
 }

@@ -14,7 +14,7 @@ public:
 
 	void BuildMesh(AMesh* InMesh, const FMeshRenderingData& InRenderingData);
 	void BuildPipeline();
-	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);

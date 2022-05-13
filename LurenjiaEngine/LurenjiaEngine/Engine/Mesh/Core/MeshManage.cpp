@@ -40,9 +40,9 @@ void CMeshManage::PostDraw(float DeltaTime)
 	RenderingPipeline.PostDraw(DeltaTime);
 }
 
-void CMeshManage::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+void CMeshManage::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	RenderingPipeline.UpdateCalculations(DeltaTime, ViewportInfo);
+	RenderingPipeline.UpdateConstantView(DeltaTime, ViewportInfo);
 }
 
 AMesh* CMeshManage::CreateBoxMesh(string InName, const float& Inheight, const float& Inwidth, const float& Indepth)

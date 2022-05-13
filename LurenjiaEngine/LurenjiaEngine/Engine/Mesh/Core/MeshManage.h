@@ -25,7 +25,7 @@ public:
 	virtual void Draw(float DeltaTime) override;
 	virtual void PostDraw(float DeltaTime) override;
 
-	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 public:
 	/// <summary>
 	/// ´´½¨BoxMesh

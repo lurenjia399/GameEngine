@@ -15,7 +15,7 @@ public:
 	virtual int PreExit() override;//重写父类的纯虚函数
 	virtual int Exit() override;//重写父类的纯虚函数
 	virtual int PostExit() override;//重写父类的纯虚函数
-	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo) override;//重写父类的虚函数
+	virtual void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo) override;//重写父类的虚函数
 
 public:
 	//获取引擎驱动

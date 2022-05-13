@@ -141,9 +141,9 @@ int CDirectXRenderingEngine::PostExit()
 	return 0;
 }
 
-void CDirectXRenderingEngine::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+void CDirectXRenderingEngine::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	MeshManage->UpdateCalculations(DeltaTime, ViewportInfo);
+	MeshManage->UpdateConstantView(DeltaTime, ViewportInfo);
 }
 
 ComPtr<ID3D12Device> CDirectXRenderingEngine::GetD3dDevice() const

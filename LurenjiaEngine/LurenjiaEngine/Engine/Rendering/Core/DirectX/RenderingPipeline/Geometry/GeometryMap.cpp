@@ -3,6 +3,7 @@
 #include "../../../../../Mesh/Core/ObjectTransformation.h"
 #include "../../../../../Core/Viewport/ViewportTransformation.h"
 #include "../../../../../Core/Viewport/ViewportInfo.h"
+#include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
 
 FGeometryMap::FGeometryMap()
 {
@@ -26,29 +27,46 @@ void FGeometryMap::BuildMeshBuffer()
 void FGeometryMap::BuildDescriptorHeap()
 {
 	//+1代表摄像机
-	DescriptorHeap.BuildDescriptorHeap(GetDrawObjectNumber() + 1);
+	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + 1);
 }
 
-void FGeometryMap::BuildObjectConstantBufferView()
+void FGeometryMap::BuildMeshConstantBufferView()
 {
-	ObjectConstantBufferView.CreateConstant(sizeof(FObjectTransformation), GetDrawObjectNumber());
+	MeshConstantBufferView.CreateConstant(sizeof(FObjectTransformation), GetDrawMeshObjectCount());
 	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
-	ObjectConstantBufferView.BuildConstantBuffer(Handle, GetDrawObjectNumber(), 0);
+	MeshConstantBufferView.BuildConstantBuffer(Handle, GetDrawMeshObjectCount(), 0);
 }
 
-UINT FGeometryMap::GetDrawObjectNumber()
+void FGeometryMap::BuildMaterialConstantBufferView()
 {
-	return Geometrys[0].GetDrawObjectNumber();
+	MeshConstantBufferView.CreateConstant(sizeof(CMaterialConstantBuffer), GetDrawMaterialObjectCount());
+	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
+	MeshConstantBufferView.BuildConstantBuffer(Handle, GetDrawMaterialObjectCount(), GetDrawMeshObjectCount());
 }
 
 void FGeometryMap::BuildViewportConstantBufferView()
 {
 	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 1);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
-	ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawObjectNumber());
+	ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawMeshObjectCount() + GetDrawMaterialObjectCount());
 }
 
-void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo)
+UINT FGeometryMap::GetDrawMeshObjectCount()
+{
+	return Geometrys[0].GetDrawMeshObjectCount();
+}
+
+UINT FGeometryMap::GetDrawMaterialObjectCount()
+{
+	UINT res = 0;
+	for (pair<int, FGeometry> Geometry : Geometrys)
+	{
+		res += Geometry.second.GetDrawMaterialObjectCount();
+	}
+	return res;
+}
+
+void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	for (pair<const int, FGeometry> temp : Geometrys)
 	{
@@ -89,7 +107,7 @@ void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& View
 			//object常量缓冲区传入模型变换矩阵
 			FObjectTransformation ObjectTransformation;
 			XMStoreFloat4x4(&ObjectTransformation.World, MatrixWorld);
-			ObjectConstantBufferView.Update(i, &ObjectTransformation);
+			MeshConstantBufferView.Update(i, &ObjectTransformation);
 		}
 	}
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵
@@ -121,7 +139,7 @@ void FGeometryMap::DrawViewport(float DeltaTime)
 {
 	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
-	Handle.Offset(GetDrawObjectNumber(), HandleSize);
+	Handle.Offset(GetDrawMeshObjectCount() + GetDrawMaterialObjectCount(), HandleSize);
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, Handle);
 }
 
@@ -135,7 +153,8 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 		
 		for (UINT i = 0; i < tem.second.DescribeMeshRenderingData.size(); ++i)
 		{
-			CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+			CD3DX12_GPU_DESCRIPTOR_HANDLE meshHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+			CD3DX12_GPU_DESCRIPTOR_HANDLE materialHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 			
 			FGeometryDescData& data = tem.second.DescribeMeshRenderingData[i];
 			//向命令列表中 添加顶点缓冲数据 命令
@@ -144,10 +163,16 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 			GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 			//向命令列表中 添加图元拓扑 命令
 			GetGraphicsCommandList()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
-			//偏移
-			Handle.Offset(i, HandleSize);
+			//模型偏移
+			meshHandle.Offset(i, HandleSize);
 			//向命令列表中 添加将描述符表添加到根签名中 命令
-			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, Handle);
+			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, meshHandle);
+
+			//材质偏移
+			materialHandle.Offset(GetDrawMeshObjectCount() + i, HandleSize);
+			//向命令列表中 添加将描述符表添加到根签名中 命令
+			GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(2, materialHandle);
+
 			// Draw Call !!!
 			GetGraphicsCommandList()->DrawIndexedInstanced(
 				data.IndexSize,				//绘制的实例所需的索引数量
@@ -208,9 +233,19 @@ void FGeometry::BuildMeshBuffer(const int& InIndex)
 	}
 }
 
-UINT FGeometry::GetDrawObjectNumber() const
+UINT FGeometry::GetDrawMeshObjectCount() const
 {
 	return DescribeMeshRenderingData.size();
+}
+
+UINT FGeometry::GetDrawMaterialObjectCount() const
+{
+	UINT res = 0;
+	for (FGeometryDescData GeometryDesc : DescribeMeshRenderingData)
+	{
+		res += GeometryDesc.Mesh->GetMaterialsCount();
+	}
+	return res;
 }
 
 D3D12_VERTEX_BUFFER_VIEW FGeometry::GetVertexBufferView()

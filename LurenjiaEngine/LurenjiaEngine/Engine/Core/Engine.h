@@ -30,5 +30,5 @@ public:
 	virtual int PreExit() = 0;
 	virtual int Exit() = 0;
 	virtual int PostExit() = 0;
-	virtual void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo) {}
+	virtual void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo) {}
 };

@@ -15,7 +15,8 @@ public:
 	bool isExitDescribeMeshRenderingData(AMesh* InKey);
 	void BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& MeshRenderData);
 	void BuildMeshBuffer(const int& InIndex);
-	UINT GetDrawObjectNumber() const;
+	UINT GetDrawMeshObjectCount() const;
+	UINT GetDrawMaterialObjectCount() const;
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
 private:
@@ -29,7 +30,7 @@ private:
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
 
 	FMeshRenderingData MeshRenderingData;					//渲染模型存放的顶点数据
-	vector<FGeometryDescData> DescribeMeshRenderingData;
+	vector<FGeometryDescData> DescribeMeshRenderingData;	//描述Getometry的数据
 };
 
 struct FGeometryMap : public IDirectXDeviceInterface_struct
@@ -39,10 +40,15 @@ public:
 	void BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& InRenderingData);
 	void BuildMeshBuffer();
 	void BuildDescriptorHeap();
-	void BuildObjectConstantBufferView();
-	UINT GetDrawObjectNumber();
+
+	void BuildMeshConstantBufferView();
+	void BuildMaterialConstantBufferView();
 	void BuildViewportConstantBufferView();
-	void UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
+
+	UINT GetDrawMeshObjectCount();
+	UINT GetDrawMaterialObjectCount();
+
+	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
@@ -52,6 +58,8 @@ public:
 private:
 	map<int, FGeometry> Geometrys;
 	FDirectXDescriptorHeap DescriptorHeap;
-	FDirectXConstBufferView ObjectConstantBufferView;
+
+	FDirectXConstBufferView MeshConstantBufferView;
 	FDirectXConstBufferView ViewportConstantBufferView;
+	FDirectXConstBufferView MaterialConstantBufferView;
 };

@@ -6,6 +6,7 @@
 #include "../../Actor/Core/Actor.h"
 
 
+class CMaterial;
 class AMesh :public AActor, public IRenderingInterface
 {
 public:
@@ -16,4 +17,11 @@ public:
 	virtual void PostDraw(float DeltaTime) override;
 
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
+
+public:
+	UINT GetMaterialsCount() const;
+private:
+	CVARIABLE()
+	vector<CMaterial*> Materials;
+
 };
