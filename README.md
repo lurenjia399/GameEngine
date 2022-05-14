@@ -51,6 +51,28 @@ resource descriptor：这些资源对gpu来说只是一堆数据，gpu无法分�
 
 descriptor heap：用来存储同一种资源描述符资源描述符，可以看成资源描述符数组
 
+# rootsignature
+
+rootsignature就和cpp中的函数声明类似，是一种约定的行为（cpu与gpu之间的约定如何解释内存中的二进制数据）。
+
+gpu再渲染的过程中，肯定需要各种各样的数据（纹理贴图，变换矩阵，法线，采样器信息等），而这些数据全是由cpu处理加载的，所以就需要有这么一种数据结构，用来描述这些数据。
+
+也就是可以把gpu渲染看成是gpu调用的一个大函数，这些数据就是cpu向函数传递的参数。所以再执行这个函数之前，cpu必须和gpu之间约定好这些参数的类型，放在哪个寄存器中，参数的结构是怎样，这些就是rootsignature的作用。
+
+> 需要注意的是rootsignature也需要序列化一下才能被gpu理解，也就是再创建rootsignture之前必须序列化。
+>
+> rootsignature中也可以直接设置rootdescriptor以及静态采样器，这些被认为是静态的，也就是每一个rootsignature绑定一个，如果需要改变就需要设置rootsignature。
+
+
+
+
+
+
+
+
+
+
+
 
 
 # 渲染流水线

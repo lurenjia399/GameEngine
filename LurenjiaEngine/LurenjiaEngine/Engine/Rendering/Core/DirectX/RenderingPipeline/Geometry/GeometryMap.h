@@ -43,10 +43,12 @@ public:
 
 	void BuildMeshConstantBufferView();
 	void BuildMaterialConstantBufferView();
+	void BuildLightConstantBufferView();
 	void BuildViewportConstantBufferView();
 
 	UINT GetDrawMeshObjectCount();
 	UINT GetDrawMaterialObjectCount();
+	UINT GetDrawLightObjectCount();
 
 	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void PreDraw(float DeltaTime);
@@ -54,6 +56,7 @@ public:
 	void PostDraw(float DeltaTime);
 public:
 	void DrawMesh(float DeltaTime);
+	void DrawLight(float DeltaTime);
 	void DrawViewport(float DeltaTime);
 private:
 	map<int, FGeometry> Geometrys;
@@ -62,4 +65,5 @@ private:
 	FDirectXConstBufferView MeshConstantBufferView;
 	FDirectXConstBufferView ViewportConstantBufferView;
 	FDirectXConstBufferView MaterialConstantBufferView;
+	FDirectXConstBufferView LightConstantBufferView;
 };
