@@ -19,7 +19,9 @@ public:
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 
 public:
+	void SetSubMaterials(const int& index, CMaterial* InMaterial);
 	UINT GetMaterialsCount() const;
+	const vector<CMaterial*>* GetMaterials() const;
 private:
 	CVARIABLE()
 	vector<CMaterial*> Materials;

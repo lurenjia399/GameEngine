@@ -7,7 +7,7 @@ FDirectXPiepelineState::FDirectXPiepelineState()
 {
 	PSO.emplace(ERenderingPiepelineState::WIREFRAME, ComPtr<ID3D12PipelineState>());//线框pso
 	PSO.emplace(ERenderingPiepelineState::GRAYMODEL, ComPtr<ID3D12PipelineState>());//模型pso
-	CurrPipelineType = ERenderingPiepelineState::WIREFRAME;
+	CurrPipelineType = ERenderingPiepelineState::GRAYMODEL;
 	GPSDesc = {};
 }
 
@@ -41,8 +41,8 @@ void FDirectXPiepelineState::Build()
 	//光栅化状态
 	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
 	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
-	//GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
-	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
+	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
+	//GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
 	//采样掩码
 	GPSDesc.SampleMask = UINT_MAX;
 	//拓扑类型

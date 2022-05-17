@@ -5,6 +5,7 @@
 #include "../../../../../Core/Viewport/ViewportInfo.h"
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
+#include "../../../../../Mesh/Core/Material/Material.h"
 
 FGeometryMap::FGeometryMap()
 {
@@ -40,9 +41,9 @@ void FGeometryMap::BuildMeshConstantBufferView()
 
 void FGeometryMap::BuildMaterialConstantBufferView()
 {
-	MeshConstantBufferView.CreateConstant(sizeof(CMaterialConstantBuffer), GetDrawMaterialObjectCount());
+	MaterialConstantBufferView.CreateConstant(sizeof(CMaterialConstantBuffer), GetDrawMaterialObjectCount());
 	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
-	MeshConstantBufferView.BuildConstantBuffer(Handle, GetDrawMaterialObjectCount(), GetDrawMeshObjectCount());
+	MaterialConstantBufferView.BuildConstantBuffer(Handle, GetDrawMaterialObjectCount(), GetDrawMeshObjectCount());
 }
 
 void FGeometryMap::BuildLightConstantBufferView()
@@ -81,6 +82,8 @@ UINT FGeometryMap::GetDrawLightObjectCount()
 
 void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
+
+
 	for (pair<const int, FGeometry> temp : Geometrys)
 	{
 		for (UINT i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
@@ -117,17 +120,30 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 			XMStoreFloat4x4(&data.WorldMatrix, XMMatrixTranspose(TranslateMatrix * rotateMatrix * scaleMatrix));
 			XMMATRIX MatrixWorld = XMLoadFloat4x4(&data.WorldMatrix);
 
-			//object常量缓冲区传入模型变换矩阵
+			//更新shader中的世界变换 常量缓冲区
 			FObjectTransformation ObjectTransformation;
 			XMStoreFloat4x4(&ObjectTransformation.World, MatrixWorld);
 			MeshConstantBufferView.Update(i, &ObjectTransformation);
+
+			//更新shader中的材质 常量缓冲区
+			CMaterialConstantBuffer MaterialTransformation;
+			{
+				if (CMaterial* InMaterial = data.Mesh->GetMaterials()->at(0))
+				{
+					MaterialTransformation.BaseColor = InMaterial->GetBaseColor();
+				}
+			}
+			MaterialConstantBufferView.Update(i, &MaterialTransformation);
+			
 		}
 	}
 
+	//更新shader中的灯光 常量缓冲区
 	FLightConstantBuffer lightTransformation;
-	//更新light的常量缓冲区数据
+	lightTransformation.LightDirection = XMFLOAT3(0.0f, 0.f, -1.f);
 	LightConstantBufferView.Update(0, &lightTransformation);
 
+	
 
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
@@ -148,6 +164,7 @@ void FGeometryMap::PreDraw(float DeltaTime)
 void FGeometryMap::Draw(float DeltaTime)
 {
 	DrawViewport(DeltaTime);
+	DrawLight(DeltaTime);
 	DrawMesh(DeltaTime);
 	
 }

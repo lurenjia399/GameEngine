@@ -42,9 +42,9 @@ public:
 	void BuildDescriptorHeap();
 
 	void BuildMeshConstantBufferView();
+	void BuildViewportConstantBufferView();
 	void BuildMaterialConstantBufferView();
 	void BuildLightConstantBufferView();
-	void BuildViewportConstantBufferView();
 
 	UINT GetDrawMeshObjectCount();
 	UINT GetDrawMaterialObjectCount();

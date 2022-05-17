@@ -31,7 +31,18 @@ void AMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 }
 
+
+void AMesh::SetSubMaterials(const int& index, CMaterial* InMaterial)
+{
+	Materials[index] = InMaterial;
+}
+
 UINT AMesh::GetMaterialsCount() const
 {
 	return Materials.size();
+}
+
+const vector<CMaterial*>* AMesh::GetMaterials() const
+{
+	return &Materials;
 }

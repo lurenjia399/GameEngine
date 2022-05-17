@@ -1,6 +1,7 @@
 #include "DirectXRenderingEngine.h"
 #include "../../../../Config/EngineRenderConfig.h"
 #include "../../../../Mesh/PlaneMesh.h"
+#include "../../../../Mesh/Core/Material/Material.h"
 
 
 CDirectXRenderingEngine::CDirectXRenderingEngine()
@@ -53,14 +54,20 @@ int CDirectXRenderingEngine::PostInit()
 	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
 	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
 
-	AMesh* PlaneMesh = MeshManage->CreatePlaneMesh("PlaneMesh", 4.f, 3.f, 20, 20);
+
+	if(AMesh* PlaneMesh = MeshManage->CreatePlaneMesh("PlaneMesh", 4.f, 3.f, 20, 20))
 	{
 		PlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, -2.f));
 		PlaneMesh->SetScale(XMFLOAT3(6.f, 6.f, 6.f));
 	}
-	AMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 2.f, 20, 20);
+	if(AMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 2.f, 20, 20))
 	{
 		SphereMesh->SetPosition(XMFLOAT3(0.f, 0.f, 2.f));
+		if(CMaterial* SphereMaterial = new CMaterial())
+		{
+			SphereMaterial->SetBaseColor(XMFLOAT4(0.4f, 0.6f, 0.6f, 1.0f));
+			SphereMesh->SetSubMaterials(0, SphereMaterial);
+		}
 	}
 
 	MeshManage->BuildPipeline();

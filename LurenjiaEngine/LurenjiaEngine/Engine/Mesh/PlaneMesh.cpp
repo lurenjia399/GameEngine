@@ -38,7 +38,7 @@ void APlaneMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const
 			float x = PivotPoint.x + i * widthStep;
 			float y = PivotPoint.y;
 			float z = PivotPoint.z - j * heightStep;
-			InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(x, y, z), XMFLOAT4(Colors::CadetBlue)));
+			InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(x, y, z), XMFLOAT4(Colors::White), XMFLOAT3(0.f, 1.f, 0.0f)));
 			
 		}
 	}

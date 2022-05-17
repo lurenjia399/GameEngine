@@ -42,6 +42,8 @@ void FRenderingResourcesUpdate::Update(int Index, const void* InData)
 
 UINT FRenderingResourcesUpdate::GetConstantBufferByteSize(UINT InTypeSize)
 {
+	//上取整
+	// (A + B - 1) / A
 	//这边规定取256的整数倍
 	return (InTypeSize + 255) & ~255;
 }

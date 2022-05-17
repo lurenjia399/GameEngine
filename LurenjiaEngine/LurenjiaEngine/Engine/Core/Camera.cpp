@@ -15,7 +15,7 @@ ACamera::ACamera()
 
 void ACamera::BeginInit()
 {
-	ViewportInit();	//初始化vp矩阵
+	ViewportInit();	//初始化p矩阵
 
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &ACamera::ExecuteKeyboard);
 	InputComponent->OnMouseButtonDownDelegate.Bind(this, &ACamera::OnMouseButtonDown);
