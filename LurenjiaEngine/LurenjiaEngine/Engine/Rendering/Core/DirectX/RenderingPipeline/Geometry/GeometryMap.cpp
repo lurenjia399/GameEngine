@@ -6,6 +6,8 @@
 #include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
 #include "../../../../../Mesh/Core/Material/Material.h"
+#include "../../../../../Core/Camera.h"
+#include "../../../../../Core/World.h"
 
 FGeometryMap::FGeometryMap()
 {
@@ -83,7 +85,6 @@ UINT FGeometryMap::GetDrawLightObjectCount()
 void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 
-
 	for (pair<const int, FGeometry> temp : Geometrys)
 	{
 		for (UINT i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
@@ -131,6 +132,8 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 				if (CMaterial* InMaterial = data.Mesh->GetMaterials()->at(0))
 				{
 					MaterialTransformation.BaseColor = InMaterial->GetBaseColor();
+					MaterialTransformation.MaterialType = static_cast<UINT32>(InMaterial->GetMaterialType());
+					MaterialTransformation.Roughness = InMaterial->GetRoughness();
 				}
 			}
 			MaterialConstantBufferView.Update(i, &MaterialTransformation);
@@ -140,10 +143,8 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 
 	//更新shader中的灯光 常量缓冲区
 	FLightConstantBuffer lightTransformation;
-	lightTransformation.LightDirection = XMFLOAT3(0.0f, 0.f, -1.f);
+	lightTransformation.LightDirection = XMFLOAT3(0.0f, -1.f, 0.f);
 	LightConstantBufferView.Update(0, &lightTransformation);
-
-	
 
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
@@ -151,6 +152,10 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 	XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix;//切记需要转置，，，主列的矩阵无法乘主行的矩阵
 	FViewportTransformation ViewportTransformation;
 	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, ViewProjection);//注意shader读取constBuffer中数据是按照列读取的
+	//获取场景中摄像机位置
+	ViewportTransformation.cameraPosition = ViewportInfo.cameraPosition;
+	//Engine_Log("cameraPisition [x] = %f, [y] = %f, [z] = %f", ViewportInfo.cameraPosition.x, ViewportInfo.cameraPosition.y, ViewportInfo.cameraPosition.z);
+	
 	ViewportConstantBufferView.Update(0, &ViewportTransformation);
 
 

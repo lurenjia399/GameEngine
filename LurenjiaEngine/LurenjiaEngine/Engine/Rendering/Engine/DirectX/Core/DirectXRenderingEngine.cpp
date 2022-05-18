@@ -4,6 +4,7 @@
 #include "../../../../Mesh/Core/Material/Material.h"
 
 
+enum class EMaterialType;
 CDirectXRenderingEngine::CDirectXRenderingEngine()
 	: ViewPortInfo({})
 	, ViewPortRect({})
@@ -59,14 +60,42 @@ int CDirectXRenderingEngine::PostInit()
 	{
 		PlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, -2.f));
 		PlaneMesh->SetScale(XMFLOAT3(6.f, 6.f, 6.f));
+		if (CMaterial* PlaneMaterial = new CMaterial())
+		{
+			PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+			PlaneMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			PlaneMesh->SetSubMaterials(0, PlaneMaterial);
+		}
 	}
 	if(AMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 2.f, 20, 20))
 	{
-		SphereMesh->SetPosition(XMFLOAT3(0.f, 0.f, 2.f));
+		SphereMesh->SetPosition(XMFLOAT3(0.f, -3.f, 2.f));
 		if(CMaterial* SphereMaterial = new CMaterial())
 		{
 			SphereMaterial->SetBaseColor(XMFLOAT4(0.4f, 0.6f, 0.6f, 1.0f));
+			SphereMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			SphereMesh->SetSubMaterials(0, SphereMaterial);
+		}
+	}
+	if (AMesh* SphereMesh2 = MeshManage->CreateSphereMesh("SphereMesh2", 2.f, 20, 20))
+	{
+		SphereMesh2->SetPosition(XMFLOAT3(0.f, 2.f, 2.f));
+		if (CMaterial* SphereMaterial2 = new CMaterial())
+		{
+			SphereMaterial2->SetBaseColor(XMFLOAT4(0.4f, 0.6f, 0.6f, 1.0f));
+			SphereMaterial2->SetMaterialType(EMaterialType::Lambert);
+			SphereMesh2->SetSubMaterials(0, SphereMaterial2);
+		}
+	}
+	if (AMesh* SphereMesh3 = MeshManage->CreateSphereMesh("SphereMesh2", 2.f, 20, 20))
+	{
+		SphereMesh3->SetPosition(XMFLOAT3(0.f, -3.f, 7.f));
+		if (CMaterial* SphereMaterial3 = new CMaterial())
+		{
+			SphereMaterial3->SetBaseColor(XMFLOAT4(0.4f, 0.6f, 0.6f, 1.0f));
+			SphereMaterial3->SetMaterialType(EMaterialType::Phone);
+			SphereMaterial3->SetRoughness(0.98f);
+			SphereMesh3->SetSubMaterials(0, SphereMaterial3);
 		}
 	}
 

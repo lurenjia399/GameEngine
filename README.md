@@ -1,9 +1,9 @@
 # GameEngine
  directx12和游戏引擎学习
 
-# DX12的一些小概念
+# 1 DX12的一些小概念
 
-## CommandAllocator  GraphicsCommandList  CommandQueue
+##  CommandAllocator  GraphicsCommandList  CommandQueue
 
 1 我们可以向命令列表中添加命令，由cpu将命令列表中的命令提交到命令队列中，gpu就会按照命令队列的顺序依次执行命令，**需要注意的是当命令队列满的时候，cpu就无法在继续提交处于空闲状态，而当命令队列空的时候，gpu就会处于空闲状态**，，
 
@@ -51,7 +51,7 @@ resource descriptor：这些资源对gpu来说只是一堆数据，gpu无法分�
 
 descriptor heap：用来存储同一种资源描述符资源描述符，可以看成资源描述符数组
 
-# rootsignature
+## rootsignature
 
 rootsignature就和cpp中的函数声明类似，是一种约定的行为（cpu与gpu之间的约定如何解释内存中的二进制数据）。
 
@@ -75,7 +75,7 @@ gpu再渲染的过程中，肯定需要各种各样的数据（纹理贴图，�
 
 
 
-# 渲染流水线
+# 2 渲染流水线
 
 1 图元装配阶段：需要将传递进来的顶点数据，索引数据装配成一个个的三角形图元
 
@@ -120,3 +120,28 @@ gpu再渲染的过程中，肯定需要各种各样的数据（纹理贴图，�
 ​	重心坐标插值来给每个像素上颜色：通过重心坐标来插值计算出三角形中人一顶点的各种数据（颜色，贴图位置）。
 
 7 输出合并阶段，
+
+# 3 材质模型
+
+光照方向 lightDirection
+
+顶点法线 Normal
+
+环境光 AmbientLight
+
+## 兰伯特材质
+
+Pixel.color = material.BaseColor * dot(lightDirection, Normal) + material.BaseColor * AmbientLight
+
+材质颜色 * （光线, 法向）夹角 + 材质颜色 * 环境光
+
+也可以选择乘上光照强度
+
+## 半兰伯特材质
+
+Pixel.color = material.BaseColor * (dot(lightDirection, Normal) * 0.5 + 0.5) + material.BaseColor * AmbientLight
+
+夹角余弦的取值为[-1， 1]，，这会导致一半的颜色取0，为黑色
+
+[-1, 1] * 0.5 + 0.5 , 让整个颜色从[0, 1]
+

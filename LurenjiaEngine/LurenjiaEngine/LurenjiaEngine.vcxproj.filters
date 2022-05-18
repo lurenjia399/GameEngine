@@ -285,6 +285,9 @@
     <ClCompile Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Mesh\Core\Material\MaterialType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -618,6 +621,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPiepelineType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\Material\MaterialType.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

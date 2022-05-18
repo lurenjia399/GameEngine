@@ -2,7 +2,7 @@
 #include "../Mesh/Core/ObjectTransformation.h"
 
 CTransformationComponent::CTransformationComponent()
-	: Position(-24.f, 0.f, 2.f)
+	: Position(0.f, 0.f, 0.f)
 	, Rotation(0.0f, 0.0f, 0.0f)
 	, Scale(1.f, 1.f, 1.f)
 	, ForwardVector(1.f, 0.f, 0.f)

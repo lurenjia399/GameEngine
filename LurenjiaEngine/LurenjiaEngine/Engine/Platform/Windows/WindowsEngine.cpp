@@ -76,6 +76,7 @@ void CWindowsEngine::Tick(float DeltaTime)
 	if (World && World->GetCamera())
 	{
 		FViewportInfo ViewportInfo = {};
+		ViewportInfo.cameraPosition = XMFLOAT4(World->GetCamera()->GetPosition().x, World->GetCamera()->GetPosition().y, World->GetCamera()->GetPosition().z, 1.0f);
 		ViewportInfo.ViewMatrix = World->GetCamera()->ViewMatrix;
 		ViewportInfo.ProjectMatrix = World->GetCamera()->ProjectMatrix;
 		RenderingEngine->UpdateConstantView(DeltaTime, ViewportInfo);

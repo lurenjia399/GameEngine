@@ -27,6 +27,7 @@ public:
 	
 //----------interface-----
 	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
+	CWorld* GetWorld() { return World; }
 public:
 	
 
