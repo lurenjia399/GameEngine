@@ -49,35 +49,80 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
     float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };//环境光
-    float3 aa = { 0.0f, -1.f, 0.f };
     float DotValue = dot(normalize(-LightDirection), normalize(mvOut.Normal)); //顶点法向和光照方向点积
+    float4 Ambient = { 0.f, 0.f, 0.f, 1.f};
+    float4 diffuse = { 0.f, 0.f, 0.f, 1.f};
+    float4 specular = { 0.f, 0.f, 0.f, 1.f};
+    float4 Fresnel = { 0.f, 0.f, 0.f, 1.f };
+    
+    FMaterial Material;
+    Material.BaseColor = BaseColor;
     if(MaterialType == 1)//兰伯特
     {
-        float4 Ambient = BaseColor * AmbientLight;
-        float4 diffuse = BaseColor * max(DotValue, 0.f);
-        mvOut.Color = Ambient + diffuse;
+        Ambient = Material.BaseColor * AmbientLight;
+        diffuse = Material.BaseColor * max(DotValue, 0.f);
     }else if(MaterialType == 2)//半兰伯特
     {
-        float4 Ambient = BaseColor * AmbientLight;
-        float4 Halfdiffuse = BaseColor * (DotValue * 0.5f + 0.5f);
-        mvOut.Color = Ambient + Halfdiffuse;
+        Ambient = Material.BaseColor * AmbientLight;
+        diffuse = Material.BaseColor * (DotValue * 0.5f + 0.5f);
     }else if(MaterialType == 3)//phone
     {
-        float4 Ambient = BaseColor * AmbientLight;
-        float4 Halfdiffuse = BaseColor * (DotValue * 0.5f + 0.5f);
+        Ambient = Material.BaseColor * AmbientLight;
+        diffuse = Material.BaseColor * (DotValue * 0.5f + 0.5f);
         //float3 reflectDirection = 2.0f * DotValue * normalize(mvOut.Normal) - normalize(-LightDirection);
         float3 reflectDirection = reflect(normalize(LightDirection), normalize(mvOut.Normal));
         float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
         float MaterialShininess = 1.f - saturate(Roughness);
-        float M = max(MaterialShininess * 256.f, 1.0f);
-        float4 specular = BaseColor * pow(max(dot(normalize(reflectDirection), normalize(cameraDirection)), 0.f), M);
+        float M = max(MaterialShininess * 100.f, 1.0f);
+        specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), normalize(cameraDirection)), 0.f), M);
+    }else if(MaterialType == 4)//blinnPhone
+    {
+        Ambient = Material.BaseColor * AmbientLight;
+        diffuse = Material.BaseColor * (DotValue * 0.5f + 0.5f);
+        float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
+        float3 H = normalize(-LightDirection) + normalize(cameraDirection);//摄像机方向和光线入射方向的半程向量
+        float MaterialShininess = 1.f - saturate(Roughness);
+        float M = max(MaterialShininess * 100.f, 1.0f);
+        specular = Material.BaseColor * pow(saturate(dot(normalize(mvOut.Normal), normalize(H))), M);
+
+    }else if(MaterialType == 5)//wrapLight,类似模拟皮肤
+    {   
+        float w = 3.f;//w为0 是兰伯特材质，w为1 是半兰伯特
+        Ambient = Material.BaseColor * AmbientLight;
+        diffuse = Material.BaseColor * saturate(((DotValue + w) / (1.f + w)));
+    }else if(MaterialType == 6)//minnaertLight
+    {
+        Ambient = Material.BaseColor * AmbientLight;
+        float dotNL = dot(normalize(mvOut.Normal), normalize(-LightDirection));
+        float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
+        float dotVN = dot(normalize(cameraDirection), normalize(mvOut.Normal));
         
-        mvOut.Color = Ambient + Halfdiffuse + specular;
+        /*简单实现dot * dot*/
+        //float minnaert = Material.BaseColor * saturate(dotNL) * saturate(dotVN);
+        
+        /*有粗糙度的实现*/
+        float MaterialShininess = saturate(Roughness);
+        float diffuse = Material.BaseColor * saturate(dotNL) * pow(saturate(dotNL) * saturate(dotVN), MaterialShininess);
+    }else if(MaterialType == 7)//BandedLight
+    {
+        Ambient = Material.BaseColor * AmbientLight;
+        float UpDotValue = (DotValue + 1.0f) * 0.5f;
+        float layout = 4.0f;
+        UpDotValue = floor(UpDotValue * layout) / layout;
+        diffuse = Material.BaseColor * UpDotValue;
+
+    }
+    else if(MaterialType == 100)//菲涅尔
+    {
+        float3 F0 = { 0.2f, 0.3f, 0.4f };//反射率
+        float M = 1.0f;
+        float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
+        Fresnel = Material.BaseColor * float4(FresnelSchlickMethod(F0, normalize(mvOut.Normal), normalize(cameraDirection), M), 1.0f);
     }
     else//默认
     {
 
     }
-    
+    mvOut.Color = Ambient + diffuse + specular + Fresnel;
     return mvOut.Color;
 }

@@ -9,6 +9,11 @@ enum class EMaterialType
 	Lambert,
 	HalfLambert,
 	Phone,
+	BlinnPhone,
+	WrapLight,
+	MinnaertLight,
+	BandedLight,
+	Fresnel = 100,//·ÆÄù¶ûÐ§¹û
 	Max
 };
 

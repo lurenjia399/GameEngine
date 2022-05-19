@@ -59,43 +59,96 @@ int CDirectXRenderingEngine::PostInit()
 	if(AMesh* PlaneMesh = MeshManage->CreatePlaneMesh("PlaneMesh", 4.f, 3.f, 20, 20))
 	{
 		PlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, -2.f));
-		PlaneMesh->SetScale(XMFLOAT3(6.f, 6.f, 6.f));
-		if (CMaterial* PlaneMaterial = new CMaterial())
+		PlaneMesh->SetScale(XMFLOAT3(6.f, 7.f, 6.f));
+		if (CMaterial* PlaneMateria = new CMaterial())
 		{
-			PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
-			PlaneMaterial->SetMaterialType(EMaterialType::HalfLambert);
-			PlaneMesh->SetSubMaterials(0, PlaneMaterial);
+			PlaneMateria->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+			PlaneMateria->SetMaterialType(EMaterialType::HalfLambert);
+			PlaneMesh->SetSubMaterials(0, PlaneMateria);
 		}
 	}
-	if(AMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 2.f, 20, 20))
+	if(AMesh* SphereMesh1 = MeshManage->CreateSphereMesh("SphereMesh1", 2.f, 20, 20))
 	{
-		SphereMesh->SetPosition(XMFLOAT3(0.f, -3.f, 2.f));
-		if(CMaterial* SphereMaterial = new CMaterial())
+		SphereMesh1->SetPosition(XMFLOAT3(0.f, -7.f, 2.f));
+		if(CMaterial* SphereMaterial1 = new CMaterial())
 		{
-			SphereMaterial->SetBaseColor(XMFLOAT4(0.4f, 0.6f, 0.6f, 1.0f));
-			SphereMaterial->SetMaterialType(EMaterialType::HalfLambert);
-			SphereMesh->SetSubMaterials(0, SphereMaterial);
+			SphereMaterial1->SetBaseColor(XMFLOAT4(112 / 255.f, 242 / 255.f, 132 / 255.f, 1.0f));
+			SphereMaterial1->SetMaterialType(EMaterialType::HalfLambert);
+			SphereMesh1->SetSubMaterials(0, SphereMaterial1);
 		}
 	}
 	if (AMesh* SphereMesh2 = MeshManage->CreateSphereMesh("SphereMesh2", 2.f, 20, 20))
 	{
-		SphereMesh2->SetPosition(XMFLOAT3(0.f, 2.f, 2.f));
+		SphereMesh2->SetPosition(XMFLOAT3(0.f, -2.f, 2.f));
 		if (CMaterial* SphereMaterial2 = new CMaterial())
 		{
-			SphereMaterial2->SetBaseColor(XMFLOAT4(0.4f, 0.6f, 0.6f, 1.0f));
+			SphereMaterial2->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 			SphereMaterial2->SetMaterialType(EMaterialType::Lambert);
 			SphereMesh2->SetSubMaterials(0, SphereMaterial2);
 		}
 	}
-	if (AMesh* SphereMesh3 = MeshManage->CreateSphereMesh("SphereMesh2", 2.f, 20, 20))
+	if (AMesh* SphereMesh3 = MeshManage->CreateSphereMesh("SphereMesh3", 2.f, 20, 20))
 	{
-		SphereMesh3->SetPosition(XMFLOAT3(0.f, -3.f, 7.f));
+		SphereMesh3->SetPosition(XMFLOAT3(0.f, 3.f, 2.f));
 		if (CMaterial* SphereMaterial3 = new CMaterial())
 		{
-			SphereMaterial3->SetBaseColor(XMFLOAT4(0.4f, 0.6f, 0.6f, 1.0f));
+			SphereMaterial3->SetBaseColor(XMFLOAT4(191.f / 255.f, 173.f / 255.f, 111.f / 255.f, 1.0f));
 			SphereMaterial3->SetMaterialType(EMaterialType::Phone);
-			SphereMaterial3->SetRoughness(0.98f);
+			SphereMaterial3->SetRoughness(0.15f);
 			SphereMesh3->SetSubMaterials(0, SphereMaterial3);
+		}
+	}
+	if (AMesh* SphereMesh4 = MeshManage->CreateSphereMesh("SphereMesh4", 2.f, 20, 20))
+	{
+		SphereMesh4->SetPosition(XMFLOAT3(0.f, 8.f, 2.f));
+		if (CMaterial* SphereMaterial4 = new CMaterial())
+		{
+			SphereMaterial4->SetBaseColor(XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f));
+			SphereMaterial4->SetMaterialType(EMaterialType::BlinnPhone);
+			SphereMaterial4->SetRoughness(0.15f);
+			SphereMesh4->SetSubMaterials(0, SphereMaterial4);
+		}
+	}
+	if (AMesh* SphereMesh5 = MeshManage->CreateSphereMesh("SphereMesh5", 2.f, 20, 20))
+	{
+		SphereMesh5->SetPosition(XMFLOAT3(0.f, -7.f, 7.f));
+		if (CMaterial* SphereMaterial5 = new CMaterial())
+		{
+			SphereMaterial5->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+			SphereMaterial5->SetMaterialType(EMaterialType::Fresnel);
+			SphereMaterial5->SetRoughness(0.15f);
+			SphereMesh5->SetSubMaterials(0, SphereMaterial5);
+		}
+	}
+	if (AMesh* SphereMesh6 = MeshManage->CreateSphereMesh("SphereMesh6", 2.f, 20, 20))
+	{
+		SphereMesh6->SetPosition(XMFLOAT3(0.f, -2.f, 7.f));
+		if (CMaterial* SphereMaterial6 = new CMaterial())
+		{
+			SphereMaterial6->SetBaseColor(XMFLOAT4(221.f / 255.f, 154.f / 255.f, 127.f / 255.f, 1.0f));
+			SphereMaterial6->SetMaterialType(EMaterialType::WrapLight);
+			SphereMesh6->SetSubMaterials(0, SphereMaterial6);
+		}
+	}
+	if (AMesh* SphereMesh7 = MeshManage->CreateSphereMesh("SphereMesh7", 2.f, 20, 20))
+	{
+		SphereMesh7->SetPosition(XMFLOAT3(0.f, 3.f, 7.f));
+		if (CMaterial* SphereMaterial7 = new CMaterial())
+		{
+			SphereMaterial7->SetBaseColor(XMFLOAT4(0.9f, 0.9f, 1.0f, 1.0f));
+			SphereMaterial7->SetMaterialType(EMaterialType::MinnaertLight);
+			SphereMaterial7->SetRoughness(1.2f);
+			SphereMesh7->SetSubMaterials(0, SphereMaterial7);
+		}
+	}
+	if (AMesh* SphereMesh8 = MeshManage->CreateSphereMesh("SphereMesh8", 2.f, 20, 20))
+	{
+		SphereMesh8->SetPosition(XMFLOAT3(0.f, 8.f, 7.f));
+		if (CMaterial* SphereMaterial8 = new CMaterial())
+		{
+			SphereMaterial8->SetBaseColor(XMFLOAT4(0.7f, 0.7f, 1.4f, 1.0f));
+			SphereMaterial8->SetMaterialType(EMaterialType::BandedLight);
+			SphereMesh8->SetSubMaterials(0, SphereMaterial8);
 		}
 	}
 
