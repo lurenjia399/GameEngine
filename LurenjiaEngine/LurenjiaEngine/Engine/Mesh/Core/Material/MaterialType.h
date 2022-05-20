@@ -13,6 +13,9 @@ enum class EMaterialType
 	WrapLight,
 	MinnaertLight,
 	BandedLight,
+	GradualBanded,
+	FinalBanded,
+	Back,
 	Fresnel = 100,//·ÆÄù¶ûĞ§¹û
 	Max
 };

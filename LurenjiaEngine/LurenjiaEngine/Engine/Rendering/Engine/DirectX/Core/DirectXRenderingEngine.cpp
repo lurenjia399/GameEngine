@@ -49,8 +49,7 @@ int CDirectXRenderingEngine::PostInit()
 	//AMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 1, 20, 20);//半径，轴分割度，高度分割度
 	//AMesh* CylinderMesh = MeshManage->CreateCylinderMesh("CylinderMesh", 2, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
 	//APlaneMesh* PlaneMesh = dynamic_cast<APlaneMesh*>(MeshManage->CreatePlaneMesh("PlaneMesh", 2, 2, 10, 10)) ;//高度，宽度，高度细分，宽度细分
-	//string path = "../LurenjiaEngine/ObjModels/maya.obj";
-	//AMesh* CustomMesh = MeshManage->CreateCustomMesh("CustomMesh", path);
+	
 	//BoxMesh->SetScale(XMFLOAT3(0.5, 1, 1));
 	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
 	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
@@ -135,7 +134,7 @@ int CDirectXRenderingEngine::PostInit()
 		SphereMesh7->SetPosition(XMFLOAT3(0.f, 3.f, 7.f));
 		if (CMaterial* SphereMaterial7 = new CMaterial())
 		{
-			SphereMaterial7->SetBaseColor(XMFLOAT4(0.9f, 0.9f, 1.0f, 1.0f));
+			SphereMaterial7->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 			SphereMaterial7->SetMaterialType(EMaterialType::MinnaertLight);
 			SphereMaterial7->SetRoughness(1.2f);
 			SphereMesh7->SetSubMaterials(0, SphereMaterial7);
@@ -149,6 +148,38 @@ int CDirectXRenderingEngine::PostInit()
 			SphereMaterial8->SetBaseColor(XMFLOAT4(0.7f, 0.7f, 1.4f, 1.0f));
 			SphereMaterial8->SetMaterialType(EMaterialType::BandedLight);
 			SphereMesh8->SetSubMaterials(0, SphereMaterial8);
+		}
+	}
+	if (AMesh* SphereMesh9 = MeshManage->CreateSphereMesh("SphereMesh9", 2.f, 20, 20))
+	{
+		SphereMesh9->SetPosition(XMFLOAT3(0.f, -7.f, 12.f));
+		if (CMaterial* SphereMaterial9 = new CMaterial())
+		{
+			SphereMaterial9->SetBaseColor(XMFLOAT4(247.f / 255.f, 150.f / 255.f, 85.f / 255.f, 1.0f));
+			SphereMaterial9->SetMaterialType(EMaterialType::GradualBanded);
+			SphereMesh9->SetSubMaterials(0, SphereMaterial9);
+		}
+	}
+	if (AMesh* SphereMesh10 = MeshManage->CreateSphereMesh("SphereMesh9", 2.f, 20, 20))
+	{
+		SphereMesh10->SetPosition(XMFLOAT3(0.f, -2.f, 12.f));
+		if (CMaterial* SphereMaterial10 = new CMaterial())
+		{
+			SphereMaterial10->SetBaseColor(XMFLOAT4(0.5f, 0.9f, 0.7f, 1.0f));
+			SphereMaterial10->SetMaterialType(EMaterialType::FinalBanded);
+			SphereMaterial10->SetRoughness(0.15f);
+			SphereMesh10->SetSubMaterials(0, SphereMaterial10);
+		}
+	}
+	if (AMesh* SphereMesh11 = MeshManage->CreateSphereMesh("SphereMesh9", 2.f, 20, 20))
+	{
+		SphereMesh11->SetPosition(XMFLOAT3(0.f, 3.f, 12.f));
+		if (CMaterial* SphereMaterial11 = new CMaterial())
+		{
+			SphereMaterial11->SetBaseColor(XMFLOAT4(2.f / 255.f, 214.f / 255.f, 17.f / 255.f, 1.0f));
+			SphereMaterial11->SetMaterialType(EMaterialType::Back);
+			SphereMaterial11->SetRoughness(0.2f);
+			SphereMesh11->SetSubMaterials(0, SphereMaterial11);
 		}
 	}
 
