@@ -4,6 +4,7 @@ FVertex::FVertex(const XMFLOAT3& InPos, const XMFLOAT4& InColor, const XMFLOAT3&
 	: Pos(InPos)
 	, Color(InColor)
 	, Normal(InNormal)
+	, UTangent(0.f, 0.f, 0.f)
 {
 }
 

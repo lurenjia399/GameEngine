@@ -33,6 +33,8 @@ void ASphereMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, cons
 
 			XMVECTOR normal = XMLoadFloat3(&InRenderingData.VertexData[currIndex].Pos);
 			XMStoreFloat3(&InRenderingData.VertexData[currIndex].Normal, normal);
+			XMFLOAT3 UTangent = XMFLOAT3(0.f, 1.f, 0.f);
+			XMStoreFloat3(&InRenderingData.VertexData[currIndex].UTangent, XMLoadFloat3(&UTangent));
 		}
 	}
 	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, -InRadius, 0), XMFLOAT4(Colors::White), XMFLOAT3(0.f, -1.f, 0.f)));//ÄÏ¼«µã

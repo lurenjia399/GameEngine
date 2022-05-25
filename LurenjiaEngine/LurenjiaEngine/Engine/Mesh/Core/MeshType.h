@@ -9,6 +9,7 @@ struct FVertex
 	XMFLOAT3 Pos;
 	XMFLOAT4 Color;
 	XMFLOAT3 Normal;
+	XMFLOAT3 UTangent;
 };
 
 /// <summary>

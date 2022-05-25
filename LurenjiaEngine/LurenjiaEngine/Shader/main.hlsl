@@ -171,6 +171,10 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         
         
     }
+    else if(MaterialType == 11)//各向异性
+    {
+        
+    }
     else if(MaterialType == 100)//菲涅尔
     {
         float3 F0 = { 0.2f, 0.3f, 0.4f };//反射率
