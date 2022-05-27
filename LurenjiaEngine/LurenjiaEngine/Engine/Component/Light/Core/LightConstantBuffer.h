@@ -9,8 +9,11 @@ struct FLightConstantBuffer
 {
 	FLightConstantBuffer();
 
-	//XMFLOAT3 LightIntensity;
+	XMFLOAT3 LightIntensity;
+	int XX;
+
 	XMFLOAT3 LightDirection;
+	int XX2;
 };
 
 #endif // !LightConstantBuffer

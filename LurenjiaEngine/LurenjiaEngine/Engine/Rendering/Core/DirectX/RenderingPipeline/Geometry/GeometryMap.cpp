@@ -143,7 +143,7 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 
 	//更新shader中的灯光 常量缓冲区
 	FLightConstantBuffer lightTransformation;
-	lightTransformation.LightDirection = XMFLOAT3(-1.0f, 0.f, 0.f);
+	lightTransformation.LightDirection = XMFLOAT3(1.0f, 1.f, 1.f);
 	LightConstantBufferView.Update(0, &lightTransformation);
 
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵

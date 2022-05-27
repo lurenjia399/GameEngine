@@ -4,7 +4,7 @@
 struct FVertex
 {
 	//FVertex(const XMFLOAT3& InPos, XMFLOAT4 InColor = XMFLOAT4(Colors::White));
-	FVertex(const XMFLOAT3& InPos, const XMFLOAT4& InColor, const XMFLOAT3& InNormal = XMFLOAT3(0.f, 0.f, 1.f));
+	FVertex(const XMFLOAT3& InPos, const XMFLOAT4& InColor, const XMFLOAT3& InNormal = XMFLOAT3(0.f, 0.f, 1.f), const XMFLOAT3& InUTangent = XMFLOAT3(1.f, 0.f, 0.f));
 
 	XMFLOAT3 Pos;
 	XMFLOAT4 Color;

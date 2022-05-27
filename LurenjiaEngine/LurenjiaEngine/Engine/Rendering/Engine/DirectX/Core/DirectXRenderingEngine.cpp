@@ -189,8 +189,18 @@ int CDirectXRenderingEngine::PostInit()
 		{
 			SphereMaterial12->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 			SphereMaterial12->SetMaterialType(EMaterialType::AnisotropyKajiyaKay);
-			//SphereMaterial12->SetRoughness(0.2f);
 			SphereMesh12->SetSubMaterials(0, SphereMaterial12);
+		}
+	}
+	if (AMesh* SphereMesh13 = MeshManage->CreateSphereMesh("SphereMesh13", 2.f, 20, 20))
+	{
+		SphereMesh13->SetPosition(XMFLOAT3(0.f, -7.f, 17.f));
+		if (CMaterial* SphereMaterial13 = new CMaterial())
+		{
+			SphereMaterial13->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+			SphereMaterial13->SetMaterialType(EMaterialType::OrenNayar);
+			SphereMaterial13->SetRoughness(2.f);
+			SphereMesh13->SetSubMaterials(0, SphereMaterial13);
 		}
 	}
 
