@@ -1,6 +1,10 @@
 # GameEngine
  directx12和游戏引擎学习
 
+基础光照模型：
+
+
+
 # 1 DX12的一些小概念
 
 ##  CommandAllocator  GraphicsCommandList  CommandQueue
