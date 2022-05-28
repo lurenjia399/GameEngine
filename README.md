@@ -111,27 +111,138 @@ gpu再渲染的过程中，肯定需要各种各样的数据（纹理贴图，�
 
 # 3 基础光照模型
 
-光照方向 lightDirection
+光照方向 L
 
-顶点法线 Normal
+顶点法线 N
 
-环境光 AmbientLight
+视角方向 V
 
-## 兰伯特材质
+## 兰伯特
 
-Pixel.color = material.BaseColor * dot(lightDirection, Normal) + material.BaseColor * AmbientLight
+```hlsl
+        Ambient = Material.BaseColor * AmbientLight;//环境光
+        diffuse = Material.BaseColor * max(LdotN, 0.f);//漫反射
+```
 
-材质颜色 * （光线, 法向）夹角 + 材质颜色 * 环境光
+## 半兰伯特
 
-也可以选择乘上光照强度
+```
+        Ambient = Material.BaseColor * AmbientLight;	//环境光
+        diffuse = Material.BaseColor * (LdotN * 0.5f + 0.5f);//漫反射
+```
 
-## 半兰伯特材质
+兰伯特的改进项，用兰伯特渲染出的材质球，光照背面近乎死黑。
 
-Pixel.color = material.BaseColor * (dot(lightDirection, Normal) * 0.5 + 0.5) + material.BaseColor * AmbientLight
+是因为余弦取值为[-1, 1]，而max修改范围为[0, 1]，从而使光照背面全为0也就是黑色。
 
-夹角余弦的取值为[-1， 1]，，这会导致一半的颜色取0，为黑色
+半兰伯特就是将[-1, 1]的范围，映射到[0, 1]，材质球的范围是从0到1，所以整个材质球都有颜色。
 
-[-1, 1] * 0.5 + 0.5 , 让整个颜色从[0, 1]
+## phone
+
+```
+        Ambient = Material.BaseColor * AmbientLight;				//环境光
+        diffuse = Material.BaseColor * (LdotN * 0.5f + 0.5f);		//半兰伯特
+        //float3 reflectDirection = 2.0f * LdotN * N - L;			//光线反射光线
+        float3 reflectDirection = reflect(-L, N);					//光线反射光线
+        float MaterialShininess = 1.f - saturate(Roughness);		//粗糙度
+        float M = max(MaterialShininess * 100.f, 1.0f);				//次方
+        specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), V), 0.f), M);	//高光
+```
+
+模拟金属材质：视线在观察金属的时候，会出现光斑。
+
+通过反射光线 与 视线 的夹角来计算
+
+## blinn-pbone
+
+```
+        Ambient = Material.BaseColor * AmbientLight;				//环境光
+        diffuse = Material.BaseColor * (LdotN * 0.5f + 0.5f);		//半兰伯特
+        float3 H = L + V;											//摄像机方向和光线入射方向的半程向量			
+        float MaterialShininess = 1.f - saturate(Roughness);		//粗糙度
+        float M = max(MaterialShininess * 100.f, 1.0f);				//次方
+        specular = Material.BaseColor * pow(saturate(dot(N, normalize(H))), M);//高光
+```
+
+通过计算半程向量简化了反射光线的计算，提高了效率。
+
+通过 半程向量（观察方向和入射光线的和）与 法线的夹角来计算。
+
+## wrapLight
+
+```
+        float w = 3.f;										//w为0 是兰伯特材质，w为1 是半兰伯特
+        Ambient = Material.BaseColor * AmbientLight;		//环境光
+        diffuse = Material.BaseColor * saturate(((LdotN + w) / (1.f + w)));//漫反射
+```
+
+基本上可以说是半兰伯特的高级版。
+
+主要用来模拟粗糙表面，类似于皮肤的粗糙表面，能够通过系数调整粗糙程度。
+
+将原本的cos范围映射到相应的范围中，以体现粗超程度。
+
+### Minnaert Lighting
+
+```
+        Ambient = Material.BaseColor * AmbientLight;
+        float NdotL = dot(N, L);
+        float VdotN = dot(V, N);
+        
+        /*简单实现dot * dot*/
+        //diffuse = Material.BaseColor * saturate(NdotL) * saturate(VdotN);
+        
+        /*有粗糙度的实现*/
+        float MaterialShininess = saturate(Roughness);
+        diffuse = Material.BaseColor * saturate(NdotL) * pow(saturate(NdotL) * saturate(VdotN), MaterialShininess);
+```
+
+适合多孔渲染，类似于月亮，天鹅绒，丝袜。
+
+通过光线法线点击 * 视线法线点击 来计算。
+
+## BandedLight
+
+```
+        Ambient = Material.BaseColor * AmbientLight;//环境光
+        float UpDotValue = (LdotN + 1.0f) * 0.5f;	//半兰伯特
+        float layout = 4.0f;						//分层数量
+        UpDotValue = floor(UpDotValue * layout) / layout;
+        diffuse = Material.BaseColor * UpDotValue;
+```
+
+形成光带，用于卡通渲染居多。
+
+通过上取整的方式，将[0, x]的范围，分割成x个部分，每个部分的颜色都一样。
+
+## 次表面散射sss
+
+```
+        //环境光
+        Ambient = Material.BaseColor * AmbientLight;
+        
+        //漫反射
+        float w = 1.2f; //w为0 是兰伯特材质，w为1 是半兰伯特
+        diffuse = Material.BaseColor * saturate(((LdotN + w) / (1.f + w)));
+        
+        //高光
+        float3 reflectDirection = reflect(-L, N);
+        float MaterialShininess = 1.f - saturate(Roughness);
+        float M = max(MaterialShininess * 100.f, 1.0f);
+        specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), V), 0.f), M);
+        
+        //次表面散射
+        float sssValue = 1.3f;
+        float TransmissionIntensity = 2.f;
+        float TransmissionScope = 1.5f;
+        float3 Half = -normalize(L + N * sssValue);		//求得半程向量
+        LdotN = pow(saturate(dot(V, Half)), TransmissionScope) * TransmissionIntensity;//背光强度
+        diffuse = diffuse + Material.BaseColor * LdotN;
+```
+
+具有透光的效果，模拟玉石。
+
+其中背光比例是由，视线和 负的半程向量（入射光线 和 法线 和）点乘得到
 
 # 4 法线贴图和切线空间
 

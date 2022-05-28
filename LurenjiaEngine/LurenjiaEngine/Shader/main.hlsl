@@ -80,22 +80,20 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     {
         Ambient = Material.BaseColor * AmbientLight;
         diffuse = Material.BaseColor * (LdotN * 0.5f + 0.5f);
-        //float3 reflectDirection = 2.0f * DotValue * normalize(mvOut.Normal) - normalize(-LightDirection);
-        float3 reflectDirection = reflect(normalize(LightDirection), normalize(mvOut.Normal));
-        float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
+        //float3 reflectDirection = 2.0f * LdotN * N - L;
+        float3 reflectDirection = reflect(-L, N);
         float MaterialShininess = 1.f - saturate(Roughness);
         float M = max(MaterialShininess * 100.f, 1.0f);
-        specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), normalize(cameraDirection)), 0.f), M);
+        specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), V), 0.f), M);
     }
     else if(MaterialType == 4)//blinnPhone
     {
         Ambient = Material.BaseColor * AmbientLight;
         diffuse = Material.BaseColor * (LdotN * 0.5f + 0.5f);
-        float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
-        float3 H = normalize(-LightDirection) + normalize(cameraDirection);//摄像机方向和光线入射方向的半程向量
+        float3 H = L + V;//摄像机方向和光线入射方向的半程向量
         float MaterialShininess = 1.f - saturate(Roughness);
         float M = max(MaterialShininess * 100.f, 1.0f);
-        specular = Material.BaseColor * pow(saturate(dot(normalize(mvOut.Normal), normalize(H))), M);
+        specular = Material.BaseColor * pow(saturate(dot(N, normalize(H))), M);
 
     }
     else if(MaterialType == 5)//wrapLight,类似模拟皮肤
@@ -107,16 +105,15 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     else if(MaterialType == 6)//minnaertLight
     {
         Ambient = Material.BaseColor * AmbientLight;
-        float dotNL = dot(normalize(mvOut.Normal), normalize(-LightDirection));
-        float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
-        float dotVN = dot(normalize(cameraDirection), normalize(mvOut.Normal));
+        float NdotL = dot(N, L);
+        float VdotN = dot(V, N);
         
         /*简单实现dot * dot*/
-        //float minnaert = Material.BaseColor * saturate(dotNL) * saturate(dotVN);
+        //diffuse = Material.BaseColor * saturate(NdotL) * saturate(VdotN);
         
         /*有粗糙度的实现*/
         float MaterialShininess = saturate(Roughness);
-        diffuse = Material.BaseColor * saturate(dotNL) * pow(saturate(dotNL) * saturate(dotVN), MaterialShininess);
+        diffuse = Material.BaseColor * saturate(NdotL) * pow(saturate(NdotL) * saturate(VdotN), MaterialShininess);
     }
     else if(MaterialType == 7)//BandedLight
     {
@@ -135,7 +132,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         UpDotValue = floor(UpDotValue * layout) / layout;
         
         float4 color = { 245.f / 255.f, 88.f / 255.f, 0.f, 1.0f };
-        Material.BaseColor = lerp(Material.BaseColor, color, 1 - LdotN); //Material.BaseColor * (1 - DotValue) + color * DotValue;
+        Material.BaseColor = lerp(Material.BaseColor, color, 1 - LdotN); //Material.BaseColor * (1 - LdotN) + color * LdotN;
         
         diffuse = Material.BaseColor * UpDotValue;
     }
@@ -172,19 +169,17 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         diffuse = Material.BaseColor * saturate(((LdotN + w) / (1.f + w)));
         
         //高光
-        float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
-        float3 reflectDirection = reflect(normalize(LightDirection), normalize(mvOut.Normal));
+        float3 reflectDirection = reflect(-L, N);
         float MaterialShininess = 1.f - saturate(Roughness);
         float M = max(MaterialShininess * 100.f, 1.0f);
-        specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), normalize(cameraDirection)), 0.f), M);
+        specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), V), 0.f), M);
         
         //次表面散射
         float sssValue = 1.3f;
         float TransmissionIntensity = 2.f;
         float TransmissionScope = 1.5f;
-        float3 Half = -normalize(normalize(-LightDirection) + normalize(mvOut.Normal) * sssValue);
-        float angle = dot(normalize(cameraDirection.xyz), Half);
-        LdotN = pow(saturate(dot(normalize(cameraDirection.xyz), Half)), TransmissionScope) * TransmissionIntensity;
+        float3 Half = -normalize(L + N * sssValue);
+        LdotN = pow(saturate(dot(V, Half)), TransmissionScope) * TransmissionIntensity;
         diffuse = diffuse + Material.BaseColor * LdotN;
         
         
