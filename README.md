@@ -2,8 +2,7 @@
  directx12和游戏引擎学习
 
 基础光照模型：
-
-
+https://user-images.githubusercontent.com/62169763/170820851-eb7be1fe-7467-4964-9b6d-8b10744ecc57.mp4
 
 # 1 DX12的一些小概念
 
