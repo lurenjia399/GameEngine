@@ -47,13 +47,33 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     float4x4 mvp = mul(ViewProjectionMatrix, WorldMatrix);
     MV_out.Position = mul(mvp, float4(mv.Position, 1.0f));//拿到mvp后的顶点坐标
     MV_out.worldPosition = mul(WorldMatrix, float4(mv.Position, 1.0f));
-    MV_out.Normal = mul((float3x3) WorldMatrix, mv.Normal); //拿到世界空间下的顶点法向
+    if(MaterialType == 97)
+    {
+        MV_out.Normal = mv.Normal;
+    }
+    else
+    {
+        MV_out.Normal = mul((float3x3) WorldMatrix, mv.Normal); //拿到世界空间下的顶点法向
+    }
+    
     MV_out.Tangent = mul((float3x3) WorldMatrix, mv.Tangent); //拿到世界空间下的切线
     MV_out.Color = mv.Color;
     return MV_out;
 }
 float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
+    if(MaterialType == 99)//默认，使用材质本身的颜色
+    {
+        mvOut.Color = BaseColor;
+        return mvOut.Color;
+    }else if(MaterialType == 98)
+    {
+        return float4(mvOut.Normal, 1.0f);
+    }else if(MaterialType == 97)
+    {
+        return float4(mvOut.Normal, 1.0f);
+    }
+    
     float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };//环境光
     float3 L = normalize(-LightDirection);
     float3 N = normalize(mvOut.Normal);

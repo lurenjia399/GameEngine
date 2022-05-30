@@ -3,11 +3,11 @@
 #include "ObjectTransformation.h"
 #include "../../Config/EngineRenderConfig.h"
 #include "../../Rendering/Core/Buffer/ConstructBuffer.h"
-#include "../BoxMesh.h"
-#include "../PlaneMesh.h"
-#include "../CylinderMesh.h"
-#include "../CustomMesh.h"
-#include "../SphereMesh.h"
+#include "../../Component/Mesh/BoxMeshComponent.h"
+#include "../../Component/Mesh/SphereMeshComponent.h"
+#include "../../Component/Mesh/CylinderMeshComponent.h"
+#include "../../Component/Mesh/CustomMeshComponent.h"
+#include "../../Component/Mesh/PlaneMeshComponent.h"
 #include "../../Math/EngineMath.h"
 #include "../../Core/Viewport/ViewportTransformation.h"
 
@@ -45,27 +45,27 @@ void CMeshManage::UpdateConstantView(float DeltaTime, const FViewportInfo& Viewp
 	RenderingPipeline.UpdateConstantView(DeltaTime, ViewportInfo);
 }
 
-AMesh* CMeshManage::CreateBoxMesh(string InName, const float& Inheight, const float& Inwidth, const float& Indepth)
+CMeshComponent* CMeshManage::CreateBoxMeshComponent(string InName, const float& Inheight, const float& Inwidth, const float& Indepth)
 {
-	return CreateMesh<ABoxMesh>(InName, Inheight, Inwidth, Indepth);
+	return CreateMeshComponet<CBoxMeshComponent>(InName, Inheight, Inwidth, Indepth);
 }
 
-AMesh* CMeshManage::CreatePlaneMesh(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
+CMeshComponent* CMeshManage::CreatePlaneMeshComponent(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
 {
-	return CreateMesh<APlaneMesh>(InName, Inheight, Inwidth, InHeightSubdivide, InwidthSubdivide);
+	return CreateMeshComponet<CPlaneMeshComponent>(InName, Inheight, Inwidth, InHeightSubdivide, InwidthSubdivide);
 }
 
-AMesh* CMeshManage::CreateCylinderMesh(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
+CMeshComponent* CMeshManage::CreateCylinderMeshComponent(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
 {
-	return CreateMesh<ACylinderMesh>(InName, InTopRadius, InBottomRadius, InAxialSubdivision, InHeight, InHeightSubdivision);
+	return CreateMeshComponet<CCylinderMeshComponent>(InName, InTopRadius, InBottomRadius, InAxialSubdivision, InHeight, InHeightSubdivision);
 }
 
-AMesh* CMeshManage::CreateCustomMesh(string InName, const string& InPath)
+CMeshComponent* CMeshManage::CreateCustomMeshComponent(string InName, const string& InPath)
 {
-	return CreateMesh<ACustomMesh>(InName, InPath);
+	return CreateMeshComponet<CCustomMeshComponent>(InName, InPath);
 }
 
-AMesh* CMeshManage::CreateSphereMesh(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
+CMeshComponent* CMeshManage::CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
 {
-	return CreateMesh<ASphereMesh>(InName, InRadius, InAxialSubdivision, InHeightSubdivision);
+	return CreateMeshComponet<CSphereMeshComponent>(InName, InRadius, InAxialSubdivision, InHeightSubdivision);
 }

@@ -4,6 +4,8 @@
 #include "../../Shader/Core/Shader.h"
 #include "../../Component/TransformationComponent.h"
 #include "../../Actor/Core/Actor.h"
+#include "../../Component/Mesh/Core/MeshComponent.h"
+#include "../../Component/Mesh/StaticMeshComponent.h"
 
 
 class CMaterial;
@@ -17,13 +19,13 @@ public:
 	virtual void PostDraw(float DeltaTime) override;
 
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
-
+public:
+	CStaticMeshComponent* GetMeshComponet() { return StaticMeshComponent; }
 public:
 	void SetSubMaterials(const int& index, CMaterial* InMaterial);
 	UINT GetMaterialsCount() const;
 	const vector<CMaterial*>* GetMaterials() const;
 private:
-	CVARIABLE()
-	vector<CMaterial*> Materials;
-
+	CStaticMeshComponent* StaticMeshComponent;
+	
 };

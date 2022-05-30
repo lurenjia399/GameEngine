@@ -42,7 +42,10 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 	InitWindows(InParameters);
 	RenderingEngine->SetMainWindowsHandle(MyWindowsHandle);
 	RenderingEngine->Init(InParameters);
-	World = CreateObject<CWorld>("World");
+
+	CWorld* world = RenderingEngine->GetWorld();
+	world = CreateObject<CWorld>("World");
+
 	Engine_Log("Engine initialization complete.");
 
 	PostInit();

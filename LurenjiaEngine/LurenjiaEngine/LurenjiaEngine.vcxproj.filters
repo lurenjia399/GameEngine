@@ -288,6 +288,27 @@
     <ClCompile Include="Engine\Mesh\Core\Material\MaterialType.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Component\Mesh\Core\MeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Mesh\StaticMeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Mesh\BoxMeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Mesh\CustomMeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Mesh\CylinderMeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Mesh\PlaneMeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -624,6 +645,27 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Mesh\Core\Material\MaterialType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Mesh\Core\MeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Mesh\StaticMeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Mesh\BoxMeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Mesh\CustomMeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Mesh\CylinderMeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Mesh\PlaneMeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

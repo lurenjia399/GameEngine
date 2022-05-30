@@ -28,6 +28,13 @@
     <ClCompile Include="Engine\Component\Light\Core\LightComponent.cpp" />
     <ClCompile Include="Engine\Component\Light\Core\LightConstantBuffer.cpp" />
     <ClCompile Include="Engine\Component\Light\ParallelLightComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\BoxMeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\Core\MeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\CustomMeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\CylinderMeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\PlaneMeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Mesh\StaticMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="Engine\Core\Camera.cpp" />
@@ -122,6 +129,13 @@
     <ClInclude Include="Engine\Component\Light\Core\LightComponent.h" />
     <ClInclude Include="Engine\Component\Light\Core\LightConstantBuffer.h" />
     <ClInclude Include="Engine\Component\Light\ParallelLightComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\BoxMeshComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\Core\MeshComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\CustomMeshComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\CylinderMeshComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\PlaneMeshComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h" />
+    <ClInclude Include="Engine\Component\Mesh\StaticMeshComponent.h" />
     <ClInclude Include="Engine\Component\TransformationComponent.h" />
     <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
     <ClInclude Include="Engine\Core\Camera.h" />

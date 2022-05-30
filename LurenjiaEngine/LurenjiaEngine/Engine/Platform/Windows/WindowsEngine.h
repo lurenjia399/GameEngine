@@ -27,7 +27,7 @@ public:
 	
 //----------interface-----
 	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
-	CWorld* GetWorld() { return World; }
+	CWorld* GetWorld() { return RenderingEngine->GetWorld(); }
 public:
 	
 
@@ -39,6 +39,5 @@ private:
 protected:
 	HWND MyWindowsHandle;		//Ö÷´°¿Ú¾ä±ú
 	CDirectXRenderingEngine* RenderingEngine;
-	CWorld* World;
 };
 #endif

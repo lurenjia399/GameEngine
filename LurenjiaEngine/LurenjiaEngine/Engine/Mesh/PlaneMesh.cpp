@@ -11,6 +11,11 @@ void APlaneMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
+void APlaneMesh::CreateMesh(const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
+{
+	SetMeshComponent(GetMeshManage()->CreatePlaneMeshComponent(InHeight, InWidth, InHeightSubdivide, InWidthSubdivide));
+}
+
 void APlaneMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
 {
 	std::function<float(float, uint32_t)> getStep = [&](const float& InValue, const uint32_t& InSubValue) ->float

@@ -35,7 +35,7 @@ public:
 	/// <param name="Inwidth">宽度</param>
 	/// <param name="Indepth">深度</param>
 	/// <returns>Mesh基类</returns>
-	AMesh* CreateBoxMesh(string InName, const float& Inheight, const float& Inwidth, const float& Indepth);
+	CMeshComponent* CreateBoxMeshComponent(string InName, const float& Inheight, const float& Inwidth, const float& Indepth);
 	/// <summary>
 	/// 创建平面Mesh
 	/// </summary>
@@ -45,7 +45,7 @@ public:
 	/// <param name="InHeightSubdivide">高度细分</param>
 	/// <param name="InwidthSubdivide">宽度细分</param>
 	/// <returns>Mesh基类</returns>
-	AMesh* CreatePlaneMesh(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide);
+	CMeshComponent* CreatePlaneMeshComponent(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide);
 	/// <summary>
 	/// 创建柱形Mesh
 	/// </summary>
@@ -56,14 +56,14 @@ public:
 	/// <param name="InHeight">高度</param>
 	/// <param name="InHeightSubdivision">高度细分</param>
 	/// <returns>Mesh基类</returns>
-	AMesh* CreateCylinderMesh(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision);
+	CMeshComponent* CreateCylinderMeshComponent(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision);
 	/// <summary>
 	/// 创建OBJMesh
 	/// </summary>
 	/// <param name="InName">名称</param>
 	/// <param name="InPath">模型路径</param>
 	/// <returns>Mesh基类</returns>
-	AMesh* CreateCustomMesh(string InName, const string& InPath);
+	CMeshComponent* CreateCustomMeshComponent(string InName, const string& InPath);
 	/// <summary>
 	/// 创建球
 	/// </summary>
@@ -72,10 +72,10 @@ public:
 	/// <param name="InAxialSubdivision">轴向细分</param>
 	/// <param name="InHeightSubdivision">高度细分</param>
 	/// <returns>Mesh基类</returns>
-	AMesh* CreateSphereMesh(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
+	CMeshComponent* CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
 private:
 	template<typename T, typename S, typename ...ParamTypes>
-	T* CreateMesh(const S& name, ParamTypes&&... Params);
+	T* CreateMeshComponet(const S& name, ParamTypes&&... Params);
 private:
 	FRenderingPipeline RenderingPipeline;					//渲染管线对象
 
@@ -90,7 +90,7 @@ string getName(T name)
 	return name;
 }
 template<typename T, typename S, typename ...ParamTypes>
-T* CMeshManage::CreateMesh(const S& name, ParamTypes&&... Params)
+T* CMeshManage::CreateMeshComponet(const S& name, ParamTypes&&... Params)
 {
 	T* mesh = new T();
 	mesh->ResetGuid(name);

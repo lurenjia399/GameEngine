@@ -205,7 +205,8 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 			//向命令列表中 添加索引缓冲数据 命令
 			GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 			//向命令列表中 添加图元拓扑 命令
-			GetGraphicsCommandList()->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+			EMaterialDisplayStatusType TopologyType = (*data.Mesh->GetMaterials())[0]->GetMaterialDisplayStatusType();
+			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY) TopologyType);
 			//模型偏移
 			meshHandle.Offset(i, HandleSize);
 			//向命令列表中 添加将描述符表添加到根签名中 命令

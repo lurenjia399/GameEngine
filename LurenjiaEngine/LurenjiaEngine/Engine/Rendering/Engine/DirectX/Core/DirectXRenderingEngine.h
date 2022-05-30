@@ -1,6 +1,7 @@
 #pragma
 #include "../../Core/RenderingEngine.h"
 #include "../../../../Mesh/Core/MeshManage.h"
+#include "../../../../Core/World.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 
 class CDirectXRenderingEngine :public CRenderingEngine
@@ -38,6 +39,8 @@ public:
 	UINT GetDXGISampleCount() const;
 	//获取当前采样质量
 	UINT GetDXGISampleQuality() const;
+	//获取世界
+	CWorld* GetWorld() const;
 private:
 	//等待gpu处理完名列队列中的数据
 	void WaitGPUCommandQueueComplete();
@@ -69,4 +72,5 @@ private:
 	UINT RTVDescriptorSize;											// rtv描述符大小
 private:
 	CMeshManage* MeshManage;										//mesh管理器
+	CWorld* World;													//世界
 };
