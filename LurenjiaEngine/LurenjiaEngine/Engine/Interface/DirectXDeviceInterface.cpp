@@ -62,6 +62,20 @@ HWND IDirectXDeviceInterface::GetMainWindowsHandle() const
     return nullptr;
 }
 
+CMeshManage* IDirectXDeviceInterface::GetMeshManage() const
+{
+    if (Engine != nullptr)
+    {
+        CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
+        if (WindowsEngine != nullptr)
+        {
+            return WindowsEngine->GetRenderingEngine()->MeshManage;//这里定义了友元，所以能访问到
+        }
+        return nullptr;
+    }
+    return nullptr;
+}
+
 #if defined(_WIN32)
 CWindowsEngine* IDirectXDeviceInterface::GetEngine() const
 {
@@ -113,11 +127,17 @@ HWND IDirectXDeviceInterface_struct::GetMainWindowsHandle() const
     return DXDeviceInterface.GetMainWindowsHandle();
 }
 
+CMeshManage* IDirectXDeviceInterface_struct::GetMeshManage() const
+{
+    return DXDeviceInterface.GetMeshManage();
+}
+
 #if defined(_WIN32)
 CWindowsEngine* IDirectXDeviceInterface_struct::GetEngine() const
 {
     return DXDeviceInterface.GetEngine();
 }
+
 #else
 CEngien* IDirectXDeviceInterface_struct::GetEngine() const
 {

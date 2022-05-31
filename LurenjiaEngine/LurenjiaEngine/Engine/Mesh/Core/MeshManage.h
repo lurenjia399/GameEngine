@@ -99,7 +99,7 @@ T* CMeshManage::CreateMeshComponet(const S& name, ParamTypes&&... Params)
 	mesh->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
 	mesh->BeginInit();
 
-	RenderingPipeline.BuildMesh(mesh, MeshRenderingData);
+	RenderingPipeline.BuildMeshComponent(mesh, MeshRenderingData);
 
 	mesh->Init();
 	return mesh;

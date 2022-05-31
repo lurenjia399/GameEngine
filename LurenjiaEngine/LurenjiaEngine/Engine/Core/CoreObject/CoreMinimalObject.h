@@ -30,5 +30,6 @@ T* CCoreMinimalObject::CreateObject(string objName)
 {
 	CCoreMinimalObject* NewObject = new T();	//创建对象
 	NewObject->ResetGuid(objName);				//重新设置对象的guid
+
 	return dynamic_cast<T*>(NewObject);
 }

@@ -39,6 +39,8 @@ public:
 	UINT GetDXGISampleCount() const;
 	//获取当前采样质量
 	UINT GetDXGISampleQuality() const;
+	//设置世界
+	void SetWorld(CWorld* InWorld);
 	//获取世界
 	CWorld* GetWorld() const;
 private:

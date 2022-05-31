@@ -15,7 +15,7 @@ public:
 	UINT GetIndexSizeInBytes() const;						//获取索引数据大小
 
 
-	AMesh* Mesh;											//代表的模型
+	CMeshComponent* MeshComponet;							//代表的模型组件
 
 public:
 	DXGI_FORMAT IndexFormat;								//索引资源格式

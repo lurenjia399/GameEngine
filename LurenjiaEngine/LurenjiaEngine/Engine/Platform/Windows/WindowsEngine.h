@@ -3,7 +3,6 @@
 #if defined(_WIN32)
 #include "../../Core/Engine.h"
 
-
 class CWorld;
 class CDirectXRenderingEngine;
 class CWindowsEngine : public CEngine
@@ -27,7 +26,6 @@ public:
 	
 //----------interface-----
 	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
-	CWorld* GetWorld() { return RenderingEngine->GetWorld(); }
 public:
 	
 

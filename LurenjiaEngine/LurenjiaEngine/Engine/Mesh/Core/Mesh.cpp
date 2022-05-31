@@ -3,16 +3,16 @@
 
 
 AMesh::AMesh()
-	: StaticMeshComponent(new CStaticMeshComponent())
+	: MeshComponent(new CMeshComponent())
 {
-	
+	MeshComponent->ResetGuid("AMesh::MeshComponent");
 }
 
 void AMesh::Init()
 {
-	if (StaticMeshComponent)
+	if (MeshComponent)
 	{
-		StaticMeshComponent->Init();
+		MeshComponent->Init();
 	}
 }
 
@@ -31,27 +31,62 @@ void AMesh::PostDraw(float DeltaTime)
 	
 }
 
+void AMesh::SetPosition(const XMFLOAT3& InPosition)
+{
+	TransformationComponent->SetPosition(InPosition);
+}
+
+void AMesh::SetRotation(const fvector_3d& InRotation)
+{
+	TransformationComponent->SetRotation(InRotation);
+}
+
+void AMesh::SetScale(const XMFLOAT3& InScale)
+{
+	TransformationComponent->SetScale(InScale);
+}
+
 void AMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
-	if (StaticMeshComponent)
+	if (MeshComponent)
 	{
-		StaticMeshComponent->BuildMesh(InRenderingData);
+		MeshComponent->BuildMesh(InRenderingData);
 	}
+}
+
+void AMesh::SetMeshComponent(CMeshComponent* InMeshComponent)
+{
+	MeshComponent = InMeshComponent;
+}
+
+void AMesh::SetComponentPosition(const XMFLOAT3& InPosition)
+{
+	MeshComponent->SetPosition(InPosition);
+}
+
+void AMesh::SetComponentRotation(const fvector_3d& InRotation)
+{
+	MeshComponent->SetRotation(InRotation);
+}
+
+void AMesh::SetComponentScale(const XMFLOAT3& InScale)
+{
+	MeshComponent->SetScale(InScale);
 }
 
 void AMesh::SetSubMaterials(const int& index, CMaterial* InMaterial)
 {
-	StaticMeshComponent->SetSubMaterials(index, InMaterial);
+	MeshComponent->SetSubMaterials(index, InMaterial);
 }
 
 UINT AMesh::GetMaterialsCount() const
 {
-	return StaticMeshComponent->GetMaterialsCount();
+	return MeshComponent->GetMaterialsCount();
 }
 
 const vector<CMaterial*>* AMesh::GetMaterials() const
 {
-	return StaticMeshComponent->GetMaterials();
+	return MeshComponent->GetMaterials();
 }
 
 

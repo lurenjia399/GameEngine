@@ -43,9 +43,9 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 	RenderingEngine->SetMainWindowsHandle(MyWindowsHandle);
 	RenderingEngine->Init(InParameters);
 
-	CWorld* world = RenderingEngine->GetWorld();
-	world = CreateObject<CWorld>("World");
-
+	CWorld* world = CreateObject<CWorld>("World");
+	RenderingEngine->SetWorld(world);
+	CWorld* temWorld = RenderingEngine->GetWorld();
 	Engine_Log("Engine initialization complete.");
 
 	PostInit();
@@ -76,12 +76,13 @@ void CWindowsEngine::Tick(float DeltaTime)
 		}
 	}
 
-	if (World && World->GetCamera())
+	if (RenderingEngine->GetWorld() && RenderingEngine->GetWorld()->GetCamera())
 	{
+		CWorld* world = RenderingEngine->GetWorld();
 		FViewportInfo ViewportInfo = {};
-		ViewportInfo.cameraPosition = XMFLOAT4(World->GetCamera()->GetPosition().x, World->GetCamera()->GetPosition().y, World->GetCamera()->GetPosition().z, 1.0f);
-		ViewportInfo.ViewMatrix = World->GetCamera()->ViewMatrix;
-		ViewportInfo.ProjectMatrix = World->GetCamera()->ProjectMatrix;
+		ViewportInfo.cameraPosition = XMFLOAT4(world->GetCamera()->GetPosition().x, world->GetCamera()->GetPosition().y, world->GetCamera()->GetPosition().z, 1.0f);
+		ViewportInfo.ViewMatrix = world->GetCamera()->ViewMatrix;
+		ViewportInfo.ProjectMatrix = world->GetCamera()->ProjectMatrix;
 		RenderingEngine->UpdateConstantView(DeltaTime, ViewportInfo);
 		RenderingEngine->Tick(DeltaTime);
 	}

@@ -10,9 +10,9 @@ class AActor : public CCoreMinimalObject
 {
 public:
 	AActor();
-	void SetPosition(const XMFLOAT3& InPosition);
-	void SetRotation(const fvector_3d& InRotation);
-	void SetScale(const XMFLOAT3& InScale);
+	virtual void SetPosition(const XMFLOAT3& InPosition);
+	virtual void SetRotation(const fvector_3d& InRotation);
+	virtual void SetScale(const XMFLOAT3& InScale);
 
 	XMFLOAT3 GetPosition() const;
 	fvector_3d GetRotation() const;

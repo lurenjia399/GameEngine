@@ -12,8 +12,8 @@ struct FGeometry : public IDirectXDeviceInterface_struct
 	//friend void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	friend struct FGeometryMap;
 public:
-	bool isExitDescribeMeshRenderingData(AMesh* InKey);
-	void BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& MeshRenderData);
+	bool isExitDescribeMeshRenderingData(CMeshComponent* InKey);
+	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData);
 	void BuildMeshBuffer(const int& InIndex);
 	UINT GetDrawMeshObjectCount() const;
 	UINT GetDrawMaterialObjectCount() const;
@@ -37,7 +37,7 @@ struct FGeometryMap : public IDirectXDeviceInterface_struct
 {
 public:
 	FGeometryMap();
-	void BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& InRenderingData);
+	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData);
 	void BuildMeshBuffer();
 	void BuildDescriptorHeap();
 

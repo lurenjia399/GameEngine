@@ -5,7 +5,7 @@
 
 ACamera::ACamera()
 {
-	InputComponent = CreateObject<CInputComponent>("InputComponent");
+	InputComponent = CreateObject<CInputComponent>("CameraInputComponent");
 
 	Radius = 20.0f;
 	verticalAngle = XM_PI/2;

@@ -3,7 +3,7 @@
 
 AActor::AActor()
 {
-	TransformationComponent = CreateObject<CTransformationComponent>("TransformationComponent");
+	TransformationComponent = CreateObject<CTransformationComponent>("AActor::TransformationComponent");
 }
 
 void AActor::SetPosition(const XMFLOAT3& InPosition)

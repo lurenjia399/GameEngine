@@ -3,6 +3,7 @@
 
 #if defined(_WIN32)
 class CWindowsEngine;
+class CMeshManage;
 #else
 class CEngien;
 #endif
@@ -22,12 +23,15 @@ public:
 	ComPtr<ID3D12CommandQueue> GetCommandQueue() const;
 	//获取windowsHandle
 	HWND GetMainWindowsHandle() const;
-
+	//获取mesh管理器
+	CMeshManage* GetMeshManage() const;
+	//获取引擎
 #if defined(_WIN32)
 	CWindowsEngine* GetEngine() const;
 #else
 	CEngien* GetEngine() const;
 #endif
+	
 };
 
 struct IDirectXDeviceInterface_struct
@@ -44,12 +48,14 @@ struct IDirectXDeviceInterface_struct
 	ComPtr<ID3D12CommandQueue> GetCommandQueue() const;
 	//获取windowsHandle
 	HWND GetMainWindowsHandle() const;
-
+	//获取mesh管理器
+	CMeshManage* GetMeshManage() const;
 #if defined(_WIN32)
 	CWindowsEngine* GetEngine() const;
 #else
 	Engien* GetEngine() const;
 #endif
+	
 private:
 	IDirectXDeviceInterface DXDeviceInterface;
 };

@@ -14,7 +14,7 @@ FGeometryMap::FGeometryMap()
 	Geometrys.emplace(0, FGeometry());
 }
 
-void FGeometryMap::BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& InRenderingData)
+void FGeometryMap::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData)
 {
 	FGeometry& Geometry = Geometrys[0];
 	Geometry.BuildMeshDescData(InMesh, InRenderingData);
@@ -90,11 +90,11 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 		for (UINT i = 0; i < temp.second.DescribeMeshRenderingData.size(); ++i)
 		{
 			FGeometryDescData& data = temp.second.DescribeMeshRenderingData[i];
-			const XMFLOAT3& Position = data.Mesh->GetPosition();
-			const XMFLOAT3& Scale = data.Mesh->GetScale();
-			const XMFLOAT3& RightVector = data.Mesh->GetRight();
-			const XMFLOAT3& UpVector = data.Mesh->GetUp();
-			const XMFLOAT3& ForwardVector = data.Mesh->GetForward();
+			const XMFLOAT3& Position = data.MeshComponet->GetPosition();
+			const XMFLOAT3& Scale = data.MeshComponet->GetScale();
+			const XMFLOAT3& RightVector = data.MeshComponet->GetRight();
+			const XMFLOAT3& UpVector = data.MeshComponet->GetUp();
+			const XMFLOAT3& ForwardVector = data.MeshComponet->GetForward();
 
 			XMMATRIX scaleMatrix =
 			{
@@ -129,7 +129,7 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 			//更新shader中的材质 常量缓冲区
 			CMaterialConstantBuffer MaterialTransformation;
 			{
-				if (CMaterial* InMaterial = data.Mesh->GetMaterials()->at(0))
+				if (CMaterial* InMaterial = data.MeshComponet->GetMaterials()->at(0))
 				{
 					MaterialTransformation.BaseColor = InMaterial->GetBaseColor();
 					MaterialTransformation.MaterialType = static_cast<UINT32>(InMaterial->GetMaterialType());
@@ -205,7 +205,7 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 			//向命令列表中 添加索引缓冲数据 命令
 			GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 			//向命令列表中 添加图元拓扑 命令
-			EMaterialDisplayStatusType TopologyType = (*data.Mesh->GetMaterials())[0]->GetMaterialDisplayStatusType();
+			EMaterialDisplayStatusType TopologyType = (*data.MeshComponet->GetMaterials())[0]->GetMaterialDisplayStatusType();
 			GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY) TopologyType);
 			//模型偏移
 			meshHandle.Offset(i, HandleSize);
@@ -236,11 +236,11 @@ void FGeometryMap::DrawLight(float DeltaTime)
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(3, Handle);
 }
 
-bool FGeometry::isExitDescribeMeshRenderingData(AMesh* InKey)
+bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)
 {
 	for (FGeometryDescData& data : DescribeMeshRenderingData)
 	{
-		if (data.Mesh == InKey)
+		if (data.MeshComponet == InKey)
 		{
 			return true;
 		}
@@ -248,13 +248,13 @@ bool FGeometry::isExitDescribeMeshRenderingData(AMesh* InKey)
 	return false;
 }
 
-void FGeometry::BuildMeshDescData(AMesh* InMesh, const FMeshRenderingData& MeshRenderData)
+void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData)
 {
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{
 		DescribeMeshRenderingData.emplace_back(FGeometryDescData());
 		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData[DescribeMeshRenderingData.size() - 1];
-		GeometryDescData.Mesh = InMesh;
+		GeometryDescData.MeshComponet = InMesh;
 		GeometryDescData.IndexSize = MeshRenderData.IndexData.size();
 		GeometryDescData.IndexoffsetPosition = MeshRenderingData.IndexData.size();
 		GeometryDescData.VertexSize = MeshRenderData.VertexData.size();
@@ -295,7 +295,7 @@ UINT FGeometry::GetDrawMaterialObjectCount() const
 	UINT res = 0;
 	for (FGeometryDescData GeometryDesc : DescribeMeshRenderingData)
 	{
-		res += GeometryDesc.Mesh->GetMaterialsCount();
+		res += GeometryDesc.MeshComponet->GetMaterialsCount();
 	}
 	return res;
 }
