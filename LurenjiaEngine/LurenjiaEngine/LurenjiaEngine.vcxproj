@@ -52,6 +52,7 @@
     <ClCompile Include="Engine\Interface\DirectXDeviceInterface.cpp" />
     <ClCompile Include="Engine\Interface\OpenGLDeviceInterface.cpp" />
     <ClCompile Include="Engine\LurenjiaEngine.cpp" />
+    <ClCompile Include="Engine\Manage\LightManage.cpp" />
     <ClCompile Include="Engine\Math\EngineMath.cpp" />
     <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
     <ClCompile Include="Engine\Mesh\Core\Material\Material.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="Engine\Interface\DirectXDeviceInterface.h" />
     <ClInclude Include="Engine\Interface\OpenGLDeviceInterface.h" />
     <ClInclude Include="Engine\LurenjiaEngine.h" />
+    <ClInclude Include="Engine\Manage\LightManage.h" />
     <ClInclude Include="Engine\Math\EngineMath.h" />
     <ClInclude Include="Engine\Mesh\BoxMesh.h" />
     <ClInclude Include="Engine\Mesh\Core\Material\Material.h" />

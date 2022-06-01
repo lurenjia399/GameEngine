@@ -3,6 +3,7 @@
 #include "../../../../Mesh/Core/MeshManage.h"
 #include "../../../../Core/World.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
+#include "../../../../Manage/LightManage.h"
 
 class CDirectXRenderingEngine :public CRenderingEngine
 {
@@ -74,5 +75,6 @@ private:
 	UINT RTVDescriptorSize;											// rtv描述符大小
 private:
 	CMeshManage* MeshManage;										//mesh管理器
+	CLightManage* LightManage;										//灯光管理器
 	CWorld* World;													//世界
 };

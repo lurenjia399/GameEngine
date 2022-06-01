@@ -3,6 +3,7 @@
 #include "../../../../Mesh/PlaneMesh.h"
 #include "../../../../Mesh/SphereMesh.h"
 #include "../../../../Mesh/Core/Material/Material.h"
+#include "../../../../Actor/Light/ParallelLight.h"
 
 
 enum class EMaterialType;
@@ -21,8 +22,8 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	{
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
 	}
-	MeshManage = new CMeshManage();
-	MeshManage->ResetGuid("MeshManage");
+	MeshManage = CreateObject<CMeshManage>("MeshManage");
+	LightManage = CreateObject<CLightManage>("LightManage");
 
 	World = nullptr;
 }
@@ -56,6 +57,17 @@ int CDirectXRenderingEngine::PostInit()
 	//BoxMesh->SetScale(XMFLOAT3(0.5, 1, 1));
 	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
 	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
+
+	if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+	{
+		//XMVECTOR AmountMovement = XMVectorReplicate(InValue * KeyboardSensitity);
+		//XMVECTOR Up = XMLoadFloat3(&up);
+		//XMVECTOR Position = XMLoadFloat3(&newPos);
+		////从Positon点沿着Up方向移动AmountMovement距离
+		//XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Up, Position));
+		ParallelLight->SetComponentPosition(XMFLOAT3(-30.f, 0.f, 0.f));
+		//ParallelLight->SetComponentRotation(fvector_3d(0.f, 0.f, 90.0f));
+	}
 
 
 	if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))

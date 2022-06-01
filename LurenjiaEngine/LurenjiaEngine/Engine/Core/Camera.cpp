@@ -287,7 +287,7 @@ void ACamera::MoveRight(float InValue)
 	XMVECTOR AmountMovement = XMVectorReplicate(InValue * KeyboardSensitity);
 	XMVECTOR Right = XMLoadFloat3(&right);
 	XMVECTOR Position = XMLoadFloat3(&newPos);
-	XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Right, Position));//从Positon点沿着Forward方向移动AmountMovement距离
+	XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Right, Position));//从Positon点沿着Right方向移动AmountMovement距离
 }
 
 void ACamera::MoveUp(float InValue)
@@ -298,7 +298,7 @@ void ACamera::MoveUp(float InValue)
 	XMVECTOR AmountMovement = XMVectorReplicate(InValue * KeyboardSensitity);
 	XMVECTOR Up = XMLoadFloat3(&up);
 	XMVECTOR Position = XMLoadFloat3(&newPos);
-	XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Up, Position));//从Positon点沿着Forward方向移动AmountMovement距离
+	XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Up, Position));//从Positon点沿着Up方向移动AmountMovement距离
 }
 
 void ACamera::RotateAroundPitchAxis(float InRotateDegrees)

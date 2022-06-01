@@ -8,6 +8,8 @@
 #include "../../../../../Mesh/Core/Material/Material.h"
 #include "../../../../../Core/Camera.h"
 #include "../../../../../Core/World.h"
+#include "../../../../../Manage/LightManage.h"
+#include "../../../../../Component/Light/Core/LightComponent.h"
 
 FGeometryMap::FGeometryMap()
 {
@@ -141,10 +143,16 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 		}
 	}
 
-	//更新shader中的灯光 常量缓冲区
-	FLightConstantBuffer lightTransformation;
-	lightTransformation.LightDirection = XMFLOAT3(1.0f, 0.f, 0.f);
-	LightConstantBufferView.Update(0, &lightTransformation);
+	int lightCount = GetLightManage()->Lights.size();
+	for (int i = 0; i < lightCount; ++i)
+	{
+		//更新shader中的灯光 常量缓冲区
+		FLightConstantBuffer lightTransformation;
+		lightTransformation.LightDirection = GetLightManage()->Lights[i]->GetForward();
+		LightConstantBufferView.Update(i, &lightTransformation);
+	}
+
+	
 
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);

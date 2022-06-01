@@ -4,6 +4,7 @@
 #if defined(_WIN32)
 class CWindowsEngine;
 class CMeshManage;
+class CLightManage;
 #else
 class CEngien;
 #endif
@@ -25,6 +26,8 @@ public:
 	HWND GetMainWindowsHandle() const;
 	//获取mesh管理器
 	CMeshManage* GetMeshManage() const;
+	//获取light管理器
+	CLightManage* GetLightManage() const;
 	//获取引擎
 #if defined(_WIN32)
 	CWindowsEngine* GetEngine() const;
@@ -50,6 +53,9 @@ struct IDirectXDeviceInterface_struct
 	HWND GetMainWindowsHandle() const;
 	//获取mesh管理器
 	CMeshManage* GetMeshManage() const;
+	//获取light管理器
+	CLightManage* GetLightManage() const;
+
 #if defined(_WIN32)
 	CWindowsEngine* GetEngine() const;
 #else

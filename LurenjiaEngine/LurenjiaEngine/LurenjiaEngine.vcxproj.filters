@@ -309,6 +309,9 @@
     <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Manage\LightManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -666,6 +669,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Manage\LightManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
