@@ -10,14 +10,15 @@ AParallelLight::AParallelLight()
 	ParallelLightComponent = CreateObject<CParallelLightComponent>("ParallelLightComponent");
 
 	//创建ParallelLight的Mesh
-	string ParalLelLightPath = "../LurenjiaEngine/Asset/Camera.obj";
+	string ParalLelLightPath = "../LurenjiaEngine/Asset/SunMesh.obj";
 	ParallelLightMeshComponent = GetMeshManage()->CreateCustomMeshComponent("ParallelLightMeshComponent", ParalLelLightPath);
 
 	if (ParallelLightMeshComponent)
 	{
 		//因为 模型本身的朝向和我设置的transformation朝向有差异
 		//所以 在创建的时候给一个旋转偏移
-		ParallelLightMeshComponent->SetRotation(fvector_3d(0.f, 0.f, -90.f));
+		// 目前不需要
+		//ParallelLightMeshComponent->SetRotation(fvector_3d(0.f, 0.f, -90.f));
 
 		CMaterial* material = (*ParallelLightMeshComponent->GetMaterials())[0];
 		if (material)
@@ -28,6 +29,29 @@ AParallelLight::AParallelLight()
 		}
 
 	}
+}
+
+void AParallelLight::Tick(float DeltaTime)
+{
+	fvector_3d rotation = fvector_3d(0.f, DeltaTime * 40, 0.f);
+	rotation = fvector_3d(0.f, DeltaTime * 40, DeltaTime * 40);
+	//rotation = fvector_3d(DeltaTime * 40, 0.f, 0.f);
+	SetComponentRotation(rotation);
+}
+
+XMFLOAT3 AParallelLight::GetComponentPosition()
+{
+	return ParallelLightMeshComponent->GetPosition();
+}
+
+fvector_3d AParallelLight::GetComponentRotation()
+{
+	return ParallelLightComponent->GetRotation();
+}
+
+XMFLOAT3 AParallelLight::GetComponentScale()
+{
+	return ParallelLightComponent->GetScale();
 }
 
 void AParallelLight::SetComponentPosition(const XMFLOAT3& InPosition)

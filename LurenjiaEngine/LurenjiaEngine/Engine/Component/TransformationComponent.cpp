@@ -30,9 +30,9 @@ void CTransformationComponent::SetRotation(const fvector_3d& InRotation)
 	XMVECTOR up = XMLoadFloat3(&UpVector);
 	XMVECTOR forward = XMLoadFloat3(&ForwardVector);
 
-	XMStoreFloat3(&RightVector, XMVector2TransformNormal(right, RotateMatrix));
-	XMStoreFloat3(&UpVector, XMVector2TransformNormal(up, RotateMatrix));
-	XMStoreFloat3(&ForwardVector, XMVector2TransformNormal(forward, RotateMatrix));
+	XMStoreFloat3(&RightVector, XMVector3TransformNormal(right, RotateMatrix));
+	XMStoreFloat3(&UpVector, XMVector3TransformNormal(up, RotateMatrix));
+	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(forward, RotateMatrix));
 
 	NormalizeTransformationVector();
 }
@@ -70,7 +70,7 @@ void CTransformationComponent::NormalizeTransformationVector()
 	Up = XMVector3Normalize(XMVector3Cross(Forward, Right));
 
 	Right = XMVector3Cross(Up, Forward);
-
+	//Engine_Log("Forward [x] = %f, [y] = %f, [z] = %f", Forward.m128_f32[0], Forward.m128_f32[1], Forward.m128_f32[2]);
 	XMStoreFloat3(&RightVector, Right);
 	XMStoreFloat3(&UpVector, Up);
 	XMStoreFloat3(&ForwardVector, Forward);

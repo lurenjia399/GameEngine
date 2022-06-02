@@ -14,17 +14,21 @@ cbuffer ViewportConstBuffer : register(b1)//摄像机变换矩阵和透视投影变换矩阵
 cbuffer MaterialConstantBufferView : register(b2) //材质
 {
     float4 BaseColor;
+    
     uint MaterialType;
     float Roughness;
+    int XX1; //占位
+    int XX2; //占位
+    
     float4x4 TransformInformation;
 }
 cbuffer LightConstantBufferView : register(b3) //灯光
 {
     float3 LightIntensity;
-    int XX;
+    int XX3;
     
     float3 LightDirection;
-    int XX2;
+    int XX4;
 }
 struct MeshVertexIn
 {

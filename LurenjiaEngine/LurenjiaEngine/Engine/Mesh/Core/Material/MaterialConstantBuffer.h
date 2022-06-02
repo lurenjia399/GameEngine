@@ -15,8 +15,8 @@ public:
 
 	UINT32 MaterialType;
 	float Roughness;
-	int XX;	//ռλ
-	int XX2;//ռλ
+	int XX;	//占位
+	int XX2;//占位
 
 	XMFLOAT4X4 TransformInformation;
 };

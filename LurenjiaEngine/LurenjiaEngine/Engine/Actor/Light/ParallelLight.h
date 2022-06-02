@@ -13,8 +13,12 @@ class AParallelLight : public AActor, public IDirectXDeviceInterface
 public:
 	AParallelLight();
 
+	void Tick(float DeltaTime) override;
 public:
 	//获取组件变换相关
+	XMFLOAT3 GetComponentPosition();
+	fvector_3d GetComponentRotation();
+	XMFLOAT3 GetComponentScale();
 	void SetComponentPosition(const XMFLOAT3& InPosition);
 	void SetComponentRotation(const fvector_3d& InRotation);
 	void SetComponentScale(const XMFLOAT3& InScale);

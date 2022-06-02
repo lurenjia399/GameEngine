@@ -65,6 +65,7 @@ int CDirectXRenderingEngine::PostInit()
 		//XMVECTOR Position = XMLoadFloat3(&newPos);
 		////从Positon点沿着Up方向移动AmountMovement距离
 		//XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Up, Position));
+
 		ParallelLight->SetComponentPosition(XMFLOAT3(-30.f, 0.f, 0.f));
 		//ParallelLight->SetComponentRotation(fvector_3d(0.f, 0.f, 90.0f));
 	}
@@ -80,7 +81,7 @@ int CDirectXRenderingEngine::PostInit()
 			PlaneMateria->ResetGuid("PlaneMateria");//给创建的材质设置Guid
 
 			PlaneMateria->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
-			PlaneMateria->SetMaterialType(EMaterialType::HalfLambert);
+			PlaneMateria->SetMaterialType(EMaterialType::Lambert);
 			PlaneMesh->SetSubMaterials(0, PlaneMateria);
 		}
 	}
