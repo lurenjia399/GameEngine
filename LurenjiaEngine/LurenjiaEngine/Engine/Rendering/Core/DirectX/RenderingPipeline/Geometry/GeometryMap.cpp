@@ -143,15 +143,17 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 		}
 	}
 
+	
+	//更新shader中的灯光 常量缓冲区
+	FLightConstantBuffer lightTransformation;
 	int lightCount = GetLightManage()->Lights.size();
 	for (int i = 0; i < lightCount; ++i)
 	{
-		//更新shader中的灯光 常量缓冲区
-		FLightConstantBuffer lightTransformation;
-		lightTransformation.LightDirection = GetLightManage()->Lights[i]->GetForward();
-		LightConstantBufferView.Update(i, &lightTransformation);
+		lightTransformation.SceneLight[i].LightDirection = GetLightManage()->Lights[i]->GetForward();
+		//GetLightManage()->Lights[i]->SetLightIntensity(XMFLOAT3(0.5f, 0.5f, 0.5f));
+		lightTransformation.SceneLight[i].LightIntensity = GetLightManage()->Lights[i]->GetLightIntensity();
 	}
-
+	LightConstantBufferView.Update(0, &lightTransformation);
 	
 
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵

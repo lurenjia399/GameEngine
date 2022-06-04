@@ -60,16 +60,14 @@ int CDirectXRenderingEngine::PostInit()
 
 	if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 	{
-		//XMVECTOR AmountMovement = XMVectorReplicate(InValue * KeyboardSensitity);
-		//XMVECTOR Up = XMLoadFloat3(&up);
-		//XMVECTOR Position = XMLoadFloat3(&newPos);
-		////从Positon点沿着Up方向移动AmountMovement距离
-		//XMStoreFloat3(&newPos, XMVectorMultiplyAdd(AmountMovement, Up, Position));
-
-		ParallelLight->SetComponentPosition(XMFLOAT3(-30.f, 0.f, 0.f));
+		ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
 		//ParallelLight->SetComponentRotation(fvector_3d(0.f, 0.f, 90.0f));
 	}
-
+	if (AParallelLight* ParallelLight2 = World->CreateActor<AParallelLight>("AParallelLight2"))
+	{
+		ParallelLight2->SetPosition(XMFLOAT3(0.f, -30.f, 0.f));
+		ParallelLight2->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
+	}
 
 	if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
 	{

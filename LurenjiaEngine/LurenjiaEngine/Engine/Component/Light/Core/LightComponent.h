@@ -12,6 +12,11 @@ class CLightComponent : public CTransformationComponent, public IDirectXDeviceIn
 public:
 	CLightComponent();
 	~CLightComponent();
+
+	void SetLightIntensity(XMFLOAT3 InLightIntensity);
+	XMFLOAT3 GetLightIntensity();
+private:
+	XMFLOAT3 LightIntensity;
 };
 
 #endif // !CLightComponent

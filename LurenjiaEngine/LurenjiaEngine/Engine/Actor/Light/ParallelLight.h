@@ -14,14 +14,19 @@ public:
 	AParallelLight();
 
 	void Tick(float DeltaTime) override;
+	void SetPosition(const XMFLOAT3& InPosition) override;
+	void SetRotation(const fvector_3d& InRotation) override;
+	void SetScale(const XMFLOAT3& InScale) override;
+
+	void SetLightIntensity(const XMFLOAT3& InLightIntensity);
 public:
 	//获取组件变换相关
 	XMFLOAT3 GetComponentPosition();
 	fvector_3d GetComponentRotation();
 	XMFLOAT3 GetComponentScale();
-	void SetComponentPosition(const XMFLOAT3& InPosition);
-	void SetComponentRotation(const fvector_3d& InRotation);
-	void SetComponentScale(const XMFLOAT3& InScale);
+
+	XMFLOAT3 GetLightIntensity();
+	
 private:
 	CParallelLightComponent* ParallelLightComponent;
 	CMeshComponent* ParallelLightMeshComponent;

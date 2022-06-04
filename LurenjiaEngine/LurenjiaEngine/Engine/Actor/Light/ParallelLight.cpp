@@ -34,9 +34,32 @@ AParallelLight::AParallelLight()
 void AParallelLight::Tick(float DeltaTime)
 {
 	fvector_3d rotation = fvector_3d(0.f, DeltaTime * 40, 0.f);
-	rotation = fvector_3d(0.f, DeltaTime * 40, DeltaTime * 40);
+	rotation = fvector_3d(DeltaTime * 40, 0.f, DeltaTime * 40);
 	//rotation = fvector_3d(DeltaTime * 40, 0.f, 0.f);
-	SetComponentRotation(rotation);
+	//SetRotation(rotation);
+}
+
+void AParallelLight::SetPosition(const XMFLOAT3& InPosition)
+{
+	ParallelLightComponent->SetPosition(InPosition);
+	ParallelLightMeshComponent->SetPosition(InPosition);
+}
+
+void AParallelLight::SetRotation(const fvector_3d& InRotation)
+{
+	ParallelLightComponent->SetRotation(InRotation);
+	ParallelLightMeshComponent->SetRotation(InRotation);
+}
+
+void AParallelLight::SetScale(const XMFLOAT3& InScale)
+{
+	ParallelLightComponent->SetScale(InScale);
+	ParallelLightMeshComponent->SetScale(InScale);
+}
+
+void AParallelLight::SetLightIntensity(const XMFLOAT3& InLightIntensity)
+{
+	ParallelLightComponent->SetLightIntensity(InLightIntensity);
 }
 
 XMFLOAT3 AParallelLight::GetComponentPosition()
@@ -54,20 +77,8 @@ XMFLOAT3 AParallelLight::GetComponentScale()
 	return ParallelLightComponent->GetScale();
 }
 
-void AParallelLight::SetComponentPosition(const XMFLOAT3& InPosition)
+XMFLOAT3 AParallelLight::GetLightIntensity()
 {
-	ParallelLightComponent->SetPosition(InPosition);
-	ParallelLightMeshComponent->SetPosition(InPosition);
+	return ParallelLightComponent->GetLightIntensity();
 }
 
-void AParallelLight::SetComponentRotation(const fvector_3d& InRotation)
-{
-	ParallelLightComponent->SetRotation(InRotation);
-	ParallelLightMeshComponent->SetRotation(InRotation);
-}
-
-void AParallelLight::SetComponentScale(const XMFLOAT3& InScale)
-{
-	ParallelLightComponent->SetScale(InScale);
-	ParallelLightMeshComponent->SetScale(InScale);
-}
