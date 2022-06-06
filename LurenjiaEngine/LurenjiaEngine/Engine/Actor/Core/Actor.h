@@ -14,15 +14,15 @@ public:
 	virtual void SetRotation(const fvector_3d& InRotation);
 	virtual void SetScale(const XMFLOAT3& InScale);
 
-	XMFLOAT3 GetPosition() const;
-	fvector_3d GetRotation() const;
-	XMFLOAT3 GetScale() const;
-	XMFLOAT3 GetForward() const;
+	virtual XMFLOAT3 GetPosition() const;
+	virtual fvector_3d GetRotation() const;
+	virtual XMFLOAT3 GetScale() const;
+	virtual XMFLOAT3 GetForward() const;
 	
-	XMFLOAT3 GetRight() const;
-	XMFLOAT3 GetUp() const;
+	virtual XMFLOAT3 GetRight() const;
+	virtual XMFLOAT3 GetUp() const;
 
-	FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
+	virtual FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
 protected:
 	CVARIABLE()
 	CTransformationComponent* TransformationComponent;

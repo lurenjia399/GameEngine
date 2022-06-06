@@ -51,7 +51,7 @@ void ACamera::BulidViewMatrix(float DeltaTime)
 		XMVECTOR forward = XMLoadFloat3(&cameraForward);
 		forward = XMVector3Normalize(forward);
 
-		int per = floor(verticalAngle / XM_PI);
+		int per = (int)floor(verticalAngle / XM_PI);
 		XMFLOAT3 WordUpfloat3 = XMFLOAT3(0, 0, 1);
 		if (verticalAngle > 0)
 		{

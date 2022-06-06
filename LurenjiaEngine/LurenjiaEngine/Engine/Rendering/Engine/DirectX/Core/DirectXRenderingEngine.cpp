@@ -4,6 +4,7 @@
 #include "../../../../Mesh/SphereMesh.h"
 #include "../../../../Mesh/Core/Material/Material.h"
 #include "../../../../Actor/Light/ParallelLight.h"
+#include "../../../../Actor/Light/SpotLight.h"
 
 
 enum class EMaterialType;
@@ -58,15 +59,23 @@ int CDirectXRenderingEngine::PostInit()
 	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
 	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
 
-	if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+	//if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+	//{
+	//	ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
+	//	//ParallelLight->SetComponentRotation(fvector_3d(0.f, 0.f, 90.0f));
+	//}
+	//if (AParallelLight* ParallelLight2 = World->CreateActor<AParallelLight>("AParallelLight2"))
+	//{
+	//	ParallelLight2->SetPosition(XMFLOAT3(0.f, -30.f, 0.f));
+	//	ParallelLight2->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
+	//}
+
+	if (ASpotLight* SpotLight = World->CreateActor<ASpotLight>("ASpotLight"))
 	{
-		ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
-		//ParallelLight->SetComponentRotation(fvector_3d(0.f, 0.f, 90.0f));
-	}
-	if (AParallelLight* ParallelLight2 = World->CreateActor<AParallelLight>("AParallelLight2"))
-	{
-		ParallelLight2->SetPosition(XMFLOAT3(0.f, -30.f, 0.f));
-		ParallelLight2->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
+		SpotLight->SetLightStartAttenuation(5.f);
+		SpotLight->SetLightEndAttenuation(100.f);
+		SpotLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
+		//SpotLight->SetRotation(fvector_3d(0.f, 0.f, 90.f));
 	}
 
 	if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
@@ -121,7 +130,7 @@ int CDirectXRenderingEngine::PostInit()
 
 			SphereMaterial_3->SetBaseColor(XMFLOAT4(191.f / 255.f, 173.f / 255.f, 111.f / 255.f, 1.0f));
 			SphereMaterial_3->SetMaterialType(EMaterialType::Phone);
-			SphereMaterial_3->SetRoughness(0.15f);
+			SphereMaterial_3->SetRoughness(0.8f);
 			SphereMesh_3->SetSubMaterials(0, SphereMaterial_3);
 
 		}
@@ -134,9 +143,9 @@ int CDirectXRenderingEngine::PostInit()
 		{
 			SphereMaterial_4->ResetGuid("SphereMaterial_4");//给创建的材质设置Guid
 
-			SphereMaterial_4->SetBaseColor(XMFLOAT4(0.6f, 0.6f, 0.6f, 1.0f));
+			SphereMaterial_4->SetBaseColor(XMFLOAT4(220.f / 255.f, 223.f / 255.f, 227.f / 255.f, 1.f));
 			SphereMaterial_4->SetMaterialType(EMaterialType::BlinnPhone);
-			SphereMaterial_4->SetRoughness(0.15f);
+			SphereMaterial_4->SetRoughness(0.8f);
 			SphereMesh_4->SetSubMaterials(0, SphereMaterial_4);
 
 		}

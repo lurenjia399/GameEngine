@@ -47,8 +47,8 @@ private:
 	bool bLeftMouseDown = false;
 	bool bFoucsMode = false;
 
-	float MouseSensitity = 0.5;
-	float KeyboardSensitity = 1.3;
+	float MouseSensitity = 0.5f;
+	float KeyboardSensitity = 1.3f;
 private:
 	float Radius;			//ÇòÃæ°ë¾¶
 	float horizontalAngle;	//Ë®Æ½½Ç

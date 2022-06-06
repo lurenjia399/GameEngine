@@ -100,61 +100,49 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         
         if (MaterialType == 1)//兰伯特
         {
-            Ambient = Material.BaseColor * AmbientLight;
-            
-            LightStrength += LightIdensity * pow(max(LdotN, 0.f), 2.f);
-            LightStrength.w = 0.f;
-            diffuse = Material.BaseColor * LightStrength;
+            Ambient = AmbientLight;
+            diffuse = pow(max(LdotN, 0.f), 2.f);
         }
         else if (MaterialType == 2)//半兰伯特
         {
-            Ambient = Material.BaseColor * AmbientLight;
-            
-            LightStrength += LightIdensity * (LdotN * 0.5f + 0.5f);
-            LightStrength.w = 0.f;
-            diffuse = Material.BaseColor * LightStrength;
+            Ambient = AmbientLight;
+            diffuse = LdotN * 0.5f + 0.5f;
         }
         else if (MaterialType == 3)//phone
         {
             
-            Ambient = Material.BaseColor * AmbientLight;
-            
-            LightStrength = LightIdensity * (LdotN * 0.5f + 0.5f);
-            LightStrength.w = 0.f;
-            diffuse = Material.BaseColor * LightStrength;
+            Ambient = AmbientLight;
+            diffuse = pow(max(LdotN, 0.f), 2.f);
             
             //float3 reflectDirection = 2.0f * LdotN * N - L;
             float3 reflectDirection = reflect(-L, N);
             float MaterialShininess = 1.f - saturate(Roughness);
             float M = max(MaterialShininess * 100.f, 1.0f);
-            specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), V), 0.f), M);
+            specular = (M + 2.0f) * pow(max(dot(V, reflectDirection), 0.f), M) / 3.1415926;
         }
         else if (MaterialType == 4)//blinnPhone
         {
-            Ambient = Material.BaseColor * AmbientLight;
+            Ambient =AmbientLight;
+            diffuse = pow(max(LdotN, 0.f), 2.f);
             
-            LightStrength = LightIdensity * (LdotN * 0.5f + 0.5f);
-            LightStrength.w = 0.f;
-            diffuse = Material.BaseColor * (LdotN * 0.5f + 0.5f);
-            
-            float3 H = L + V; //摄像机方向和光线入射方向的半程向量
+            float3 H = normalize(L + V); //摄像机方向和光线入射方向的半程向量
             float MaterialShininess = 1.f - saturate(Roughness);
-            float M = max(MaterialShininess * 100.f, 1.0f);
-            specular = Material.BaseColor * pow(saturate(dot(N, normalize(H))), M);
+            float M = MaterialShininess * 100.f;
+            specular = (M + 2.0f) * pow(max(dot(N, H), 0.f), M) / 3.1415926;
 
         }
         else if (MaterialType == 5)//wrapLight,类似模拟皮肤
         {
             float w = 3.f; //w为0 是兰伯特材质，w为1 是半兰伯特
-            Ambient = Material.BaseColor * AmbientLight;
+            Ambient = AmbientLight;
             
-            LightStrength = LightIdensity * saturate(((LdotN + w) / (1.f + w)));
-            LightStrength.w = 0.f;
-            diffuse = Material.BaseColor * LightStrength;
+            //LightStrength = LightIdensity * saturate(((LdotN + w) / (1.f + w)));
+            //LightStrength.w = 0.f;
+            diffuse = saturate(((LdotN + w) / (1.f + w)));
         }
         else if (MaterialType == 6)//minnaertLight
         {
-            Ambient += Material.BaseColor * AmbientLight;
+            Ambient = AmbientLight;
             float NdotL = dot(N, L);
             float VdotN = dot(V, N);
         
@@ -163,88 +151,94 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         
             /*有粗糙度的实现*/
             float MaterialShininess = saturate(Roughness);
-            diffuse = Material.BaseColor * saturate(NdotL) * pow(saturate(NdotL) * saturate(VdotN), MaterialShininess);
+            diffuse = pow(saturate(NdotL), 2.f) * pow(pow(saturate(NdotL), 2.f) * saturate(VdotN), MaterialShininess);
         }
         else if (MaterialType == 7)//BandedLight
         {
-            Ambient = Material.BaseColor * AmbientLight;
+            Ambient = AmbientLight;
             float UpDotValue = (LdotN + 1.0f) * 0.5f;
             float layout = 4.0f;
-            UpDotValue = floor(UpDotValue * layout) / layout;
-            diffuse = Material.BaseColor * UpDotValue;
+            diffuse = floor(UpDotValue * layout) / layout;
+            LightStrength = diffuse;
+            continue;
 
         }
         else if (MaterialType == 8)//渐变Banded
         {
-            Ambient = Material.BaseColor * AmbientLight;
+            Ambient = AmbientLight;
             float UpDotValue = (LdotN + 1.0f) * 0.5f;
             float layout = 7.0f;
-            UpDotValue = floor(UpDotValue * layout) / layout;
-        
+            diffuse = floor(UpDotValue * layout) / layout;
+            LightStrength = diffuse;
+            
             float4 color = { 245.f / 255.f, 88.f / 255.f, 0.f, 1.0f };
             Material.BaseColor = lerp(Material.BaseColor, color, 1 - LdotN); //Material.BaseColor * (1 - LdotN) + color * LdotN;
-        
-            diffuse = Material.BaseColor * UpDotValue;
+            
+            continue;
         }
         else if (MaterialType == 9)//混合了多重效果的Banded
         {
-        //环境光
-            Ambient = Material.BaseColor * AmbientLight;
+            //环境光
+            Ambient = AmbientLight;
         
-        //分层Banded
+            //分层Banded
             float UpDotValue = (LdotN + 1.0f) * 0.5f;
             float layout = 4.0f;
-            UpDotValue = floor(UpDotValue * layout) / layout;
-            diffuse = Material.BaseColor * UpDotValue;
-        
-        //Fresnel
+            diffuse = floor(UpDotValue * layout) / layout;
+            LightStrength = diffuse;
+            
+            //Fresnel
             float3 F0 = { 0.02f, 0.03f, 0.04f }; //反射率
             float M = 5.0f;
             float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
-            Fresnel = Material.BaseColor * float4(FresnelSchlickMethod(F0, N, V, M), 1.0f);
+            Fresnel = float4(FresnelSchlickMethod(F0, N, V, M), 1.0f);
         
-        //phone
+            //phone
             float3 reflectDirection = reflect(-L, N);
             float MaterialShininess = 1.f - saturate(Roughness);
             M = max(MaterialShininess * 100.f, 1.0f);
-            specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), V), 0.f), M) / 0.0314;
+            specular = pow(max(dot(normalize(reflectDirection), V), 0.f), M) / 0.0314;
+            
+            continue;
         }
         else if (MaterialType == 10)//sss
         {
-        //环境光
-            Ambient = Material.BaseColor * AmbientLight;
+            //环境光
+            Ambient = AmbientLight;
         
-        //漫反射
-            float w = 1.2f; //w为0 是兰伯特材质，w为1 是半兰伯特
-            diffuse = Material.BaseColor * saturate(((LdotN + w) / (1.f + w)));
+            //漫反射
+            float w = 1.8f; //w为0 是兰伯特材质，w为1 是半兰伯特
+            diffuse = saturate(((LdotN + w) / (1.f + w)));
         
-        //高光
+            //高光
             float3 reflectDirection = reflect(-L, N);
             float MaterialShininess = 1.f - saturate(Roughness);
             float M = max(MaterialShininess * 100.f, 1.0f);
-            specular = Material.BaseColor * pow(max(dot(normalize(reflectDirection), V), 0.f), M);
+            specular = pow(max(dot(normalize(reflectDirection), V), 0.f), M);
         
-        //次表面散射
+            //次表面散射
             float sssValue = 1.3f;
             float TransmissionIntensity = 2.f;
             float TransmissionScope = 1.5f;
             float3 Half = -normalize(L + N * sssValue);
             LdotN = pow(saturate(dot(V, Half)), TransmissionScope) * TransmissionIntensity;
-            diffuse = diffuse + Material.BaseColor * LdotN;
+            diffuse = diffuse + LdotN;
         
         
         }
         else if (MaterialType == 11)//各向异性
         {
 
-            Ambient = Material.BaseColor * AmbientLight;
+            Ambient = AmbientLight;
         
         }
         else if (MaterialType == 12)//OrenNayar Lighting
         {
-            Ambient = Material.BaseColor * AmbientLight;
+            Ambient = AmbientLight;
         
-            LdotN = saturate(dot(N, L)); //光线与法线夹角
+            
+            LdotN = pow(saturate(dot(N, L)), 2.f); //光线与法线夹角
+            
             float VdotN = saturate(dot(N, V)); //视线与法线夹角
         
             float phi_r = length(V - N * VdotN) * length(L - N * LdotN);
@@ -258,8 +252,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             float A = 1.f - 0.5f * (iRoughness / (iRoughness + 0.33f));
             float B = 0.45f * (iRoughness / (iRoughness + 0.09f));
         
-            float diffuse_value = LdotN * (A + B * max(0, phi_r) * sin(Alpha) * tan(Beta));
-            diffuse += Material.BaseColor * diffuse_value;
+            diffuse = LdotN * (A + B * max(0, phi_r) * sin(Alpha) * tan(Beta));
         
         }
         else if (MaterialType == 100)//菲涅尔
@@ -267,15 +260,18 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             float3 F0 = { 0.2f, 0.3f, 0.4f }; //反射率
             float M = 1.0f;
             float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
-            Fresnel += Material.BaseColor * float4(FresnelSchlickMethod(F0, normalize(mvOut.Normal), normalize(cameraDirection), M), 1.0f);
+            Fresnel = float4(FresnelSchlickMethod(F0, normalize(mvOut.Normal), normalize(cameraDirection), M), 1.0f);
         }
         else //默认
         {
 
         }
         
+        LightStrength += LightIdensity * diffuse;
+        LightStrength.w = 0.f;
+        
     }
         
-    mvOut.Color = Ambient + diffuse + specular + Fresnel;
+    mvOut.Color = Material.BaseColor * Ambient + Material.BaseColor * LightStrength + Material.BaseColor * specular + Material.BaseColor * Fresnel;
     return mvOut.Color;
 }

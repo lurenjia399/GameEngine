@@ -10,6 +10,8 @@
 #include "../../../../../Core/World.h"
 #include "../../../../../Manage/LightManage.h"
 #include "../../../../../Component/Light/Core/LightComponent.h"
+#include "../../../../../Component/Light/SpotLightComponent.h"
+#include "../../../../../Component/Light/ParallelLightComponent.h"
 
 FGeometryMap::FGeometryMap()
 {
@@ -149,9 +151,26 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 	int lightCount = GetLightManage()->Lights.size();
 	for (int i = 0; i < lightCount; ++i)
 	{
-		lightTransformation.SceneLight[i].LightDirection = GetLightManage()->Lights[i]->GetForward();
-		//GetLightManage()->Lights[i]->SetLightIntensity(XMFLOAT3(0.5f, 0.5f, 0.5f));
-		lightTransformation.SceneLight[i].LightIntensity = GetLightManage()->Lights[i]->GetLightIntensity();
+		if (CLightComponent* LightComponent = GetLightManage()->Lights[i])
+		{
+			lightTransformation.SceneLight[i].LightDirection = LightComponent->GetForward();
+			lightTransformation.SceneLight[i].LightIntensity = LightComponent->GetLightIntensity();
+			lightTransformation.SceneLight[i].Position = LightComponent->GetPosition();
+			switch (LightComponent->GetLightType())
+			{
+			case ELightType::ParallelLight:
+				break;
+			case ELightType::SpotLight:
+				if (CSpotLightComponent* SpotLightComponent = dynamic_cast<CSpotLightComponent*>(LightComponent))
+				{
+					lightTransformation.SceneLight[i].StartAttenuation = SpotLightComponent->GetStartAttenuation();
+					lightTransformation.SceneLight[i].EndAttenuation = SpotLightComponent->GetEndAttenuation();
+					lightTransformation.SceneLight[i].LightType = (int)ELightType::SpotLight;
+				}
+			default:
+				break;
+			}
+		}
 	}
 	LightConstantBufferView.Update(0, &lightTransformation);
 	

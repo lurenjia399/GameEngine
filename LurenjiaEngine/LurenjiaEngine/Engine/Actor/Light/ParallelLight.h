@@ -21,15 +21,16 @@ public:
 	void SetLightIntensity(const XMFLOAT3& InLightIntensity);
 public:
 	//获取组件变换相关
-	XMFLOAT3 GetComponentPosition();
-	fvector_3d GetComponentRotation();
-	XMFLOAT3 GetComponentScale();
+	XMFLOAT3 GetPosition() const override;
+	fvector_3d GetRotation() const override;
+	XMFLOAT3 GetScale() const override;
+
 
 	XMFLOAT3 GetLightIntensity();
 	
 private:
 	CParallelLightComponent* ParallelLightComponent;
-	CMeshComponent* ParallelLightMeshComponent;
+	
 };
 
 

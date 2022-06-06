@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef Material
-#define Material
+#ifndef Material_H
+#define Material_H
 
 #include "../../../Core/CoreObject/CoreMinimalObject.h"
 #include "MaterialType.h"

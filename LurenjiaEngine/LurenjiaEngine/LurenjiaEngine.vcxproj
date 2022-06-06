@@ -21,13 +21,16 @@
   <ItemGroup>
     <ClCompile Include="Engine\Actor\Core\Actor.cpp" />
     <ClCompile Include="Engine\Actor\Light\ParallelLight.cpp" />
+    <ClCompile Include="Engine\Actor\Light\SpotLight.cpp" />
     <ClCompile Include="Engine\Component\Core\Component.cpp" />
     <ClCompile Include="Engine\Component\InputComponent.cpp" />
     <ClCompile Include="Engine\Component\Input\Input.cpp" />
     <ClCompile Include="Engine\Component\Input\InputType.cpp" />
     <ClCompile Include="Engine\Component\Light\Core\LightComponent.cpp" />
     <ClCompile Include="Engine\Component\Light\Core\LightConstantBuffer.cpp" />
+    <ClCompile Include="Engine\Component\Light\Core\LightType.cpp" />
     <ClCompile Include="Engine\Component\Light\ParallelLightComponent.cpp" />
+    <ClCompile Include="Engine\Component\Light\SpotLightComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\BoxMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\Core\MeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\CustomMeshComponent.cpp" />
@@ -122,6 +125,7 @@
   <ItemGroup>
     <ClInclude Include="Engine\Actor\Core\Actor.h" />
     <ClInclude Include="Engine\Actor\Light\ParallelLight.h" />
+    <ClInclude Include="Engine\Actor\Light\SpotLight.h" />
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="Engine\Component\Core\Component.h" />
     <ClInclude Include="Engine\Component\InputComponent.h" />
@@ -129,7 +133,9 @@
     <ClInclude Include="Engine\Component\Input\InputType.h" />
     <ClInclude Include="Engine\Component\Light\Core\LightComponent.h" />
     <ClInclude Include="Engine\Component\Light\Core\LightConstantBuffer.h" />
+    <ClInclude Include="Engine\Component\Light\Core\LightType.h" />
     <ClInclude Include="Engine\Component\Light\ParallelLightComponent.h" />
+    <ClInclude Include="Engine\Component\Light\SpotLightComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\BoxMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\Core\MeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\CustomMeshComponent.h" />

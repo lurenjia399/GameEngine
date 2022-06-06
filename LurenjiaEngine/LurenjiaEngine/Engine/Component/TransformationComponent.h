@@ -6,13 +6,13 @@ class CTransformationComponent : public CCoreMinimalObject
 public:
 	CTransformationComponent();
 
-	void SetPosition(const XMFLOAT3& InPosition);
-	void SetRotation(const fvector_3d& InRotation);
-	void SetScale(const XMFLOAT3& InScale);
+	virtual void SetPosition(const XMFLOAT3& InPosition);
+	virtual void SetRotation(const fvector_3d& InRotation);
+	virtual void SetScale(const XMFLOAT3& InScale);
 
-	void SetForward(const XMFLOAT3& InForward);
-	void SetRight(const XMFLOAT3& InRight);
-	void SetUp(const XMFLOAT3& InUp);
+	virtual void SetForward(const XMFLOAT3& InForward);
+	virtual void SetRight(const XMFLOAT3& InRight);
+	virtual void SetUp(const XMFLOAT3& InUp);
 
 	XMFLOAT3& GetPosition(){ return Position; }
 	fvector_3d GetRotation(){ return fvector_3d(Rotation.x, Rotation.y, Rotation.z); }
