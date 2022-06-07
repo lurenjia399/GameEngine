@@ -87,16 +87,16 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     FMaterial Material;
     Material.BaseColor = BaseColor;
     
-    float4 LightStrength = { 0.f, 0.f, 0.f, 1.f };
-    
+    float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
     for (int i = 0; i < 16; i++)
     {
+        //如果当前初始光照强度为0
         if (length(SceneLight[i].LightIntensity.xyz) == 0.f) continue;
-        
-        float3 L = normalize(-SceneLight[i].LightDirection);
+        //计算当前光照方向
+        float3 L = normalize(-GetLightDirection(SceneLight[i], mvOut.worldPosition.xyz));
         float LdotN = dot(L, N); //顶点法向和光照方向点积
-        
-        float4 LightIdensity = float4(SceneLight[i].LightIntensity.xyz, 1.0f);
+        //计算光照在当前片元位置的光照强度
+        float4 LightStrength = CalculateLightStrength(SceneLight[i], N, mvOut.worldPosition.xyz, L);
         
         if (MaterialType == 1)//兰伯特
         {
@@ -135,9 +135,6 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         {
             float w = 3.f; //w为0 是兰伯特材质，w为1 是半兰伯特
             Ambient = AmbientLight;
-            
-            //LightStrength = LightIdensity * saturate(((LdotN + w) / (1.f + w)));
-            //LightStrength.w = 0.f;
             diffuse = saturate(((LdotN + w) / (1.f + w)));
         }
         else if (MaterialType == 6)//minnaertLight
@@ -158,8 +155,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             Ambient = AmbientLight;
             float UpDotValue = (LdotN + 1.0f) * 0.5f;
             float layout = 4.0f;
-            diffuse = floor(UpDotValue * layout) / layout;
-            LightStrength = diffuse;
+            LightStrengths = floor(UpDotValue * layout) / layout;
             continue;
 
         }
@@ -168,8 +164,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             Ambient = AmbientLight;
             float UpDotValue = (LdotN + 1.0f) * 0.5f;
             float layout = 7.0f;
-            diffuse = floor(UpDotValue * layout) / layout;
-            LightStrength = diffuse;
+            LightStrengths = floor(UpDotValue * layout) / layout;
             
             float4 color = { 245.f / 255.f, 88.f / 255.f, 0.f, 1.0f };
             Material.BaseColor = lerp(Material.BaseColor, color, 1 - LdotN); //Material.BaseColor * (1 - LdotN) + color * LdotN;
@@ -184,8 +179,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             //分层Banded
             float UpDotValue = (LdotN + 1.0f) * 0.5f;
             float layout = 4.0f;
-            diffuse = floor(UpDotValue * layout) / layout;
-            LightStrength = diffuse;
+            LightStrengths = floor(UpDotValue * layout) / layout;
             
             //Fresnel
             float3 F0 = { 0.02f, 0.03f, 0.04f }; //反射率
@@ -267,11 +261,11 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 
         }
         
-        LightStrength += LightIdensity * diffuse;
-        LightStrength.w = 0.f;
+        LightStrengths += LightStrength * diffuse ;
+        LightStrengths.w = 1.f;
         
     }
         
-    mvOut.Color = Material.BaseColor * Ambient + Material.BaseColor * LightStrength + Material.BaseColor * specular + Material.BaseColor * Fresnel;
+    mvOut.Color = Material.BaseColor * Ambient + LightStrengths * (Material.BaseColor + Material.BaseColor * specular) + Material.BaseColor * Fresnel;
     return mvOut.Color;
 }

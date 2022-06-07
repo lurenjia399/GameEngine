@@ -321,6 +321,9 @@
     <ClCompile Include="Engine\Component\Light\Core\LightType.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Actor\Light\Core\Light.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -690,6 +693,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Light\Core\LightType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Light\Core\Light.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

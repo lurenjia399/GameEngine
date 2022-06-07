@@ -72,9 +72,10 @@ int CDirectXRenderingEngine::PostInit()
 
 	if (ASpotLight* SpotLight = World->CreateActor<ASpotLight>("ASpotLight"))
 	{
-		SpotLight->SetLightStartAttenuation(5.f);
-		SpotLight->SetLightEndAttenuation(100.f);
-		SpotLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
+		SpotLight->SetLightIntensity(XMFLOAT3(7.f, 7.f, 7.f));
+		SpotLight->SetLightStartAttenuation(1.f);
+		SpotLight->SetLightEndAttenuation(140.f);
+		SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 30.f));
 		//SpotLight->SetRotation(fvector_3d(0.f, 0.f, 90.f));
 	}
 
@@ -82,7 +83,7 @@ int CDirectXRenderingEngine::PostInit()
 	{
 		PlaneMesh->SetMeshComponent("PlaneMeshComponent", 4.f, 3.f, 20, 20);
 		PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
-		PlaneMesh->SetComponentScale(XMFLOAT3(6.f, 7.f, 6.f));
+		PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 30.f, 1.f));
 		if (CMaterial* PlaneMateria = new CMaterial())
 		{
 			PlaneMateria->ResetGuid("PlaneMateria");//给创建的材质设置Guid

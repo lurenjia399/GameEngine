@@ -153,12 +153,16 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 	{
 		if (CLightComponent* LightComponent = GetLightManage()->Lights[i])
 		{
-			lightTransformation.SceneLight[i].LightDirection = LightComponent->GetForward();
 			lightTransformation.SceneLight[i].LightIntensity = LightComponent->GetLightIntensity();
 			lightTransformation.SceneLight[i].Position = LightComponent->GetPosition();
 			switch (LightComponent->GetLightType())
 			{
 			case ELightType::ParallelLight:
+				if (CParallelLightComponent* ParallelLightComponent = dynamic_cast<CParallelLightComponent*>(LightComponent))
+				{
+					lightTransformation.SceneLight[i].LightDirection = ParallelLightComponent->GetForward();
+					lightTransformation.SceneLight[i].LightType = (int)ELightType::ParallelLight;
+				}
 				break;
 			case ELightType::SpotLight:
 				if (CSpotLightComponent* SpotLightComponent = dynamic_cast<CSpotLightComponent*>(LightComponent))
@@ -167,6 +171,7 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 					lightTransformation.SceneLight[i].EndAttenuation = SpotLightComponent->GetEndAttenuation();
 					lightTransformation.SceneLight[i].LightType = (int)ELightType::SpotLight;
 				}
+				break;
 			default:
 				break;
 			}
