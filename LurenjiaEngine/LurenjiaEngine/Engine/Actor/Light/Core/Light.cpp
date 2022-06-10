@@ -5,6 +5,10 @@ ALight::ALight()
 {
 }
 
+void ALight::Tick(float DeltaTime)
+{
+}
+
 void ALight::SetPosition(const XMFLOAT3& InPosition)
 {
 	LightComponent->SetPosition(InPosition);
@@ -18,6 +22,11 @@ void ALight::SetRotation(const fvector_3d& InRotation)
 void ALight::SetScale(const XMFLOAT3& InScale)
 {
 	LightComponent->SetScale(InScale);
+}
+
+void ALight::SetLightIntensity(const XMFLOAT3& InLightIntensity)
+{
+	LightComponent->SetLightIntensity(InLightIntensity);
 }
 
 XMFLOAT3 ALight::GetPosition() const
@@ -48,4 +57,9 @@ XMFLOAT3 ALight::GetRight() const
 XMFLOAT3 ALight::GetUp() const
 {
 	return LightComponent ? LightComponent->GetUp() : XMFLOAT3(0.f, 0.f, 1.f);
+}
+
+XMFLOAT3 ALight::GetLightIntensity()
+{
+	return LightComponent->GetLightIntensity();
 }

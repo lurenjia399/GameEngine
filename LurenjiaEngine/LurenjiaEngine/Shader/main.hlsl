@@ -261,7 +261,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 
         }
         
-        LightStrengths += LightStrength * diffuse ;
+        LightStrengths += LightStrength * diffuse;
         LightStrengths.w = 1.f;
         
     }

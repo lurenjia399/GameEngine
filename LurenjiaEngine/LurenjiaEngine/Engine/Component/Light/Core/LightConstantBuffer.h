@@ -14,6 +14,11 @@ struct FLight
 
 	XMFLOAT3	Position;               //灯光位置
 	int			LightType;              //灯光类型
+
+	float		ConicalInnerCorner;     //聚光灯锥形内角，弧度制
+	float		ConicalOuterCorner;     //聚光灯锥形外角，弧度制
+	int			XX;                     //占位
+	int			XX2;                    //占位
 };
 
 

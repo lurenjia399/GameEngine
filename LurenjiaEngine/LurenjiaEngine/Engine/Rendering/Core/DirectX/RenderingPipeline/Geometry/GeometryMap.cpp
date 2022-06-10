@@ -12,6 +12,7 @@
 #include "../../../../../Component/Light/Core/LightComponent.h"
 #include "../../../../../Component/Light/SpotLightComponent.h"
 #include "../../../../../Component/Light/ParallelLightComponent.h"
+#include "../../../../../Component/Light/PointLightComponent.h"
 
 FGeometryMap::FGeometryMap()
 {
@@ -164,11 +165,22 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 					lightTransformation.SceneLight[i].LightType = (int)ELightType::ParallelLight;
 				}
 				break;
+			case ELightType::PointLight:
+				if (CPointLightComponent* PointLightComponent = dynamic_cast<CPointLightComponent*>(LightComponent))
+				{
+					lightTransformation.SceneLight[i].StartAttenuation = PointLightComponent->GetStartAttenuation();
+					lightTransformation.SceneLight[i].EndAttenuation = PointLightComponent->GetEndAttenuation();
+					lightTransformation.SceneLight[i].LightType = (int)ELightType::PointLight;
+				}
+				break;
 			case ELightType::SpotLight:
 				if (CSpotLightComponent* SpotLightComponent = dynamic_cast<CSpotLightComponent*>(LightComponent))
 				{
 					lightTransformation.SceneLight[i].StartAttenuation = SpotLightComponent->GetStartAttenuation();
 					lightTransformation.SceneLight[i].EndAttenuation = SpotLightComponent->GetEndAttenuation();
+					lightTransformation.SceneLight[i].LightDirection = SpotLightComponent->GetForward();
+					lightTransformation.SceneLight[i].ConicalInnerCorner = math_utils::angle_to_radian(SpotLightComponent->GetConicalInnerCorner());
+					lightTransformation.SceneLight[i].ConicalOuterCorner = math_utils::angle_to_radian(SpotLightComponent->GetConicalOuterCorner());
 					lightTransformation.SceneLight[i].LightType = (int)ELightType::SpotLight;
 				}
 				break;

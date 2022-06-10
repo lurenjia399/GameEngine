@@ -4,10 +4,10 @@
 #ifndef SpotLightComponent_H
 #define SpotLightComponent_H
 
-#include "Core/LightComponent.h"
+#include "Core/RangeLightComponent.h"
 #include "../../Component/Mesh/Core/MeshComponent.h"
 
-class CSpotLightComponent : public CLightComponent
+class CSpotLightComponent : public CRangeLightComponent
 {
 	typedef CLightComponent super;
 public:
@@ -17,15 +17,17 @@ public:
 	void SetRotation(const fvector_3d& InRotation) override;
 	void SetScale(const XMFLOAT3& InScale) override;
 
-	void SetStartAttenuation(float InStartAttenuation);
-	void SetEndAttenuation(float InEndAttenuation);
+	void SetConicalInnerCorner(float InConicalInnerCorner);
+	void SetConicalOuterCorner(float InConicalOuterCorner);
+
 public:
-	float GetStartAttenuation();
-	float GetEndAttenuation();
+	float GetConicalInnerCorner() const;
+	float GetConicalOuterCorner() const;
+	
 private:
 	CMeshComponent* LightMeshComponent;
-	float StartAttenuation;
-	float EndAttenuation;
+	float		ConicalInnerCorner;     //聚光灯锥形内角，角度
+	float		ConicalOuterCorner;     //聚光灯锥形外角，角度
 };
 
 #endif

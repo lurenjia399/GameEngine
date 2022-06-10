@@ -3,13 +3,14 @@
 
 CSpotLightComponent::CSpotLightComponent()
 	: LightMeshComponent(nullptr)
-	, StartAttenuation(0.f)
-	, EndAttenuation(0.f)
+	, ConicalInnerCorner(0.f)
+	, ConicalOuterCorner(0.f)
 {
 	string path = "../LurenjiaEngine/Asset/SpotMesh.obj";
 	LightMeshComponent = GetMeshManage()->CreateCustomMeshComponent("SpotLightMeshComponent", path);
 	if (LightMeshComponent)
 	{
+		LightMeshComponent->SetRotation(fvector_3d(0.f, 180.f, 0.f));
 		CMaterial* Material = (*LightMeshComponent->GetMaterials())[0];
 		if (Material)
 		{
@@ -40,22 +41,42 @@ void CSpotLightComponent::SetScale(const XMFLOAT3& InScale)
 	LightMeshComponent->SetScale(InScale);
 }
 
-void CSpotLightComponent::SetStartAttenuation(float InStartAttenuation)
+void CSpotLightComponent::SetConicalInnerCorner(float InConicalInnerCorner)
 {
-	StartAttenuation = InStartAttenuation;
+	//若 设置的内角 大于 现有外角
+	//则 同时设置内角和外角，并一样大
+	if (InConicalInnerCorner > ConicalOuterCorner)
+	{
+		ConicalInnerCorner = InConicalInnerCorner;
+		ConicalOuterCorner = InConicalInnerCorner;
+	}
+	else {
+		ConicalInnerCorner = InConicalInnerCorner;
+	}
 }
 
-void CSpotLightComponent::SetEndAttenuation(float InEndAttenuation)
+void CSpotLightComponent::SetConicalOuterCorner(float InConicalOuterCorner)
 {
-	EndAttenuation = InEndAttenuation;
+	//若 设置外角 小于 现有内角
+	//则 同时设置内角和外角，并一样大
+	if (InConicalOuterCorner < ConicalInnerCorner)
+	{
+		ConicalInnerCorner = InConicalOuterCorner;
+		ConicalOuterCorner = InConicalOuterCorner;
+	}
+	else {
+		ConicalOuterCorner = InConicalOuterCorner;
+	}
+	
 }
 
-float CSpotLightComponent::GetStartAttenuation()
+float CSpotLightComponent::GetConicalInnerCorner() const
 {
-	return StartAttenuation;
+	return ConicalInnerCorner;
 }
 
-float CSpotLightComponent::GetEndAttenuation()
+float CSpotLightComponent::GetConicalOuterCorner() const
 {
-	return EndAttenuation;
+	return ConicalOuterCorner;
 }
+

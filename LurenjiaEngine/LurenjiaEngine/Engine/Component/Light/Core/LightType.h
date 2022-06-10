@@ -6,7 +6,8 @@
 enum class ELightType
 {
 	ParallelLight,			//平行光
-	SpotLight,				//点光源
+	PointLight,				//点光源
+	SpotLight,				//聚光灯
 };
 
 #endif // !LightType_H

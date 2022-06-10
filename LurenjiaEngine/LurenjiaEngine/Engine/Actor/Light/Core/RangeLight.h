@@ -1,15 +1,15 @@
 #pragma once
 
-#ifndef Light_H
-#define Light_H
+#ifndef RangeLight_H
+#define RangeLight_H
 
 #include "../../Core/Actor.h"
-#include "../../../Component/Light/Core/LightComponent.h"
+#include "../../../Component/Light/Core/RangeLightComponent.h"
 
-class ALight : public AActor
+class ARangeLight : public AActor
 {
 public:
-	ALight();
+	ARangeLight();
 public:
 	void Tick(float DeltaTime) override;
 	void SetPosition(const XMFLOAT3& InPosition) override;
@@ -17,6 +17,8 @@ public:
 	void SetScale(const XMFLOAT3& InScale) override;
 
 	void SetLightIntensity(const XMFLOAT3& InLightIntensity);
+	void SetLightStartAttenuation(const float& InStartAttenuation);
+	void SetLightEndAttenuation(const float& InEndAttenuation);
 public:
 	XMFLOAT3 GetPosition() const override;
 	fvector_3d GetRotation() const override;
@@ -26,8 +28,10 @@ public:
 	XMFLOAT3 GetUp() const override;
 
 	XMFLOAT3 GetLightIntensity();
+	float GetLightStartAttenuation();
+	float GetLightEndAttenuation();
 protected:
-	CLightComponent* LightComponent;
+	CRangeLightComponent* RangeLightComponent;
 };
 
 #endif // !Light_H

@@ -5,6 +5,7 @@
 #include "../../../../Mesh/Core/Material/Material.h"
 #include "../../../../Actor/Light/ParallelLight.h"
 #include "../../../../Actor/Light/SpotLight.h"
+#include "../../../../Actor/Light/PointLight.h"
 
 
 enum class EMaterialType;
@@ -58,7 +59,7 @@ int CDirectXRenderingEngine::PostInit()
 	//BoxMesh->SetScale(XMFLOAT3(0.5, 1, 1));
 	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
 	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
-
+	//平行光
 	//if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 	//{
 	//	ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
@@ -69,15 +70,27 @@ int CDirectXRenderingEngine::PostInit()
 	//	ParallelLight2->SetPosition(XMFLOAT3(0.f, -30.f, 0.f));
 	//	ParallelLight2->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
 	//}
-
+	//点光源
+	//if (APointLight* PointLight = World->CreateActor<APointLight>("APointLight"))
+	//{
+	//	PointLight->SetLightIntensity(XMFLOAT3(1.f, 1.f, 1.f));
+	//	PointLight->SetLightStartAttenuation(1.f);
+	//	PointLight->SetLightEndAttenuation(140.f);
+	//	PointLight->SetPosition(XMFLOAT3(-5.f, 0.f, 20.f));
+	//	//SpotLight->SetRotation(fvector_3d(0.f, 0.f, 90.f));
+	//}
+	//聚光灯
 	if (ASpotLight* SpotLight = World->CreateActor<ASpotLight>("ASpotLight"))
 	{
-		SpotLight->SetLightIntensity(XMFLOAT3(7.f, 7.f, 7.f));
+		SpotLight->SetLightIntensity(XMFLOAT3(1.f, 1.f, 1.f));
+		SpotLight->SetPosition(XMFLOAT3(-25.f, 0.f, 15.f));
+		SpotLight->SetRotation(fvector_3d(0.f, 90.f, 0.f));
 		SpotLight->SetLightStartAttenuation(1.f);
 		SpotLight->SetLightEndAttenuation(140.f);
-		SpotLight->SetPosition(XMFLOAT3(0.f, 0.f, 30.f));
-		//SpotLight->SetRotation(fvector_3d(0.f, 0.f, 90.f));
+		SpotLight->SetConicalInnerCorner(30.f);
+		SpotLight->SetConicalOuterCorner(70.f);
 	}
+	
 
 	if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
 	{
