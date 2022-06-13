@@ -22,14 +22,17 @@ void FRenderingPipeline::BuildPipeline()
 	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "VertexShaderMain", "vs_5_0");
 	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "PixelShaderMain", "ps_5_0");
 	DirectXPiepelineState.BindShader(&VertexShader, &PixelShader);
-	//绑定输入输出布局
+	//绑定输入布局
 	InputElementDesc = {
 		{"POSITION",0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
 		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"UTANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
+		{"UTANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
+		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
 	};
 	DirectXPiepelineState.BindInputLayout(InputElementDesc.data(), (UINT)InputElementDesc.size());
+	//创建贴图资源
+	GeometryMap.LoadTexture();
 	//创建模型资源（顶点和索引）缓冲区
 	GeometryMap.BuildMeshBuffer();
 	//创建描述符堆（用于存放常量缓冲描述符）
@@ -42,6 +45,8 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildLightConstantBufferView();
 	//构建视口的常量缓冲区
 	GeometryMap.BuildViewportConstantBufferView();
+	//构建贴图的着色器资源
+	GeometryMap.BuildTextureShaderResource();
 	
 	DirectXPiepelineState.Build();
 }

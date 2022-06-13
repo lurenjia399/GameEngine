@@ -336,6 +336,12 @@
     <ClCompile Include="Engine\Component\Light\Core\RangeLightComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\DirectX12\DDSTextureLoader.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\RenderingTextureResourcesUpdate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -720,6 +726,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Light\Core\RangeLightComponent.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\DirectX12\DDSTextureLoader.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\RenderingTextureResourcesUpdate.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

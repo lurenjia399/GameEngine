@@ -1,6 +1,7 @@
 #include "Material.hlsl"
 #include "Light.hlsl"
 
+SamplerState SimpleTextureState : register(s0);
 
 cbuffer ObjectConstBuffer : register(b0) //Ä£ĞÍ±ä»»¾ØÕó
 {

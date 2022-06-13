@@ -6,7 +6,7 @@ FDirectXRootSignature::FDirectXRootSignature()
 
 bool FDirectXRootSignature::Build()
 {
-	CD3DX12_ROOT_PARAMETER RootParam[4];
+	CD3DX12_ROOT_PARAMETER RootParam[5];
 	//对象的的descriptorRange
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV;
 	DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
@@ -23,13 +23,21 @@ bool FDirectXRootSignature::Build()
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeLightCBV;
 	DescriptorRangeLightCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 3);
 
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
+	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 4);
+
 	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeObjCBV);
 	RootParam[1].InitAsDescriptorTable(1, &DescriptorRangeViewportCBV);
 	RootParam[2].InitAsDescriptorTable(1, &DescriptorRangeMaterialCBV);
 	RootParam[3].InitAsDescriptorTable(1, &DescriptorRangeLightCBV);
+	RootParam[4].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);
+
+	//静态采样方式
+	vector<D3D12_STATIC_SAMPLER_DESC> SamplerDesc;
+	SamplerDesc.emplace_back(CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER::D3D12_FILTER_MIN_MAG_MIP_LINEAR));
 
 	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-		4, RootParam, 0, nullptr,
+		5, RootParam, SamplerDesc.size(), SamplerDesc.data(),
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 	);
 	ComPtr<ID3DBlob> SerializeRootSignature;

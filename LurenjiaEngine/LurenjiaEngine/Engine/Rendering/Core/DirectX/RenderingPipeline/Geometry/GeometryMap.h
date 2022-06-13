@@ -33,18 +33,24 @@ private:
 	vector<FGeometryDescData> DescribeMeshRenderingData;	//ÃèÊöGetometryµÄÊý¾Ý
 };
 
+class FRenderingTextureResourcesUpdate;
 struct FGeometryMap : public IDirectXDeviceInterface_struct
 {
 public:
+	
+
 	FGeometryMap();
 	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData);
 	void BuildMeshBuffer();
 	void BuildDescriptorHeap();
 
+	void LoadTexture();
+
 	void BuildMeshConstantBufferView();
 	void BuildViewportConstantBufferView();
 	void BuildMaterialConstantBufferView();
 	void BuildLightConstantBufferView();
+	void BuildTextureShaderResource();
 
 	UINT GetDrawMeshObjectCount();
 	UINT GetDrawMaterialObjectCount();
@@ -66,4 +72,6 @@ private:
 	FDirectXConstBufferView ViewportConstantBufferView;
 	FDirectXConstBufferView MaterialConstantBufferView;
 	FDirectXConstBufferView LightConstantBufferView;
+
+	shared_ptr<FRenderingTextureResourcesUpdate> TextureShaderResourceView;
 };

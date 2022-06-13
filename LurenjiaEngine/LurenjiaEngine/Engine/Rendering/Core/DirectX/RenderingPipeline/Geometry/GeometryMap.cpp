@@ -13,10 +13,13 @@
 #include "../../../../../Component/Light/SpotLightComponent.h"
 #include "../../../../../Component/Light/ParallelLightComponent.h"
 #include "../../../../../Component/Light/PointLightComponent.h"
+#include "../../../RenderingTextureResourcesUpdate.h"
 
 FGeometryMap::FGeometryMap()
 {
 	Geometrys.emplace(0, FGeometry());
+
+	TextureShaderResourceView = make_shared<FRenderingTextureResourcesUpdate>();
 }
 
 void FGeometryMap::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData)
@@ -37,6 +40,12 @@ void FGeometryMap::BuildDescriptorHeap()
 {
 	//+1 ÉãÏñ»ú
 	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + GetDrawLightObjectCount() + 1);
+}
+
+void FGeometryMap::LoadTexture()
+{
+	TextureShaderResourceView->LoadTexture(L"");
+
 }
 
 void FGeometryMap::BuildMeshConstantBufferView()
@@ -65,6 +74,11 @@ void FGeometryMap::BuildViewportConstantBufferView()
 	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 1);
 	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
 	ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + GetDrawLightObjectCount());
+}
+
+void FGeometryMap::BuildTextureShaderResource()
+{
+	TextureShaderResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + GetDrawLightObjectCount() + 1);
 }
 
 UINT FGeometryMap::GetDrawMeshObjectCount()
