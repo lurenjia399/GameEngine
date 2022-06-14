@@ -19,16 +19,19 @@ public:
 	void SetMaterialType(const EMaterialType& InMaterialType);
 	void SetRoughness(const float& InRoughness);
 	void SetMaterialDisplayStatusType(EMaterialDisplayStatusType InDisplayStatusType);
+	void SetMaterialTransform(XMFLOAT4X4 InTransform);
 
 	FORCEINLINE XMFLOAT4 GetBaseColor() const { return BaseColor; }
 	FORCEINLINE EMaterialType GetMaterialType() const { return MaterialType; }
 	FORCEINLINE float GetRoughness()const { return Roughness; }
 	FORCEINLINE EMaterialDisplayStatusType GetMaterialDisplayStatusType() const { return MaterialDisplayStatusType; };
+	FORCEINLINE XMFLOAT4X4 GetMaterialTransform() const { return MaterialTransform; };
 private:
 	XMFLOAT4 BaseColor;
 	EMaterialType MaterialType;
 	float Roughness;
 	EMaterialDisplayStatusType MaterialDisplayStatusType;
+	XMFLOAT4X4 MaterialTransform;
 };
 
 #endif // !Material

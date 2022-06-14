@@ -64,6 +64,7 @@ public:
 	void DrawMesh(float DeltaTime);
 	void DrawLight(float DeltaTime);
 	void DrawViewport(float DeltaTime);
+	void DrawTexture(float DeltaTime);
 private:
 	map<int, FGeometry> Geometrys;
 	FDirectXDescriptorHeap DescriptorHeap;

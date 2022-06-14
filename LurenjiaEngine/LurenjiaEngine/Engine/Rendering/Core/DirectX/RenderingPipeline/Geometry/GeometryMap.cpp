@@ -38,13 +38,14 @@ void FGeometryMap::BuildMeshBuffer()
 
 void FGeometryMap::BuildDescriptorHeap()
 {
-	//+1 摄像机
-	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + GetDrawLightObjectCount() + 1);
+	//+1 摄像机 +1 贴图
+	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + GetDrawLightObjectCount() + 1 + 1);
 }
 
 void FGeometryMap::LoadTexture()
 {
-	TextureShaderResourceView->LoadTexture(L"");
+	wstring path = L"../LurenjiaEngine/Asset/Texture/Wood.dds";
+	TextureShaderResourceView->LoadTexture(path);
 
 }
 
@@ -139,10 +140,12 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 			};
 			XMStoreFloat4x4(&data.WorldMatrix, XMMatrixTranspose(TranslateMatrix * rotateMatrix * scaleMatrix));
 			XMMATRIX MatrixWorld = XMLoadFloat4x4(&data.WorldMatrix);
+			XMMATRIX MatrixTextureTransform = XMLoadFloat4x4(&data.TextureTransform);
 
 			//更新shader中的世界变换 常量缓冲区
 			FObjectTransformation ObjectTransformation;
 			XMStoreFloat4x4(&ObjectTransformation.World, MatrixWorld);
+			XMStoreFloat4x4(&ObjectTransformation.TextureTransformation, XMMatrixTranspose(MatrixTextureTransform));
 			MeshConstantBufferView.Update(i, &ObjectTransformation);
 
 			//更新shader中的材质 常量缓冲区
@@ -153,6 +156,9 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 					MaterialTransformation.BaseColor = InMaterial->GetBaseColor();
 					MaterialTransformation.MaterialType = static_cast<UINT32>(InMaterial->GetMaterialType());
 					MaterialTransformation.Roughness = InMaterial->GetRoughness();
+					XMFLOAT4X4 materialTransform = InMaterial->GetMaterialTransform();
+					XMMATRIX MaterialTransform = XMLoadFloat4x4(&materialTransform);
+					XMStoreFloat4x4(&MaterialTransformation.TransformInformation, XMMatrixTranspose(MaterialTransform));
 				}
 			}
 			MaterialConstantBufferView.Update(i, &MaterialTransformation);
@@ -231,7 +237,7 @@ void FGeometryMap::Draw(float DeltaTime)
 	DrawViewport(DeltaTime);
 	DrawLight(DeltaTime);
 	DrawMesh(DeltaTime);
-	
+	DrawTexture(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)
@@ -244,6 +250,14 @@ void FGeometryMap::DrawViewport(float DeltaTime)
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 	Handle.Offset(GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + GetDrawLightObjectCount(), HandleSize);
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, Handle);
+}
+
+void FGeometryMap::DrawTexture(float DeltaTime)
+{
+	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+	Handle.Offset(GetDrawMeshObjectCount() + GetDrawMaterialObjectCount() + GetDrawLightObjectCount() + 1, HandleSize);
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(4, Handle);
 }
 
 void FGeometryMap::DrawMesh(float DeltaTime)

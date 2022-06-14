@@ -2,10 +2,13 @@
 #include "Light.hlsl"
 
 SamplerState SimpleTextureState : register(s0);
+texture2D Texture : register(t4);
 
 cbuffer ObjectConstBuffer : register(b0) //模型变换矩阵
 {
     float4x4 WorldMatrix;
+    float4x4 ObjectTextureTransformation;
+
 }
 cbuffer ViewportConstBuffer : register(b1)//摄像机变换矩阵和透视投影变换矩阵
 {
@@ -33,6 +36,7 @@ struct MeshVertexIn
 	float4 Color : COLOR;
     float3 Normal : NORMAL;
     float3 Tangent : UTANGENT;
+    float2 TexCoord : TEXCOORD;
 };
 struct MeshVertexOut
 {
@@ -41,6 +45,7 @@ struct MeshVertexOut
     float4 Color : COLOR;
     float3 Normal : NORMAL;
     float3 Tangent : UTANGENT;
+    float2 TexCoord : TEXCOORD;
 };
 MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 {
@@ -59,10 +64,16 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     
     MV_out.Tangent = mul((float3x3) WorldMatrix, mv.Tangent); //拿到世界空间下的切线
     MV_out.Color = mv.Color;
+    
+    float4 worldTexTransformation = mul(ObjectTextureTransformation, float4(mv.TexCoord, 0.f, 1.f));
+    MV_out.TexCoord = mul(TransformInformation, worldTexTransformation).xy;
+    
     return MV_out;
 }
 float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
+    
+    
     if(MaterialType == 99)//默认，使用材质本身的颜色
     {
         mvOut.Color = BaseColor;
@@ -86,7 +97,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     float4 Fresnel = { 0.f, 0.f, 0.f, 1.f };
     
     FMaterial Material;
-    Material.BaseColor = BaseColor;
+    Material.BaseColor = BaseColor * Texture.Sample(SimpleTextureState, mvOut.TexCoord);
     
     float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
     for (int i = 0; i < 16; i++)

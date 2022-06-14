@@ -18,7 +18,6 @@ public:
 	CMeshComponent* MeshComponet;							//代表的模型组件
 
 public:
-	DXGI_FORMAT IndexFormat;								//索引资源格式
 
 	UINT IndexSize;											//索引的数量
 	UINT VertexSize;										//顶点的数量
@@ -29,5 +28,6 @@ public:
 
 
 	XMFLOAT4X4 WorldMatrix;									//m变换矩阵
+	XMFLOAT4X4 TextureTransform;							//贴图的矩阵
 	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;	//需要更新的资源
 };

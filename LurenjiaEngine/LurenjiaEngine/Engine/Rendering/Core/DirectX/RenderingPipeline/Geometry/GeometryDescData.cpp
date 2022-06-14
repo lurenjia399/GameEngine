@@ -1,13 +1,15 @@
 #include "GeometryDescData.h"
 
 FGeometryDescData::FGeometryDescData()
-	: IndexSize(0)
+	: MeshComponet(nullptr)
+	, IndexSize(0)
 	, VertexSize(0)
 	, IndexoffsetPosition(0)
 	, VertexoffsetPostion(0)
 	, IndexTypeSize(sizeof(uint16_t))
 	, VertexTypeSize(sizeof(FVertex))
 	, WorldMatrix(EngineMath::IdentityMatrix4x4())
+	, TextureTransform(EngineMath::IdentityMatrix4x4())
 {
 }
 

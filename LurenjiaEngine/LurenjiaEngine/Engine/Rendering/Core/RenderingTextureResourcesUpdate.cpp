@@ -3,6 +3,8 @@
 
 #include "RenderingResourcesUpdate.h"
 
+
+const wchar_t DDS[] = L".dds";
 void FRenderingTextureResourcesUpdate::LoadTexture(const wstring& InTexturePath)
 {
 	std::unique_ptr<FRenderingTexture> Texture = std::make_unique<FRenderingTexture>();
@@ -10,15 +12,16 @@ void FRenderingTextureResourcesUpdate::LoadTexture(const wstring& InTexturePath)
 	
 	wchar_t TextureName[1024] = { '\0'};
 	get_path_clean_filename_w(TextureName, InTexturePath.c_str());
+	wremove_string_start(TextureName, DDS);
 	Texture->TextureName = TextureName;
 
 	//读取dds数据
-	CreateDDSTextureFromFile12(
+	ANALYSIS_HRESULT(DirectX::CreateDDSTextureFromFile12(
 		GetD3dDevice().Get(),
 		GetGraphicsCommandList().Get(),
-		Texture->TextureName.c_str(),
+		Texture->TexturePath.c_str(),
 		Texture->Data,
-		Texture->UploadBuffer);
+		Texture->UploadBuffer));
 
 	//注意这里使用std::move
 	//unique_ptr智能指针所指的值，无法被拷贝
