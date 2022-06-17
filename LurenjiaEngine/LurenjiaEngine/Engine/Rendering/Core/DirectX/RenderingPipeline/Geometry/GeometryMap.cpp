@@ -44,7 +44,7 @@ void FGeometryMap::BuildDescriptorHeap()
 
 void FGeometryMap::LoadTexture()
 {
-	wstring path = L"../LurenjiaEngine/Asset/Texture/Wood.dds";
+	wstring path = L"../LurenjiaEngine/Asset/Texture/Earth.dds";
 	TextureShaderResourceView->LoadTexture(path);
 
 }

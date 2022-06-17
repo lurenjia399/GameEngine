@@ -10,7 +10,7 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 	float verticalAngle = XM_PI / InHeightSubdivision;
 
 	//创建顶点
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::Red), XMFLOAT3(0.f, 1.f, 0.f), XMFLOAT3(1.f, 0.f, 0.f)));//北极点
+	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::Red), XMFLOAT3(0.f, 1.f, 0.f), XMFLOAT3(1.f, 0.f, 0.f), XMFLOAT2(0.5f, 0.0f)));//北极点
 	for (uint32_t j = 1; j <= InHeightSubdivision;j++)
 	{
 		float vertical = j * verticalAngle;
@@ -31,9 +31,15 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 			XMFLOAT3 UTangent = XMFLOAT3(x, -y, z);
 			XMVECTOR Tangent = XMLoadFloat3(&UTangent);
 			XMStoreFloat3(&InRenderingData.VertexData[currIndex].UTangent, Tangent);
+
+			float u = vertical / XM_PI;
+			float v = horizontal / XM_2PI;
+			XMFLOAT2 uv = XMFLOAT2(v, u);
+			XMVECTOR TexCoord = XMLoadFloat2(&uv);
+			XMStoreFloat2(&InRenderingData.VertexData[currIndex].TexCoord, TexCoord);
 		}
 	}
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, -InRadius, 0), XMFLOAT4(Colors::White), XMFLOAT3(0.f, -1.f, 0.f), XMFLOAT3(-1.f, 0.f, 0.f)));//南极点
+	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, -InRadius, 0), XMFLOAT4(Colors::White), XMFLOAT3(0.f, -1.f, 0.f), XMFLOAT3(-1.f, 0.f, 0.f), XMFLOAT2(0.f, 0.5f)));//南极点
 
 	//创建索引
 	for (uint32_t i = 1; i <= InAxialSubdivision;i++)

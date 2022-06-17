@@ -31,7 +31,9 @@ void CPlaneMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingDa
 			float x = PivotPoint.x + i * widthStep;
 			float y = PivotPoint.y;
 			float z = PivotPoint.z - j * heightStep;
-			InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(x, y, z), XMFLOAT4(Colors::White), XMFLOAT3(0.f, 1.f, 0.0f)));
+			float u = i * widthStep / Inwidth;
+			float v = j * heightStep / Inheight;
+			InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(x, y, z), XMFLOAT4(Colors::White), XMFLOAT3(0.f, 1.f, 0.0f), XMFLOAT3(1.f, 0.f, 0.f), XMFLOAT2(u, v)));
 
 		}
 	}

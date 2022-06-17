@@ -65,11 +65,12 @@ int CDirectXRenderingEngine::PostInit()
 	//	ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
 	//	//ParallelLight->SetComponentRotation(fvector_3d(0.f, 0.f, 90.0f));
 	//}
-	//if (AParallelLight* ParallelLight2 = World->CreateActor<AParallelLight>("AParallelLight2"))
-	//{
-	//	ParallelLight2->SetPosition(XMFLOAT3(0.f, -30.f, 0.f));
-	//	ParallelLight2->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
-	//}
+	if (AParallelLight* ParallelLight2 = World->CreateActor<AParallelLight>("AParallelLight2"))
+	{
+		ParallelLight2->SetLightIntensity(XMFLOAT3(2.f, 2.f, 2.f));
+		ParallelLight2->SetPosition(XMFLOAT3(0.f, 0.f, 10.f));
+		ParallelLight2->SetRotation(fvector_3d(0.f, 90.f, 0.0f));
+	}
 	//点光源
 	//if (APointLight* PointLight = World->CreateActor<APointLight>("APointLight"))
 	//{
@@ -80,16 +81,16 @@ int CDirectXRenderingEngine::PostInit()
 	//	//SpotLight->SetRotation(fvector_3d(0.f, 0.f, 90.f));
 	//}
 	//聚光灯
-	if (ASpotLight* SpotLight = World->CreateActor<ASpotLight>("ASpotLight"))
-	{
-		SpotLight->SetLightIntensity(XMFLOAT3(1.f, 1.f, 1.f));
-		SpotLight->SetPosition(XMFLOAT3(-25.f, 0.f, 15.f));
-		SpotLight->SetRotation(fvector_3d(0.f, 90.f, 0.f));
-		SpotLight->SetLightStartAttenuation(1.f);
-		SpotLight->SetLightEndAttenuation(140.f);
-		SpotLight->SetConicalInnerCorner(30.f);
-		SpotLight->SetConicalOuterCorner(70.f);
-	}
+	//if (ASpotLight* SpotLight = World->CreateActor<ASpotLight>("ASpotLight"))
+	//{
+	//	SpotLight->SetLightIntensity(XMFLOAT3(1.f, 1.f, 1.f));
+	//	SpotLight->SetPosition(XMFLOAT3(-25.f, 0.f, 15.f));
+	//	SpotLight->SetRotation(fvector_3d(0.f, 90.f, 0.f));
+	//	SpotLight->SetLightStartAttenuation(1.f);
+	//	SpotLight->SetLightEndAttenuation(140.f);
+	//	SpotLight->SetConicalInnerCorner(30.f);
+	//	SpotLight->SetConicalOuterCorner(70.f);
+	//}
 	
 
 	if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
@@ -303,56 +304,56 @@ int CDirectXRenderingEngine::PostInit()
 		{
 			SphereMaterial_14->ResetGuid("SphereMaterial_14");//给创建的材质设置Guid
 
-			SphereMaterial_14->SetBaseColor(XMFLOAT4(0.5f, 0.3f, 1.5f, 1.0f));
+			SphereMaterial_14->SetBaseColor(XMFLOAT4(1.5f, 1.3f, 1.5f, 1.0f));
 			SphereMaterial_14->SetMaterialType(EMaterialType::BaseColor);
 			SphereMaterial_14->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::WireframeDisplay);
 			SphereMesh_14->SetSubMaterials(0, SphereMaterial_14);
 
 		}
 	}
-	if (ASphereMesh* SphereMesh_15 = World->CreateActor<ASphereMesh>("SphereMesh_15"))
-	{
-		SphereMesh_15->SetMeshComponent("SphereMesh_15Component", 2.f, 20, 20);
-		SphereMesh_15->SetComponentPosition(XMFLOAT3(0.f, 3.f, 17.f));
-		if (CMaterial* SphereMaterial_15 = new CMaterial())
-		{
-			SphereMaterial_15->ResetGuid("SphereMaterial_15");//给创建的材质设置Guid
+	//if (ASphereMesh* SphereMesh_15 = World->CreateActor<ASphereMesh>("SphereMesh_15"))
+	//{
+	//	SphereMesh_15->SetMeshComponent("SphereMesh_15Component", 2.f, 20, 20);
+	//	SphereMesh_15->SetComponentPosition(XMFLOAT3(0.f, 3.f, 17.f));
+	//	if (CMaterial* SphereMaterial_15 = new CMaterial())
+	//	{
+	//		SphereMaterial_15->ResetGuid("SphereMaterial_15");//给创建的材质设置Guid
 
-			SphereMaterial_15->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
-			SphereMaterial_15->SetMaterialType(EMaterialType::BaseColor);
-			SphereMaterial_15->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::PointDisplay);
-			SphereMesh_15->SetSubMaterials(0, SphereMaterial_15);
+	//		SphereMaterial_15->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
+	//		SphereMaterial_15->SetMaterialType(EMaterialType::BaseColor);
+	//		SphereMaterial_15->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::PointDisplay);
+	//		SphereMesh_15->SetSubMaterials(0, SphereMaterial_15);
 
-		}
-	}
-	if (ASphereMesh* SphereMesh_16 = World->CreateActor<ASphereMesh>("SphereMesh_16"))
-	{
-		SphereMesh_16->SetMeshComponent("SphereMesh_16Component", 2.f, 20, 20);
-		SphereMesh_16->SetComponentPosition(XMFLOAT3(0.f, -7, 22.f));
-		if (CMaterial* SphereMaterial_16 = new CMaterial())
-		{
-			SphereMaterial_16->ResetGuid("SphereMaterial_16");//给创建的材质设置Guid
+	//	}
+	//}
+	//if (ASphereMesh* SphereMesh_16 = World->CreateActor<ASphereMesh>("SphereMesh_16"))
+	//{
+	//	SphereMesh_16->SetMeshComponent("SphereMesh_16Component", 2.f, 20, 20);
+	//	SphereMesh_16->SetComponentPosition(XMFLOAT3(0.f, -7, 22.f));
+	//	if (CMaterial* SphereMaterial_16 = new CMaterial())
+	//	{
+	//		SphereMaterial_16->ResetGuid("SphereMaterial_16");//给创建的材质设置Guid
 
-			SphereMaterial_16->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
-			SphereMaterial_16->SetMaterialType(EMaterialType::WorldNormal);
-			SphereMesh_16->SetSubMaterials(0, SphereMaterial_16);
+	//		SphereMaterial_16->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
+	//		SphereMaterial_16->SetMaterialType(EMaterialType::WorldNormal);
+	//		SphereMesh_16->SetSubMaterials(0, SphereMaterial_16);
 
-		}
-	}
-	if (ASphereMesh* SphereMesh_17 = World->CreateActor<ASphereMesh>("SphereMesh_17"))
-	{
-		SphereMesh_17->SetMeshComponent("SphereMesh_17Component", 2.f, 20, 20);
-		SphereMesh_17->SetComponentPosition(XMFLOAT3(0.f, -2, 22.f));
-		if (CMaterial* SphereMaterial_17 = new CMaterial())
-		{
-			SphereMaterial_17->ResetGuid("SphereMaterial_17");//给创建的材质设置Guid
+	//	}
+	//}
+	//if (ASphereMesh* SphereMesh_17 = World->CreateActor<ASphereMesh>("SphereMesh_17"))
+	//{
+	//	SphereMesh_17->SetMeshComponent("SphereMesh_17Component", 2.f, 20, 20);
+	//	SphereMesh_17->SetComponentPosition(XMFLOAT3(0.f, -2, 22.f));
+	//	if (CMaterial* SphereMaterial_17 = new CMaterial())
+	//	{
+	//		SphereMaterial_17->ResetGuid("SphereMaterial_17");//给创建的材质设置Guid
 
-			SphereMaterial_17->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
-			SphereMaterial_17->SetMaterialType(EMaterialType::Normal);
-			SphereMesh_17->SetSubMaterials(0, SphereMaterial_17);
+	//		SphereMaterial_17->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
+	//		SphereMaterial_17->SetMaterialType(EMaterialType::Normal);
+	//		SphereMesh_17->SetSubMaterials(0, SphereMaterial_17);
 
-		}
-	}
+	//	}
+	//}
 
 	MeshManage->BuildPipeline();
 

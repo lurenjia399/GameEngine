@@ -36,7 +36,7 @@ float4 CalculateLightStrength(Light InLight, float3 InObjectPointNormal, float3 
     
     if (InLight.LightType == 0)          //平行光
     {
-        
+        return float4(InLight.LightIntensity, 1.f);
     }
     else if (InLight.LightType == 1)    //点光源
     {

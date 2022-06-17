@@ -65,8 +65,9 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     MV_out.Tangent = mul((float3x3) WorldMatrix, mv.Tangent); //拿到世界空间下的切线
     MV_out.Color = mv.Color;
     
-    float4 worldTexTransformation = mul(ObjectTextureTransformation, float4(mv.TexCoord, 0.f, 1.f));
-    MV_out.TexCoord = mul(TransformInformation, worldTexTransformation).xy;
+    //float4 worldTexTransformation = mul(ObjectTextureTransformation, float4(mv.TexCoord, 0.f, 1.f));
+    //MV_out.TexCoord = mul(TransformInformation, worldTexTransformation).xy;
+    MV_out.TexCoord = mv.TexCoord;
     
     return MV_out;
 }
