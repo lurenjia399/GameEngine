@@ -36,7 +36,7 @@ void FRenderingTextureResourcesUpdate::BuildTextureShaderResource(ID3D12Descript
 	Handle.Offset(Offset, HandleSize);
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc = {};
-	ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_SNORM;
+	ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	ShaderResourceViewDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
 	ShaderResourceViewDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;//设置着色器中的float4的颜色通道
 	ShaderResourceViewDesc.Texture2D.MostDetailedMip = 0;

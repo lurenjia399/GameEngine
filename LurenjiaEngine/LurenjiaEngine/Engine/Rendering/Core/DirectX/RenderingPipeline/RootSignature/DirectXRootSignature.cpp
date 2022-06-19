@@ -34,7 +34,8 @@ bool FDirectXRootSignature::Build()
 
 	//静态采样方式
 	vector<D3D12_STATIC_SAMPLER_DESC> SamplerDesc;
-	SamplerDesc.emplace_back(CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER::D3D12_FILTER_MIN_MAG_MIP_LINEAR));
+	SamplerDesc.emplace_back(CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER::D3D12_FILTER_MIN_MAG_MIP_POINT
+		, D3D12_TEXTURE_ADDRESS_MODE_MIRROR, D3D12_TEXTURE_ADDRESS_MODE_MIRROR));
 
 	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
 		5, RootParam, SamplerDesc.size(), SamplerDesc.data(),
