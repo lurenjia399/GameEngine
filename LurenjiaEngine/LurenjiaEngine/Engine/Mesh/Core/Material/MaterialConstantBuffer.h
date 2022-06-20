@@ -15,7 +15,7 @@ public:
 
 	UINT32 MaterialType;
 	float Roughness;
-	int XX;	//占位
+	int TextureIndex; //使用的贴图序号，不使用为-1
 	int XX2;//占位
 
 	XMFLOAT4X4 TransformInformation;

@@ -1,11 +1,11 @@
 #include "Shader.h"
 
-void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion)
+void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunName, const string& InShadersVersion, const D3D_SHADER_MACRO* shaderMacro )
 {
     ComPtr<ID3DBlob> ErrorShaderMsg;
     HRESULT R = D3DCompileFromFile(
         InFileName.c_str(),
-        NULL,
+        shaderMacro,
         D3D_COMPILE_STANDARD_FILE_INCLUDE,
         InEntryFunName.c_str(),
         InShadersVersion.c_str(),

@@ -16,11 +16,17 @@ FRenderingResourcesUpdate::~FRenderingResourcesUpdate()
 	}
 }
 
-void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount)
+void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, UINT InElemetCount, bool bIsConstantBuffer)
 {
 	assert(InDevice);
 
-	ElementSize = GetConstantBufferByteSize(InElemetSize);
+	if (bIsConstantBuffer)
+	{
+		ElementSize = GetConstantBufferByteSize(InElemetSize);
+	}
+	else {
+		ElementSize = InElemetSize;
+	}
 
 	D3D12_HEAP_PROPERTIES HeapPropertie = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	D3D12_RESOURCE_DESC ResourceDesc = CD3DX12_RESOURCE_DESC::Buffer(ElementSize * InElemetCount);//GetConstantBufferByteSize()InElemetSize * InElemetCount

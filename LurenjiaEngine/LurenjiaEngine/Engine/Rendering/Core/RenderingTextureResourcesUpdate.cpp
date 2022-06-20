@@ -5,15 +5,23 @@
 
 
 const wchar_t DDS[] = L".dds";
+const wchar_t prefixPath[] = L"../LurenjiaEngine/";
+
 void FRenderingTextureResourcesUpdate::LoadTexture(const wstring& InTexturePath)
 {
 	std::unique_ptr<FRenderingTexture> Texture = std::make_unique<FRenderingTexture>();
-	Texture->TexturePath = InTexturePath;
+	Texture->TexturePath = InTexturePath;//存储贴图的完整路径
 	
 	wchar_t TextureName[1024] = { '\0'};
 	get_path_clean_filename_w(TextureName, InTexturePath.c_str());
 	wremove_string_start(TextureName, DDS);
-	Texture->TextureName = TextureName;
+	Texture->TextureName = TextureName;//存储贴图的名称
+
+	wchar_t* SimpleFilename = const_cast<wchar_t*>(InTexturePath.c_str()) ;
+	wremove_string_start(SimpleFilename, prefixPath);
+	Texture->SimpleAssertFilename = SimpleFilename;//存储贴图的简单资源路径
+
+	Texture->AssertFilename = L"Texture/" + wstring(SimpleFilename);//存储贴图的资源路径
 
 	//读取dds数据
 	ANALYSIS_HRESULT(DirectX::CreateDDSTextureFromFile12(
@@ -23,6 +31,7 @@ void FRenderingTextureResourcesUpdate::LoadTexture(const wstring& InTexturePath)
 		Texture->Data,
 		Texture->UploadBuffer));
 
+	Texture->RenderingTextureID = TextureMapping.size();
 	//注意这里使用std::move
 	//unique_ptr智能指针所指的值，无法被拷贝
 	TextureMapping.emplace(TextureName, std::move(Texture));
@@ -43,14 +52,53 @@ void FRenderingTextureResourcesUpdate::BuildTextureShaderResource(ID3D12Descript
 	ShaderResourceViewDesc.Texture2D.MipLevels = 1;
 	ShaderResourceViewDesc.Texture2D.ResourceMinLODClamp = 0.f;
 
-
 	for (auto& tem : TextureMapping)
 	{
 		ShaderResourceViewDesc.Format = tem.second->Data->GetDesc().Format;
 		ShaderResourceViewDesc.Texture2D.MipLevels = tem.second->Data->GetDesc().MipLevels;
-
 		GetD3dDevice()->CreateShaderResourceView(tem.second->Data.Get(), &ShaderResourceViewDesc, Handle);
 		Handle.Offset(1, HandleSize);
 	}
+}
 
+int FRenderingTextureResourcesUpdate::GetTextureCount() const
+{
+	return TextureMapping.size();
+}
+
+int FRenderingTextureResourcesUpdate::GetTextureIndex(string InKey)
+{
+	
+	/*
+	* const char* inString = InKey.c_str();
+	* wchar_t texturePath[1024] = { 0 };
+	* char_to_wchar_t(texturePath, 1024, inString);
+	*/
+
+	if (InKey == "") return -1;
+
+	wstring key = wstring(InKey.begin(), InKey.end());
+	if (TextureMapping.find(key) != TextureMapping.end())
+	{
+		return TextureMapping[key]->RenderingTextureID;
+	}
+	else {
+		for (auto& tem : TextureMapping)
+		{
+			if (tem.second->AssertFilename == key)
+			{
+				return tem.second->RenderingTextureID;
+			}
+			if (tem.second->SimpleAssertFilename == key)
+			{
+				return tem.second->RenderingTextureID;
+			}
+			if (tem.second->TexturePath == key)
+			{
+				return tem.second->RenderingTextureID;
+			}
+		}
+	}
+	Engine_Log_Warning("No Find Texture Resourse [%s] !!! ", InKey);
+	return -1;
 }

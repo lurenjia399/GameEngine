@@ -1,9 +1,9 @@
 #include "DirectXConstBufferView.h"
 
-void FDirectXConstBufferView::CreateConstant(UINT BufferSize, UINT BufferCount)
+void FDirectXConstBufferView::CreateConstant(UINT BufferSize, UINT BufferCount, bool bIsConstantBuffer)
 {
 	ConstantBufferView = make_shared<FRenderingResourcesUpdate>();
-	ConstantBufferView->Init(GetD3dDevice().Get(), BufferSize, BufferCount);
+	ConstantBufferView->Init(GetD3dDevice().Get(), BufferSize, BufferCount, bIsConstantBuffer);
 
 }
 
@@ -27,4 +27,9 @@ void FDirectXConstBufferView::BuildConstantBuffer(CD3DX12_CPU_DESCRIPTOR_HANDLE 
 void FDirectXConstBufferView::Update(int Index, const void* InData)
 {
 	ConstantBufferView->Update(Index, InData);
+}
+
+ID3D12Resource* FDirectXConstBufferView::GetBuffer()
+{
+	return ConstantBufferView->GetBuffer();
 }

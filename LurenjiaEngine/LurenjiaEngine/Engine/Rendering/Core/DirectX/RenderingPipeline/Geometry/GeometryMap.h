@@ -48,20 +48,23 @@ public:
 
 	void BuildMeshConstantBufferView();
 	void BuildViewportConstantBufferView();
-	void BuildMaterialConstantBufferView();
+	void BuildMaterialShaderResourseView();
 	void BuildLightConstantBufferView();
 	void BuildTextureShaderResource();
 
 	UINT GetDrawMeshObjectCount();
 	UINT GetDrawMaterialObjectCount();
 	UINT GetDrawLightObjectCount();
+	UINT GetDrawTextureObjectCount();
 
 	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
 public:
 	void DrawMesh(float DeltaTime);
+	void DrawMaterial(float DeltaTime);
 	void DrawLight(float DeltaTime);
 	void DrawViewport(float DeltaTime);
 	void DrawTexture(float DeltaTime);
@@ -75,4 +78,5 @@ private:
 	FDirectXConstBufferView LightConstantBufferView;
 
 	shared_ptr<FRenderingTextureResourcesUpdate> TextureShaderResourceView;
+	std::vector<CMaterial*> Materials;
 };

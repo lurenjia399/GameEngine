@@ -6,6 +6,8 @@ CMaterialConstantBuffer::CMaterialConstantBuffer()
 	: BaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f))
 	, MaterialType(0)
 	, Roughness(1.0f)
+	, TextureIndex(-1)
+	, XX2(0.f)
 	, TransformInformation(EngineMath::IdentityMatrix4x4())
 {
 }

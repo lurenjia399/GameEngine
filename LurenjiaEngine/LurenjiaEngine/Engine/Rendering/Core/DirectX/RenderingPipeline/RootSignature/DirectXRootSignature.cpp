@@ -4,7 +4,7 @@ FDirectXRootSignature::FDirectXRootSignature()
 {
 }
 
-bool FDirectXRootSignature::Build()
+bool FDirectXRootSignature::Build(const UINT& TextureCount)
 {
 	CD3DX12_ROOT_PARAMETER RootParam[5];
 	//对象的的descriptorRange
@@ -15,20 +15,20 @@ bool FDirectXRootSignature::Build()
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV;
 	DescriptorRangeViewportCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
 
-	//material的descriptorRange
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeMaterialCBV;
-	DescriptorRangeMaterialCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 2);
+	////material的descriptorRange
+	//CD3DX12_DESCRIPTOR_RANGE DescriptorRangeMaterialCBV;
+	//DescriptorRangeMaterialCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 2);
 
 	//灯光的desctriptorRange
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeLightCBV;
 	DescriptorRangeLightCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 3);
 
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
-	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 4);
+	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 4);
 
 	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeObjCBV);
 	RootParam[1].InitAsDescriptorTable(1, &DescriptorRangeViewportCBV);
-	RootParam[2].InitAsDescriptorTable(1, &DescriptorRangeMaterialCBV);
+	RootParam[2].InitAsShaderResourceView(0, 1);
 	RootParam[3].InitAsDescriptorTable(1, &DescriptorRangeLightCBV);
 	RootParam[4].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);
 

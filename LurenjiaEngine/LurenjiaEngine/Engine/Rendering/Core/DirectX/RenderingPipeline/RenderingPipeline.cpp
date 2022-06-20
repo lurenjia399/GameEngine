@@ -12,15 +12,24 @@ void FRenderingPipeline::BuildMeshComponent(CMeshComponent* InMesh, const FMeshR
 void FRenderingPipeline::BuildPipeline()
 {
 	DirectXPiepelineState.ResetGPSDesc();
+
+	//创建贴图资源
+	GeometryMap.LoadTexture();
 	//绑定根签名
-	if (!DirectXRootSignature.Build())
+	if (!DirectXRootSignature.Build(GeometryMap.GetDrawTextureObjectCount()))
 	{
 		Engine_Log_Error("构建根签名失败");
 	}
 	DirectXPiepelineState.BindRootSignature(DirectXRootSignature.GetRootSignature());
 	//绑定着色器
-	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "VertexShaderMain", "vs_5_0");
-	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "PixelShaderMain", "ps_5_0");
+	char buffer[10] = { 0 };
+	D3D_SHADER_MACRO ShaderMacro[] =
+	{
+		"MapCount", _itoa(GeometryMap.GetDrawTextureObjectCount(), buffer, 10),
+		nullptr, nullptr,
+	};
+	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
+	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro);
 	DirectXPiepelineState.BindShader(&VertexShader, &PixelShader);
 	//绑定输入布局
 	InputElementDesc = {
@@ -31,16 +40,14 @@ void FRenderingPipeline::BuildPipeline()
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
 	};
 	DirectXPiepelineState.BindInputLayout(InputElementDesc.data(), (UINT)InputElementDesc.size());
-	//创建贴图资源
-	GeometryMap.LoadTexture();
 	//创建模型资源（顶点和索引）缓冲区
 	GeometryMap.BuildMeshBuffer();
-	//创建描述符堆（用于存放常量缓冲描述符）
+	//创建描述符堆（用于存放常量缓冲区中的资源）
 	GeometryMap.BuildDescriptorHeap();
 	//构建模型的常量缓冲区
 	GeometryMap.BuildMeshConstantBufferView();
-	//构建材质的常量缓冲区
-	GeometryMap.BuildMaterialConstantBufferView();
+	//构建材质的shader资源缓冲区,收集所有的matrial，并且设置material中的shaderindex
+	GeometryMap.BuildMaterialShaderResourseView();
 	//构建灯光的常量缓冲区
 	GeometryMap.BuildLightConstantBufferView();
 	//构建视口的常量缓冲区
