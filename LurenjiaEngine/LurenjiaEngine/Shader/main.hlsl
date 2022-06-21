@@ -1,10 +1,10 @@
 #include "Material.hlsl"
 #include "Light.hlsl"
 
-SamplerState SimpleTextureState : register(s0);
-texture2D SimpleTexture2DMap[MapCount] : register(t4);
+SamplerState SimpleTextureState : register(s0);//静态采用器
+Texture2D SimpleTexture2DMap[MapCount] : register(t3);//所有贴图数组
 
-cbuffer ObjectConstBuffer : register(b0) //模型变换矩阵
+cbuffer ObjectConstBuffer : register(b0) //模型CBV
 {
     float4x4 WorldMatrix;
     float4x4 ObjectTextureTransformation;
@@ -15,12 +15,16 @@ cbuffer ObjectConstBuffer : register(b0) //模型变换矩阵
     int xx3;
 
 }
-cbuffer ViewportConstBuffer : register(b1)//摄像机变换矩阵和透视投影变换矩阵
+cbuffer ViewportConstBuffer : register(b1) //视口CBV
 {
     float4 cameraPosition;
     float4x4 ViewProjectionMatrix;
 }
-struct MaterialConstantBufferView
+cbuffer LightConstantBufferView : register(b2) //灯光CBV
+{
+    Light SceneLight[16];
+}
+struct Material_Struct
 {
     float4 BaseColor;
     
@@ -31,12 +35,8 @@ struct MaterialConstantBufferView
     
     float4x4 TransformInformation;
 };
-StructuredBuffer<MaterialConstantBufferView> Materials : register(t0, space1); //材质
+StructuredBuffer<Material_Struct> AMaterials : register(t0, space1); //所有材质数组
 
-cbuffer LightConstantBufferView : register(b3) //灯光
-{
-    Light SceneLight[16];
-}
 struct MeshVertexIn
 {
 	float3 Position : POSITION;
@@ -60,7 +60,8 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     float4x4 mvp = mul(ViewProjectionMatrix, WorldMatrix);
     MV_out.Position = mul(mvp, float4(mv.Position, 1.0f));//拿到mvp后的顶点坐标
     MV_out.worldPosition = mul(WorldMatrix, float4(mv.Position, 1.0f));
-    if (Materials[MaterialIndex].MaterialType == 97)
+    
+    if (AMaterials[MaterialIndex].MaterialType == 97)
     {
         MV_out.Normal = mv.Normal;
     }
@@ -73,19 +74,17 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     MV_out.Color = mv.Color;
     
     float4 worldTexTransformation = mul(ObjectTextureTransformation, float4(mv.TexCoord, 0.f, 1.f));
-    MV_out.TexCoord = mul(Materials[MaterialIndex].TransformInformation, worldTexTransformation).
-    xy;
-    //MV_out.TexCoord = mv.TexCoord;
+    MV_out.TexCoord = mul(AMaterials[MaterialIndex].TransformInformation, worldTexTransformation).xy;
     
     return MV_out;
 }
 float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
-    MaterialConstantBufferView MatConstant = Materials[MaterialIndex];
-    int MaterialType = MatConstant.MaterialType;
+    Material_Struct currMaterial = AMaterials[MaterialIndex]; //当前模型的材质
+    int MaterialType = currMaterial.MaterialType;
     if(MaterialType == 99)//默认，使用材质本身的颜色
     {
-        mvOut.Color = MatConstant.BaseColor;
+        mvOut.Color = currMaterial.BaseColor;
         return mvOut.Color;
     }else if(MaterialType == 98)
     {
@@ -99,7 +98,6 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     
     float3 N = normalize(mvOut.Normal);
     float3 V = normalize(cameraPosition.xyz - mvOut.worldPosition.xyz);
-    
     float4 Ambient = { 0.f, 0.f, 0.f, 1.f};
     float4 diffuse = { 0.f, 0.f, 0.f, 1.f};
     float4 specular = { 0.f, 0.f, 0.f, 1.f};
@@ -108,14 +106,12 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     
     
     FMaterial Material;
-    Material.BaseColor = MatConstant.BaseColor;
-    if (MatConstant.TextureIndex >= 0)
+    Material.FinalColor = currMaterial.BaseColor;
+    if (currMaterial.TextureIndex >= 0 && currMaterial.TextureIndex < MapCount)
     {
-        Material.BaseColor = MatConstant.BaseColor * SimpleTexture2DMap[MatConstant.TextureIndex].Sample(SimpleTextureState, mvOut.TexCoord);
+        Material.FinalColor = currMaterial.BaseColor * SimpleTexture2DMap[currMaterial.TextureIndex].Sample(SimpleTextureState, mvOut.TexCoord);
     }
-    
-    
-    
+
     float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
     for (int i = 0; i < 16; i++)
     {
@@ -145,7 +141,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             
             //float3 reflectDirection = 2.0f * LdotN * N - L;
             float3 reflectDirection = reflect(-L, N);
-            float MaterialShininess = 1.f - saturate(MatConstant.Roughness);
+            float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
             float M = max(MaterialShininess * 100.f, 1.0f);
             specular = (M + 2.0f) * pow(max(dot(V, reflectDirection), 0.f), M) / 3.1415926;
         }
@@ -155,7 +151,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             diffuse = pow(max(LdotN, 0.f), 2.f);
             
             float3 H = normalize(L + V); //摄像机方向和光线入射方向的半程向量
-            float MaterialShininess = 1.f - saturate(MatConstant.Roughness);
+            float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
             float M = MaterialShininess * 100.f;
             specular = (M + 2.0f) * pow(max(dot(N, H), 0.f), M) / 3.1415926;
 
@@ -176,7 +172,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             //diffuse = Material.BaseColor * saturate(NdotL) * saturate(VdotN);
         
             /*有粗糙度的实现*/
-            float MaterialShininess = saturate(MatConstant.Roughness);
+            float MaterialShininess = saturate(currMaterial.Roughness);
             diffuse = pow(saturate(NdotL), 2.f) * pow(pow(saturate(NdotL), 2.f) * saturate(VdotN), MaterialShininess);
         }
         else if (MaterialType == 7)//BandedLight
@@ -196,7 +192,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             LightStrengths = floor(UpDotValue * layout) / layout;
             
             float4 color = { 245.f / 255.f, 88.f / 255.f, 0.f, 1.0f };
-            Material.BaseColor = lerp(Material.BaseColor, color, 1 - LdotN); //Material.BaseColor * (1 - LdotN) + color * LdotN;
+            Material.FinalColor = lerp(Material.FinalColor, color, 1 - LdotN); //Material.BaseColor * (1 - LdotN) + color * LdotN;
             
             continue;
         }
@@ -218,7 +214,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         
             //phone
             float3 reflectDirection = reflect(-L, N);
-            float MaterialShininess = 1.f - saturate(MatConstant.Roughness);
+            float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
             M = max(MaterialShininess * 100.f, 1.0f);
             specular = pow(max(dot(normalize(reflectDirection), V), 0.f), M) / 0.0314;
             
@@ -235,7 +231,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         
             //高光
             float3 reflectDirection = reflect(-L, N);
-            float MaterialShininess = 1.f - saturate(MatConstant.Roughness);
+            float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
             float M = max(MaterialShininess * 100.f, 1.0f);
             specular = pow(max(dot(normalize(reflectDirection), V), 0.f), M);
         
@@ -271,7 +267,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             float Alpha = max(Alpha_temp, Beta_temp); //在（L 和 N的夹角）和（V 和 N的夹角）中取大角
             float Beta = min(Alpha_temp, Beta_temp); //在（L 和 N的夹角）和（V 和 N的夹角）中取小角
         
-            float iRoughness = pow(MatConstant.Roughness, 2);
+            float iRoughness = pow(currMaterial.Roughness, 2);
             float A = 1.f - 0.5f * (iRoughness / (iRoughness + 0.33f));
             float B = 0.45f * (iRoughness / (iRoughness + 0.09f));
         
@@ -295,6 +291,6 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         
     }
         
-    mvOut.Color = Material.BaseColor * Ambient + LightStrengths * (Material.BaseColor + Material.BaseColor * specular) + Material.BaseColor * Fresnel;
+    mvOut.Color = Material.FinalColor * Ambient + LightStrengths * (Material.FinalColor + Material.FinalColor * specular) + Material.FinalColor * Fresnel;
     return mvOut.Color;
 }

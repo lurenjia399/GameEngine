@@ -38,13 +38,8 @@ void FGeometryMap::BuildMeshBuffer()
 
 void FGeometryMap::BuildDescriptorHeap()
 {
-	//+1 摄像机 +1 贴图
-	DescriptorHeap.BuildDescriptorHeap(
-		GetDrawMeshObjectCount() + 
-		//GetDrawMaterialObjectCount() +
-		GetDrawLightObjectCount() + 
-		GetDrawTextureObjectCount() + 
-		1);
+	//+1 摄像机
+	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawLightObjectCount() + GetDrawTextureObjectCount() + 1);
 }
 
 void FGeometryMap::LoadTexture()
@@ -272,11 +267,11 @@ void FGeometryMap::PreDraw(float DeltaTime)
 
 void FGeometryMap::Draw(float DeltaTime)
 {
-	DrawViewport(DeltaTime);
 	DrawLight(DeltaTime);
-	DrawMesh(DeltaTime);
-	DrawMaterial(DeltaTime);
 	DrawTexture(DeltaTime);
+	DrawMaterial(DeltaTime);
+	DrawMesh(DeltaTime);
+	DrawViewport(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)
@@ -296,7 +291,7 @@ void FGeometryMap::DrawTexture(float DeltaTime)
 	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 	Handle.Offset(GetDrawMeshObjectCount() + GetDrawLightObjectCount() + 1, HandleSize);
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(4, Handle);
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(3, Handle);
 }
 
 void FGeometryMap::DrawMesh(float DeltaTime)
@@ -338,7 +333,7 @@ void FGeometryMap::DrawMesh(float DeltaTime)
 
 void FGeometryMap::DrawMaterial(float DeltaTime)
 {
-	GetGraphicsCommandList()->SetGraphicsRootShaderResourceView(2, MaterialConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
+	GetGraphicsCommandList()->SetGraphicsRootShaderResourceView(4, MaterialConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
 }
 
 void FGeometryMap::DrawLight(float DeltaTime)
@@ -346,7 +341,7 @@ void FGeometryMap::DrawLight(float DeltaTime)
 	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 	Handle.Offset(GetDrawMeshObjectCount(), HandleSize);
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(3, Handle);
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(2, Handle);//根参数中的索引
 }
 
 bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)

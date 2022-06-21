@@ -101,7 +101,7 @@ int CDirectXRenderingEngine::PostInit()
 		if (CMaterial* PlaneMateria = new CMaterial())
 		{
 			PlaneMateria->ResetGuid("PlaneMateria");//给创建的材质设置Guid
-
+			PlaneMateria->SetBaseColor("Earth");
 			PlaneMateria->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 			PlaneMateria->SetMaterialType(EMaterialType::Lambert);
 			PlaneMesh->SetSubMaterials(0, PlaneMateria);
@@ -114,7 +114,7 @@ int CDirectXRenderingEngine::PostInit()
 		if (CMaterial* SphereMaterial_1 = new CMaterial())
 		{
 			SphereMaterial_1->ResetGuid("SphereMaterial_1");//给创建的材质设置Guid
-
+			
 			SphereMaterial_1->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 			SphereMaterial_1->SetMaterialType(EMaterialType::Lambert);
 			SphereMesh_1->SetSubMaterials(0, SphereMaterial_1);

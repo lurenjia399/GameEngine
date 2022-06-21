@@ -1,6 +1,6 @@
 struct FMaterial
 {
-    float4 BaseColor;//通用颜色
+    float4 FinalColor;//通用颜色
 };
 
 float3 FresnelSchlickMethod(float3 InF0, float3 InVertexNormal, float3 InCameraDirection, float InPow)

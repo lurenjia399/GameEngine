@@ -9,33 +9,30 @@ bool FDirectXRootSignature::Build(const UINT& TextureCount)
 	CD3DX12_ROOT_PARAMETER RootParam[5];
 	//对象的的descriptorRange
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV;
-	DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);
+	DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);//参数类型，参数数量，参数传递的寄存器
 
 	//viewport的descriptorRange
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV;
 	DescriptorRangeViewportCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
 
-	////material的descriptorRange
-	//CD3DX12_DESCRIPTOR_RANGE DescriptorRangeMaterialCBV;
-	//DescriptorRangeMaterialCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 2);
-
 	//灯光的desctriptorRange
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeLightCBV;
-	DescriptorRangeLightCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 3);
+	DescriptorRangeLightCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 2);
 
+	//Texture的descriptorRange
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
-	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 4);
+	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 3);
 
 	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeObjCBV);
 	RootParam[1].InitAsDescriptorTable(1, &DescriptorRangeViewportCBV);
-	RootParam[2].InitAsShaderResourceView(0, 1);
-	RootParam[3].InitAsDescriptorTable(1, &DescriptorRangeLightCBV);
-	RootParam[4].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);
+	RootParam[2].InitAsDescriptorTable(1, &DescriptorRangeLightCBV);
+	RootParam[3].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);
+
+	RootParam[4].InitAsShaderResourceView(0, 1);
 
 	//静态采样方式
 	vector<D3D12_STATIC_SAMPLER_DESC> SamplerDesc;
-	SamplerDesc.emplace_back(CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER::D3D12_FILTER_MIN_MAG_MIP_POINT
-		, D3D12_TEXTURE_ADDRESS_MODE_MIRROR, D3D12_TEXTURE_ADDRESS_MODE_MIRROR));
+	SamplerDesc.emplace_back(CD3DX12_STATIC_SAMPLER_DESC(0, D3D12_FILTER::D3D12_FILTER_MIN_MAG_MIP_POINT));
 
 	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
 		5, RootParam, SamplerDesc.size(), SamplerDesc.data(),

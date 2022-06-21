@@ -20,6 +20,7 @@ void FRenderingResourcesUpdate::Init(ID3D12Device* InDevice, UINT InElemetSize, 
 {
 	assert(InDevice);
 
+	//这里是因为材质资源不需要字节对齐
 	if (bIsConstantBuffer)
 	{
 		ElementSize = GetConstantBufferByteSize(InElemetSize);

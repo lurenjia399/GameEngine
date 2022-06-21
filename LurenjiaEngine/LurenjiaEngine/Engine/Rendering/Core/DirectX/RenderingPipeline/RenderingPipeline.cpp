@@ -13,7 +13,7 @@ void FRenderingPipeline::BuildPipeline()
 {
 	DirectXPiepelineState.ResetGPSDesc();
 
-	//创建贴图资源
+	//加载贴图资源
 	GeometryMap.LoadTexture();
 	//绑定根签名
 	if (!DirectXRootSignature.Build(GeometryMap.GetDrawTextureObjectCount()))
@@ -21,7 +21,9 @@ void FRenderingPipeline::BuildPipeline()
 		Engine_Log_Error("构建根签名失败");
 	}
 	DirectXPiepelineState.BindRootSignature(DirectXRootSignature.GetRootSignature());
+
 	//绑定着色器
+	//着色器宏，传递给着色器相应的值
 	char buffer[10] = { 0 };
 	D3D_SHADER_MACRO ShaderMacro[] =
 	{
@@ -40,6 +42,7 @@ void FRenderingPipeline::BuildPipeline()
 		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
 	};
 	DirectXPiepelineState.BindInputLayout(InputElementDesc.data(), (UINT)InputElementDesc.size());
+
 	//创建模型资源（顶点和索引）缓冲区
 	GeometryMap.BuildMeshBuffer();
 	//创建描述符堆（用于存放常量缓冲区中的资源）
