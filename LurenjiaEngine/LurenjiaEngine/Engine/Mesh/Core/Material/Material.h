@@ -16,32 +16,41 @@ public:
 	CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float InRoughness, string InMaterialTexturePath);
 	CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float InRoughness, string InMaterialTexturePath, EMaterialDisplayStatusType InMaterialDisplayStatusType);
 
-	void SetBaseColor(const XMFLOAT4& InBaseColor);	//设置材质的基础颜色
-	void SetBaseColor(const string& InPath);		//设置材质贴图的路径
+	void SetBaseColor(const XMFLOAT4& InBaseColor);				//设置材质的基础颜色
+	void SetMaterialTextureMapKey(const string& InPath);		//设置材质贴图的路径
+	void SetMaterialTextureMapIndex(int InMaterialIndex);
+	void SetMaterialNormalMapKey(const string& InPath);
+	void SetMaterialNormalMapIndex(int InMaterialIndex);
 	void SetMaterialType(const EMaterialType& InMaterialType);
 	void SetRoughness(const float& InRoughness);
 	void SetMaterialDisplayStatusType(EMaterialDisplayStatusType InDisplayStatusType);
 	void SetMaterialTransform(XMFLOAT4X4 InTransform);
 	void SetDirty(bool InDirty);
-	void SetMaterialIndex(int InMaterialIndex);
+	
 
 	FORCEINLINE XMFLOAT4					GetBaseColor() const					{ return BaseColor; }
 	FORCEINLINE EMaterialType				GetMaterialType() const					{ return MaterialType; }
 	FORCEINLINE float						GetRoughness() const					{ return Roughness; }
-	FORCEINLINE string						GetMaterialTexturePath() const			{ return MaterialTexturePath; }
+	FORCEINLINE string						GetMaterialTextureMapKey() const		{ return MaterialTextureMapKey; }
+	FORCEINLINE int							GetMaterialTextureMapIndex() const		{ return MaterialTextureMapIndex; }
+	FORCEINLINE string						GetMaterialNormalMapKey() const			{ return MaterialNormalMapKey; }
+	FORCEINLINE int							GetMaterialNormalMapIndex() const		{ return MaterialNormalMapIndex; }
 	FORCEINLINE EMaterialDisplayStatusType	GetMaterialDisplayStatusType() const	{ return MaterialDisplayStatusType; }
 	FORCEINLINE XMFLOAT4X4					GetMaterialTransform() const			{ return MaterialTransform; }
 	FORCEINLINE bool						isDirty() const							{ return bDirty; }
-	FORCEINLINE int							GetMaterialIndex() const				{ return MaterialIndex; }
+	
 private:
-	XMFLOAT4 BaseColor;
-	EMaterialType MaterialType;
-	float Roughness;
-	string MaterialTexturePath;
-	EMaterialDisplayStatusType MaterialDisplayStatusType;
-	XMFLOAT4X4 MaterialTransform;
-	bool bDirty;	//标志当前材质是否动态更改
-	int MaterialIndex;
+	XMFLOAT4 BaseColor;						//材质的基本颜色
+	EMaterialType MaterialType;				//材质的类型
+	float Roughness;						//材质的粗糙度
+	string MaterialTextureMapKey;			//材质使用的纹理贴图Key
+	int MaterialTextureMapIndex;			//材质使用的纹理贴图Index
+	string MaterialNormalMapKey;			//材质使用的法线贴图Key
+	int MaterialNormalMapIndex;				//材质使用的法线贴图Index
+	EMaterialDisplayStatusType MaterialDisplayStatusType;//材质的显示方式
+	XMFLOAT4X4 MaterialTransform;			//材质的变换信息，应用于模型的uv坐标
+	bool bDirty;							//标志当前材质是否动态更改
+	
 };
 
 #endif // !Material

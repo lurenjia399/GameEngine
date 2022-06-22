@@ -79,7 +79,7 @@ void FGeometryMap::BuildMaterialShaderResourseView()
 		{
 			for (CMaterial* material : *data.MeshComponet->GetMaterials())
 			{
-				material->SetMaterialIndex(ShaderIndex++);
+				material->SetMaterialTextureMapIndex(ShaderIndex++);
 				Materials.emplace_back(material);
 			}
 		}
@@ -174,7 +174,7 @@ void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& View
 			FObjectTransformation ObjectTransformation;
 			XMStoreFloat4x4(&ObjectTransformation.World, MatrixWorld);
 			XMStoreFloat4x4(&ObjectTransformation.TextureTransformation, XMMatrixTranspose(MatrixTextureTransform));
-			ObjectTransformation.MaterialIndex = data.MeshComponet->GetMaterials()->at(0)->GetMaterialIndex();
+			ObjectTransformation.MaterialIndex = data.MeshComponet->GetMaterials()->at(0)->GetMaterialTextureMapIndex();
 			MeshConstantBufferView.Update(i, &ObjectTransformation);
 		}
 	}
@@ -252,11 +252,12 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 		MaterialTransformation.BaseColor = InMaterial->GetBaseColor();
 		MaterialTransformation.MaterialType = static_cast<UINT32>(InMaterial->GetMaterialType());
 		MaterialTransformation.Roughness = InMaterial->GetRoughness();
-		MaterialTransformation.TextureIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialTexturePath());
+		MaterialTransformation.TextureMapIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialTextureMapKey());
+		MaterialTransformation.NormalMapIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialNormalMapKey());
 		XMFLOAT4X4 materialTransform = InMaterial->GetMaterialTransform();
 		XMMATRIX MaterialTransform = XMLoadFloat4x4(&materialTransform);
 		XMStoreFloat4x4(&MaterialTransformation.TransformInformation, XMMatrixTranspose(MaterialTransform));
-		MaterialConstantBufferView.Update(InMaterial->GetMaterialIndex(), &MaterialTransformation);
+		MaterialConstantBufferView.Update(InMaterial->GetMaterialTextureMapIndex(), &MaterialTransformation);
 	}
 }
 

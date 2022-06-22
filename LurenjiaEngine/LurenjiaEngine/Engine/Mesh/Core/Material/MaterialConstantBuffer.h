@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef MaterialConstantBufferH
-#define MaterialConstantBufferH
+#ifndef MaterialConstantBuffer_H
+#define MaterialConstantBuffer_H
 
 #include "../../../LurenjiaEngine.h"
 #include "MaterialType.h"
@@ -15,8 +15,8 @@ public:
 
 	UINT32 MaterialType;
 	float Roughness;
-	int TextureIndex; //使用的贴图序号，不使用为-1
-	int XX2;//占位
+	int TextureMapIndex; //使用的贴图序号，不使用为-1
+	int NormalMapIndex;//使用法线贴图序号序号， 不使用为-1
 
 	XMFLOAT4X4 TransformInformation;
 };

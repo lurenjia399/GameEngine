@@ -98,13 +98,14 @@ int CDirectXRenderingEngine::PostInit()
 		PlaneMesh->SetMeshComponent("PlaneMeshComponent", 4.f, 3.f, 20, 20);
 		PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
 		PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 30.f, 1.f));
-		if (CMaterial* PlaneMateria = new CMaterial())
+		if (CMaterial* PlaneMaterial = new CMaterial())
 		{
-			PlaneMateria->ResetGuid("PlaneMateria");//给创建的材质设置Guid
-			PlaneMateria->SetBaseColor("Earth");
-			PlaneMateria->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
-			PlaneMateria->SetMaterialType(EMaterialType::Lambert);
-			PlaneMesh->SetSubMaterials(0, PlaneMateria);
+			PlaneMaterial->ResetGuid("PlaneMateria");//给创建的材质设置Guid
+			//PlaneMaterial->SetMaterialTextureMapKey("Wood2");
+			PlaneMaterial->SetMaterialNormalMapKey("Wood2_Nor");
+			PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+			PlaneMaterial->SetMaterialType(EMaterialType::Lambert);
+			PlaneMesh->SetSubMaterials(0, PlaneMaterial);
 		}
 	}
 	if (ASphereMesh* SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
@@ -114,7 +115,6 @@ int CDirectXRenderingEngine::PostInit()
 		if (CMaterial* SphereMaterial_1 = new CMaterial())
 		{
 			SphereMaterial_1->ResetGuid("SphereMaterial_1");//给创建的材质设置Guid
-			
 			SphereMaterial_1->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 			SphereMaterial_1->SetMaterialType(EMaterialType::Lambert);
 			SphereMesh_1->SetSubMaterials(0, SphereMaterial_1);
@@ -288,7 +288,7 @@ int CDirectXRenderingEngine::PostInit()
 		if (CMaterial* SphereMaterial_13 = new CMaterial())
 		{
 			SphereMaterial_13->ResetGuid("SphereMaterial_13");//给创建的材质设置Guid
-
+			
 			SphereMaterial_13->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 			SphereMaterial_13->SetMaterialType(EMaterialType::OrenNayar);
 			SphereMaterial_13->SetRoughness(2.f);

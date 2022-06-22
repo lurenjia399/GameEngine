@@ -1,42 +1,5 @@
 #include "Material.hlsl"
-#include "Light.hlsl"
-
-SamplerState SimpleTextureState : register(s0);//静态采用器
-Texture2D SimpleTexture2DMap[MapCount] : register(t3);//所有贴图数组
-
-cbuffer ObjectConstBuffer : register(b0) //模型CBV
-{
-    float4x4 WorldMatrix;
-    float4x4 ObjectTextureTransformation;
-    
-    uint MaterialIndex;
-    int xx1;
-    int xx2;
-    int xx3;
-
-}
-cbuffer ViewportConstBuffer : register(b1) //视口CBV
-{
-    float4 cameraPosition;
-    float4x4 ViewProjectionMatrix;
-}
-cbuffer LightConstantBufferView : register(b2) //灯光CBV
-{
-    Light SceneLight[16];
-}
-struct Material_Struct
-{
-    float4 BaseColor;
-    
-    uint MaterialType;
-    float Roughness;
-    int TextureIndex; //使用的贴图序号，不使用为-1
-    int XX2; //占位
-    
-    float4x4 TransformInformation;
-};
-StructuredBuffer<Material_Struct> AMaterials : register(t0, space1); //所有材质数组
-
+#include "FunctionLibrary.hlsl"
 struct MeshVertexIn
 {
 	float3 Position : POSITION;
@@ -80,7 +43,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 }
 float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
-    Material_Struct currMaterial = AMaterials[MaterialIndex]; //当前模型的材质
+    MaterialConstantBuffer currMaterial = AMaterials[MaterialIndex]; //当前模型的材质
     int MaterialType = currMaterial.MaterialType;
     if(MaterialType == 99)//默认，使用材质本身的颜色
     {
@@ -96,7 +59,10 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     
     float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };//环境光
     
+    
+    float3x3 TBN = GetTBNMatrix(normalize(mvOut.Tangent), normalize(mvOut.Normal)); 
     float3 N = normalize(mvOut.Normal);
+    N = GetNormal(currMaterial, mvOut.TexCoord, TBN, normalize(mvOut.Normal));
     float3 V = normalize(cameraPosition.xyz - mvOut.worldPosition.xyz);
     float4 Ambient = { 0.f, 0.f, 0.f, 1.f};
     float4 diffuse = { 0.f, 0.f, 0.f, 1.f};
@@ -106,11 +72,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     
     
     FMaterial Material;
-    Material.FinalColor = currMaterial.BaseColor;
-    if (currMaterial.TextureIndex >= 0 && currMaterial.TextureIndex < MapCount)
-    {
-        Material.FinalColor = currMaterial.BaseColor * SimpleTexture2DMap[currMaterial.TextureIndex].Sample(SimpleTextureState, mvOut.TexCoord);
-    }
+    Material.FinalColor = GetFinalColor(currMaterial, mvOut.TexCoord);
 
     float4 LightStrengths = { 0.f, 0.f, 0.f, 1.f };
     for (int i = 0; i < 16; i++)

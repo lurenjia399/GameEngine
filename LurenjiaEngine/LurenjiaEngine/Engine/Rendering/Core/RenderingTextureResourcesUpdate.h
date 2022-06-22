@@ -28,7 +28,7 @@ public:
 	int GetTextureCount() const;
 	int GetTextureIndex(string InKey);
 private:
-	unordered_map<wstring, unique_ptr<FRenderingTexture>> TextureMapping;
+	std::map<wstring, unique_ptr<FRenderingTexture>> TextureMapping;
 };
 
 #endif
