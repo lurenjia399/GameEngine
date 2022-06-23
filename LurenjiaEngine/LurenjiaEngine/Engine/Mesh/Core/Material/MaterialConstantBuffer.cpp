@@ -8,6 +8,7 @@ CMaterialConstantBuffer::CMaterialConstantBuffer()
 	, Roughness(1.0f)
 	, TextureMapIndex(-1)
 	, NormalMapIndex(-1)
+	, SpecularIndex(-1)
 	, TransformInformation(EngineMath::IdentityMatrix4x4())
 {
 }

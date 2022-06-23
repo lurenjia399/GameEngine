@@ -11,11 +11,11 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 	float TexCoordAngle = XM_2PI / (InAxialSubdivision - 1);
 
 	//创建顶点
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::Red), XMFLOAT3(0.f, 1.f, 0.f), XMFLOAT3(1.f, 0.f, 0.f), XMFLOAT2(0.5f, 0.0f)));//北极点
+	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, InRadius, 0), XMFLOAT4(Colors::Red), XMFLOAT3(0.f, 1.f, 0.f), XMFLOAT3(0.0f, 1.0f, 0.0f), XMFLOAT2(0.5f, 0.0f)));//北极点
 	for (uint32_t j = 1; j < InHeightSubdivision;j++)
 	{
 		float vertical = j * verticalAngle;
-		for (uint32_t i = 1; i <= InAxialSubdivision; i++)
+		for (uint32_t i = 0; i <= InAxialSubdivision; i++)
 		{
 			float horizontal = i * horizontalAngle;
 			float x = InRadius * sinf(vertical) * cosf(horizontal);
@@ -29,42 +29,37 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 			XMVECTOR normal = XMLoadFloat3(&InRenderingData.VertexData[currIndex].Pos);
 			XMStoreFloat3(&InRenderingData.VertexData[currIndex].Normal, normal);
 
-			XMFLOAT3 UTangent = XMFLOAT3(x, -y, z);
+			XMFLOAT3 UTangent = XMFLOAT3(-z, 0, x);
 			XMVECTOR Tangent = XMLoadFloat3(&UTangent);
 			XMStoreFloat3(&InRenderingData.VertexData[currIndex].UTangent, Tangent);
 
 			float v = vertical / XM_PI;
 			float u = horizontal / XM_2PI;
-			//if (i == 1) u = 1.0f;
 			InRenderingData.VertexData[currIndex].TexCoord.x = u;
 			InRenderingData.VertexData[currIndex].TexCoord.y = v;
-			//if (v == 1.0f ) continue;
-			XMFLOAT2 uv = XMFLOAT2(u, v);
-			XMVECTOR TexCoord = XMLoadFloat2(&uv);
-			//XMStoreFloat2(&InRenderingData.VertexData[currIndex].TexCoord, TexCoord);
 		}
 	}
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, -InRadius, 0), XMFLOAT4(Colors::Red), XMFLOAT3(0.f, -1.f, 0.f), XMFLOAT3(-1.f, 0.f, 0.f), XMFLOAT2(0.5f, 1.0f)));//南极点
+	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(0, -InRadius, 0), XMFLOAT4(Colors::Red), XMFLOAT3(0.f, -1.f, 0.f), XMFLOAT3(0.f, -1.f, 0.f), XMFLOAT2(0.f, 0.5f)));//南极点
 
 	//创建索引
 	for (uint32_t i = 1; i <= InAxialSubdivision;i++)
 	{
-		uint32_t finalIndex = (i == InAxialSubdivision) ? i - InAxialSubdivision + 1 : i + 1;
+		uint32_t finalIndex = i + 1;
 		InRenderingData.IndexData.emplace_back(0);InRenderingData.IndexData.emplace_back(finalIndex);InRenderingData.IndexData.emplace_back(i);
 	}
 	for (uint32_t j = 1; j < InHeightSubdivision - 1;j++)
 	{
 		for (uint32_t i = 1; i <= InAxialSubdivision; i++)
 		{
-			uint32_t left_up = i + (j - 1) * InAxialSubdivision;uint32_t right_up = (i == InAxialSubdivision) ? left_up - InAxialSubdivision + 1 : left_up + 1;
-			uint32_t left_dowm = left_up + InAxialSubdivision;uint32_t right_dowm = right_up + InAxialSubdivision;
+			uint32_t left_up = i + (j - 1) * (InAxialSubdivision + 1);uint32_t right_up = left_up + 1;
+			uint32_t left_dowm = left_up + (InAxialSubdivision + 1);uint32_t right_dowm = left_dowm + 1;
 			InRenderingData.IndexData.emplace_back(left_dowm);InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);
 			InRenderingData.IndexData.emplace_back(left_dowm);InRenderingData.IndexData.emplace_back(right_up);InRenderingData.IndexData.emplace_back(right_dowm);
 		}
 	}
 	for (uint32_t i = 1; i <= InAxialSubdivision;i++)
 	{
-		uint32_t left_up = i + (InHeightSubdivision - 2) * InAxialSubdivision;uint32_t right_up = (i == InAxialSubdivision) ? left_up - InAxialSubdivision + 1 : left_up + 1;
+		uint32_t left_up = i + (InHeightSubdivision - 2) * (InAxialSubdivision + 1);uint32_t right_up = left_up + 1;
 		InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);InRenderingData.IndexData.emplace_back(InRenderingData.VertexData.size() - 1);
 	}
 }

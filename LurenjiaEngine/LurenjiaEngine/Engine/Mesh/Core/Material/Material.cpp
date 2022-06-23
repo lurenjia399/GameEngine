@@ -9,6 +9,8 @@ CMaterial::CMaterial()
 	, MaterialTextureMapIndex(-1)
 	, MaterialNormalMapKey("")
 	, MaterialNormalMapIndex(-1)
+	, MaterialSpecularMapKey("")
+	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, bDirty(true)
@@ -24,6 +26,8 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor)
 	, MaterialTextureMapIndex(-1)
 	, MaterialNormalMapKey("")
 	, MaterialNormalMapIndex(-1)
+	, MaterialSpecularMapKey("")
+	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, bDirty(true)
@@ -38,6 +42,8 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType)
 	, MaterialTextureMapIndex(-1)
 	, MaterialNormalMapKey("")
 	, MaterialNormalMapIndex(-1)
+	, MaterialSpecularMapKey("")
+	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, bDirty(true)
@@ -52,6 +58,8 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 	, MaterialTextureMapIndex(-1)
 	, MaterialNormalMapKey("")
 	, MaterialNormalMapIndex(-1)
+	, MaterialSpecularMapKey("")
+	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, bDirty(true)
@@ -66,6 +74,8 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 	, MaterialTextureMapIndex(-1)
 	, MaterialNormalMapKey("")
 	, MaterialNormalMapIndex(-1)
+	, MaterialSpecularMapKey("")
+	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, bDirty(true)
@@ -80,6 +90,8 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 	, MaterialTextureMapIndex(-1)
 	, MaterialNormalMapKey("")
 	, MaterialNormalMapIndex(-1)
+	, MaterialSpecularMapKey("")
+	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(InMaterialDisplayStatusType)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
 	, bDirty(true)
@@ -96,6 +108,11 @@ void CMaterial::SetMaterialTextureMapKey(const string& InPath)
 {
 	MaterialTextureMapKey = InPath;
 	SetDirty(true);
+}
+
+void CMaterial::SetMaterialSpecularMapIndex(int InMaterialIndex)
+{
+	MaterialTextureMapIndex = InMaterialIndex;
 }
 
 void CMaterial::SetMaterialType(const EMaterialType& InMaterialType)
@@ -144,5 +161,11 @@ void CMaterial::SetMaterialNormalMapKey(const string& InPath)
 void CMaterial::SetMaterialNormalMapIndex(int InMaterialIndex)
 {
 	MaterialNormalMapIndex = InMaterialIndex;
+}
+
+void CMaterial::SetMaterialSpecularMapKey(const string& InPath)
+{
+	MaterialSpecularMapKey = InPath;
+	SetDirty(true);
 }
 

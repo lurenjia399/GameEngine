@@ -254,6 +254,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 		MaterialTransformation.Roughness = InMaterial->GetRoughness();
 		MaterialTransformation.TextureMapIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialTextureMapKey());
 		MaterialTransformation.NormalMapIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialNormalMapKey());
+		MaterialTransformation.SpecularIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialSpecularMapKey());
 		XMFLOAT4X4 materialTransform = InMaterial->GetMaterialTransform();
 		XMMATRIX MaterialTransform = XMLoadFloat4x4(&materialTransform);
 		XMStoreFloat4x4(&MaterialTransformation.TransformInformation, XMMatrixTranspose(MaterialTransform));

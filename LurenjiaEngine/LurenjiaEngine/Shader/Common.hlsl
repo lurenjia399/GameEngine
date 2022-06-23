@@ -1,6 +1,7 @@
 #include "Light.hlsl"
 
-SamplerState SimpleTextureState : register(s0); //静态采用器
+SamplerState TextureSampler : register(s0); //静态采样器
+SamplerState AnisotropicSampler : register(s1);//各向异性采样器
 Texture2D SimpleTexture2DMap[MapCount] : register(t3); //所有贴图数组
 
 cbuffer ObjectConstBuffer : register(b0) //模型CBV
@@ -31,6 +32,11 @@ struct MaterialConstantBuffer
     float Roughness;
     int TextureMapIndex; //使用的纹理贴图序号，不使用为-1
     int NormalMapIndex; //使用法线贴图序号序号， 不使用为-1
+    
+    int SpecularIndex; //使用的高光贴图序号, 不适用为-1
+    int xx1;
+    int xx2;
+    int xx3;
     
     float4x4 TransformInformation;
 };

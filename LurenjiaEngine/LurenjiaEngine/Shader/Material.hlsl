@@ -15,7 +15,7 @@ float4 GetFinalColor(MaterialConstantBuffer InMaterial, float2 InTexCoord)
     float4 res = InMaterial.BaseColor;
     if (InMaterial.TextureMapIndex >= 0 && InMaterial.TextureMapIndex < MapCount)
     {
-        res = InMaterial.BaseColor * SimpleTexture2DMap[InMaterial.TextureMapIndex].Sample(SimpleTextureState, InTexCoord);
+        res = InMaterial.BaseColor * SimpleTexture2DMap[InMaterial.TextureMapIndex].Sample(TextureSampler, InTexCoord);
     }
     
     return res;
@@ -26,7 +26,8 @@ float3 GetNormal(MaterialConstantBuffer InMaterial, float2 InTexCoord, float3x3 
     float3 res = InNormal;
     if(InMaterial.NormalMapIndex >= 0 && InMaterial.NormalMapIndex < MapCount)
     {
-        float3 SampleNormal = SimpleTexture2DMap[InMaterial.NormalMapIndex].Sample(SimpleTextureState, InTexCoord).rgb;//范围都是 0 - 1
+        float3 SampleNormal = SimpleTexture2DMap[InMaterial.NormalMapIndex].Sample(AnisotropicSampler, InTexCoord).rgb; //范围都是 0 - 1
+        //res = mul(TBN, SampleNormal * 2.f - 1.f);
         res = mul(SampleNormal * 2.f - 1.f, TBN);
     }
     return normalize(res);

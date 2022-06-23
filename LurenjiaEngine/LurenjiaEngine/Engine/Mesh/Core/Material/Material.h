@@ -21,6 +21,8 @@ public:
 	void SetMaterialTextureMapIndex(int InMaterialIndex);
 	void SetMaterialNormalMapKey(const string& InPath);
 	void SetMaterialNormalMapIndex(int InMaterialIndex);
+	void SetMaterialSpecularMapKey(const string& InPath);
+	void SetMaterialSpecularMapIndex(int InMaterialIndex);
 	void SetMaterialType(const EMaterialType& InMaterialType);
 	void SetRoughness(const float& InRoughness);
 	void SetMaterialDisplayStatusType(EMaterialDisplayStatusType InDisplayStatusType);
@@ -35,6 +37,8 @@ public:
 	FORCEINLINE int							GetMaterialTextureMapIndex() const		{ return MaterialTextureMapIndex; }
 	FORCEINLINE string						GetMaterialNormalMapKey() const			{ return MaterialNormalMapKey; }
 	FORCEINLINE int							GetMaterialNormalMapIndex() const		{ return MaterialNormalMapIndex; }
+	FORCEINLINE string						GetMaterialSpecularMapKey() const		{ return MaterialSpecularMapKey; }
+	FORCEINLINE int							GetMaterialSpecularMapIndex() const		{ return MaterialSpecularMapIndex; }
 	FORCEINLINE EMaterialDisplayStatusType	GetMaterialDisplayStatusType() const	{ return MaterialDisplayStatusType; }
 	FORCEINLINE XMFLOAT4X4					GetMaterialTransform() const			{ return MaterialTransform; }
 	FORCEINLINE bool						isDirty() const							{ return bDirty; }
@@ -47,6 +51,8 @@ private:
 	int MaterialTextureMapIndex;			//材质使用的纹理贴图Index
 	string MaterialNormalMapKey;			//材质使用的法线贴图Key
 	int MaterialNormalMapIndex;				//材质使用的法线贴图Index
+	string MaterialSpecularMapKey;			//材质使用的高光贴图Key
+	int MaterialSpecularMapIndex;			//材质使用的高光贴图Index
 	EMaterialDisplayStatusType MaterialDisplayStatusType;//材质的显示方式
 	XMFLOAT4X4 MaterialTransform;			//材质的变换信息，应用于模型的uv坐标
 	bool bDirty;							//标志当前材质是否动态更改
