@@ -8,7 +8,8 @@ CMaterialConstantBuffer::CMaterialConstantBuffer()
 	, Roughness(1.0f)
 	, TextureMapIndex(-1)
 	, NormalMapIndex(-1)
-	, SpecularIndex(-1)
+	, SpecularMapIndex(-1)
+	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
 	, TransformInformation(EngineMath::IdentityMatrix4x4())
 {
 }

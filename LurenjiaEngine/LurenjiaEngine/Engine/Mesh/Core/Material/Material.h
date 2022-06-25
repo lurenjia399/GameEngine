@@ -17,6 +17,7 @@ public:
 	CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float InRoughness, string InMaterialTexturePath, EMaterialDisplayStatusType InMaterialDisplayStatusType);
 
 	void SetBaseColor(const XMFLOAT4& InBaseColor);				//设置材质的基础颜色
+	void SetSpecularColor(const XMFLOAT3& InSpecularColor);		//设置材质的高光颜色
 	void SetMaterialTextureMapKey(const string& InPath);		//设置材质贴图的路径
 	void SetMaterialTextureMapIndex(int InMaterialIndex);
 	void SetMaterialNormalMapKey(const string& InPath);
@@ -31,6 +32,7 @@ public:
 	
 
 	FORCEINLINE XMFLOAT4					GetBaseColor() const					{ return BaseColor; }
+	FORCEINLINE XMFLOAT3					GetSpecularColor() const						{ return SpecularColor; }
 	FORCEINLINE EMaterialType				GetMaterialType() const					{ return MaterialType; }
 	FORCEINLINE float						GetRoughness() const					{ return Roughness; }
 	FORCEINLINE string						GetMaterialTextureMapKey() const		{ return MaterialTextureMapKey; }
@@ -45,6 +47,7 @@ public:
 	
 private:
 	XMFLOAT4 BaseColor;						//材质的基本颜色
+	XMFLOAT3 SpecularColor;					//材质的高光颜色
 	EMaterialType MaterialType;				//材质的类型
 	float Roughness;						//材质的粗糙度
 	string MaterialTextureMapKey;			//材质使用的纹理贴图Key
@@ -56,7 +59,6 @@ private:
 	EMaterialDisplayStatusType MaterialDisplayStatusType;//材质的显示方式
 	XMFLOAT4X4 MaterialTransform;			//材质的变换信息，应用于模型的uv坐标
 	bool bDirty;							//标志当前材质是否动态更改
-	
 };
 
 #endif // !Material

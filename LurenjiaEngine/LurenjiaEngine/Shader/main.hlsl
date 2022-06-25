@@ -1,5 +1,5 @@
 #include "Material.hlsl"
-#include "FunctionLibrary.hlsl"
+
 struct MeshVertexIn
 {
 	float3 Position : POSITION;
@@ -57,16 +57,16 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         return float4(mvOut.Normal, 1.0f);
     }
     
-    float4 AmbientLight = { 0.15f, 0.15f, 0.25f, 1.0f };//环境光
+    float4 AmbientLight = { 0.35f, 0.35f, 0.35f, 1.0f };//环境光
     
     
-    float3x3 TBN = GetTBNMatrix(normalize(mvOut.Tangent), normalize(mvOut.Normal)); 
-    float3 N = GetNormal(currMaterial, mvOut.TexCoord, TBN, normalize(mvOut.Normal));
+    
+    float3 N = GetNormal(currMaterial, mvOut.TexCoord, normalize(mvOut.Tangent), normalize(mvOut.Normal));
     float3 V = normalize(cameraPosition.xyz - mvOut.worldPosition.xyz);
     float4 Ambient = { 0.f, 0.f, 0.f, 1.f};
     float4 diffuse = { 0.f, 0.f, 0.f, 1.f};
-    float4 specular ={ 0.f, 0.f, 0.f, 1.f};
-    float4 Fresnel = { 0.f, 0.f, 0.f, 1.f };
+    float4 specular = GetSpecular(currMaterial, mvOut.TexCoord);
+    float4 Fresnel = { 0.f, 0.f, 0.f, 1.f};
     
     
     
@@ -104,17 +104,17 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             float3 reflectDirection = reflect(-L, N);
             float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
             float M = max(MaterialShininess * 100.f, 1.0f);
-            specular += saturate((M + 2.0f) * pow(max(dot(V, reflectDirection), 0.f), M) / 3.1415926);
+            specular *= saturate((M + 2.0f) * pow(max(dot(V, reflectDirection), 0.f), M) / 3.1415926);
         }
         else if (MaterialType == 4)//blinnPhone
         {
             Ambient =AmbientLight;
-            diffuse = pow(max(0.0, (dot(N, L) * 0.5f + 0.5f) - 0.2f), 2);
+            diffuse = pow(max(dot(N, L), 0.0), 2.f);
             
             float3 H = normalize(L + V); //摄像机方向和光线入射方向的半程向量
             float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
             float M = MaterialShininess * 100.f;
-            specular += saturate((M + 2.0f) * pow(max(dot(N, H), 0.f), M) / 3.1415926);
+            specular *= saturate((M + 2.0f) * pow(max(dot(N, H), 0.f), M) / 3.1415926);
 
         }
         else if (MaterialType == 5)//wrapLight,类似模拟皮肤
@@ -257,6 +257,6 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         
     }
         
-    mvOut.Color = Material.FinalColor * Ambient + LightStrengths * (Material.FinalColor + Material.FinalColor * specular);//+Material.FinalColor * Fresnel;
+    mvOut.Color = Material.FinalColor * Ambient + LightStrengths * (Material.FinalColor + Material.FinalColor * specular)+ Material.FinalColor * Fresnel;
     return mvOut.Color;
 }

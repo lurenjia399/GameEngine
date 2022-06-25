@@ -18,10 +18,8 @@ public:
 	int TextureMapIndex; //使用的贴图序号，不使用为-1
 	int NormalMapIndex;//使用法线贴图序号， 不使用为-1
 
-	int SpecularIndex;//使用的高光贴图序号, 不适用为-1
-	int xx1;
-	int xx2;
-	int xx3;
+	int SpecularMapIndex;//使用的高光贴图序号, 不适用为-1
+	XMFLOAT3 SpecularColor;//默认使用的高光颜色基数
 
 	XMFLOAT4X4 TransformInformation;
 };

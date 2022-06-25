@@ -33,10 +33,8 @@ struct MaterialConstantBuffer
     int TextureMapIndex; //使用的纹理贴图序号，不使用为-1
     int NormalMapIndex; //使用法线贴图序号序号， 不使用为-1
     
-    int SpecularIndex; //使用的高光贴图序号, 不适用为-1
-    int xx1;
-    int xx2;
-    int xx3;
+    int SpecularMapIndex; //使用的高光贴图序号, 不适用为-1
+    float3 SpecularColor; //默认使用的高光颜色基数
     
     float4x4 TransformInformation;
 };

@@ -3,6 +3,7 @@
 
 CMaterial::CMaterial()
 	: BaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f))
+	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
 	, MaterialType(EMaterialType::Default)
 	, Roughness(1.0f)
 	, MaterialTextureMapKey("")
@@ -20,6 +21,7 @@ CMaterial::CMaterial()
 
 CMaterial::CMaterial(XMFLOAT4 InBaseColor)
 	: BaseColor(InBaseColor)
+	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
 	, MaterialType(EMaterialType::Default)
 	, Roughness(1.0f)
 	, MaterialTextureMapKey("")
@@ -36,6 +38,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor)
 
 CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType)
 	: BaseColor(InBaseColor)
+	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
 	, MaterialType(InMaterialType)
 	, Roughness(1.0f)
 	, MaterialTextureMapKey("")
@@ -52,6 +55,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType)
 
 CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float InRoughness)
 	: BaseColor(InBaseColor)
+	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
 	, MaterialType(InMaterialType)
 	, Roughness(InRoughness)
 	, MaterialTextureMapKey("")
@@ -68,6 +72,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 
 CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float InRoughness, string InMaterialTexturePath)
 	: BaseColor(InBaseColor)
+	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
 	, MaterialType(InMaterialType)
 	, Roughness(InRoughness)
 	, MaterialTextureMapKey(InMaterialTexturePath)
@@ -84,6 +89,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 
 CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float InRoughness, string InMaterialTexturePath, EMaterialDisplayStatusType InMaterialDisplayStatusType)
 	: BaseColor(InBaseColor)
+	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
 	, MaterialType(InMaterialType)
 	, Roughness(InRoughness)
 	, MaterialTextureMapKey(InMaterialTexturePath)
@@ -104,6 +110,12 @@ void CMaterial::SetBaseColor(const XMFLOAT4& InBaseColor)
 	SetDirty(true);
 }
 
+void CMaterial::SetSpecularColor(const XMFLOAT3& InSpecularColor)
+{
+	SpecularColor = InSpecularColor;
+	SetDirty(true);
+}
+
 void CMaterial::SetMaterialTextureMapKey(const string& InPath)
 {
 	MaterialTextureMapKey = InPath;
@@ -112,7 +124,7 @@ void CMaterial::SetMaterialTextureMapKey(const string& InPath)
 
 void CMaterial::SetMaterialSpecularMapIndex(int InMaterialIndex)
 {
-	MaterialTextureMapIndex = InMaterialIndex;
+	MaterialSpecularMapIndex = InMaterialIndex;
 }
 
 void CMaterial::SetMaterialType(const EMaterialType& InMaterialType)

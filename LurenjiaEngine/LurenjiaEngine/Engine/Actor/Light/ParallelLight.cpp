@@ -12,7 +12,7 @@ AParallelLight::AParallelLight()
 void AParallelLight::Tick(float DeltaTime)
 {
 	fvector_3d rotation = fvector_3d(0.f, DeltaTime * 40, 0.f);
-	rotation = fvector_3d(DeltaTime * 180, 0.f, 0.f);
+	rotation = fvector_3d(DeltaTime * 80, DeltaTime * 40, 0.f);
 	SetRotation(rotation);
 }
 

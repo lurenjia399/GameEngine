@@ -345,6 +345,12 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSampleObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Test\Texture\TextureTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Test\Material\MaterialTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -738,6 +744,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSampleObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Test\Texture\TextureTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Test\Material\MaterialTest.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
