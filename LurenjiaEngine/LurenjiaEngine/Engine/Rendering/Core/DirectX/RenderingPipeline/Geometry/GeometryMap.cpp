@@ -22,10 +22,10 @@ FGeometryMap::FGeometryMap()
 	TextureShaderResourceView = make_shared<FRenderingTextureResourcesUpdate>();
 }
 
-void FGeometryMap::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData)
+void FGeometryMap::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey)
 {
 	FGeometry& Geometry = Geometrys[0];
-	Geometry.BuildMeshDescData(InMesh, InRenderingData);
+	Geometry.BuildMeshDescData(InMesh, InRenderingData, HashKey);
 }
 
 void FGeometryMap::BuildMeshBuffer()
@@ -128,6 +128,24 @@ UINT FGeometryMap::GetDrawLightObjectCount()
 UINT FGeometryMap::GetDrawTextureObjectCount()
 {
 	return TextureShaderResourceView->GetTextureCount();
+}
+
+bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData)
+{
+	for (pair<int, FGeometry> Geometry : Geometrys)
+	{
+		if (Geometry.second.FindMeshRenderingDataByHash(InHashKey, OutGeometryDescData))
+		{
+			return true;
+		}
+	}
+	return false;
+}
+
+void FGeometryMap::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData)
+{
+	FGeometry& Geometry = Geometrys[0];
+	Geometry.DuplicateMeshRenderingData(InMesh, InGeometryDescData);
 }
 
 void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
@@ -359,13 +377,14 @@ bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)
 	return false;
 }
 
-void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData)
+void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData, const size_t& HashKey)
 {
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{
 		DescribeMeshRenderingData.emplace_back(FGeometryDescData());
 		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData[DescribeMeshRenderingData.size() - 1];
 		GeometryDescData.MeshComponet = InMesh;
+		GeometryDescData.MeshHash = HashKey;
 		GeometryDescData.IndexSize = MeshRenderData.IndexData.size();
 		GeometryDescData.IndexoffsetPosition = MeshRenderingData.IndexData.size();
 		GeometryDescData.VertexSize = MeshRenderData.VertexData.size();
@@ -409,6 +428,29 @@ UINT FGeometry::GetDrawMaterialObjectCount() const
 		res += GeometryDesc.MeshComponet->GetMaterialsCount();
 	}
 	return res;
+}
+
+bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData)
+{
+	for (FGeometryDescData & tem : DescribeMeshRenderingData)
+	{
+		if (tem.MeshHash == InHashKey)
+		{
+			OutGeometryDescData = tem;
+			return true;
+		}
+	}
+	return false;
+}
+
+void FGeometry::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData)
+{
+	if (!isExitDescribeMeshRenderingData(InMesh))
+	{
+		DescribeMeshRenderingData.emplace_back(InGeometryDescData);
+		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData.back();
+		GeometryDescData.MeshComponet = InMesh;
+	}
 }
 
 D3D12_VERTEX_BUFFER_VIEW FGeometry::GetVertexBufferView()

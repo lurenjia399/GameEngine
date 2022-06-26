@@ -11,6 +11,7 @@ public:
 	CSphereMeshComponent();
 
 	void CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
+	void BuildKey(size_t& OutHashKey, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision); 
 };
 
 #endif

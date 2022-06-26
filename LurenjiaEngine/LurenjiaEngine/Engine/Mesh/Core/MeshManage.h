@@ -95,11 +95,19 @@ T* CMeshManage::CreateMeshComponet(const S& name, ParamTypes&&... Params)
 	T* mesh = new T();
 	mesh->ResetGuid(name);
 
-	FMeshRenderingData MeshRenderingData;
-	mesh->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
-	mesh->BeginInit();
+	size_t HashKey = 0;
+	mesh->BuildKey(HashKey, std::forward<ParamTypes>(Params)...);
 
-	RenderingPipeline.BuildMeshComponent(mesh, MeshRenderingData);
+	FGeometryDescData GeometryDescData;
+	if (RenderingPipeline.FindMeshRenderingDataByHash(HashKey, GeometryDescData))
+	{
+		RenderingPipeline.DuplicateMeshRenderingData(mesh, GeometryDescData);
+	}
+	else {
+		FMeshRenderingData MeshRenderingData;
+		mesh->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
+		RenderingPipeline.BuildMeshComponent(mesh, MeshRenderingData, HashKey);
+	}
 
 	mesh->Init();
 	return mesh;

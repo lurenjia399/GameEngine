@@ -63,3 +63,13 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 		InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);InRenderingData.IndexData.emplace_back(InRenderingData.VertexData.size() - 1);
 	}
 }
+
+void CSphereMeshComponent::BuildKey(size_t& OutHashKey, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
+{
+	std::hash<float> floatHash;
+	std::hash<int> intHash;
+
+	OutHashKey = floatHash(InRadius);
+	OutHashKey += intHash(InAxialSubdivision);
+	OutHashKey += intHash(InHeightSubdivision);
+}

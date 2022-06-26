@@ -12,7 +12,9 @@ class FRenderingPipeline : public IDirectXDeviceInterface
 public:
 	FRenderingPipeline();
 
-	void BuildMeshComponent(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData);
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData);
+	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData);
+	void BuildMeshComponent(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey);
 	void BuildPipeline();
 	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void PreDraw(float DeltaTime);

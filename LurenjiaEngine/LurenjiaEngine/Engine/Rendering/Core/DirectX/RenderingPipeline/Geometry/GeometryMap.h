@@ -13,10 +13,12 @@ struct FGeometry : public IDirectXDeviceInterface_struct
 	friend struct FGeometryMap;
 public:
 	bool isExitDescribeMeshRenderingData(CMeshComponent* InKey);
-	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData);
+	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData, const size_t& HashKey);
 	void BuildMeshBuffer(const int& InIndex);
 	UINT GetDrawMeshObjectCount() const;
 	UINT GetDrawMaterialObjectCount() const;
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData);
+	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData);
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
 private:
@@ -40,7 +42,7 @@ public:
 	
 
 	FGeometryMap();
-	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData);
+	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey);
 	void BuildMeshBuffer();
 	void BuildDescriptorHeap();
 
@@ -57,6 +59,8 @@ public:
 	UINT GetDrawLightObjectCount();
 	UINT GetDrawTextureObjectCount();
 
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData);
+	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InMeshRenderingData);
 	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void PreDraw(float DeltaTime);

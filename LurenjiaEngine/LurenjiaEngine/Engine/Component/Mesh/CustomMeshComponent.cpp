@@ -26,6 +26,13 @@ void CCustomMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 	}
 }
 
+void CCustomMeshComponent::BuildKey(size_t& OutHashKey, const string& InPath)
+{
+	std::hash<string> stringHash;
+
+	OutHashKey = stringHash(InPath);
+}
+
 bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData)
 {
 	if (InBufferSize > 0)

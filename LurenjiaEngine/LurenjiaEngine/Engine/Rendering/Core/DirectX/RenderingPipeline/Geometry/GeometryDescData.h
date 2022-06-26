@@ -16,7 +16,7 @@ public:
 
 
 	CMeshComponent* MeshComponet;							//代表的模型组件
-
+	size_t MeshHash;										//代表的模型的哈希值
 public:
 
 	UINT IndexSize;											//索引的数量

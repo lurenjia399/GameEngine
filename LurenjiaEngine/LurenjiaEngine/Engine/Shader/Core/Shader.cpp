@@ -22,6 +22,7 @@ void FShader::BuildShader(const wstring& InFileName, const string& InEntryFunNam
     if (ErrorShaderMsg != nullptr)
     {
         Engine_Log_Error("FShader::BuildShader error[%s]", (char*)ErrorShaderMsg->GetBufferPointer());
+        //open_url(get_log_filename());
     }
     ANALYSIS_HRESULT(R);
 }

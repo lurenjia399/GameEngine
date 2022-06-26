@@ -2,6 +2,7 @@
 
 FGeometryDescData::FGeometryDescData()
 	: MeshComponet(nullptr)
+	, MeshHash(0)
 	, IndexSize(0)
 	, VertexSize(0)
 	, IndexoffsetPosition(0)

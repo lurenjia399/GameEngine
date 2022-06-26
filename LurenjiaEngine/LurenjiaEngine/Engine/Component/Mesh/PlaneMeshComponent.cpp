@@ -49,3 +49,14 @@ void CPlaneMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingDa
 		}
 	}
 }
+
+void CPlaneMeshComponent::BuildKey(size_t& OutHashKey, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
+{
+	std::hash<float> floatHash;
+	std::hash<int> intHash;
+
+	OutHashKey = floatHash(Inheight);
+	OutHashKey += floatHash(Inwidth);
+	OutHashKey += intHash(InHeightSubdivide);
+	OutHashKey += intHash(InwidthSubdivide);
+}

@@ -38,3 +38,12 @@ void CBoxMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingData
 	InRenderingData.IndexData.emplace_back(4);InRenderingData.IndexData.emplace_back(0);InRenderingData.IndexData.emplace_back(3);
 	InRenderingData.IndexData.emplace_back(4);InRenderingData.IndexData.emplace_back(3);InRenderingData.IndexData.emplace_back(7);
 }
+
+void CBoxMeshComponent::BuildKey(size_t& OutHashKey, const float& Inheight, const float& Inwidth, const float& Indepth)
+{
+	std::hash<float> floatHash;
+
+	OutHashKey = floatHash(Inheight);
+	OutHashKey += floatHash(Inwidth);
+	OutHashKey += floatHash(Indepth);
+}
