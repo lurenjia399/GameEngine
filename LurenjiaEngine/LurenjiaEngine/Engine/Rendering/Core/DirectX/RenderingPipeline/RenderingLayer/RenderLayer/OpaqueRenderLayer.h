@@ -9,7 +9,11 @@ class FOpaqueRenderLayer : public FRenderingLayer
 {
 public:
 	FOpaqueRenderLayer();
+
+	virtual void BuildShader() override;
+
+	int GetRenderLayerType() const override;
 };
 
 
-#endif // !AlphaTestRenderLayer
+#endif

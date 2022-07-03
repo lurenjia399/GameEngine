@@ -17,7 +17,7 @@ public:
 	void BuildMeshBuffer(const int& InIndex);
 	UINT GetDrawMeshObjectCount() const;
 	UINT GetDrawMaterialObjectCount() const;
-	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData);
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData);
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
@@ -32,7 +32,7 @@ private:
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
 
 	FMeshRenderingData MeshRenderingData;					//渲染模型存放的顶点数据
-	vector<FGeometryDescData> DescribeMeshRenderingData;	//描述Getometry的数据
+	//vector<FGeometryDescData> DescribeMeshRenderingData;	//描述Getometry的数据
 };
 
 class FRenderingTextureResourcesUpdate;
@@ -59,7 +59,7 @@ public:
 	UINT GetDrawLightObjectCount();
 	UINT GetDrawTextureObjectCount();
 
-	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData);
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InMeshRenderingData);
 	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);

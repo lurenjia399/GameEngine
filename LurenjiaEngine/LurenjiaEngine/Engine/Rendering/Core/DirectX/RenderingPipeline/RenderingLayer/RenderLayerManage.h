@@ -9,6 +9,7 @@
 class FRenderLayerManage
 {
 	friend class FRenderingLayer;
+	friend class FGeometry;
 public:
 	static FRenderLayerManage* GetRenderLayerManage()
 	{
@@ -18,9 +19,14 @@ public:
 		}
 		return RenderLayerManage;
 	}
-	~FRenderLayerManage();
+	static std::shared_ptr<FRenderingLayer> FindRenderingLayerByInt(int InRenderLayer);
+	void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
+	void BuildShader();
+	void sort();
 private:
 	FRenderLayerManage();
+	~FRenderLayerManage();
+	
 	static FRenderLayerManage* RenderLayerManage;
 	static std::vector<std::shared_ptr<FRenderingLayer>> RenderingLayers;
 };

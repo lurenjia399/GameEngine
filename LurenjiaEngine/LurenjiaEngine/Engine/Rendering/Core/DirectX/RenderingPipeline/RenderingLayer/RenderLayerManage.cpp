@@ -22,4 +22,41 @@ FRenderLayerManage::FRenderLayerManage()
 	CreateRenderLayer<FTransparentRenderLayer>();
 }
 
+std::shared_ptr<FRenderingLayer> FRenderLayerManage::FindRenderingLayerByInt(int InRenderLayer)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		if (InRenderLayer == tem->GetRenderLayerType())
+		{
+			return tem;
+		}
+	}
+	return nullptr;
+}
+
+void FRenderLayerManage::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		tem->Init(InGeometryMap, InDirectXPiepelineState);
+	}
+}
+
+void FRenderLayerManage::BuildShader()
+{
+	for (auto& tem : RenderingLayers)
+	{
+		tem->BuildShader();
+	}
+}
+
+void FRenderLayerManage::sort()
+{
+	auto func = [](const std::shared_ptr<FRenderingLayer>& l, const std::shared_ptr<FRenderingLayer>& r) -> bool
+	{
+		return l->GetPriority() < r->GetPriority();
+	};
+	std::sort(RenderingLayers.begin(), RenderingLayers.end(), func);
+}
+
 

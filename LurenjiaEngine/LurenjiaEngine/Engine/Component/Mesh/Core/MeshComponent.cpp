@@ -1,6 +1,7 @@
 #include "MeshComponent.h"
 
 CMeshComponent::CMeshComponent()
+	: MeshCompLayerType(EMeshComponentRenderingLayerType::RENDERLAYER_OPAQUE)
 {
 	Materials.emplace_back(CreateObject<CMaterial>("CMeshComponent::Material"));
 }
@@ -26,4 +27,14 @@ UINT CMeshComponent::GetMaterialsCount() const
 const vector<CMaterial*>* CMeshComponent::GetMaterials() const
 {
 	return &Materials;
+}
+
+void CMeshComponent::SetMeshComponentLayerType(EMeshComponentRenderingLayerType InType)
+{
+	MeshCompLayerType = InType;
+}
+
+EMeshComponentRenderingLayerType CMeshComponent::GetMeshComponentLayerType()
+{
+	return MeshCompLayerType;
 }

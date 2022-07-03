@@ -14,6 +14,7 @@
 #include "../../../../../Component/Light/ParallelLightComponent.h"
 #include "../../../../../Component/Light/PointLightComponent.h"
 #include "../../../RenderingTextureResourcesUpdate.h"
+#include "../RenderingLayer/RenderLayerManage.h"
 
 FGeometryMap::FGeometryMap()
 {
@@ -130,11 +131,11 @@ UINT FGeometryMap::GetDrawTextureObjectCount()
 	return TextureShaderResourceView->GetTextureCount();
 }
 
-bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData)
+bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
 {
 	for (pair<int, FGeometry> Geometry : Geometrys)
 	{
-		if (Geometry.second.FindMeshRenderingDataByHash(InHashKey, OutGeometryDescData))
+		if (Geometry.second.FindMeshRenderingDataByHash(InHashKey, OutGeometryDescData, InRenderingLayer))
 		{
 			return true;
 		}
@@ -288,11 +289,11 @@ void FGeometryMap::PreDraw(float DeltaTime)
 
 void FGeometryMap::Draw(float DeltaTime)
 {
+	DrawViewport(DeltaTime);
 	DrawLight(DeltaTime);
 	DrawTexture(DeltaTime);
 	DrawMaterial(DeltaTime);
 	DrawMesh(DeltaTime);
-	DrawViewport(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)
@@ -367,6 +368,10 @@ void FGeometryMap::DrawLight(float DeltaTime)
 
 bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)
 {
+	//根据meshcomponent所处的层级，添加geometryDescdata
+	std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InKey->GetMeshComponentLayerType());
+	vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+
 	for (FGeometryDescData& data : DescribeMeshRenderingData)
 	{
 		if (data.MeshComponet == InKey)
@@ -381,8 +386,12 @@ void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingDa
 {
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{
+		//根据meshcomponent所处的层级，添加geometryDescdata
+		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
+		vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+
 		DescribeMeshRenderingData.emplace_back(FGeometryDescData());
-		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData[DescribeMeshRenderingData.size() - 1];
+		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData.back();
 		GeometryDescData.MeshComponet = InMesh;
 		GeometryDescData.MeshHash = HashKey;
 		GeometryDescData.IndexSize = MeshRenderData.IndexData.size();
@@ -417,36 +426,70 @@ void FGeometry::BuildMeshBuffer(const int& InIndex)
 
 UINT FGeometry::GetDrawMeshObjectCount() const
 {
-	return DescribeMeshRenderingData.size();
+	UINT res = 0;
+	for (auto& RenderLayer : FRenderLayerManage::RenderingLayers)
+	{
+		vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+		res += DescribeMeshRenderingData.size();
+	}
+	return res;
 }
 
 UINT FGeometry::GetDrawMaterialObjectCount() const
 {
 	UINT res = 0;
-	for (FGeometryDescData GeometryDesc : DescribeMeshRenderingData)
+	for (auto& RenderLayer : FRenderLayerManage::RenderingLayers)
 	{
-		res += GeometryDesc.MeshComponet->GetMaterialsCount();
+		vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+		for (FGeometryDescData GeometryDesc : DescribeMeshRenderingData)
+		{
+			res += GeometryDesc.MeshComponet->GetMaterialsCount();
+		}
 	}
+	
 	return res;
 }
 
-bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData)
+bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
 {
-	for (FGeometryDescData & tem : DescribeMeshRenderingData)
+	auto FindMeshRenderingDataByHashSub = [&](const shared_ptr<FRenderingLayer>& InRenderintLayers) -> bool
 	{
-		if (tem.MeshHash == InHashKey)
+		vector<FGeometryDescData> DescribeMeshRenderingData = *InRenderintLayers->GetGeometryDescData();
+		for (FGeometryDescData& tem : DescribeMeshRenderingData)
 		{
-			OutGeometryDescData = tem;
-			return true;
+			if (tem.MeshHash == InHashKey)
+			{
+				OutGeometryDescData = tem;
+				return true;
+			}
 		}
+		return false;
+	};
+
+	if (InRenderingLayer == -1)
+	{
+		for (auto& RenderLayer : FRenderLayerManage::RenderingLayers)
+		{
+			if (FindMeshRenderingDataByHashSub(RenderLayer))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
-	return false;
+	else {
+		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt(InRenderingLayer);
+		return FindMeshRenderingDataByHashSub(RenderLayer);
+	}
 }
 
 void FGeometry::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData)
 {
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{
+		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
+		vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+
 		DescribeMeshRenderingData.emplace_back(InGeometryDescData);
 		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData.back();
 		GeometryDescData.MeshComponet = InMesh;

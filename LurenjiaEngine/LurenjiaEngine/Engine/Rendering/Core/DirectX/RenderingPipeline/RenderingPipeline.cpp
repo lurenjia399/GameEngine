@@ -4,9 +4,9 @@ FRenderingPipeline::FRenderingPipeline()
 {
 }
 
-bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData)
+bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
 {
-	return GeometryMap.FindMeshRenderingDataByHash(InHashKey, OutGeometryDescData);
+	return GeometryMap.FindMeshRenderingDataByHash(InHashKey, OutGeometryDescData, InRenderingLayer);
 }
 
 void FRenderingPipeline::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData)
@@ -23,6 +23,11 @@ void FRenderingPipeline::BuildPipeline()
 {
 	DirectXPiepelineState.ResetGPSDesc();
 
+	//初始化渲染层级
+	FRenderLayerManage::GetRenderLayerManage()->Init(&GeometryMap, &DirectXPiepelineState);
+	//对渲染层级进行排序
+	FRenderLayerManage::GetRenderLayerManage()->sort();
+
 	//加载贴图资源
 	GeometryMap.LoadTexture();
 	//绑定根签名
@@ -32,26 +37,8 @@ void FRenderingPipeline::BuildPipeline()
 	}
 	DirectXPiepelineState.BindRootSignature(DirectXRootSignature.GetRootSignature());
 
-	//绑定着色器
-	//着色器宏，传递给着色器相应的值
-	char buffer[10] = { 0 };
-	D3D_SHADER_MACRO ShaderMacro[] =
-	{
-		"MapCount", _itoa(GeometryMap.GetDrawTextureObjectCount(), buffer, 10),
-		nullptr, nullptr,
-	};
-	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
-	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro);
-	DirectXPiepelineState.BindShader(&VertexShader, &PixelShader);
-	//绑定输入布局
-	InputElementDesc = {
-		{"POSITION",0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 0, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"COLOR", 0, DXGI_FORMAT_R32G32B32A32_FLOAT, 0, 12, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 28, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"UTANGENT", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0, 40, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0},
-		{"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0, 52, D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
-	};
-	DirectXPiepelineState.BindInputLayout(InputElementDesc.data(), (UINT)InputElementDesc.size());
+	//通过渲染层级绑定相应的着色器
+	FRenderLayerManage::GetRenderLayerManage()->BuildShader();
 
 	//创建模型资源（顶点和索引）缓冲区
 	GeometryMap.BuildMeshBuffer();

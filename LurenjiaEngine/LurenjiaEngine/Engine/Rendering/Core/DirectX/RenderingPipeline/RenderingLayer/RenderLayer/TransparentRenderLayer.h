@@ -9,6 +9,10 @@ class FTransparentRenderLayer : public FRenderingLayer
 {
 public:
 	FTransparentRenderLayer();
+
+	virtual void BuildShader() override;
+
+	int GetRenderLayerType() const override;
 };
 
 

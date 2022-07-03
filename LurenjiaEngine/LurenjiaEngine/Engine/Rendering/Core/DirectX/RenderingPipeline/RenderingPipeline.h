@@ -5,6 +5,7 @@
 #include "Geometry/GeometryMap.h"
 #include "PiepelineState/DirectXPipelineState.h"
 #include "RootSignature/DirectXRootSignature.h"
+#include "RenderingLayer/RenderLayerManage.h"
 
 
 class FRenderingPipeline : public IDirectXDeviceInterface
@@ -12,7 +13,7 @@ class FRenderingPipeline : public IDirectXDeviceInterface
 public:
 	FRenderingPipeline();
 
-	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData);
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData);
 	void BuildMeshComponent(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey);
 	void BuildPipeline();
@@ -22,9 +23,6 @@ public:
 	void PostDraw(float DeltaTime);
 
 protected:
-	FShader VertexShader;									//顶点着色器
-	FShader PixelShader;									//片元着色器
-	vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;		//着色器输入布局
 
 	FGeometryMap GeometryMap;								//模型容器
 	FDirectXRootSignature DirectXRootSignature;				//根签名

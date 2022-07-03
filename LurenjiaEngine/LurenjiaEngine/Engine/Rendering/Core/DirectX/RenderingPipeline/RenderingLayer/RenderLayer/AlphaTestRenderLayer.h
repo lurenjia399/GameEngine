@@ -9,6 +9,10 @@ class FAlphaTestRenderLayer : public FRenderingLayer
 {
 public:
 	FAlphaTestRenderLayer();
+
+	virtual void BuildShader() override;
+
+	int GetRenderLayerType() const override;
 };
 
 

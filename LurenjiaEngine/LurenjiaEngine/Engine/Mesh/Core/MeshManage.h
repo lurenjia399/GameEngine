@@ -96,18 +96,18 @@ T* CMeshManage::CreateMeshComponet(const S& name, ParamTypes&&... Params)
 	mesh->ResetGuid(name);
 
 	size_t HashKey = 0;
-	/*mesh->BuildKey(HashKey, std::forward<ParamTypes>(Params)...);
+	mesh->BuildKey(HashKey, std::forward<ParamTypes>(Params)...);
 
 	FGeometryDescData GeometryDescData;
-	if (RenderingPipeline.FindMeshRenderingDataByHash(HashKey, GeometryDescData))
+	if (RenderingPipeline.FindMeshRenderingDataByHash(HashKey, GeometryDescData, (int)mesh->GetMeshComponentLayerType()))
 	{
 		RenderingPipeline.DuplicateMeshRenderingData(mesh, GeometryDescData);
 	}
-	else {*/
+	else {
 		FMeshRenderingData MeshRenderingData;
 		mesh->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
 		RenderingPipeline.BuildMeshComponent(mesh, MeshRenderingData, HashKey);
-	//}
+	}
 
 	mesh->Init();
 	return mesh;
