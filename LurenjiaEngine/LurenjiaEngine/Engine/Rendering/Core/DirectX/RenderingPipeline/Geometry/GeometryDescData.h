@@ -14,10 +14,9 @@ public:
 	UINT GetVertexSizeInBytes() const;						//获取顶点数据大小
 	UINT GetIndexSizeInBytes() const;						//获取索引数据大小
 
-
+public:
 	CMeshComponent* MeshComponet;							//代表的模型组件
 	size_t MeshHash;										//代表的模型的哈希值
-public:
 
 	UINT IndexSize;											//索引的数量
 	UINT VertexSize;										//顶点的数量
@@ -30,4 +29,7 @@ public:
 	XMFLOAT4X4 WorldMatrix;									//m变换矩阵
 	XMFLOAT4X4 TextureTransform;							//贴图的矩阵
 	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;	//需要更新的资源
+
+	int GeometryKey;										//this是属于哪一个Geometry的
+	int MeshObjectOffset;									//当前数据在常量堆中的偏移
 };

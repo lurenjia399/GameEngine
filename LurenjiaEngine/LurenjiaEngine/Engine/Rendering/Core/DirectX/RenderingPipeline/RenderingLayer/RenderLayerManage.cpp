@@ -59,4 +59,28 @@ void FRenderLayerManage::sort()
 	std::sort(RenderingLayers.begin(), RenderingLayers.end(), func);
 }
 
+void FRenderLayerManage::PreDraw(float DeltaTime)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		tem->PreDraw(DeltaTime);
+	}
+}
+
+void FRenderLayerManage::Draw(float DeltaTime)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		tem->Draw(DeltaTime);
+	}
+}
+
+void FRenderLayerManage::PostDraw(float DeltaTime)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		tem->PostDraw(DeltaTime);
+	}
+}
+
 

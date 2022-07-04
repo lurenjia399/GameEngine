@@ -46,7 +46,7 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildDescriptorHeap();
 	//构建模型的常量缓冲区
 	GeometryMap.BuildMeshConstantBufferView();
-	//构建材质的shader资源缓冲区,收集所有的matrial，并且设置material中的shaderindex
+	//构建材质的shader资源缓冲区,收集所有的matrial，并且设置material中的shaderindex，这个不是常量缓冲区，所以没有放在描述堆中
 	GeometryMap.BuildMaterialShaderResourseView();
 	//构建灯光的常量缓冲区
 	GeometryMap.BuildLightConstantBufferView();
@@ -66,6 +66,7 @@ void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo
 void FRenderingPipeline::PreDraw(float DeltaTime)
 {
 	DirectXPiepelineState.PreDraw(DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->PreDraw(DeltaTime);
 	
 }
 
@@ -74,10 +75,12 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	GeometryMap.PreDraw(DeltaTime);
 	DirectXRootSignature.PreDraw(DeltaTime);
 	GeometryMap.Draw(DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);//Draw每个渲染层级上的mesh
 	DirectXPiepelineState.Draw(DeltaTime);//用做捕获keyboard 4 5
 }
 
 void FRenderingPipeline::PostDraw(float DeltaTime)
 {
 	GeometryMap.PostDraw(DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->PostDraw(DeltaTime);
 }

@@ -10,6 +10,7 @@ class FRenderLayerManage
 {
 	friend class FRenderingLayer;
 	friend class FGeometry;
+	friend class FGeometryMap;
 public:
 	static FRenderLayerManage* GetRenderLayerManage()
 	{
@@ -23,6 +24,9 @@ public:
 	void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	void BuildShader();
 	void sort();
+	void PreDraw(float DeltaTime);
+	void Draw(float DeltaTime);
+	void PostDraw(float DeltaTime);
 private:
 	FRenderLayerManage();
 	~FRenderLayerManage();

@@ -11,6 +11,9 @@ FGeometryDescData::FGeometryDescData()
 	, VertexTypeSize(sizeof(FVertex))
 	, WorldMatrix(EngineMath::IdentityMatrix4x4())
 	, TextureTransform(EngineMath::IdentityMatrix4x4())
+	, ObjectConstants(make_shared<FRenderingResourcesUpdate>())
+	, GeometryKey(0)
+	, MeshObjectOffset(0)
 {
 }
 

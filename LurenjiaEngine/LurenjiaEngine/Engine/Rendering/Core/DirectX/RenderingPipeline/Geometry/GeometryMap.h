@@ -7,18 +7,19 @@
 #include "../DescriptorHeap/DirectXDescriptorHeap.h"
 #include "../ConstantBuffer/DirectXConstBufferView.h"
 
+
 struct FGeometry : public IDirectXDeviceInterface_struct
 {
 	//friend void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	friend struct FGeometryMap;
 public:
 	bool isExitDescribeMeshRenderingData(CMeshComponent* InKey);
-	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData, const size_t& HashKey);
+	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData, const size_t& HashKey, const int& key);
 	void BuildMeshBuffer(const int& InIndex);
 	UINT GetDrawMeshObjectCount() const;
 	UINT GetDrawMaterialObjectCount() const;
 	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer = -1);
-	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData);
+	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData, const int& key);
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
 private:
@@ -35,9 +36,11 @@ private:
 	//vector<FGeometryDescData> DescribeMeshRenderingData;	//ÃèÊöGetometryµÄÊý¾Ý
 };
 
+
 class FRenderingTextureResourcesUpdate;
 struct FGeometryMap : public IDirectXDeviceInterface_struct
 {
+	friend class FRenderingLayer;
 public:
 	
 
@@ -67,11 +70,12 @@ public:
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
 public:
-	void DrawMesh(float DeltaTime);
 	void DrawMaterial(float DeltaTime);
 	void DrawLight(float DeltaTime);
 	void DrawViewport(float DeltaTime);
 	void DrawTexture(float DeltaTime);
+public:
+	FDirectXDescriptorHeap* GetDescriptorHeap();
 private:
 	map<int, FGeometry> Geometrys;
 	FDirectXDescriptorHeap DescriptorHeap;
