@@ -31,6 +31,8 @@ std::shared_ptr<FRenderingLayer> FRenderLayerManage::FindRenderingLayerByInt(int
 			return tem;
 		}
 	}
+	Engine_Log_Error("No find Render Layer !!!");
+	assert(0);
 	return nullptr;
 }
 
@@ -80,6 +82,14 @@ void FRenderLayerManage::PostDraw(float DeltaTime)
 	for (auto& tem : RenderingLayers)
 	{
 		tem->PostDraw(DeltaTime);
+	}
+}
+
+void FRenderLayerManage::UpdateObjectConstantBuffer()
+{
+	for (auto& tem : RenderingLayers)
+	{
+		tem->UpdateObjectConstantBuffer();
 	}
 }
 

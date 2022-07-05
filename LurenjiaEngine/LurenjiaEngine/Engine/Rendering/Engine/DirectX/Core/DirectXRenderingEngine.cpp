@@ -30,6 +30,8 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	LightManage = CreateObject<CLightManage>("LightManage");
 
 	World = nullptr;
+
+	FRenderLayerManage::GetRenderLayerManage();//创建层级必须在渲染模型之前
 }
 
 int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters& InParameters)

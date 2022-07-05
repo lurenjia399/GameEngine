@@ -9,8 +9,8 @@
 class FRenderLayerManage
 {
 	friend class FRenderingLayer;
-	friend class FGeometry;
-	friend class FGeometryMap;
+	friend struct FGeometry;
+	friend struct FGeometryMap;
 public:
 	static FRenderLayerManage* GetRenderLayerManage()
 	{
@@ -27,6 +27,7 @@ public:
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
+	void UpdateObjectConstantBuffer();
 private:
 	FRenderLayerManage();
 	~FRenderLayerManage();

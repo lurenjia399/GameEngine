@@ -4,10 +4,8 @@
 
 
 FDirectXPiepelineState::FDirectXPiepelineState()
+	: CurrPipelineType(ERenderingPiepelineState::GRAYMODEL)
 {
-	PSO.emplace(ERenderingPiepelineState::WIREFRAME, ComPtr<ID3D12PipelineState>());//线框pso
-	PSO.emplace(ERenderingPiepelineState::GRAYMODEL, ComPtr<ID3D12PipelineState>());//模型pso
-	CurrPipelineType = ERenderingPiepelineState::GRAYMODEL;
 	GPSDesc = {};
 }
 
@@ -36,13 +34,14 @@ void FDirectXPiepelineState::BindShader(const FShader* VertexShader, const FShad
 	GPSDesc.PS.BytecodeLength = PixelShader->GetBufferSize();
 }
 
-void FDirectXPiepelineState::Build()
+void FDirectXPiepelineState::BuildParam(D3D12_FILL_MODE InFillMode, D3D12_CULL_MODE InCullMode)
 {
 	//光栅化状态
 	GPSDesc.RasterizerState = CD3DX12_RASTERIZER_DESC(D3D12_DEFAULT);
-	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;
-	GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
-	//GPSDesc.RasterizerState.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_NONE;
+	//填充模式
+	GPSDesc.RasterizerState.FillMode = InFillMode;
+	//剪裁
+	GPSDesc.RasterizerState.CullMode = InCullMode;
 	//采样掩码
 	GPSDesc.SampleMask = UINT_MAX;
 	//拓扑类型
@@ -61,11 +60,16 @@ void FDirectXPiepelineState::Build()
 	GPSDesc.RTVFormats[0] = GetEngine()->GetRenderingEngine()->GetBackBufferFormat();
 	//dsv格式
 	GPSDesc.DSVFormat = GetEngine()->GetRenderingEngine()->GetDepthStencilFormat();
+}
+
+void FDirectXPiepelineState::Build(int InPipelineType)
+{
+	if (PSO.find(InPipelineType) == PSO.end())
+	{
+		PSO.emplace(InPipelineType, ComPtr<ID3D12PipelineState>());
+	}
 	//创建管线状态
-	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[static_cast<int>(ERenderingPiepelineState::WIREFRAME)])));
-	
-	GPSDesc.RasterizerState.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;
-	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[static_cast<int>(ERenderingPiepelineState::GRAYMODEL)])));
+	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPipelineType])));
 }
 
 void FDirectXPiepelineState::PreDraw(float DeltaTime)
@@ -80,6 +84,16 @@ void FDirectXPiepelineState::Draw(float DeltaTime)
 
 void FDirectXPiepelineState::PostDraw(float DeltaTime)
 {
+}
+
+void FDirectXPiepelineState::SetFillMode(D3D12_FILL_MODE InFillMode)
+{
+	GPSDesc.RasterizerState.FillMode = InFillMode;
+}
+
+void FDirectXPiepelineState::SetCullMode(D3D12_CULL_MODE InCullMode)
+{
+	GPSDesc.RasterizerState.CullMode = InCullMode;
 }
 
 void FDirectXPiepelineState::CaptureKeyboardKeys()

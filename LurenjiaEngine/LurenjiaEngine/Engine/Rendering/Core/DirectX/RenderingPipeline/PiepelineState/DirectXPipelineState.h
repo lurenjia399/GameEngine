@@ -28,16 +28,27 @@ public:
 	/// <param name="PixelShader">片元着色器</param>
 	void BindShader(const FShader* VertexShader, const FShader* PixelShader);
 
-	void Build();
+	/// <summary>
+	/// Build PsoDesc
+	/// </summary>
+	void BuildParam(D3D12_FILL_MODE InFillMode, D3D12_CULL_MODE InCullMode);
+
+	/// <summary>
+	/// Build Pso
+	/// </summary>
+	void Build(int InPipelineType);
 
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
+public:
+	void SetFillMode(D3D12_FILL_MODE InFillMode);
+	void SetCullMode(D3D12_CULL_MODE InCullMode);
 
 private:
 	void CaptureKeyboardKeys();
 private:
-	unordered_map<int, ComPtr<ID3D12PipelineState>> PSO;						//管线状态
-	ERenderingPiepelineState CurrPipelineType;
+	unordered_map<int, ComPtr<ID3D12PipelineState>> PSO;	//pso
+	ERenderingPiepelineState CurrPipelineType;				//渲染模式（线框或者三角形）
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;				//管线状态描述
 };

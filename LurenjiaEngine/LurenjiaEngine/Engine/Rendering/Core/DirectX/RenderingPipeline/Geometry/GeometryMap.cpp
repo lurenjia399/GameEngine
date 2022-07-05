@@ -159,13 +159,8 @@ void FGeometryMap::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryD
 
 void FGeometryMap::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
-	for (auto& tem : FRenderLayerManage::GetRenderLayerManage()->RenderingLayers)
-	{
-		tem->UpdateObjectConstantBuffer();
-	}
 	UpdateMaterialShaderResourceView(DeltaTime, ViewportInfo);
 
-	
 	//更新shader中的灯光 常量缓冲区
 	FLightConstantBuffer lightTransformation;
 	int lightCount = GetLightManage()->Lights.size();
@@ -319,7 +314,7 @@ void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingDa
 	{
 		//根据meshcomponent所处的层级，添加geometryDescdata
 		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
-		vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+		vector<FGeometryDescData>& DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
 
 		DescribeMeshRenderingData.emplace_back(FGeometryDescData());
 		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData.back();
@@ -415,7 +410,7 @@ void FGeometry::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDesc
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{
 		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
-		vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+		vector<FGeometryDescData>& DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
 
 		DescribeMeshRenderingData.emplace_back(InGeometryDescData);//这里应该不对，有待考证
 		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData.back();
