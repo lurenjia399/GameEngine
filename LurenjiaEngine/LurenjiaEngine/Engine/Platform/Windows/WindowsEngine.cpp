@@ -43,7 +43,7 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 	RenderingEngine->SetMainWindowsHandle(MyWindowsHandle);
 	RenderingEngine->Init(InParameters);
 
-	CWorld* world = CreateObject<CWorld>("World");
+	CWorld* world = LurenjiaEngine::CreateObject<CWorld>("World");
 	RenderingEngine->SetWorld(world);
 	CWorld* temWorld = RenderingEngine->GetWorld();
 	Engine_Log("Engine initialization complete.");

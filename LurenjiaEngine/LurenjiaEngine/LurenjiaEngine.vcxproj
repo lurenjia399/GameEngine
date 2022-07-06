@@ -48,6 +48,9 @@
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="Engine\Core\Camera.cpp" />
     <ClCompile Include="Engine\Core\CameraType.cpp" />
+    <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction.cpp" />
+    <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction_Inner.cpp" />
+    <ClCompile Include="Engine\Core\Construction\ObjectConstruction.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
@@ -169,6 +172,10 @@
     <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
     <ClInclude Include="Engine\Core\Camera.h" />
     <ClInclude Include="Engine\Core\CameraType.h" />
+    <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction.h" />
+    <ClInclude Include="Engine\Core\Construction\MacroConstruction.h" />
+    <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction_Inner.h" />
+    <ClInclude Include="Engine\Core\Construction\ObjectConstruction.h" />
     <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h" />
     <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="Engine\Core\Engine.h" />

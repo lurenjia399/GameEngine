@@ -28,6 +28,7 @@ public:
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
 	void UpdateObjectConstantBuffer();
+	void BuildPSO();
 private:
 	FRenderLayerManage();
 	~FRenderLayerManage();

@@ -26,8 +26,8 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	{
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
 	}
-	MeshManage = CreateObject<CMeshManage>("MeshManage");
-	LightManage = CreateObject<CLightManage>("LightManage");
+	MeshManage =  LurenjiaEngine::CreateObject<CMeshManage>("MeshManage");
+	LightManage = LurenjiaEngine::CreateObject<CLightManage>("LightManage");
 
 	World = nullptr;
 

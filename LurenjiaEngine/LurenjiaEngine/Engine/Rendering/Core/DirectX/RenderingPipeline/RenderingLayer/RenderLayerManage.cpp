@@ -93,4 +93,12 @@ void FRenderLayerManage::UpdateObjectConstantBuffer()
 	}
 }
 
+void FRenderLayerManage::BuildPSO()
+{
+	for (auto& tem : RenderingLayers)
+	{
+		tem->BuildPSO();
+	}
+}
+
 

@@ -30,6 +30,16 @@ void FOpaqueRenderLayer::BuildShader()
 	DirectXPiepelineState->BindInputLayout(InputElementDesc.data(), (UINT)InputElementDesc.size());
 }
 
+void FOpaqueRenderLayer::BuildPSO()
+{
+	//构建实体pso
+	DirectXPiepelineState->BuildParam(D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE::D3D12_CULL_MODE_BACK);
+	DirectXPiepelineState->Build((int)ERenderingPiepelineState::GRAYMODEL);
+	//构建线框pso
+	DirectXPiepelineState->SetFillMode(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
+	DirectXPiepelineState->Build((int)ERenderingPiepelineState::WIREFRAME);
+}
+
 int FOpaqueRenderLayer::GetRenderLayerType() const
 {
 	return 0;

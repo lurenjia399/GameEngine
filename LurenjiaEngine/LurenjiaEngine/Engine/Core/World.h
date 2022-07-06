@@ -25,7 +25,7 @@ private:
 template<typename T>
 T* CWorld::CreateActor(const string& name)
 {
-	T* actor = CreateObject<T>(name);
+	T* actor = LurenjiaEngine::CreateObject<T>(name);
 	WorldActors.emplace_back(actor);
 
 	return actor;

@@ -25,7 +25,9 @@ public:
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 public:
 	void SetMeshComponent(CMeshComponent* InMeshComponent);
-	CMeshComponent* GetMeshComponet() { return MeshComponent; }
+
+	template<typename T>
+	T* GetMeshComponet();
 public:
 	//获取组件变换相关
 	void SetComponentPosition(const XMFLOAT3& InPosition);
@@ -36,7 +38,12 @@ public:
 	void SetSubMaterials(const int& index, CMaterial* InMaterial);
 	UINT GetMaterialsCount() const;
 	const vector<CMaterial*>* GetMaterials() const;
-private:
+protected:
 	CMeshComponent* MeshComponent;
-	
 };
+
+template<typename T>
+T* AMesh::GetMeshComponet()
+{
+	return dynamic_cast<T*>(MeshComponent);
+}

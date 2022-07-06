@@ -72,6 +72,11 @@ void FDirectXPiepelineState::Build(int InPipelineType)
 	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPipelineType])));
 }
 
+void FDirectXPiepelineState::ResetPSO(int InPiepelType)
+{
+	GetGraphicsCommandList()->SetPipelineState(PSO[InPiepelType].Get());
+}
+
 void FDirectXPiepelineState::PreDraw(float DeltaTime)
 {
 	GetGraphicsCommandList()->Reset(GetCommandAllocator().Get(), PSO[static_cast<int>(CurrPipelineType)].Get());

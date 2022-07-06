@@ -11,8 +11,10 @@ public:
 	FOpaqueRenderLayer();
 
 	virtual void BuildShader() override;
+	void BuildPSO() override;
 
 	int GetRenderLayerType() const override;
+	
 };
 
 

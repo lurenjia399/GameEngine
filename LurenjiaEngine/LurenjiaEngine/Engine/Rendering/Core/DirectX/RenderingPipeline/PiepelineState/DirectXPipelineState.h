@@ -38,6 +38,8 @@ public:
 	/// </summary>
 	void Build(int InPipelineType);
 
+	void ResetPSO(int InPiepelType);
+
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);

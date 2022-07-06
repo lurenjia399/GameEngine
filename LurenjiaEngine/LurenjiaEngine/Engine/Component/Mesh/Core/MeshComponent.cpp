@@ -3,7 +3,7 @@
 CMeshComponent::CMeshComponent()
 	: MeshCompLayerType(EMeshComponentRenderingLayerType::RENDERLAYER_OPAQUE)
 {
-	Materials.emplace_back(CreateObject<CMaterial>("CMeshComponent::Material"));
+	Materials.emplace_back(LurenjiaEngine::CreateObject<CMaterial>("CMeshComponent::Material"));
 }
 
 void CMeshComponent::Init()

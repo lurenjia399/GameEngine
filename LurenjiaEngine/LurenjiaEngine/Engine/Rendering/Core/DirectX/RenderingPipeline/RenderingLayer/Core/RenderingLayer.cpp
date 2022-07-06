@@ -123,3 +123,7 @@ void FRenderingLayer::Draw(float DeltaTime)
 void FRenderingLayer::PostDraw(float DeltaTime)
 {
 }
+
+void FRenderingLayer::BuildPSO()
+{
+}

@@ -5,7 +5,7 @@
 
 ACamera::ACamera()
 {
-	InputComponent = CreateObject<CInputComponent>("CameraInputComponent");
+	InputComponent = LurenjiaEngine::CreateObject<CInputComponent>("CameraInputComponent");
 
 	Radius = 20.0f;
 	verticalAngle = XM_PI/2;

@@ -1,6 +1,5 @@
 #pragma once
 #include "../../Core/CoreObject/CoreMinimalObject.h"
-//#include "../../Rendering/Core/Rendering.h"
 #include "../../Rendering/Core/RenderingResourcesUpdate.h"
 #include "MeshType.h"
 #include "../../Shader/Core/Shader.h"
@@ -73,42 +72,14 @@ public:
 	/// <param name="InHeightSubdivision">高度细分</param>
 	/// <returns>Mesh基类</returns>
 	CMeshComponent* CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
-private:
-	template<typename T, typename S, typename ...ParamTypes>
-	T* CreateMeshComponet(const S& name, ParamTypes&&... Params);
+public:
+	FRenderingPipeline& GetRenderingPiepeline();
 private:
 	FRenderingPipeline RenderingPipeline;					//渲染管线对象
-
-
-
-
 };
 //----------模板实现-----
 template<typename T>
 string getName(T name)
 {
 	return name;
-}
-template<typename T, typename S, typename ...ParamTypes>
-T* CMeshManage::CreateMeshComponet(const S& name, ParamTypes&&... Params)
-{
-	T* mesh = new T();
-	mesh->ResetGuid(name);
-
-	size_t HashKey = 0;
-	mesh->BuildKey(HashKey, std::forward<ParamTypes>(Params)...);
-
-	FGeometryDescData GeometryDescData;
-	if (RenderingPipeline.FindMeshRenderingDataByHash(HashKey, GeometryDescData, (int)mesh->GetMeshComponentLayerType()))
-	{
-		RenderingPipeline.DuplicateMeshRenderingData(mesh, GeometryDescData);
-	}
-	else {
-		FMeshRenderingData MeshRenderingData;
-		mesh->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
-		RenderingPipeline.BuildMeshComponent(mesh, MeshRenderingData, HashKey);
-	}
-
-	mesh->Init();
-	return mesh;
 }

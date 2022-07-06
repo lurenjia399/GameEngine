@@ -8,19 +8,19 @@ bool FDirectXRootSignature::Build(const UINT& TextureCount)
 {
 	CD3DX12_ROOT_PARAMETER RootParam[5];
 	//对象的的descriptorRange
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV;
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV = {};
 	DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);//参数类型，参数数量，参数传递的寄存器
 
 	//viewport的descriptorRange
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV;
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV = {};
 	DescriptorRangeViewportCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
 
 	//灯光的desctriptorRange
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeLightCBV;
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeLightCBV = {};
 	DescriptorRangeLightCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 2);
 
 	//Texture的descriptorRange
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV;
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV = {};
 	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 3);
 
 	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeObjCBV);

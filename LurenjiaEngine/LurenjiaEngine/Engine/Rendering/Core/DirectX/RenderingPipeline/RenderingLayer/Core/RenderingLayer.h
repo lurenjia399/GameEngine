@@ -22,6 +22,7 @@ public:
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
+	virtual void BuildPSO();
 public:
 	virtual void BuildShader() = 0;	//纯虚函数，必须实现方法
 protected:
@@ -36,5 +37,5 @@ protected:
 };
 
 
-#endif // !RenderingLayer_H
+#endif
 
