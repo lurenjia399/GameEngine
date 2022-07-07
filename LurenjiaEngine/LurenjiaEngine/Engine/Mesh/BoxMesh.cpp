@@ -1,5 +1,8 @@
 #include "BoxMesh.h"
 #include "../Core/CoreObject/CoreMinimalObject.h"
+#include "../Core/Construction/MacroConstruction.h"
+#include "../Mesh/Core/MeshManage.h"
+#include "../Component/Mesh/BoxMeshComponent.h"
 
 void ABoxMesh::Init()
 {
@@ -11,39 +14,11 @@ void ABoxMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-void ABoxMesh::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth)
+void ABoxMesh::SetMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
 {
-	//构建顶点数据
-	float cheight = Inheight / 2;
-	float cwidth = Inwidth / 2;
-	float cdepth = Indepth / 2;
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, -cheight, -cdepth),XMFLOAT4(Colors::LightGoldenrodYellow)));	//0
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, cheight, -cdepth),XMFLOAT4(Colors::MidnightBlue)));			//1
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, cheight, -cdepth),XMFLOAT4(Colors::Blue)));					//2
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, -cheight, -cdepth),XMFLOAT4(Colors::Red)));					//3
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, -cheight, cdepth),XMFLOAT4(Colors::PaleVioletRed)));			//4
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(-cwidth, cheight, cdepth),XMFLOAT4(Colors::BlueViolet)));				//5
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, cheight, cdepth),XMFLOAT4(Colors::Yellow)));					//6
-	InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(cwidth, -cheight, cdepth),XMFLOAT4(Colors::Green)));					//7
+	MeshComponent = LurenjiaEngine::CreateObject<CBoxMeshComponent>(InName);
 
-	//front
-	InRenderingData.IndexData.emplace_back(0);InRenderingData.IndexData.emplace_back(1);InRenderingData.IndexData.emplace_back(2);
-	InRenderingData.IndexData.emplace_back(0);InRenderingData.IndexData.emplace_back(2);InRenderingData.IndexData.emplace_back(3);
-	//back
-	InRenderingData.IndexData.emplace_back(7);InRenderingData.IndexData.emplace_back(6);InRenderingData.IndexData.emplace_back(5);
-	InRenderingData.IndexData.emplace_back(7);InRenderingData.IndexData.emplace_back(5);InRenderingData.IndexData.emplace_back(4);
-	//left
-	InRenderingData.IndexData.emplace_back(4);InRenderingData.IndexData.emplace_back(5);InRenderingData.IndexData.emplace_back(1);
-	InRenderingData.IndexData.emplace_back(4);InRenderingData.IndexData.emplace_back(1);InRenderingData.IndexData.emplace_back(0);
-	//right
-	InRenderingData.IndexData.emplace_back(3);InRenderingData.IndexData.emplace_back(2);InRenderingData.IndexData.emplace_back(6);
-	InRenderingData.IndexData.emplace_back(3);InRenderingData.IndexData.emplace_back(6);InRenderingData.IndexData.emplace_back(7);
-	//up
-	InRenderingData.IndexData.emplace_back(1);InRenderingData.IndexData.emplace_back(5);InRenderingData.IndexData.emplace_back(6);
-	InRenderingData.IndexData.emplace_back(1);InRenderingData.IndexData.emplace_back(6);InRenderingData.IndexData.emplace_back(2);
-	//bottom
-	InRenderingData.IndexData.emplace_back(4);InRenderingData.IndexData.emplace_back(0);InRenderingData.IndexData.emplace_back(3);
-	InRenderingData.IndexData.emplace_back(4);InRenderingData.IndexData.emplace_back(3);InRenderingData.IndexData.emplace_back(7);
+	INJECT_DATA_INTO_MESHCOMPONENT(CBoxMeshComponent, InRadius, InAxialSubdivision, InHeightSubdivision);
 }
 
 void ABoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)

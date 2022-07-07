@@ -9,9 +9,8 @@ public:
 	virtual void Init() override;
 	virtual void Draw(float DeltaTime) override;
 
-	void CreateMeshRenderData(FMeshRenderingData& InRenderingData, const string& InPath);
+	void SetMeshComponent(string InName, const string& InPath);
 
 private:
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData) override;
-	static bool LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData);
 };
