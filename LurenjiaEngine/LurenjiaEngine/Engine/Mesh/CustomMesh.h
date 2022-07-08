@@ -9,7 +9,10 @@ public:
 	virtual void Init() override;
 	virtual void Draw(float DeltaTime) override;
 
-	void SetMeshComponent(string InName, const string& InPath);
+	/// <summary>
+	/// 注意设置渲染层级，默认是不透明(opaque)
+	/// </summary>
+	void SetMeshComponent(string InName, const string& InPath, EMeshComponentRenderingLayerType InType = EMeshComponentRenderingLayerType::RENDERLAYER_OPAQUE);
 
 private:
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData) override;

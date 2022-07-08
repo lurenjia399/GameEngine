@@ -14,13 +14,16 @@ void APlaneMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-void APlaneMesh::SetMeshComponent(string InName, const float& InHeight, const float& InWidth, const uint32_t& InHeightSubdivide, const uint32_t& InWidthSubdivide)
+void APlaneMesh::SetMeshComponent(string InName, const float& InHeight, const float& InWidth, const uint32_t& InHeightSubdivide, const uint32_t& InWidthSubdivide, EMeshComponentRenderingLayerType InType)
 {
-	//给当前的mesh设置相应的meshComponent
-	Super::SetMeshComponent(GetMeshManage()->CreatePlaneMeshComponent(InName, InHeight, InWidth, InHeightSubdivide, InWidthSubdivide));
-
+	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
+	//如果meshComponent有值，则首先delete掉
+	if (MeshComponent) delete MeshComponent;
 	MeshComponent = LurenjiaEngine::CreateObject<CPlaneMeshComponent>(InName);
+	MeshComponent->SetMeshComponentLayerType(InType);
 
+	//给MeshComponet注入数据，使用前必须保证MeshComponet已经创建完毕
+	//也就是需要保证meshComponent里面的参数都设定好（比如，层级等）
 	INJECT_DATA_INTO_MESHCOMPONENT(CPlaneMeshComponent, InHeight, InWidth, InHeightSubdivide, InWidthSubdivide);
 }
 

@@ -14,9 +14,15 @@ void ACustomMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-void ACustomMesh::SetMeshComponent(string InName, const string& InPath)
+void ACustomMesh::SetMeshComponent(string InName, const string& InPath, EMeshComponentRenderingLayerType InType)
 {
+	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
+	//如果meshComponent有值，则首先delete掉
+	if (MeshComponent) delete MeshComponent;
 	MeshComponent = LurenjiaEngine::CreateObject<CCustomMeshComponent>(InName);
+	MeshComponent->SetMeshComponentLayerType(InType);
+
+
 
 	INJECT_DATA_INTO_MESHCOMPONENT(CCustomMeshComponent, InPath);
 }

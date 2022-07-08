@@ -58,6 +58,7 @@ namespace MaterialTest
 				SphereMaterial_3->ResetGuid("SphereMaterial_3");//给创建的材质设置Guid
 				SphereMaterial_3->SetBaseColor(XMFLOAT4(191.f / 255.f, 173.f / 255.f, 111.f / 255.f, 1.0f));
 				SphereMaterial_3->SetMaterialType(EMaterialType::Phone);
+				SphereMaterial_3->SetSpecularColor(XMFLOAT3(0.1f, 0.1f, 0.1f));
 				SphereMaterial_3->SetRoughness(0.8f);
 				SphereMesh_3->SetSubMaterials(0, SphereMaterial_3);
 			}
@@ -71,6 +72,7 @@ namespace MaterialTest
 				SphereMaterial_4->ResetGuid("SphereMaterial_4");//给创建的材质设置Guid
 				SphereMaterial_4->SetBaseColor(XMFLOAT4(220.f / 255.f, 223.f / 255.f, 227.f / 255.f, 1.f));
 				SphereMaterial_4->SetMaterialType(EMaterialType::BlinnPhone);
+				SphereMaterial_4->SetSpecularColor(XMFLOAT3(0.1f, 0.1f, 0.1f));
 				SphereMaterial_4->SetRoughness(0.8f);
 				SphereMesh_4->SetSubMaterials(0, SphereMaterial_4);
 			}
@@ -97,6 +99,7 @@ namespace MaterialTest
 				SphereMaterial_6->ResetGuid("SphereMaterial_6");//给创建的材质设置Guid
 				SphereMaterial_6->SetBaseColor(XMFLOAT4(221.f / 255.f, 154.f / 255.f, 127.f / 255.f, 1.0f));
 				SphereMaterial_6->SetMaterialType(EMaterialType::WrapLight);
+				SphereMaterial_6->SetSpecularColor(XMFLOAT3(0.2f, 0.2f, 0.2f));
 				SphereMesh_6->SetSubMaterials(0, SphereMaterial_6);
 			}
 		}
@@ -109,6 +112,7 @@ namespace MaterialTest
 				SphereMaterial_7->ResetGuid("SphereMaterial_7");//给创建的材质设置Guid
 				SphereMaterial_7->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
 				SphereMaterial_7->SetMaterialType(EMaterialType::MinnaertLight);
+				SphereMaterial_7->SetSpecularColor(XMFLOAT3(0.2f, 0.2f, 0.2f));
 				SphereMaterial_7->SetRoughness(1.2f);
 				SphereMesh_7->SetSubMaterials(0, SphereMaterial_7);
 			}
@@ -159,6 +163,7 @@ namespace MaterialTest
 				SphereMaterial_11->ResetGuid("SphereMaterial_11");//给创建的材质设置Guid
 				SphereMaterial_11->SetBaseColor(XMFLOAT4(2.f / 255.f, 214.f / 255.f, 17.f / 255.f, 1.0f));
 				SphereMaterial_11->SetMaterialType(EMaterialType::Back);
+				SphereMaterial_11->SetSpecularColor(XMFLOAT3(0.1f, 0.1f, 0.1f));
 				SphereMaterial_11->SetRoughness(0.2f);
 				SphereMesh_11->SetSubMaterials(0, SphereMaterial_11);
 			}

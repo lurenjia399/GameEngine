@@ -59,6 +59,11 @@ void AMesh::SetMeshComponent(CMeshComponent* InMeshComponent)
 	MeshComponent = InMeshComponent;
 }
 
+void AMesh::SetMeshComponentLayerType(EMeshComponentRenderingLayerType InType)
+{
+	MeshComponent->SetMeshComponentLayerType(InType);
+}
+
 void AMesh::SetComponentPosition(const XMFLOAT3& InPosition)
 {
 	MeshComponent->SetPosition(InPosition);

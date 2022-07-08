@@ -1,4 +1,5 @@
 #include "OpaqueRenderLayer.h"
+#include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
 
 FOpaqueRenderLayer::FOpaqueRenderLayer()
 {
@@ -40,7 +41,13 @@ void FOpaqueRenderLayer::BuildPSO()
 	DirectXPiepelineState->Build((int)ERenderingPiepelineState::WIREFRAME);
 }
 
+void FOpaqueRenderLayer::Draw(float DeltaTime)
+{
+	//DirectXPiepelineState->ResetPSO(ERenderingPiepelineState::GRAYMODEL);
+	super::Draw(DeltaTime);
+}
+
 int FOpaqueRenderLayer::GetRenderLayerType() const
 {
-	return 0;
+	return (int)EMeshComponentRenderingLayerType::RENDERLAYER_OPAQUE;
 }

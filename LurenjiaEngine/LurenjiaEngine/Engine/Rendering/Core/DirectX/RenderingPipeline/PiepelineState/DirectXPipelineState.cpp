@@ -101,6 +101,11 @@ void FDirectXPiepelineState::SetCullMode(D3D12_CULL_MODE InCullMode)
 	GPSDesc.RasterizerState.CullMode = InCullMode;
 }
 
+void FDirectXPiepelineState::SetRenderingTarget(int Index, const D3D12_RENDER_TARGET_BLEND_DESC& InRenderTargetBlendDesc)
+{
+	GPSDesc.BlendState.RenderTarget[Index] = InRenderTargetBlendDesc;
+}
+
 void FDirectXPiepelineState::CaptureKeyboardKeys()
 {
 	if ((GetAsyncKeyState('4') & 0x8000) && CurrPipelineType != ERenderingPiepelineState::WIREFRAME)

@@ -378,6 +378,9 @@
     <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Test\RenderLayer\TransparentTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -807,6 +810,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Construction\MacroConstruction.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Test\RenderLayer\TransparentTest.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

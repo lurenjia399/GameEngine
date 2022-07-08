@@ -15,6 +15,7 @@ CCoreMinimalObject::~CCoreMinimalObject()
 		if (*it == this)
 		{
 			ObjectPool.erase(it);
+			break;
 		}
 	}
 }

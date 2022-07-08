@@ -32,7 +32,7 @@ public:
 	
 
 	FORCEINLINE XMFLOAT4					GetBaseColor() const					{ return BaseColor; }
-	FORCEINLINE XMFLOAT3					GetSpecularColor() const						{ return SpecularColor; }
+	FORCEINLINE XMFLOAT3					GetSpecularColor() const				{ return SpecularColor; }
 	FORCEINLINE EMaterialType				GetMaterialType() const					{ return MaterialType; }
 	FORCEINLINE float						GetRoughness() const					{ return Roughness; }
 	FORCEINLINE string						GetMaterialTextureMapKey() const		{ return MaterialTextureMapKey; }

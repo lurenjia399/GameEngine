@@ -19,7 +19,6 @@ namespace TextureTest
 			{
 				SphereMaterial_1->ResetGuid("SphereMaterial_1");//给创建的材质设置Guid
 
-				
 				SphereMaterial_1->SetMaterialTextureMapKey("Wood2");
 				SphereMaterial_1->SetSpecularColor(XMFLOAT3(1.0f, 1.0f, 1.0f));
 				SphereMaterial_1->SetRoughness(0.2f);

@@ -7,11 +7,13 @@
 
 class FTransparentRenderLayer : public FRenderingLayer
 {
+	typedef FRenderingLayer super;
 public:
 	FTransparentRenderLayer();
 
-	virtual void BuildShader() override;
-
+	void BuildPSO() override;
+	void BuildShader() override;
+	void Draw(float DeltaTime) override;
 	int GetRenderLayerType() const override;
 };
 

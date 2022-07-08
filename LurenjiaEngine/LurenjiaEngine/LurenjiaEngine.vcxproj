@@ -103,6 +103,7 @@
     <ClCompile Include="Engine\Shader\Core\Shader.cpp" />
     <ClCompile Include="Engine\Shader\ShaderManage.cpp" />
     <ClCompile Include="Engine\Test\Material\MaterialTest.cpp" />
+    <ClCompile Include="Engine\Test\RenderLayer\TransparentTest.cpp" />
     <ClCompile Include="Engine\Test\Texture\TextureTest.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_net_channel\simple_channel.cpp" />
@@ -233,6 +234,7 @@
     <ClInclude Include="Engine\Shader\Core\Shader.h" />
     <ClInclude Include="Engine\Shader\ShaderManage.h" />
     <ClInclude Include="Engine\Test\Material\MaterialTest.h" />
+    <ClInclude Include="Engine\Test\RenderLayer\TransparentTest.h" />
     <ClInclude Include="Engine\Test\Texture\TextureTest.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h" />

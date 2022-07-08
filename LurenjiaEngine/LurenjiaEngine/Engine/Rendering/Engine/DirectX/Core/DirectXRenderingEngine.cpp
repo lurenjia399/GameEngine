@@ -8,6 +8,7 @@
 #include "../../../../Actor/Light/PointLight.h"
 #include "../../../../Test/Texture/TextureTest.h"
 #include "../../../../Test/Material/MaterialTest.h"
+#include "../../../../Test/RenderLayer/TransparentTest.h"
 
 
 enum class EMaterialType;
@@ -66,7 +67,7 @@ int CDirectXRenderingEngine::PostInit()
 	//Æ½ÐÐ¹â
 	if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 	{
-		ParallelLight->SetLightIntensity(XMFLOAT3(1.1f, 1.1f, 1.1f));
+		ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 		ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
 		ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
 	}
@@ -99,7 +100,7 @@ int CDirectXRenderingEngine::PostInit()
 
 	//MaterialTest::BuildMaterialTestData();
 	TextureTest::BuildTextureTestData();
-
+	TransparentTest::BuildTransparentTestData();
 	
 	
 

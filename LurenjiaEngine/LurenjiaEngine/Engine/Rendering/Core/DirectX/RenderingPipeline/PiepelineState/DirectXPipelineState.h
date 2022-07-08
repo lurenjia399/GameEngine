@@ -46,6 +46,7 @@ public:
 public:
 	void SetFillMode(D3D12_FILL_MODE InFillMode);
 	void SetCullMode(D3D12_CULL_MODE InCullMode);
+	void SetRenderingTarget(int Index, const D3D12_RENDER_TARGET_BLEND_DESC& InRenderTargetBlendDesc);
 
 private:
 	void CaptureKeyboardKeys();

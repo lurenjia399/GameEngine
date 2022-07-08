@@ -7,12 +7,13 @@
 
 class FOpaqueRenderLayer : public FRenderingLayer
 {
+	typedef FRenderingLayer super;
 public:
 	FOpaqueRenderLayer();
 
-	virtual void BuildShader() override;
+	void BuildShader() override;
 	void BuildPSO() override;
-
+	void Draw(float DeltaTime) override;;
 	int GetRenderLayerType() const override;
 	
 };
