@@ -38,7 +38,6 @@
     <ClCompile Include="Engine\Component\Light\SpotLightComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\BoxMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\Core\MeshComponent.cpp" />
-    <ClCompile Include="Engine\Component\Mesh\Core\MeshComponentType.cpp" />
     <ClCompile Include="Engine\Component\Mesh\CustomMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\CylinderMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\PlaneMeshComponent.cpp" />
@@ -86,9 +85,11 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryDescData.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\EMeshComponentRenderLayerType.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\RenderingLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
@@ -163,7 +164,6 @@
     <ClInclude Include="Engine\Component\Light\SpotLightComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\BoxMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\Core\MeshComponent.h" />
-    <ClInclude Include="Engine\Component\Mesh\Core\MeshComponentType.h" />
     <ClInclude Include="Engine\Component\Mesh\CustomMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\CylinderMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\PlaneMeshComponent.h" />
@@ -214,13 +214,15 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryDescData.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\PiepelineStateType.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\EMeshComponentRenderLayerType.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\RenderingLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPiepelineType.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSampleObject.h" />
     <ClInclude Include="Engine\Rendering\Core\Rendering.h" />

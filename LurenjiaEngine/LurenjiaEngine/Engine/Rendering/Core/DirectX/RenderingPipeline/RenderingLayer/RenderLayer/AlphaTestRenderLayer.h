@@ -7,13 +7,14 @@
 
 class FAlphaTestRenderLayer : public FRenderingLayer
 {
+	typedef FRenderingLayer super;
 public:
 	FAlphaTestRenderLayer();
 
-	virtual void BuildShader() override;
+	void BuildShader() override;
 
 	int GetRenderLayerType() const override;
 };
 
 
-#endif // !AlphaTestRenderLayer
+#endif

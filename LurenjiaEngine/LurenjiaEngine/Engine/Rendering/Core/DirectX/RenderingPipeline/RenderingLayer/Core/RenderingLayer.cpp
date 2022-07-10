@@ -15,11 +15,6 @@ void FRenderingLayer::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* 
 	DirectXPiepelineState = InDirectXPiepelineState;
 }
 
-int FRenderingLayer::GetRenderLayerType() const
-{
-	return 0;
-}
-
 void FRenderingLayer::RegisterRenderLayer()
 {
 	FRenderLayerManage::RenderingLayers.emplace_back(shared_from_this());
@@ -33,6 +28,12 @@ UINT FRenderingLayer::GetPriority()
 std::vector<FGeometryDescData>* FRenderingLayer::GetGeometryDescData()
 {
 	return &GeometryDescDatas;
+}
+
+void FRenderingLayer::RestorePSO()
+{
+	//»Ö¸´pso×´Ì¬
+	DirectXPiepelineState->isTemporaryResetPSO(-1, false);
 }
 
 void FRenderingLayer::UpdateObjectConstantBuffer()
@@ -126,5 +127,6 @@ void FRenderingLayer::PostDraw(float DeltaTime)
 
 void FRenderingLayer::BuildPSO()
 {
-
+	BuildShader();
+	DirectXPiepelineState->BuildParam(D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE::D3D12_CULL_MODE_BACK);
 }

@@ -14,7 +14,7 @@ void APlaneMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-void APlaneMesh::SetMeshComponent(string InName, const float& InHeight, const float& InWidth, const uint32_t& InHeightSubdivide, const uint32_t& InWidthSubdivide, EMeshComponentRenderingLayerType InType)
+void APlaneMesh::SetMeshComponent(string InName, const float& InHeight, const float& InWidth, const uint32_t& InHeightSubdivide, const uint32_t& InWidthSubdivide, EMeshComponentRenderLayerType InType)
 {
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉

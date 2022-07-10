@@ -13,11 +13,11 @@ class FRenderingLayer : public IDirectXDeviceInterface, public std::enable_share
 {
 public:
 	FRenderingLayer();
-	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
-	virtual int GetRenderLayerType() const;
+	void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	void RegisterRenderLayer();
 	UINT GetPriority();
 	std::vector<FGeometryDescData>* GetGeometryDescData();
+	void RestorePSO();
 	virtual void UpdateObjectConstantBuffer();
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);
@@ -25,6 +25,7 @@ public:
 	virtual void BuildPSO();
 public:
 	virtual void BuildShader() = 0;	//纯虚函数，必须实现方法
+	virtual int GetRenderLayerType() const = 0; // 纯虚函数，必须实现方法
 protected:
 	UINT RenderingLayerPriority;
 	FShader VertexShader;

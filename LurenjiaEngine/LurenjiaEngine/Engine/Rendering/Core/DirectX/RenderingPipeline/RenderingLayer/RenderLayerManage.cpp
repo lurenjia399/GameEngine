@@ -2,6 +2,7 @@
 #include "RenderLayer/AlphaTestRenderLayer.h"
 #include "RenderLayer/OpaqueRenderLayer.h"
 #include "RenderLayer/TransparentRenderLayer.h"
+#include "RenderLayer/BackgroundRenderLayer.h"
 
 FRenderLayerManage* FRenderLayerManage::RenderLayerManage = nullptr;
 std::vector<std::shared_ptr<FRenderingLayer>> FRenderLayerManage::RenderingLayers;
@@ -17,6 +18,7 @@ FRenderLayerManage::FRenderLayerManage()
 	RenderingLayers.clear();
 
 	//在初始化renderlayer的时候，首先默认添加一些层级
+	CreateRenderLayer<FBackgroundRenderLayer>();
 	CreateRenderLayer<FAlphaTestRenderLayer>();
 	CreateRenderLayer<FOpaqueRenderLayer>();
 	CreateRenderLayer<FTransparentRenderLayer>();
@@ -31,7 +33,7 @@ std::shared_ptr<FRenderingLayer> FRenderLayerManage::FindRenderingLayerByInt(int
 			return tem;
 		}
 	}
-	Engine_Log_Error("No find Render Layer !!!");
+	Engine_Log("No find Render Layer !!!");
 	assert(0);
 	return nullptr;
 }

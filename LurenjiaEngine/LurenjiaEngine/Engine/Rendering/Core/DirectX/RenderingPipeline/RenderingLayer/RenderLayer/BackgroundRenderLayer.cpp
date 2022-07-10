@@ -1,11 +1,44 @@
-#include "OpaqueRenderLayer.h"
+#include "BackgroundRenderLayer.h"
 
-FOpaqueRenderLayer::FOpaqueRenderLayer()
+FBackgroundRenderLayer::FBackgroundRenderLayer()
 {
-	RenderingLayerPriority = 2000;
+	RenderingLayerPriority = 100;
 }
 
-void FOpaqueRenderLayer::BuildShader()
+void FBackgroundRenderLayer::UpdateObjectConstantBuffer()
+{
+	super::UpdateObjectConstantBuffer();
+}
+
+void FBackgroundRenderLayer::PreDraw(float DeltaTime)
+{
+	super::PreDraw(DeltaTime);
+}
+
+void FBackgroundRenderLayer::Draw(float DeltaTime)
+{
+	DirectXPiepelineState->isTemporaryResetPSO((int)EPiepelineStateType::BACKGROUND);
+
+	super::Draw(DeltaTime);
+
+	//每次渲染完当前层级后，需要还原pso的状态
+	RestorePSO();
+}
+
+void FBackgroundRenderLayer::PostDraw(float DeltaTime)
+{
+	super::PostDraw(DeltaTime);
+}
+
+void FBackgroundRenderLayer::BuildPSO()
+{
+	super::BuildPSO();
+
+	DirectXPiepelineState->SetFillMode(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
+	DirectXPiepelineState->Build((int)EPiepelineStateType::BACKGROUND);
+}
+
+void FBackgroundRenderLayer::BuildShader()
 {
 	//绑定着色器
 	//着色器宏，传递给着色器相应的值
@@ -30,23 +63,7 @@ void FOpaqueRenderLayer::BuildShader()
 	DirectXPiepelineState->BindInputLayout(InputElementDesc.data(), (UINT)InputElementDesc.size());
 }
 
-void FOpaqueRenderLayer::BuildPSO()
+int FBackgroundRenderLayer::GetRenderLayerType() const
 {
-	super::BuildPSO();
-
-	//构建实体pso
-	DirectXPiepelineState->Build((int)EPiepelineStateType::GRAYMODEL);
-	//构建线框pso
-	DirectXPiepelineState->SetFillMode(D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME);
-	DirectXPiepelineState->Build((int)EPiepelineStateType::WIREFRAME);
-}
-
-void FOpaqueRenderLayer::Draw(float DeltaTime)
-{
-	super::Draw(DeltaTime);
-}
-
-int FOpaqueRenderLayer::GetRenderLayerType() const
-{
-	return (int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE;
+	return (int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND;
 }

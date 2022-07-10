@@ -1,7 +1,7 @@
 #include "MeshComponent.h"
 
 CMeshComponent::CMeshComponent()
-	: MeshCompLayerType(EMeshComponentRenderingLayerType::RENDERLAYER_OPAQUE)
+	: MeshCompLayerType(EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE)
 {
 	Materials.emplace_back(LurenjiaEngine::CreateObject<CMaterial>("CMeshComponent::Material"));
 }
@@ -29,12 +29,12 @@ const vector<CMaterial*>* CMeshComponent::GetMaterials() const
 	return &Materials;
 }
 
-void CMeshComponent::SetMeshComponentLayerType(EMeshComponentRenderingLayerType InType)
+void CMeshComponent::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)
 {
 	MeshCompLayerType = InType;
 }
 
-EMeshComponentRenderingLayerType CMeshComponent::GetMeshComponentLayerType()
+EMeshComponentRenderLayerType CMeshComponent::GetMeshComponentLayerType()
 {
 	return MeshCompLayerType;
 }

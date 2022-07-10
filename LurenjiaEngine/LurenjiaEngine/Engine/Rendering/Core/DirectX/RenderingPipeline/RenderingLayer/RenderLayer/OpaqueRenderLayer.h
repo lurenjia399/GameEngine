@@ -13,7 +13,7 @@ public:
 
 	void BuildShader() override;
 	void BuildPSO() override;
-	void Draw(float DeltaTime) override;;
+	void Draw(float DeltaTime) override;
 	int GetRenderLayerType() const override;
 	
 };

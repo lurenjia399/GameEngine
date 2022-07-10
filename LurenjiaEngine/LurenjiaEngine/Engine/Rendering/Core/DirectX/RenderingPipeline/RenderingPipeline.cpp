@@ -1,6 +1,6 @@
 #include "RenderingPipeline.h"
 
-enum class ERenderingPiepelineState;
+enum class EPiepelineStateType;
 
 FRenderingPipeline::FRenderingPipeline()
 {
@@ -40,7 +40,7 @@ void FRenderingPipeline::BuildPipeline()
 	DirectXPiepelineState.BindRootSignature(DirectXRootSignature.GetRootSignature());
 
 	//通过渲染层级绑定相应的着色器
-	FRenderLayerManage::GetRenderLayerManage()->BuildShader();
+	//FRenderLayerManage::GetRenderLayerManage()->BuildShader();
 
 	//创建模型资源（顶点和索引）缓冲区
 	GeometryMap.BuildMeshBuffer();

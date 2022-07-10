@@ -2,7 +2,7 @@
 #include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../../RenderingResourcesUpdate.h"
 #include "../../../../../Shader/Core/Shader.h"
-#include "../RenderingPiepelineType.h"
+#include "PiepelineStateType.h"
 
 
 struct FDirectXPiepelineState : public IDirectXDeviceInterface_struct
@@ -38,7 +38,7 @@ public:
 	/// </summary>
 	void Build(int InPipelineType);
 
-	void ResetPSO(int InPiepelType);
+	void isTemporaryResetPSO(int InPiepelType, bool isTemp = true);
 
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
@@ -52,6 +52,6 @@ private:
 	void CaptureKeyboardKeys();
 private:
 	unordered_map<int, ComPtr<ID3D12PipelineState>> PSO;	//pso
-	ERenderingPiepelineState CurrPipelineType;				//渲染模式（线框或者三角形）
+	EPiepelineStateType CurrPipelineType;				//渲染模式（线框或者三角形）
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;				//管线状态描述
 };

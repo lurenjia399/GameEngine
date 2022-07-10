@@ -1,8 +1,7 @@
 #include "Light.hlsl"
 
-SamplerState TextureSampler : register(s0); //静态采样器
-SamplerState AnisotropicSampler : register(s1);//各向异性采样器
-Texture2D SimpleTexture2DMap[MapCount] : register(t3); //所有贴图数组
+SamplerState    TextureSampler : register(s0); //静态采样器
+SamplerState    AnisotropicSampler : register(s1);//各向异性采样器
 
 cbuffer ObjectConstBuffer : register(b0) //模型CBV
 {
@@ -39,3 +38,6 @@ struct MaterialConstantBuffer
     float4x4 TransformInformation;
 };
 StructuredBuffer<MaterialConstantBuffer> AMaterials : register(t0, space1); //所有材质数组
+Texture2D SimpleTexture2DMap[MapCount] : register(t3); //所有贴图数组
+
+//TextureCube SampleTextureCubeMap[CUBE_MAP_COUNT] : register(t4, space2);

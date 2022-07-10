@@ -366,9 +366,6 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Component\Mesh\Core\MeshComponentType.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Core\Construction\ObjectConstruction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -379,6 +376,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Test\RenderLayer\TransparentTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\EMeshComponentRenderLayerType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -713,9 +716,6 @@
     <ClInclude Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPiepelineType.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Mesh\Core\Material\MaterialType.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -797,9 +797,6 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Component\Mesh\Core\MeshComponentType.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction_Inner.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -813,6 +810,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Test\RenderLayer\TransparentTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\EMeshComponentRenderLayerType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\PiepelineStateType.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

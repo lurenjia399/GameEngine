@@ -8,7 +8,7 @@
 #include "../../TransformationComponent.h"
 #include "../../../Mesh/Core/Material/Material.h"
 #include "../../../Mesh/Core/MeshType.h"
-#include "MeshComponentType.h"
+#include "../../../Rendering/Core/DirectX/RenderingPipeline/RenderingLayer/Core/EMeshComponentRenderLayerType.h"
 
 class CMeshComponent : public CTransformationComponent
 {
@@ -22,13 +22,13 @@ public:
 	UINT GetMaterialsCount() const;
 	const vector<CMaterial*>* GetMaterials() const;
 
-	void SetMeshComponentLayerType(EMeshComponentRenderingLayerType InType);
-	EMeshComponentRenderingLayerType GetMeshComponentLayerType();
+	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);
+	EMeshComponentRenderLayerType GetMeshComponentLayerType();
 private:
 	CVARIABLE()
 	vector<CMaterial*> Materials;
 
-	EMeshComponentRenderingLayerType MeshCompLayerType;
+	EMeshComponentRenderLayerType MeshCompLayerType;
 };
 
 

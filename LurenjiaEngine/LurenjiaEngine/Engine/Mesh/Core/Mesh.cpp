@@ -59,7 +59,7 @@ void AMesh::SetMeshComponent(CMeshComponent* InMeshComponent)
 	MeshComponent = InMeshComponent;
 }
 
-void AMesh::SetMeshComponentLayerType(EMeshComponentRenderingLayerType InType)
+void AMesh::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)
 {
 	MeshComponent->SetMeshComponentLayerType(InType);
 }

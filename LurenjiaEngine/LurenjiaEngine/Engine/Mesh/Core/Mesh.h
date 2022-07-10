@@ -25,7 +25,7 @@ public:
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 public:
 	void SetMeshComponent(CMeshComponent* InMeshComponent);
-	void SetMeshComponentLayerType(EMeshComponentRenderingLayerType InType);
+	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);
 	template<typename T>
 	T* GetMeshComponet();
 public:

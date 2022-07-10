@@ -1,6 +1,4 @@
 #include "TransparentRenderLayer.h"
-#include "../../Geometry/GeometryMap.h"
-#include "../../../../../../Component/Mesh/Core/MeshComponentType.h"
 
 FTransparentRenderLayer::FTransparentRenderLayer()
 {
@@ -9,6 +7,8 @@ FTransparentRenderLayer::FTransparentRenderLayer()
 
 void FTransparentRenderLayer::BuildPSO()
 {
+	super::BuildPSO();
+
 	D3D12_RENDER_TARGET_BLEND_DESC RenderTargetBlendDesc = {};
 	RenderTargetBlendDesc.BlendEnable = true;
 	RenderTargetBlendDesc.LogicOpEnable = false;
@@ -25,8 +25,7 @@ void FTransparentRenderLayer::BuildPSO()
 	RenderTargetBlendDesc.RenderTargetWriteMask = D3D12_COLOR_WRITE_ENABLE_ALL;
 
 	DirectXPiepelineState->SetRenderingTarget(0, RenderTargetBlendDesc);
-	DirectXPiepelineState->SetFillMode(D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID);
-	DirectXPiepelineState->Build((int)ERenderingPiepelineState::TRANSPARENTS);
+	DirectXPiepelineState->Build((int)EPiepelineStateType::TRANSPARENTS);
 }
 
 void FTransparentRenderLayer::BuildShader()
@@ -56,12 +55,15 @@ void FTransparentRenderLayer::BuildShader()
 
 void FTransparentRenderLayer::Draw(float DeltaTime)
 {
-	DirectXPiepelineState->ResetPSO((int)ERenderingPiepelineState::TRANSPARENTS);
+	DirectXPiepelineState->isTemporaryResetPSO((int)EPiepelineStateType::TRANSPARENTS);
 
 	super::Draw(DeltaTime);
+
+	//每次渲染完当前层级后，需要还原pso的状态
+	RestorePSO();
 }
 
 int FTransparentRenderLayer::GetRenderLayerType() const
 {
-	return (int)EMeshComponentRenderingLayerType::RENDERLAYER_TRANSPARENT;
+	return (int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT;
 }

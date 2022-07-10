@@ -12,7 +12,7 @@ public:
 	/// <summary>
 	/// 注意设置渲染层级，默认是不透明(opaque)
 	/// </summary>
-	void SetMeshComponent(string InName, const string& InPath, EMeshComponentRenderingLayerType InType = EMeshComponentRenderingLayerType::RENDERLAYER_OPAQUE);
+	void SetMeshComponent(string InName, const string& InPath, EMeshComponentRenderLayerType InType = EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
 
 private:
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData) override;

@@ -4,7 +4,7 @@
 
 
 FDirectXPiepelineState::FDirectXPiepelineState()
-	: CurrPipelineType(ERenderingPiepelineState::GRAYMODEL)
+	: CurrPipelineType(EPiepelineStateType::GRAYMODEL)
 {
 	GPSDesc = {};
 }
@@ -72,9 +72,20 @@ void FDirectXPiepelineState::Build(int InPipelineType)
 	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPipelineType])));
 }
 
-void FDirectXPiepelineState::ResetPSO(int InPiepelType)
+void FDirectXPiepelineState::isTemporaryResetPSO(int InPiepelType, bool isTemp)
 {
-	GetGraphicsCommandList()->SetPipelineState(PSO[InPiepelType].Get());
+	if (isTemp)
+	{
+		//如果是临时的
+		//在整个渲染过程中来临时切换pso，需要在完成后还原pso
+		GetGraphicsCommandList()->SetPipelineState(PSO[InPiepelType].Get());
+	}
+	else {
+		//不是临时的
+		//就采用存储的psoType来确定pso状态
+		GetGraphicsCommandList()->SetPipelineState(PSO[static_cast<int>(CurrPipelineType)].Get());
+	}
+	
 }
 
 void FDirectXPiepelineState::PreDraw(float DeltaTime)
@@ -108,12 +119,12 @@ void FDirectXPiepelineState::SetRenderingTarget(int Index, const D3D12_RENDER_TA
 
 void FDirectXPiepelineState::CaptureKeyboardKeys()
 {
-	if ((GetAsyncKeyState('4') & 0x8000) && CurrPipelineType != ERenderingPiepelineState::WIREFRAME)
+	if ((GetAsyncKeyState('4') & 0x8000) && CurrPipelineType != EPiepelineStateType::WIREFRAME)
 	{
-		CurrPipelineType = ERenderingPiepelineState::WIREFRAME;
+		CurrPipelineType = EPiepelineStateType::WIREFRAME;
 	}
-	else if ((GetAsyncKeyState('5') & 0x8000) && CurrPipelineType != ERenderingPiepelineState::GRAYMODEL)
+	else if ((GetAsyncKeyState('5') & 0x8000) && CurrPipelineType != EPiepelineStateType::GRAYMODEL)
 	{
-		CurrPipelineType = ERenderingPiepelineState::GRAYMODEL;
+		CurrPipelineType = EPiepelineStateType::GRAYMODEL;
 	}
 }
