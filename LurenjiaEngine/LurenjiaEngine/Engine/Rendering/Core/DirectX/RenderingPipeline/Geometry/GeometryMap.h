@@ -10,7 +10,6 @@
 
 struct FGeometry : public IDirectXDeviceInterface_struct
 {
-	//friend void FGeometryMap::UpdateCalculations(float DeltaTime, const FViewportInfo& ViewportInfo);
 	friend struct FGeometryMap;
 public:
 	bool isExitDescribeMeshRenderingData(CMeshComponent* InKey);
@@ -33,7 +32,6 @@ private:
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
 
 	FMeshRenderingData MeshRenderingData;					//渲染模型存放的顶点数据
-	//vector<FGeometryDescData> DescribeMeshRenderingData;	//描述Getometry的数据
 };
 
 
@@ -50,6 +48,7 @@ public:
 	void BuildDescriptorHeap();
 
 	void LoadTexture();
+	int GetTextureIndex(const string& Key);
 
 	void BuildMeshConstantBufferView();
 	void BuildViewportConstantBufferView();
@@ -61,6 +60,7 @@ public:
 	UINT GetDrawMaterialObjectCount();
 	UINT GetDrawLightObjectCount();
 	UINT GetDrawTextureObjectCount();
+	UINT GetDrawCubeMapCount();
 
 	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InMeshRenderingData);
@@ -86,5 +86,6 @@ private:
 	FDirectXConstBufferView LightConstantBufferView;
 
 	shared_ptr<FRenderingTextureResourcesUpdate> TextureShaderResourceView;
+	shared_ptr<FRenderingTextureResourcesUpdate> CubeMapResourceView;
 	std::vector<CMaterial*> Materials;
 };

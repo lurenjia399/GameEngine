@@ -7,6 +7,12 @@
 const wchar_t DDS[] = L".dds";
 const wchar_t prefixPath[] = L"../LurenjiaEngine/";
 
+FRenderingTextureResourcesUpdate::FRenderingTextureResourcesUpdate()
+{
+	memset(&ShaderResourceViewDesc, 0, sizeof(D3D12_SHADER_RESOURCE_VIEW_DESC));
+	BuildParam();
+}
+
 void FRenderingTextureResourcesUpdate::LoadTexture(const wstring& InTexturePath)
 {
 	std::unique_ptr<FRenderingTexture> Texture = std::make_unique<FRenderingTexture>();
@@ -44,18 +50,9 @@ void FRenderingTextureResourcesUpdate::BuildTextureShaderResource(ID3D12Descript
 	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle(InHeap->GetCPUDescriptorHandleForHeapStart());
 	Handle.Offset(Offset, HandleSize);
 
-	D3D12_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc = {};
-	ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
-	ShaderResourceViewDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
-	ShaderResourceViewDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;//设置着色器中的float4的颜色通道
-	ShaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
-	ShaderResourceViewDesc.Texture2D.MipLevels = 1;
-	ShaderResourceViewDesc.Texture2D.ResourceMinLODClamp = 0.f;
-
 	for (auto& tem : TextureMapping)
 	{
-		ShaderResourceViewDesc.Format = tem.second->Data->GetDesc().Format;
-		ShaderResourceViewDesc.Texture2D.MipLevels = tem.second->Data->GetDesc().MipLevels;
+		Refresh_SRVDescByTextureDimension(&tem.second);
 		GetD3dDevice()->CreateShaderResourceView(tem.second->Data.Get(), &ShaderResourceViewDesc, Handle);
 		Handle.Offset(1, HandleSize);
 	}
@@ -101,4 +98,38 @@ int FRenderingTextureResourcesUpdate::GetTextureIndex(string InKey)
 	}
 	Engine_Log_Warning("No Find Texture Resourse [%s] !!! ", InKey);
 	return -1;
+}
+
+void FRenderingTextureResourcesUpdate::BuildParam()
+{
+	ShaderResourceViewDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	ShaderResourceViewDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	ShaderResourceViewDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;//设置着色器中的float4的颜色通道
+}
+
+void FRenderingTextureResourcesUpdate::Refresh_SRVDescByTextureDimension(unique_ptr<FRenderingTexture>* InRenderingTexture)
+{
+	ShaderResourceViewDesc.Format = (*InRenderingTexture)->Data->GetDesc().Format;
+
+	switch (ShaderResourceViewDesc.ViewDimension)
+	{
+	case D3D12_SRV_DIMENSION_TEXTURE2D :
+		ShaderResourceViewDesc.Texture2D.MostDetailedMip = 0;
+		ShaderResourceViewDesc.Texture2D.MipLevels = (*InRenderingTexture)->Data->GetDesc().MipLevels;
+		ShaderResourceViewDesc.Texture2D.ResourceMinLODClamp = 0.f;
+		ShaderResourceViewDesc.Texture2D.PlaneSlice = 0;
+		break;
+	case D3D12_SRV_DIMENSION_TEXTURECUBE:
+		ShaderResourceViewDesc.TextureCube.MostDetailedMip = 0;
+		ShaderResourceViewDesc.TextureCube.MipLevels = (*InRenderingTexture)->Data->GetDesc().MipLevels;
+		ShaderResourceViewDesc.TextureCube.ResourceMinLODClamp = 0.f;
+		break;
+	default:
+		break;
+	}
+}
+
+void FRenderingTextureResourcesUpdate::Set_SRV_ViewDimension(D3D12_SRV_DIMENSION InDimension)
+{
+	ShaderResourceViewDesc.ViewDimension = InDimension;
 }

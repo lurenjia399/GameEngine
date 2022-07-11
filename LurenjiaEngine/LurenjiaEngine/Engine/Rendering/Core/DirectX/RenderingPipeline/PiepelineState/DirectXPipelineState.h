@@ -47,11 +47,13 @@ public:
 	void SetFillMode(D3D12_FILL_MODE InFillMode);
 	void SetCullMode(D3D12_CULL_MODE InCullMode);
 	void SetRenderingTarget(int Index, const D3D12_RENDER_TARGET_BLEND_DESC& InRenderTargetBlendDesc);
+	void SetRasterizerState(D3D12_RASTERIZER_DESC InRasterizerState);
+	void SetDepthStencilState(D3D12_DEPTH_STENCIL_DESC InDepthStencilDesc);
 
 private:
 	void CaptureKeyboardKeys();
 private:
 	unordered_map<int, ComPtr<ID3D12PipelineState>> PSO;	//pso
-	EPiepelineStateType CurrPipelineType;				//渲染模式（线框或者三角形）
+	EPiepelineStateType CurrPipelineType;					//渲染模式（线框或者三角形）
 	D3D12_GRAPHICS_PIPELINE_STATE_DESC GPSDesc;				//管线状态描述
 };

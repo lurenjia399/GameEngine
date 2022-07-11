@@ -15,7 +15,7 @@ namespace TransparentTest
 		if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("SphereMesh"))
 		{
 			
-			SphereMesh->SetMeshComponent("SphereMeshComponent", 2.f, 120, 120, EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT);
+			SphereMesh->SetMeshComponent("SphereMeshComponent", 2.f, 50, 50, EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT);
 			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, -5.f, 7.f));
 			if (CMaterial* SphereMaterial = new CMaterial())
 			{

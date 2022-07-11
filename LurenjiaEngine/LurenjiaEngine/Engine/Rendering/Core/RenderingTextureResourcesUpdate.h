@@ -23,12 +23,19 @@ struct FRenderingTexture
 class FRenderingTextureResourcesUpdate : public enable_shared_from_this<FRenderingTextureResourcesUpdate>, public IDirectXDeviceInterface
 {
 public:
+	FRenderingTextureResourcesUpdate();
 	void LoadTexture(const wstring& InTexturePath);
 	void BuildTextureShaderResource(ID3D12DescriptorHeap* InHeap, int Offset = 0);
 	int GetTextureCount() const;
 	int GetTextureIndex(string InKey);
+public:
+	void BuildParam();//¹¹½¨SRVÃèÊö·û
+	void Set_SRV_ViewDimension(D3D12_SRV_DIMENSION InDimension);
+private:
+	void Refresh_SRVDescByTextureDimension(unique_ptr<FRenderingTexture>* InRenderingTexture);
 private:
 	std::map<wstring, unique_ptr<FRenderingTexture>> TextureMapping;
+	D3D12_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc;
 };
 
 #endif

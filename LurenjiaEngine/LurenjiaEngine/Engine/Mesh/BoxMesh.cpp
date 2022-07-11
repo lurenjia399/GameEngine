@@ -14,7 +14,7 @@ void ABoxMesh::Draw(float DeltaTime)
 	Super::Draw(DeltaTime);
 }
 
-void ABoxMesh::SetMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision, EMeshComponentRenderLayerType InType)
+void ABoxMesh::SetMeshComponent(string InName, const float& Inheight, const float& Inwidth, const float& Indepth, EMeshComponentRenderLayerType InType)
 {
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
@@ -22,7 +22,7 @@ void ABoxMesh::SetMeshComponent(string InName, const float& InRadius, const uint
 	MeshComponent = LurenjiaEngine::CreateObject<CBoxMeshComponent>(InName);
 	MeshComponent->SetMeshComponentLayerType(InType);
 
-	INJECT_DATA_INTO_MESHCOMPONENT(CBoxMeshComponent, InRadius, InAxialSubdivision, InHeightSubdivision);
+	INJECT_DATA_INTO_MESHCOMPONENT(CBoxMeshComponent, Inheight, Inwidth, Indepth);
 }
 
 void ABoxMesh::BuildMesh(const FMeshRenderingData* InRenderingData)

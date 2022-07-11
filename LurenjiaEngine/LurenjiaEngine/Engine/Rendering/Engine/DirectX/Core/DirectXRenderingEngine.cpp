@@ -9,6 +9,7 @@
 #include "../../../../Test/Texture/TextureTest.h"
 #include "../../../../Test/Material/MaterialTest.h"
 #include "../../../../Test/RenderLayer/TransparentTest.h"
+#include "../../../../Mesh/BoxMesh.h"
 
 
 enum class EMaterialType;
@@ -99,6 +100,13 @@ int CDirectXRenderingEngine::PostInit()
 	//}
 
 	//MaterialTest::BuildMaterialTestData();
+	if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
+	{
+		CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
+		CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
+		CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
+
+	}
 	TextureTest::BuildTextureTestData();
 	TransparentTest::BuildTransparentTestData();
 	

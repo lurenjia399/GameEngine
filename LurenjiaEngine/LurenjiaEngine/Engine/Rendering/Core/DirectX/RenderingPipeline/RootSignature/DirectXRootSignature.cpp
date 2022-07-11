@@ -23,12 +23,16 @@ bool FDirectXRootSignature::Build(const UINT& TextureCount)
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV = {};
 	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 3);
 
+	//CD3DX12_DESCRIPTOR_RANGE DescriptorCubeMapSRV = {};
+	//DescriptorCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 4);
+
 	RootParam[0].InitAsDescriptorTable(1, &DescriptorRangeObjCBV);
 	RootParam[1].InitAsDescriptorTable(1, &DescriptorRangeViewportCBV);
 	RootParam[2].InitAsDescriptorTable(1, &DescriptorRangeLightCBV);
-	RootParam[3].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);
+	RootParam[3].InitAsShaderResourceView(0, 1);
 
-	RootParam[4].InitAsShaderResourceView(0, 1);
+	RootParam[4].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);
+	//RootParam[5].InitAsDescriptorTable(1, &DescriptorCubeMapSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);
 
 	//构建静态采样
 	StaticSamplerObject.BuildStaticSampler();

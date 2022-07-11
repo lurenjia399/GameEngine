@@ -13,7 +13,7 @@ namespace TextureTest
 		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
 		if (ASphereMesh* SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
 		{
-			SphereMesh_1->SetMeshComponent("SphereMesh_1Component", 2.f, 120, 120);
+			SphereMesh_1->SetMeshComponent("SphereMesh_1Component", 2.f, 50, 50);
 			SphereMesh_1->SetComponentPosition(XMFLOAT3(0.f, -5.f, 2.f));
 			if (CMaterial* SphereMaterial_1 = new CMaterial())
 			{
@@ -29,7 +29,7 @@ namespace TextureTest
 		}
 		if (ASphereMesh* SphereMesh_2 = World->CreateActor<ASphereMesh>("SphereMesh_2"))
 		{
-			SphereMesh_2->SetMeshComponent("SphereMesh_2Component", 2.f, 120, 120);
+			SphereMesh_2->SetMeshComponent("SphereMesh_2Component", 2.f, 50, 50);
 			SphereMesh_2->SetComponentPosition(XMFLOAT3(0.f, 0.f, 2.f));
 			if (CMaterial* SphereMaterial_2 = new CMaterial())
 			{
@@ -45,7 +45,7 @@ namespace TextureTest
 		}
 		if (ASphereMesh* SphereMesh_3 = World->CreateActor<ASphereMesh>("SphereMesh_3"))
 		{
-			SphereMesh_3->SetMeshComponent("SphereMesh_32Component", 2.f, 120, 120);
+			SphereMesh_3->SetMeshComponent("SphereMesh_32Component", 2.f, 50, 50);
 			SphereMesh_3->SetComponentPosition(XMFLOAT3(0.f, 5.f, 2.f));
 			if (CMaterial* SphereMaterial_3 = new CMaterial())
 			{

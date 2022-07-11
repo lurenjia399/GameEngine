@@ -39,9 +39,6 @@ void FRenderingPipeline::BuildPipeline()
 	}
 	DirectXPiepelineState.BindRootSignature(DirectXRootSignature.GetRootSignature());
 
-	//通过渲染层级绑定相应的着色器
-	//FRenderLayerManage::GetRenderLayerManage()->BuildShader();
-
 	//创建模型资源（顶点和索引）缓冲区
 	GeometryMap.BuildMeshBuffer();
 	//创建描述符堆（用于存放常量缓冲区中的资源）

@@ -117,6 +117,16 @@ void FDirectXPiepelineState::SetRenderingTarget(int Index, const D3D12_RENDER_TA
 	GPSDesc.BlendState.RenderTarget[Index] = InRenderTargetBlendDesc;
 }
 
+void FDirectXPiepelineState::SetRasterizerState(D3D12_RASTERIZER_DESC InRasterizerState)
+{
+	GPSDesc.RasterizerState = InRasterizerState;
+}
+
+void FDirectXPiepelineState::SetDepthStencilState(D3D12_DEPTH_STENCIL_DESC InDepthStencilDesc)
+{
+	GPSDesc.DepthStencilState = InDepthStencilDesc;
+}
+
 void FDirectXPiepelineState::CaptureKeyboardKeys()
 {
 	if ((GetAsyncKeyState('4') & 0x8000) && CurrPipelineType != EPiepelineStateType::WIREFRAME)

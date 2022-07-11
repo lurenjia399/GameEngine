@@ -23,7 +23,13 @@ FGeometryMap::FGeometryMap()
 {
 	Geometrys.emplace(0, FGeometry());
 
+	//创建texture的SRV，并设置SRV的尺寸
 	TextureShaderResourceView = make_shared<FRenderingTextureResourcesUpdate>();
+	TextureShaderResourceView->Set_SRV_ViewDimension(D3D12_SRV_DIMENSION_TEXTURE2D);
+
+	//创建cubemap的SRV，并设置SRV的尺寸
+	CubeMapResourceView = make_shared<FRenderingTextureResourcesUpdate>();
+	CubeMapResourceView->Set_SRV_ViewDimension(D3D12_SRV_DIMENSION_TEXTURECUBE);
 }
 
 void FGeometryMap::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey)
@@ -45,7 +51,7 @@ void FGeometryMap::BuildMeshBuffer()
 void FGeometryMap::BuildDescriptorHeap()
 {
 	//+1 摄像机
-	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawLightObjectCount() + GetDrawTextureObjectCount() + 1);
+	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawLightObjectCount() + GetDrawTextureObjectCount() + GetDrawCubeMapCount() + 1);
 }
 
 void FGeometryMap::LoadTexture()
@@ -62,10 +68,29 @@ void FGeometryMap::LoadTexture()
 			normalization_path(Paths.paths[i]);
 			wchar_t TexturePath[1024] = { 0 };
 			char_to_wchar_t(TexturePath, 1024, Paths.paths[i]);
-			TextureShaderResourceView->LoadTexture(TexturePath);
+			if (wfind_string(TexturePath, L"_CubeMap.") != -1 || wfind_string(TexturePath, L"_cubemap.") != -1)
+			{
+				CubeMapResourceView->LoadTexture(TexturePath);
+			}
+			else
+			{
+				TextureShaderResourceView->LoadTexture(TexturePath);
+			}
 		}
-		
 	}
+}
+
+int FGeometryMap::GetTextureIndex(const string& Key)
+{
+	if (TextureShaderResourceView->GetTextureIndex(Key) >= 0)
+	{
+		return TextureShaderResourceView->GetTextureIndex(Key);
+	}
+	else
+	{
+		return CubeMapResourceView->GetTextureIndex(Key);
+	}
+	
 }
 
 void FGeometryMap::BuildMeshConstantBufferView()
@@ -109,7 +134,10 @@ void FGeometryMap::BuildViewportConstantBufferView()
 
 void FGeometryMap::BuildTextureShaderResource()
 {
+	//构建Texture
 	TextureShaderResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), GetDrawMeshObjectCount()  + GetDrawLightObjectCount() + 1);
+	//构建cubeMap
+	CubeMapResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), GetDrawMeshObjectCount() + GetDrawLightObjectCount() + GetDrawTextureObjectCount() +1);
 }
 
 UINT FGeometryMap::GetDrawMeshObjectCount()
@@ -135,6 +163,11 @@ UINT FGeometryMap::GetDrawLightObjectCount()
 UINT FGeometryMap::GetDrawTextureObjectCount()
 {
 	return TextureShaderResourceView->GetTextureCount();
+}
+
+UINT FGeometryMap::GetDrawCubeMapCount()
+{
+	return CubeMapResourceView->GetTextureCount();
 }
 
 bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
@@ -231,9 +264,9 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 		MaterialTransformation.SpecularColor = InMaterial->GetSpecularColor();
 		MaterialTransformation.MaterialType = static_cast<UINT32>(InMaterial->GetMaterialType());
 		MaterialTransformation.Roughness = InMaterial->GetRoughness();
-		MaterialTransformation.TextureMapIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialTextureMapKey());
-		MaterialTransformation.NormalMapIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialNormalMapKey());
-		MaterialTransformation.SpecularMapIndex = TextureShaderResourceView->GetTextureIndex(InMaterial->GetMaterialSpecularMapKey());
+		MaterialTransformation.TextureMapIndex = GetTextureIndex(InMaterial->GetMaterialTextureMapKey());
+		MaterialTransformation.NormalMapIndex = GetTextureIndex(InMaterial->GetMaterialNormalMapKey());
+		MaterialTransformation.SpecularMapIndex = GetTextureIndex(InMaterial->GetMaterialSpecularMapKey());
 		XMFLOAT4X4 materialTransform = InMaterial->GetMaterialTransform();
 		XMMATRIX MaterialTransform = XMLoadFloat4x4(&materialTransform);
 		XMStoreFloat4x4(&MaterialTransformation.TransformInformation, XMMatrixTranspose(MaterialTransform));
@@ -271,7 +304,9 @@ void FGeometryMap::DrawTexture(float DeltaTime)
 	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 	Handle.Offset(GetDrawMeshObjectCount() + GetDrawLightObjectCount() + 1, HandleSize);
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(3, Handle);
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(4, Handle);
+
+
 }
 
 FDirectXDescriptorHeap* FGeometryMap::GetDescriptorHeap()
@@ -281,7 +316,7 @@ FDirectXDescriptorHeap* FGeometryMap::GetDescriptorHeap()
 
 void FGeometryMap::DrawMaterial(float DeltaTime)
 {
-	GetGraphicsCommandList()->SetGraphicsRootShaderResourceView(4, MaterialConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
+	GetGraphicsCommandList()->SetGraphicsRootShaderResourceView(3, MaterialConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
 }
 
 void FGeometryMap::DrawLight(float DeltaTime)
