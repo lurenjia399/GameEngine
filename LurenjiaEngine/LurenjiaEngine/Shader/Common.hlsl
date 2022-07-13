@@ -38,6 +38,6 @@ struct MaterialConstantBuffer
     float4x4 TransformInformation;
 };
 StructuredBuffer<MaterialConstantBuffer> AMaterials : register(t0, space1); //所有材质数组
-Texture2D SimpleTexture2DMap[MapCount] : register(t3); //所有贴图数组
+Texture2D SimpleTexture2DMap[MapCount] : register(t1); //所有贴图数组
 
-//TextureCube SampleTextureCubeMap[CUBE_MAP_COUNT] : register(t4, space2);
+TextureCube SampleTextureCubeMap : register(t0);

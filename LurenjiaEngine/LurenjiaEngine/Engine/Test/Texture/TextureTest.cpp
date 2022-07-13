@@ -4,6 +4,7 @@
 #include "../../Core/World.h"
 #include "../../Platform/Windows/WindowsEngine.h"
 #include "../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
+#include "../../Mesh/PlaneMesh.h"
 
 namespace TextureTest
 {
@@ -11,6 +12,19 @@ namespace TextureTest
 	{
 		CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
 		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
+		{
+			PlaneMesh->SetMeshComponent("PlaneMeshComponent", 4.f, 3.f, 20, 20);
+			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
+			PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 30.f, 1.f));
+			if (CMaterial* PlaneMaterial = new CMaterial())
+			{
+				PlaneMaterial->ResetGuid("PlaneMateria");//给创建的材质设置Guid
+				PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+				PlaneMaterial->SetMaterialType(EMaterialType::HalfLambert);
+				PlaneMesh->SetSubMaterials(0, PlaneMaterial);
+			}
+		}
 		if (ASphereMesh* SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
 		{
 			SphereMesh_1->SetMeshComponent("SphereMesh_1Component", 2.f, 50, 50);

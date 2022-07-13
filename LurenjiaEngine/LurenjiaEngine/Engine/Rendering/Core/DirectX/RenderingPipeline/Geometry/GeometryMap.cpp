@@ -50,8 +50,7 @@ void FGeometryMap::BuildMeshBuffer()
 
 void FGeometryMap::BuildDescriptorHeap()
 {
-	//+1 摄像机
-	DescriptorHeap.BuildDescriptorHeap(GetDrawMeshObjectCount() + GetDrawLightObjectCount() + GetDrawTextureObjectCount() + GetDrawCubeMapCount() + 1);
+	DescriptorHeap.BuildDescriptorHeap(GetDrawTextureObjectCount() + GetDrawCubeMapCount());
 }
 
 void FGeometryMap::LoadTexture()
@@ -68,7 +67,7 @@ void FGeometryMap::LoadTexture()
 			normalization_path(Paths.paths[i]);
 			wchar_t TexturePath[1024] = { 0 };
 			char_to_wchar_t(TexturePath, 1024, Paths.paths[i]);
-			if (wfind_string(TexturePath, L"_CubeMap.") != -1 || wfind_string(TexturePath, L"_cubemap.") != -1)
+			if (wfind_string(TexturePath, L"_CubeMap") != -1 || wfind_string(TexturePath, L"_cubemap") != -1)
 			{
 				CubeMapResourceView->LoadTexture(TexturePath);
 			}
@@ -96,8 +95,8 @@ int FGeometryMap::GetTextureIndex(const string& Key)
 void FGeometryMap::BuildMeshConstantBufferView()
 {
 	MeshConstantBufferView.CreateConstant(sizeof(FObjectTransformation), GetDrawMeshObjectCount());
-	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
-	MeshConstantBufferView.BuildConstantBuffer(Handle, GetDrawMeshObjectCount(), 0);
+	//CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
+	//MeshConstantBufferView.BuildConstantBuffer(Handle, GetDrawMeshObjectCount(), 0);
 }
 
 void FGeometryMap::BuildMaterialShaderResourseView()
@@ -121,23 +120,23 @@ void FGeometryMap::BuildMaterialShaderResourseView()
 void FGeometryMap::BuildLightConstantBufferView()
 {
 	LightConstantBufferView.CreateConstant(sizeof(FLightConstantBuffer), GetDrawLightObjectCount());
-	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
-	LightConstantBufferView.BuildConstantBuffer(Handle, GetDrawLightObjectCount(), GetDrawMeshObjectCount());
+	//CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
+	//LightConstantBufferView.BuildConstantBuffer(Handle, GetDrawLightObjectCount(), GetDrawMeshObjectCount());
 }
 
 void FGeometryMap::BuildViewportConstantBufferView()
 {
 	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 1);
-	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
-	ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawMeshObjectCount() + GetDrawLightObjectCount());
+	//CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
+	//ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawMeshObjectCount() + GetDrawLightObjectCount());
 }
 
 void FGeometryMap::BuildTextureShaderResource()
 {
 	//构建Texture
-	TextureShaderResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), GetDrawMeshObjectCount()  + GetDrawLightObjectCount() + 1);
+	TextureShaderResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), 0);
 	//构建cubeMap
-	CubeMapResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), GetDrawMeshObjectCount() + GetDrawLightObjectCount() + GetDrawTextureObjectCount() +1);
+	CubeMapResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), GetDrawTextureObjectCount());
 }
 
 UINT FGeometryMap::GetDrawMeshObjectCount()
@@ -293,20 +292,21 @@ void FGeometryMap::PostDraw(float DeltaTime)
 
 void FGeometryMap::DrawViewport(float DeltaTime)
 {
-	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
-	Handle.Offset(GetDrawMeshObjectCount() + GetDrawLightObjectCount(), HandleSize);
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, Handle);
+	//UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+	//Handle.Offset(GetDrawMeshObjectCount() + GetDrawLightObjectCount(), HandleSize);
+	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, Handle);
+	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
 }
 
 void FGeometryMap::DrawTexture(float DeltaTime)
 {
 	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
-	Handle.Offset(GetDrawMeshObjectCount() + GetDrawLightObjectCount() + 1, HandleSize);
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(4, Handle);
 
-
+	Handle.Offset(GetDrawTextureObjectCount(), HandleSize);
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(5, Handle);
 }
 
 FDirectXDescriptorHeap* FGeometryMap::GetDescriptorHeap()
@@ -321,10 +321,11 @@ void FGeometryMap::DrawMaterial(float DeltaTime)
 
 void FGeometryMap::DrawLight(float DeltaTime)
 {
-	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
-	Handle.Offset(GetDrawMeshObjectCount(), HandleSize);
-	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(2, Handle);//根参数中的索引
+	//UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	//CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+	//Handle.Offset(GetDrawMeshObjectCount(), HandleSize);
+	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(2, Handle);//根参数中的索引
+	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(2, LightConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
 }
 
 bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)

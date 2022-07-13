@@ -65,6 +65,22 @@ int CDirectXRenderingEngine::PostInit()
 	//BoxMesh->SetScale(XMFLOAT3(0.5, 1, 1));
 	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
 	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
+	
+	//cubeMap
+	if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
+	{
+		CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
+		CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
+		CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
+		if (CMaterial* CubeMaterial = new CMaterial())
+		{
+			CubeMaterial->ResetGuid("CubeMaterial");//给创建的材质设置Guid
+			CubeMaterial->SetMaterialTextureMapKey("x1_CubeMap");
+			CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			CubeMesh->SetSubMaterials(0, CubeMaterial);
+
+		}
+	}
 	//平行光
 	if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 	{
@@ -100,13 +116,6 @@ int CDirectXRenderingEngine::PostInit()
 	//}
 
 	//MaterialTest::BuildMaterialTestData();
-	if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
-	{
-		CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
-		CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
-		CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
-
-	}
 	TextureTest::BuildTextureTestData();
 	TransparentTest::BuildTransparentTestData();
 	

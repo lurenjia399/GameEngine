@@ -33,3 +33,8 @@ ID3D12Resource* FDirectXConstBufferView::GetBuffer()
 {
 	return ConstantBufferView->GetBuffer();
 }
+
+UINT FDirectXConstBufferView::GetBufferByteSize()
+{
+	return ConstantBufferView->GetConstantBufferByteSize();
+}

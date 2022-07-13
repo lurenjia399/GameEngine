@@ -87,17 +87,14 @@ void FRenderingLayer::PreDraw(float DeltaTime)
 
 void FRenderingLayer::Draw(float DeltaTime)
 {
-	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT MeshObjectConstantViewSize = GeometryMap->MeshConstantBufferView.GetBufferByteSize();
+	const D3D12_GPU_VIRTUAL_ADDRESS virtualAddressBegin = GeometryMap->MeshConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
 	for (auto& data : GeometryDescDatas)
 	{
 		//获取geometry的顶点缓冲区描述
 		D3D12_VERTEX_BUFFER_VIEW VBV = GeometryMap->Geometrys[data.GeometryKey].GetVertexBufferView();
 		//获取geometry的索引缓冲区描述
 		D3D12_INDEX_BUFFER_VIEW IBV = GeometryMap->Geometrys[data.GeometryKey].GetIndexBufferView();
-
-		//获取指向常量堆的handle指针
-		CD3DX12_GPU_DESCRIPTOR_HANDLE meshHandle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GeometryMap->GetDescriptorHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart());
-
 		//向命令列表中 添加顶点缓冲区描述(描述geometry的顶点信息)
 		GetGraphicsCommandList()->IASetVertexBuffers(0, 1, &VBV);
 		//向命令列表中 添加索引缓冲区描述(描述geometry的索引信息)
@@ -105,10 +102,10 @@ void FRenderingLayer::Draw(float DeltaTime)
 		//向命令列表中 添加图元拓扑 命令(决定geometry的拓扑方式)
 		EMaterialDisplayStatusType TopologyType = (*data.MeshComponet->GetMaterials())[0]->GetMaterialDisplayStatusType();
 		GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)TopologyType);
-		//指向常量堆的指针偏移
-		meshHandle.Offset(data.MeshObjectOffset, HandleSize);
-		//向命令列表中 添加将描述符表添加到根签名中 命令
-		GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(0, meshHandle);
+		//设置当前meshobject的gpu地址
+		D3D12_GPU_VIRTUAL_ADDRESS Address = virtualAddressBegin + data.MeshObjectOffset * MeshObjectConstantViewSize;
+		//将meshObjectConstantView中的数据放到0号寄存器中
+		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(0, Address);
 
 		// Draw Call !!!
 		GetGraphicsCommandList()->DrawIndexedInstanced(

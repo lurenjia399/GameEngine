@@ -15,6 +15,7 @@ public:
 	void BuildConstantBuffer(CD3DX12_CPU_DESCRIPTOR_HANDLE InHandle, UINT ConstantBufferCount, UINT HandleOffset);
 	void Update(int Index, const void* InData);
 	ID3D12Resource* GetBuffer();
+	UINT GetBufferByteSize();
 private:
 	shared_ptr<FRenderingResourcesUpdate> ConstantBufferView;	//对象的常量缓冲区
 };
