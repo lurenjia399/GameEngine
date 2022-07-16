@@ -6,18 +6,7 @@ FDirectXRootSignature::FDirectXRootSignature()
 
 bool FDirectXRootSignature::Build(const UINT& TextureCount)
 {
-	CD3DX12_ROOT_PARAMETER RootParam[6];
-	////对象的的descriptorRange
-	//CD3DX12_DESCRIPTOR_RANGE DescriptorRangeObjCBV = {};
-	//DescriptorRangeObjCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 0);//参数类型，参数数量，参数传递的寄存器
-	//
-	////viewport的descriptorRange
-	//CD3DX12_DESCRIPTOR_RANGE DescriptorRangeViewportCBV = {};
-	//DescriptorRangeViewportCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 1);
-	//
-	////灯光的desctriptorRange
-	//CD3DX12_DESCRIPTOR_RANGE DescriptorRangeLightCBV = {};
-	//DescriptorRangeLightCBV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_CBV, 1, 2);
+	CD3DX12_ROOT_PARAMETER RootParam[7];
 
 	//CubeMap的descriptorRange
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCubeMapSRV = {};
@@ -27,22 +16,20 @@ bool FDirectXRootSignature::Build(const UINT& TextureCount)
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV = {};
 	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 1);
 
-	//CD3DX12_DESCRIPTOR_RANGE DescriptorCubeMapSRV = {};
-	//DescriptorCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 4);
-
 	RootParam[0].InitAsConstantBufferView(0);//meshobject
 	RootParam[1].InitAsConstantBufferView(1);//viewport
 	RootParam[2].InitAsConstantBufferView(2);//light
-	RootParam[3].InitAsShaderResourceView(0, 1);//material
+	RootParam[3].InitAsConstantBufferView(3);//fog
+	RootParam[4].InitAsShaderResourceView(0, 1);//material
 
-	RootParam[4].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);//texture
-	RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);//cubemap
+	RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);//texture
+	RootParam[6].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);//cubemap
 
 	//构建静态采样
 	StaticSamplerObject.BuildStaticSampler();
 
 	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-		6, RootParam, StaticSamplerObject.GetSize(), StaticSamplerObject.GetData(),
+		7, RootParam, StaticSamplerObject.GetSize(), StaticSamplerObject.GetData(),
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 	);
 	ComPtr<ID3DBlob> SerializeRootSignature;

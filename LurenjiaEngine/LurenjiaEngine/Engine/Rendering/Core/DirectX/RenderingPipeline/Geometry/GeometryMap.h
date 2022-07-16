@@ -6,6 +6,7 @@
 #include "GeometryDescData.h"
 #include "../DescriptorHeap/DirectXDescriptorHeap.h"
 #include "../ConstantBuffer/DirectXConstBufferView.h"
+#include "../../../../../Component/Sky/FogComponent.h"
 
 
 struct FGeometry : public IDirectXDeviceInterface_struct
@@ -40,7 +41,6 @@ struct FGeometryMap : public IDirectXDeviceInterface_struct
 {
 	friend class FRenderingLayer;
 public:
-	
 
 	FGeometryMap();
 	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey);
@@ -55,6 +55,7 @@ public:
 	void BuildMaterialShaderResourseView();
 	void BuildLightConstantBufferView();
 	void BuildTextureShaderResource();
+	void BuildFogConstantBufferView();
 
 	UINT GetDrawMeshObjectCount();
 	UINT GetDrawMaterialObjectCount();
@@ -62,14 +63,19 @@ public:
 	UINT GetDrawTextureObjectCount();
 	UINT GetDrawCubeMapCount();
 
+	void UpdateLightConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void UpdateFogConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
+
 	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InMeshRenderingData);
-	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
-	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
+
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void PostDraw(float DeltaTime);
 public:
+	void DrawFog(float DeltaTime);
 	void DrawMaterial(float DeltaTime);
 	void DrawLight(float DeltaTime);
 	void DrawViewport(float DeltaTime);
@@ -84,6 +90,7 @@ private:
 	FDirectXConstBufferView ViewportConstantBufferView;
 	FDirectXConstBufferView MaterialConstantBufferView;
 	FDirectXConstBufferView LightConstantBufferView;
+	FDirectXConstBufferView FogConstantBufferView;
 
 	shared_ptr<FRenderingTextureResourcesUpdate> TextureShaderResourceView;
 	shared_ptr<FRenderingTextureResourcesUpdate> CubeMapResourceView;

@@ -23,6 +23,17 @@ cbuffer LightConstantBufferView : register(b2) //µ∆π‚CBV
 {
     Light SceneLight[16];
 }
+cbuffer FogConstantBufferView : register(b3) //ŒÌCBV
+{
+    float3 FogColor;
+    float FogStart;
+
+    float FogRange;
+    float FogHeight;
+    float xx4;
+    float xx5;
+}
+
 struct MaterialConstantBuffer
 {
     float4 BaseColor;

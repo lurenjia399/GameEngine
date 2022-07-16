@@ -10,6 +10,7 @@
 #include "../../../../Test/Material/MaterialTest.h"
 #include "../../../../Test/RenderLayer/TransparentTest.h"
 #include "../../../../Mesh/BoxMesh.h"
+#include "../../../../Actor/Sky/Fog.h"
 
 
 enum class EMaterialType;
@@ -114,6 +115,15 @@ int CDirectXRenderingEngine::PostInit()
 	//	SpotLight->SetConicalInnerCorner(30.f);
 	//	SpotLight->SetConicalOuterCorner(70.f);
 	//}
+	
+	//Он
+	if (AFog* Fog = World->CreateActor<AFog>("AFog"))
+	{
+		Fog->SetFogColor(fvector_color(1));
+		Fog->SetFogStart(10.f);
+		Fog->SetFogRange(101.f);
+	}
+
 
 	//MaterialTest::BuildMaterialTestData();
 	TextureTest::BuildTextureTestData();

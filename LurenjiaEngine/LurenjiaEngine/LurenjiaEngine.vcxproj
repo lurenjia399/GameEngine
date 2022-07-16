@@ -25,6 +25,7 @@
     <ClCompile Include="Engine\Actor\Light\ParallelLight.cpp" />
     <ClCompile Include="Engine\Actor\Light\PointLight.cpp" />
     <ClCompile Include="Engine\Actor\Light\SpotLight.cpp" />
+    <ClCompile Include="Engine\Actor\Sky\Fog.cpp" />
     <ClCompile Include="Engine\Component\Core\Component.cpp" />
     <ClCompile Include="Engine\Component\InputComponent.cpp" />
     <ClCompile Include="Engine\Component\Input\Input.cpp" />
@@ -43,6 +44,8 @@
     <ClCompile Include="Engine\Component\Mesh\PlaneMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\StaticMeshComponent.cpp" />
+    <ClCompile Include="Engine\Component\Sky\Core\FogTransformation.cpp" />
+    <ClCompile Include="Engine\Component\Sky\FogComponent.cpp" />
     <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
     <ClCompile Include="Engine\Core\Camera.cpp" />
@@ -150,6 +153,7 @@
     <ClInclude Include="Engine\Actor\Light\ParallelLight.h" />
     <ClInclude Include="Engine\Actor\Light\PointLight.h" />
     <ClInclude Include="Engine\Actor\Light\SpotLight.h" />
+    <ClInclude Include="Engine\Actor\Sky\Fog.h" />
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="Engine\Component\Core\Component.h" />
     <ClInclude Include="Engine\Component\InputComponent.h" />
@@ -169,6 +173,8 @@
     <ClInclude Include="Engine\Component\Mesh\PlaneMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\StaticMeshComponent.h" />
+    <ClInclude Include="Engine\Component\Sky\Core\FogTransformation.h" />
+    <ClInclude Include="Engine\Component\Sky\FogComponent.h" />
     <ClInclude Include="Engine\Component\TransformationComponent.h" />
     <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
     <ClInclude Include="Engine\Core\Camera.h" />

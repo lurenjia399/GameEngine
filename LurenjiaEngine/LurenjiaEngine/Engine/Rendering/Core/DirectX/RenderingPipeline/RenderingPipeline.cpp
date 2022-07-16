@@ -43,6 +43,8 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildMeshBuffer();
 	//创建描述符堆（用于存放常量缓冲区中的资源）
 	GeometryMap.BuildDescriptorHeap();
+	//构建雾的常量缓冲区
+	GeometryMap.BuildFogConstantBufferView();
 	//构建模型的常量缓冲区
 	GeometryMap.BuildMeshConstantBufferView();
 	//构建材质的shader资源缓冲区,收集所有的matrial，并且设置material中的shaderindex，这个不是常量缓冲区，所以没有放在描述堆中
@@ -60,8 +62,16 @@ void FRenderingPipeline::BuildPipeline()
 
 void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
+	//更新每个层级中模型的常量缓冲区资源
 	FRenderLayerManage::GetRenderLayerManage()->UpdateObjectConstantBuffer();
-	GeometryMap.UpdateConstantView(DeltaTime, ViewportInfo);
+	//更新材质常量缓冲区
+	GeometryMap.UpdateMaterialShaderResourceView(DeltaTime, ViewportInfo);
+	//更新灯光的常量缓冲区
+	GeometryMap.UpdateLightConstantBufferView(DeltaTime, ViewportInfo);
+	//更新视口的常量缓冲区
+	GeometryMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo);
+	//更新雾气的常量缓冲区
+	GeometryMap.UpdateFogConstantBufferView(DeltaTime, ViewportInfo);
 }
 
 void FRenderingPipeline::PreDraw(float DeltaTime)
