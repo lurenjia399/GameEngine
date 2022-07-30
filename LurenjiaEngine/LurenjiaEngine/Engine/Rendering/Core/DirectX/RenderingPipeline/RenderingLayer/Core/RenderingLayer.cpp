@@ -36,6 +36,23 @@ void FRenderingLayer::RestorePSO()
 	DirectXPiepelineState->isTemporaryResetPSO(-1, false);
 }
 
+void FRenderingLayer::BuildShaderMacro(std::vector<ShaderType::FShaderMacro>& OutShaderMacro)
+{
+	{
+		char buffer[10] = { 0 };
+		ShaderType::FShaderMacro ShaderMacro;
+		ShaderMacro.Name = "MAPCOUNT";
+		ShaderMacro.Definition = _itoa(GeometryMap->GetDrawTextureObjectCount(), buffer, 10);
+		OutShaderMacro.emplace_back(ShaderMacro);
+	}
+	{
+		ShaderType::FShaderMacro ShaderMacro;
+		ShaderMacro.Name = "START_UP_FOG";
+		ShaderMacro.Definition = GeometryMap->IsStartUpFog() ? "1" : "0";
+		OutShaderMacro.emplace_back(ShaderMacro);
+	}
+}
+
 void FRenderingLayer::UpdateObjectConstantBuffer()
 {
 	for (auto& data : GeometryDescDatas)

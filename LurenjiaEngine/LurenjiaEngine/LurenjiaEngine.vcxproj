@@ -105,6 +105,7 @@
     <ClCompile Include="Engine\Rendering\Engine\Core\RenderingEngine.cpp" />
     <ClCompile Include="Engine\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp" />
     <ClCompile Include="Engine\Shader\Core\Shader.cpp" />
+    <ClCompile Include="Engine\Shader\Core\ShaderType.cpp" />
     <ClCompile Include="Engine\Shader\ShaderManage.cpp" />
     <ClCompile Include="Engine\Test\Material\MaterialTest.cpp" />
     <ClCompile Include="Engine\Test\RenderLayer\TransparentTest.cpp" />
@@ -240,6 +241,7 @@
     <ClInclude Include="Engine\Rendering\Engine\Core\RenderingEngine.h" />
     <ClInclude Include="Engine\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.h" />
     <ClInclude Include="Engine\Shader\Core\Shader.h" />
+    <ClInclude Include="Engine\Shader\Core\ShaderType.h" />
     <ClInclude Include="Engine\Shader\ShaderManage.h" />
     <ClInclude Include="Engine\Test\Material\MaterialTest.h" />
     <ClInclude Include="Engine\Test\RenderLayer\TransparentTest.h" />

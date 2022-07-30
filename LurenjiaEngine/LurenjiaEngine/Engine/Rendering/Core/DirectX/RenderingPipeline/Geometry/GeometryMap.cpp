@@ -285,7 +285,7 @@ void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime, const FViewportI
 	if (FogComponent != nullptr)
 	{
 		if (!FogComponent->GetDirtyState()) return;
-		FogComponent->SetDirtyState(true);
+		FogComponent->SetDirtyState(false);
 
 		FFogTransformation FogTransformation = {};
 		FogTransformation.FogColor = FogComponent->GetFogColor();
@@ -356,6 +356,12 @@ void FGeometryMap::DrawTexture(float DeltaTime)
 
 	Handle.Offset(GetDrawTextureObjectCount(), HandleSize);
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, Handle);
+}
+
+bool FGeometryMap::IsStartUpFog()
+{
+	CFogComponent* FogComponent = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog()->GetComponent();
+	return FogComponent != nullptr;
 }
 
 bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)

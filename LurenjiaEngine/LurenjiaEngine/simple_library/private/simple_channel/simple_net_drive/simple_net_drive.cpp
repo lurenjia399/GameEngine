@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "../../../public/simple_channel/simple_net_drive.h"
 #include "simple_net_drive_udp.h"
 #include "simple_net_drive_tcp.h"

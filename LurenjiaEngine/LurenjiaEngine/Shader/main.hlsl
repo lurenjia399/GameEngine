@@ -1,4 +1,5 @@
 #include "Material.hlsl"
+#include "SkyFunction.hlsl"
 
 struct MeshVertexIn
 {
@@ -258,5 +259,8 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     }
         
     mvOut.Color = Material.FinalColor * Ambient + LightStrengths * (Material.FinalColor + Material.FinalColor * specular)+ Material.FinalColor * Fresnel;
+    mvOut.Color.a = Material.FinalColor.a;
+    
+    mvOut.Color = GetFogValue(mvOut.Color, mvOut.worldPosition.xyz);
     return mvOut.Color;
 }

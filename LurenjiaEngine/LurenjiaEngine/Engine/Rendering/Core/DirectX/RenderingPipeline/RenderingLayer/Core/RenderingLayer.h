@@ -8,6 +8,7 @@
 #include "../../Geometry/GeometryDescData.h"
 #include "../../PiepelineState/DirectXPipelineState.h"
 #include "../../Geometry/GeometryMap.h"
+#include "../../../../../../Shader/Core/ShaderType.h"
 
 class FRenderingLayer : public IDirectXDeviceInterface, public std::enable_shared_from_this<FRenderingLayer>
 {
@@ -18,6 +19,7 @@ public:
 	UINT GetPriority();
 	std::vector<FGeometryDescData>* GetGeometryDescData();
 	void RestorePSO();
+	virtual void BuildShaderMacro(std::vector<ShaderType::FShaderMacro>& OutShaderMacro);
 	virtual void UpdateObjectConstantBuffer();
 	virtual void PreDraw(float DeltaTime);
 	virtual void Draw(float DeltaTime);

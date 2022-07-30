@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "../../../public/simple_channel/simple_core/simple_io_stream.h"
 
 

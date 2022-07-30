@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "../../public/simple_c_log/simple_c_log.h"
 #include "../../public/simple_core_minimal/simple_c_windows/simple_c_windows_setting.h"
 #include "../../public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"

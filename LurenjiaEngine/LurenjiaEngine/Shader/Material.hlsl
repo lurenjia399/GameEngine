@@ -1,9 +1,12 @@
+#ifndef MATERIAL
+#define MATERIAL
+
 #include "Common.hlsl"
 #include "FunctionLibrary.hlsl"
 
 struct FMaterial
 {
-    float4 FinalColor;//通用颜色
+    float4 FinalColor; //通用颜色
 };
 
 float3 FresnelSchlickMethod(float3 InF0, float3 InVertexNormal, float3 InCameraDirection, float InPow)
@@ -14,7 +17,7 @@ float3 FresnelSchlickMethod(float3 InF0, float3 InVertexNormal, float3 InCameraD
 float4 GetFinalColor(MaterialConstantBuffer InMaterial, float2 InTexCoord)
 {
     float4 res = InMaterial.BaseColor;
-    if (InMaterial.TextureMapIndex >= 0 && InMaterial.TextureMapIndex < MapCount)
+    if (InMaterial.TextureMapIndex >= 0 && InMaterial.TextureMapIndex < MAPCOUNT)
     {
         res = InMaterial.BaseColor * SimpleTexture2DMap[InMaterial.TextureMapIndex].Sample(TextureSampler, InTexCoord);
     }
@@ -25,7 +28,7 @@ float4 GetFinalColor(MaterialConstantBuffer InMaterial, float2 InTexCoord)
 float3 GetNormal(MaterialConstantBuffer InMaterial, float2 InTexCoord, float3 InTangent, float3 InNormal)
 {
     float3 res = InNormal;
-    if(InMaterial.NormalMapIndex >= 0 && InMaterial.NormalMapIndex < MapCount)
+    if (InMaterial.NormalMapIndex >= 0 && InMaterial.NormalMapIndex < MAPCOUNT)
     {
         float3 SampleNormal = SimpleTexture2DMap[InMaterial.NormalMapIndex].Sample(AnisotropicSampler, InTexCoord).rgb; //范围都是 0 - 1
         float3x3 TBN = GetTBNMatrix(InTangent, InNormal);
@@ -36,12 +39,14 @@ float3 GetNormal(MaterialConstantBuffer InMaterial, float2 InTexCoord, float3 In
 
 }
 
-float4 GetSpecular(MaterialConstantBuffer InMaterial, float2 InTexCoord )
+float4 GetSpecular(MaterialConstantBuffer InMaterial, float2 InTexCoord)
 {
     float4 res = float4(InMaterial.SpecularColor, 1.0f);
-    if (InMaterial.SpecularMapIndex >= 0 && InMaterial.SpecularMapIndex < MapCount)
+    if (InMaterial.SpecularMapIndex >= 0 && InMaterial.SpecularMapIndex < MAPCOUNT)
     {
         res = SimpleTexture2DMap[InMaterial.SpecularMapIndex].Sample(TextureSampler, InTexCoord);
     }
     return res;
 }
+
+#endif

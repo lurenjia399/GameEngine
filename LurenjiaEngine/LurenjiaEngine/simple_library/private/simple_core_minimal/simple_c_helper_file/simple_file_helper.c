@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "../../../public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
 #include "../../../public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 
@@ -103,7 +103,7 @@ void find_files(char const *in_path, def_c_paths *str, bool b_recursion)
 	struct _finddata_t finddata;
 
 	long hfile = 0;
-	char tmp_path[8196] = { 0 };
+	char tmp_path[1024] = { 0 };
 	strcpy(tmp_path, in_path);
 	strcat(tmp_path, "\\*");
 	if ((hfile = _findfirst(tmp_path, &finddata)) != -1)
@@ -120,7 +120,7 @@ void find_files(char const *in_path, def_c_paths *str, bool b_recursion)
 						continue;
 					}
 
-					char new_path[8196] = { 0 };
+					char new_path[1024] = { 0 };
 					strcpy(new_path, in_path);
 					strcat(new_path, "\\");
 					strcat(new_path, finddata.name);

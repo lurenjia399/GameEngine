@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
 #include "../../simple_cpp_core_minimal/simple_cpp_core_minimal.h"
 #include "../../simple_array/simple_hash_array.h"

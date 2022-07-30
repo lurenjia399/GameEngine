@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
 #include "simple_core/simple_channel.h"
 #include "simple_core/simple_io_stream.h"

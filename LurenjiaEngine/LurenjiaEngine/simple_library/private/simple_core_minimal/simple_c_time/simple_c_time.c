@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "../../../public/simple_core_minimal/simple_c_time/simple_c_time.h"
 #include "../../../public/simple_core_minimal/simple_c_time/simple_c_locale_list.h"
 

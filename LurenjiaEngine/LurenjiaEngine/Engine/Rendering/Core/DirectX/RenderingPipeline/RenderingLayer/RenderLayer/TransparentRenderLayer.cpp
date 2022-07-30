@@ -32,14 +32,13 @@ void FTransparentRenderLayer::BuildShader()
 {
 	//绑定着色器
 	//着色器宏，传递给着色器相应的值
-	char buffer[10] = { 0 };
-	D3D_SHADER_MACRO ShaderMacro[] =
-	{
-		"MapCount", _itoa(GeometryMap->GetDrawTextureObjectCount(), buffer, 10),
-		nullptr, nullptr,
-	};
-	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro);
-	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro);
+	vector<ShaderType::FShaderMacro> SelfShaderMacro;
+	BuildShaderMacro(SelfShaderMacro);
+	std::vector<D3D_SHADER_MACRO> ShaderMacro;
+	bool isSuccess = ShaderType::TransD3dShaderMacro(SelfShaderMacro, ShaderMacro);
+	assert(isSuccess);
+	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro.data());
+	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/main.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro.data());
 	DirectXPiepelineState->BindShader(&VertexShader, &PixelShader);
 
 	//绑定输入布局

@@ -1,4 +1,4 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "simple_net_drive_tcp.h"
 #include "../../../public/simple_c_log/simple_c_log.h"
 #include "../simple_net_connetion/simple_connetion_tcp.h"

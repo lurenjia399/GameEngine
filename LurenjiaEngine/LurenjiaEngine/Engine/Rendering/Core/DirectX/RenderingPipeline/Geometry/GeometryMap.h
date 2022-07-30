@@ -81,6 +81,8 @@ public:
 	void DrawViewport(float DeltaTime);
 	void DrawTexture(float DeltaTime);
 public:
+	bool IsStartUpFog();
+public:
 	FDirectXDescriptorHeap* GetDescriptorHeap();
 private:
 	map<int, FGeometry> Geometrys;

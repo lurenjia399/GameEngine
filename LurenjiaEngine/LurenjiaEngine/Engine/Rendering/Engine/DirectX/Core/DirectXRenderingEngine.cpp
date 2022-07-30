@@ -79,7 +79,6 @@ int CDirectXRenderingEngine::PostInit()
 			CubeMaterial->SetMaterialTextureMapKey("x1_CubeMap");
 			CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
 			CubeMesh->SetSubMaterials(0, CubeMaterial);
-
 		}
 	}
 	//Æ½ÐÐ¹â
@@ -119,9 +118,9 @@ int CDirectXRenderingEngine::PostInit()
 	//Îí
 	if (AFog* Fog = World->CreateActor<AFog>("AFog"))
 	{
-		Fog->SetFogColor(fvector_color(1));
+		Fog->SetFogColor(fvector_color(0.7f));
 		Fog->SetFogStart(10.f);
-		Fog->SetFogRange(101.f);
+		Fog->SetFogRange(200.f);
 	}
 
 

@@ -393,6 +393,9 @@
     <ClCompile Include="Engine\Component\Sky\Core\FogTransformation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Shader\Core\ShaderType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -837,6 +840,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Sky\Core\FogTransformation.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Shader\Core\ShaderType.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

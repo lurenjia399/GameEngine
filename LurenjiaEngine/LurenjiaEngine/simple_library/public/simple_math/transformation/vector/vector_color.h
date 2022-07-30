@@ -1,18 +1,18 @@
-
+// Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
 #include "assert.h" 
 
 struct fvector_color
 {
-	unsigned char r;
-	unsigned char g;
-	unsigned char b;
-	unsigned char a;
+	float r;
+	float g;
+	float b;
+	float a;
 
 public:
 	fvector_color();
 
-	fvector_color(unsigned char in_value);
+	fvector_color(float in_value);
 
-	fvector_color(unsigned char in_r, unsigned char in_g, unsigned char in_b = 0, unsigned char in_a = 255);
+	fvector_color(float in_r, float in_g, float in_b = 0, float in_a = 255);
 };
