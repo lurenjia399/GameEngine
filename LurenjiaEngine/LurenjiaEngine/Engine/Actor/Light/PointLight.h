@@ -12,6 +12,8 @@ public:
 	APointLight();
 
 	void Tick(float DeltaTime) override;
+private:
+	float time;
 };
 
 

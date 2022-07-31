@@ -33,7 +33,7 @@ cbuffer FogConstantBufferView : register(b3) //ŒÌCBV
 
     float FogRange;
     float FogHeight;
-    float xx4;
+    float FogTransparentCoefficient;
     float xx5;
 }
 

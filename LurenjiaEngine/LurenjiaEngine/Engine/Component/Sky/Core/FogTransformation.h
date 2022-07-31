@@ -14,7 +14,7 @@ struct FFogTransformation
 
 	float FogRange;
 	float FogHeight;
-	float xx1;
+	float FogTransparentCoefficient;
 	float xx2;
 };
 

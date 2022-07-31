@@ -292,6 +292,7 @@ void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime, const FViewportI
 		FogTransformation.FogStart = FogComponent->GetFogStart();
 		FogTransformation.FogRange = FogComponent->GetFogRange();
 		FogTransformation.FogHeight = FogComponent->GetFogHeight();
+		FogTransformation.FogTransparentCoefficient = FogComponent->GetFogTransparentCoefficient();
 		FogConstantBufferView.Update(0, &FogTransformation);
 	}
 

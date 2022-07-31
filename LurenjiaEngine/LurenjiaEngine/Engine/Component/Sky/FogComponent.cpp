@@ -4,7 +4,8 @@ CFogComponent::CFogComponent()
 	: FogColor(1.f, 1.f, 1.f, 1.f)
 	, FogStart(5.0f)
 	, FogRange(100.f)
-	, FogHeight(100.f)
+	, FogHeight(9000.f)
+	, FogTransparentCoefficient(0.f)
 	, bDirty(false)
 {
 }
@@ -30,4 +31,16 @@ void CFogComponent::SetFogRange(const float& FogRange)
 void CFogComponent::SetDirtyState(const bool& DirtyState)
 {
 	this->bDirty = DirtyState;
+}
+
+void CFogComponent::SetFogHeight(const float& FogHeight)
+{
+	this->FogHeight = FogHeight;
+	SetDirtyState(true);
+}
+
+void CFogComponent::SetFogTransparentCoefficient(const float& FogTransparentCoefficient)
+{
+	this->FogTransparentCoefficient = FogTransparentCoefficient;
+	SetDirtyState(true);
 }

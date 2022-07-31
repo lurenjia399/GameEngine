@@ -16,6 +16,8 @@ public:
 	void SetFogColor(const fvector_color& FogColor);
 	void SetFogStart(const float& FogStart);
 	void SetFogRange(const float& FogRange);
+	void SetFogHeight(const float& FogHeight);
+	void SetFogTransparentCoefficient(const float& FogTransparentCoefficient);
 	void SetDirtyState(const bool& DirtyState);
 	CFogComponent* GetComponent() const;
 private:

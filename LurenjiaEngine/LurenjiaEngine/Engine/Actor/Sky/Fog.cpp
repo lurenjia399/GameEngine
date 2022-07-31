@@ -4,9 +4,7 @@
 AFog::AFog()
 	: FogComponent(nullptr)
 {
-
 	FogComponent = LurenjiaEngine::CreateObject<CFogComponent>("FogComponent");
-
 }
 
 void AFog::SetFogColor(const fvector_color& FogColor)
@@ -22,6 +20,16 @@ void AFog::SetFogStart(const float& FogStart)
 void AFog::SetFogRange(const float& FogRange)
 {
 	FogComponent->SetFogRange(FogRange);
+}
+
+void AFog::SetFogHeight(const float& FogHeight)
+{
+	FogComponent->SetFogHeight(FogHeight);
+}
+
+void AFog::SetFogTransparentCoefficient(const float& FogTransparentCoefficient)
+{
+	FogComponent->SetFogTransparentCoefficient(FogTransparentCoefficient);
 }
 
 void AFog::SetDirtyState(const bool& DirtyState)
