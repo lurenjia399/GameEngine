@@ -21,6 +21,9 @@ public:
 	int SpecularMapIndex;//使用的高光贴图序号, 不适用为-1
 	XMFLOAT3 SpecularColor;//默认使用的高光颜色基数
 
+	XMFLOAT3 FresnelF0;
+	float xx;
+
 	XMFLOAT4X4 TransformInformation;
 };
 #endif // !MaterialConstantBuffer

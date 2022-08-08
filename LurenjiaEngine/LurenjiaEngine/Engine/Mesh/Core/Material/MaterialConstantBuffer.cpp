@@ -10,6 +10,8 @@ CMaterialConstantBuffer::CMaterialConstantBuffer()
 	, NormalMapIndex(-1)
 	, SpecularMapIndex(-1)
 	, SpecularColor(XMFLOAT3(0.5f, 0.5f, 0.5f))
+	, FresnelF0(XMFLOAT3(0.f, 0.f, 0.f))
+	, xx(0.f)
 	, TransformInformation(EngineMath::IdentityMatrix4x4())
 {
 }

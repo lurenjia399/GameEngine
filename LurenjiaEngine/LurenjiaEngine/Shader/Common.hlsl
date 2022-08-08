@@ -49,6 +49,9 @@ struct MaterialConstantBuffer
     int SpecularMapIndex; //使用的高光贴图序号, 不适用为-1
     float3 SpecularColor; //默认使用的高光颜色基数
     
+    float3 FresnelF0;
+    float xx6;
+    
     float4x4 TransformInformation;
 };
 StructuredBuffer<MaterialConstantBuffer> AMaterials : register(t0, space1); //所有材质数组

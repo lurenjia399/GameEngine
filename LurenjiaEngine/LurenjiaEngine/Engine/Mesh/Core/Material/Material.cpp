@@ -151,6 +151,12 @@ void CMaterial::SetMaterialTransform(XMFLOAT4X4 InTransform)
 	SetDirty(true);
 }
 
+void CMaterial::SetMaterialFresnelF0(XMFLOAT3 InFresnelF0)
+{
+	FresnelF0 = InFresnelF0;
+	SetDirty(true);
+}
+
 void CMaterial::SetDirty(bool InDirty)
 {
 	if (bDirty != InDirty)

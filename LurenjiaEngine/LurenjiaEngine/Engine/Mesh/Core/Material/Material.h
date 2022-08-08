@@ -28,6 +28,7 @@ public:
 	void SetRoughness(const float& InRoughness);
 	void SetMaterialDisplayStatusType(EMaterialDisplayStatusType InDisplayStatusType);
 	void SetMaterialTransform(XMFLOAT4X4 InTransform);
+	void SetMaterialFresnelF0(XMFLOAT3 InFresnelF0);
 	void SetDirty(bool InDirty);
 	
 
@@ -43,6 +44,7 @@ public:
 	FORCEINLINE int							GetMaterialSpecularMapIndex() const		{ return MaterialSpecularMapIndex; }
 	FORCEINLINE EMaterialDisplayStatusType	GetMaterialDisplayStatusType() const	{ return MaterialDisplayStatusType; }
 	FORCEINLINE XMFLOAT4X4					GetMaterialTransform() const			{ return MaterialTransform; }
+	FORCEINLINE XMFLOAT3					GetMaterialFresnelF0() const			{ return FresnelF0; }
 	FORCEINLINE bool						isDirty() const							{ return bDirty; }
 	
 private:
@@ -58,6 +60,7 @@ private:
 	int MaterialSpecularMapIndex;			//材质使用的高光贴图Index
 	EMaterialDisplayStatusType MaterialDisplayStatusType;//材质的显示方式
 	XMFLOAT4X4 MaterialTransform;			//材质的变换信息，应用于模型的uv坐标
+	XMFLOAT3 FresnelF0;						//材质的菲涅尔因子
 	bool bDirty;							//标志当前材质是否动态更改
 };
 

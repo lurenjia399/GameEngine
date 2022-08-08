@@ -49,4 +49,36 @@ float4 GetSpecular(MaterialConstantBuffer InMaterial, float2 InTexCoord)
     return res;
 }
 
+float3 GetReflect(float3 CameraDirection, float3 InUnitWorldNormal)
+{
+    return reflect(CameraDirection, InUnitWorldNormal);
+}
+
+float3 GetReflectionSampleColor(float3 Reflect)
+{
+    return SampleTextureCubeMap.Sample(TextureSampler, Reflect);
+}
+
+float3 GetShininess(MaterialConstantBuffer MatConstBuffer)
+{
+    return 1.f - MatConstBuffer.Roughness;
+}
+
+float3 FresnelSchlickFactor(MaterialConstantBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 CameraDirection, float Pow)
+{
+
+    return FresnelSchlickMethod(MatConstBuffer.FresnelF0, InUnitWorldNormal, CameraDirection, Pow);
+}
+
+float3 GetReflectionColor(MaterialConstantBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 CameraDirection, float Pow)
+{
+    float3 NewReflect = GetReflect(CameraDirection, InUnitWorldNormal);
+    float3 SampleColor = GetReflectionSampleColor(NewReflect);
+    float3 Shininess = GetShininess(MatConstBuffer);
+    float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, CameraDirection, Pow);
+
+    return FresnelFactor * SampleColor * Shininess;
+
+}
+
 #endif

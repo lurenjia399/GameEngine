@@ -38,6 +38,7 @@ namespace TextureTest
 				SphereMaterial_1->SetRoughness(0.2f);
 				SphereMaterial_1->SetMaterialType(EMaterialType::BlinnPhone);
 				SphereMesh_1->SetSubMaterials(0, SphereMaterial_1);
+				SphereMaterial_1->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
 
 			}
 		}
