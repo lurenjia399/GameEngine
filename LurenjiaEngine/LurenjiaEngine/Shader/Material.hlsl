@@ -72,13 +72,12 @@ float3 FresnelSchlickFactor(MaterialConstantBuffer MatConstBuffer, float3 InUnit
 
 float3 GetReflectionColor(MaterialConstantBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 CameraDirection, float Pow)
 {
-    float3 NewReflect = GetReflect(CameraDirection, InUnitWorldNormal);
+    float3 NewReflect = GetReflect(temp, InUnitWorldNormal);
     float3 SampleColor = GetReflectionSampleColor(NewReflect);
     float3 Shininess = GetShininess(MatConstBuffer);
-    float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, CameraDirection, Pow);
+    float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, NewReflect, Pow);
 
     return FresnelFactor * SampleColor * Shininess;
-
 }
 
 #endif

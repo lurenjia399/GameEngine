@@ -37,8 +37,9 @@ namespace TextureTest
 				SphereMaterial_1->SetSpecularColor(XMFLOAT3(1.0f, 1.0f, 1.0f));
 				SphereMaterial_1->SetRoughness(0.2f);
 				SphereMaterial_1->SetMaterialType(EMaterialType::BlinnPhone);
-				SphereMesh_1->SetSubMaterials(0, SphereMaterial_1);
 				SphereMaterial_1->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
+				SphereMesh_1->SetSubMaterials(0, SphereMaterial_1);
+				
 
 			}
 		}

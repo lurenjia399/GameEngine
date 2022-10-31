@@ -396,6 +396,9 @@
     <ClCompile Include="Engine\Shader\Core\ShaderType.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Test\Reflect\ReflectTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -843,6 +846,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Shader\Core\ShaderType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Test\Reflect\ReflectTest.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

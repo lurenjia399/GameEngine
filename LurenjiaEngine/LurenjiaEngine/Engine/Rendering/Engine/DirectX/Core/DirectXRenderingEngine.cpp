@@ -9,6 +9,7 @@
 #include "../../../../Test/Texture/TextureTest.h"
 #include "../../../../Test/Material/MaterialTest.h"
 #include "../../../../Test/RenderLayer/TransparentTest.h"
+#include "../../../../Test/Reflect/ReflectTest.h"
 #include "../../../../Mesh/BoxMesh.h"
 #include "../../../../Actor/Sky/Fog.h"
 
@@ -127,8 +128,9 @@ int CDirectXRenderingEngine::PostInit()
 
 
 	//MaterialTest::BuildMaterialTestData();
-	TextureTest::BuildTextureTestData();
-	TransparentTest::BuildTransparentTestData();
+	//TextureTest::BuildTextureTestData();
+	ReflectTest::BuildReflectTestData();
+	//TransparentTest::BuildTransparentTestData();
 	
 	
 
