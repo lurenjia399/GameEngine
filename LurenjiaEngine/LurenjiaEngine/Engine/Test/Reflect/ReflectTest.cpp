@@ -40,5 +40,29 @@ namespace ReflectTest
 				SphereMesh->SetSubMaterials(0, SphereMaterial);
 			}
 		}
+		//if (ASphereMesh* SphereMesh_16 = World->CreateActor<ASphereMesh>("SphereMesh_16"))
+		//{
+		//	SphereMesh_16->SetMeshComponent("SphereMesh_16Component", 2.f, 20, 20);
+		//	SphereMesh_16->SetComponentPosition(XMFLOAT3(0.f, -7, 22.f));
+		//	if (CMaterial* SphereMaterial_16 = new CMaterial())
+		//	{
+		//		SphereMaterial_16->ResetGuid("SphereMaterial_16");//给创建的材质设置Guid
+		//		SphereMaterial_16->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
+		//		SphereMaterial_16->SetMaterialType(EMaterialType::WorldNormal);
+		//		SphereMesh_16->SetSubMaterials(0, SphereMaterial_16);
+		//	}
+		//}
+		if (ASphereMesh* SphereMesh_17 = World->CreateActor<ASphereMesh>("SphereMesh_17"))
+		{
+			SphereMesh_17->SetMeshComponent("SphereMesh_17Component", 2.f, 20, 20);
+			SphereMesh_17->SetComponentPosition(XMFLOAT3(0.f, -2, 22.f));
+			if (CMaterial* SphereMaterial_17 = new CMaterial())
+			{
+				SphereMaterial_17->ResetGuid("SphereMaterial_17");//给创建的材质设置Guid
+				SphereMaterial_17->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
+				SphereMaterial_17->SetMaterialType(EMaterialType::Normal);
+				SphereMesh_17->SetSubMaterials(0, SphereMaterial_17);
+			}
+		}
 	}
 }
