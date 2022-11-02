@@ -36,6 +36,21 @@ XMFLOAT3 AActor::GetScale() const
 	return TransformationComponent->GetScale();
 }
 
+void AActor::SetForward(const XMFLOAT3& Forward) const
+{
+	TransformationComponent->SetForward(Forward);
+}
+
+void AActor::SetRight(const XMFLOAT3& Right) const
+{
+	TransformationComponent->SetRight(Right);
+}
+
+void AActor::SetUp(const XMFLOAT3& Up) const
+{
+	TransformationComponent->SetUp(Up);
+}
+
 XMFLOAT3 AActor::GetForward() const
 {
 	return TransformationComponent->GetForward();

@@ -3,14 +3,17 @@
 #include "CoreObject/CoreMinimalObject.h"
 #include "../Interface/DirectXDeviceInterface.h"
 #include "../Actor/Core/Actor.h"
+#include "Viewport/ClientViewport.h"
 
 enum ECameraType;
 struct FInputKey;
 class CTransformationComponent;
 class CInputComponent;
 
-class ACamera : public AActor, public FViewport, public IDirectXDeviceInterface
+class ACamera : public AClientViewport, public IDirectXDeviceInterface
 {
+	typedef AClientViewport Super;
+
 public:
 	ACamera();
 public:

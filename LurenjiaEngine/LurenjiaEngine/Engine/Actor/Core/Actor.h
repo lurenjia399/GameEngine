@@ -17,8 +17,12 @@ public:
 	virtual XMFLOAT3 GetPosition() const;
 	virtual fvector_3d GetRotation() const;
 	virtual XMFLOAT3 GetScale() const;
+
+	virtual void SetForward(const XMFLOAT3& Forward) const;
+	virtual void SetRight(const XMFLOAT3& Right) const;
+	virtual void SetUp(const XMFLOAT3& Up) const;
+
 	virtual XMFLOAT3 GetForward() const;
-	
 	virtual XMFLOAT3 GetRight() const;
 	virtual XMFLOAT3 GetUp() const;
 

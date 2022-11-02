@@ -26,7 +26,7 @@ void ACamera::BeginInit()
 
 void ACamera::Tick(float DeltaTime)
 {
-	BulidViewMatrix(DeltaTime);
+	Super::Tick(DeltaTime);
 }
 
 void ACamera::BulidViewMatrix(float DeltaTime)
@@ -98,28 +98,7 @@ void ACamera::BulidViewMatrix(float DeltaTime)
 	}
 	else if (CameraType == ECameraType::CameraRoaming)
 	{
-		TransformationComponent->NormalizeTransformationVector();
-		XMFLOAT3 RightVector = TransformationComponent->GetRight();
-		XMFLOAT3 UpVector = TransformationComponent->GetUp();
-		XMFLOAT3 ForwardVector = TransformationComponent->GetForward();
-		XMFLOAT3 PositionVector = TransformationComponent->GetPosition();
-
-		XMMATRIX rotateMatrix =
-		{
-			RightVector.x,	UpVector.x, ForwardVector.x,	0.f,
-			RightVector.y,	UpVector.y, ForwardVector.y,	0.f,
-			RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
-			0,				0,			0,					1.f
-		};
-		rotateMatrix = XMMatrixTranspose(rotateMatrix);
-		XMMATRIX TranslateMatrix =
-		{
-			1.f, 0.f, 0.f, -PositionVector.x,
-			0.f, 1.f, 0.f, -PositionVector.y,
-			0.f, 0.f, 1.f, -PositionVector.z,
-			0.f, 0.f, 0.f, 1.f
-		};
-		XMStoreFloat4x4(&ViewMatrix, rotateMatrix * TranslateMatrix);
+		Super::BulidViewMatrix(DeltaTime);
 	}
 }
 
@@ -179,36 +158,44 @@ void ACamera::ExecuteKeyboard(const FInputKey& InputKey)
 	if (InputKey.KeyName == "R")
 	{
 		FocusMeshUpdateCameraInfo(1.0f);
+		SetDirty(true);
 	}
 	if (InputKey.KeyName == "F")
 	{
 		FocusMeshUpdateCameraInfo(-1.0f);
+		SetDirty(true);
 	}
 	if (CameraType == ECameraType::ObservationObject) return;
 
 	if (InputKey.KeyName == "W")
 	{
 		MoveForward(1.f);
+		SetDirty(true);
 	}
 	if (InputKey.KeyName == "S")
 	{
 		MoveForward(-1.f);
+		SetDirty(true);
 	}
 	if (InputKey.KeyName == "D")
 	{
 		MoveRight(1.0f);
+		SetDirty(true);
 	}
 	if (InputKey.KeyName == "A")
 	{
 		MoveRight(-1.f);
+		SetDirty(true);
 	}
 	if (InputKey.KeyName == "E")
 	{
 		MoveUp(1.0f);
+		SetDirty(true);
 	}
 	if (InputKey.KeyName == "Q")
 	{
 		MoveUp(-1.0f);
+		SetDirty(true);
 	}
 }
 
@@ -226,6 +213,8 @@ void ACamera::OnMouseButtonDown(int X, int Y, string buttonType)
 	LastMousePosition.y = Y;
 
 	SetCapture(GetMainWindowsHandle());
+
+	SetDirty(true);
 }
 
 void ACamera::OnMouseButtonUp(int X, int Y, string buttonType)
@@ -234,6 +223,8 @@ void ACamera::OnMouseButtonUp(int X, int Y, string buttonType)
 	bLeftMouseDown = false;
 
 	ReleaseCapture();
+
+	SetDirty(true);
 }
 
 void ACamera::OnMouseMove(int X, int Y, string buttonType)
@@ -256,6 +247,8 @@ void ACamera::OnMouseMove(int X, int Y, string buttonType)
 
 	LastMousePosition.x = X;
 	LastMousePosition.y = Y;
+
+	SetDirty(true);
 }
 
 void ACamera::OnMouseWheel(int X, int Y, float InValue)
@@ -264,6 +257,8 @@ void ACamera::OnMouseWheel(int X, int Y, float InValue)
 	{
 		Radius += InValue / 100.f;
 		Radius = math_libray::Clamp(Radius, 5.0f, 40.f);
+
+		SetDirty(true);
 	}
 }
 
