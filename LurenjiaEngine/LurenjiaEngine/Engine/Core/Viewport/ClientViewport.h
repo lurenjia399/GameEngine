@@ -14,7 +14,7 @@ class AClientViewport : public AActor, public FViewport
 
 public:
 	virtual void BulidViewMatrix(float DeltaTime);
-	virtual void Tick(float DeltaTime) override;
+	virtual void Tick(float DeltaTime) override; 
 public:
 	AClientViewport();
 	// …Ë÷√ ”◊∂

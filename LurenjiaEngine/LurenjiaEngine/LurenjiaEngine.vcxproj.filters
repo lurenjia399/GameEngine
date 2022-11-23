@@ -402,6 +402,9 @@
     <ClCompile Include="Engine\Core\Viewport\ClientViewport.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -855,6 +858,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Viewport\ClientViewport.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
