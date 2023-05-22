@@ -41,8 +41,7 @@ void FRenderingPipeline::BuildPipeline()
 
 	//创建模型资源（顶点和索引）缓冲区
 	GeometryMap.BuildMeshBuffer();
-	//创建描述符堆（用于存放常量缓冲区中的资源）
-	GeometryMap.BuildDescriptorHeap();
+
 	//构建雾的常量缓冲区
 	GeometryMap.BuildFogConstantBufferView();
 	//构建模型的常量缓冲区
@@ -53,6 +52,9 @@ void FRenderingPipeline::BuildPipeline()
 	GeometryMap.BuildLightConstantBufferView();
 	//构建视口的常量缓冲区
 	GeometryMap.BuildViewportConstantBufferView();
+
+	//创建描述符堆（用于存放常量缓冲区中的资源）, 这里面全是贴图资源
+	GeometryMap.BuildDescriptorHeap();
 	//构建贴图的着色器资源
 	GeometryMap.BuildTextureShaderResource();
 
