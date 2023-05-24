@@ -9,13 +9,17 @@ bool FDirectXRootSignature::Build(const UINT& TextureCount)
 	CD3DX12_ROOT_PARAMETER RootParam[7];
 
 	//CubeMap的descriptorRange
+	// 后面的0就是寄存器的序号 t0
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCubeMapSRV = {};
 	DescriptorRangeCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
 	//Texture的descriptorRange
+	// 后面的0就是寄存器的序号 t1
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV = {};
 	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 1);
 
+	// 后面跟的参数序号就是寄存器的序号 b0 b1 b2 b3
+	// material这个有点不一样，(t0,space1)
 	RootParam[0].InitAsConstantBufferView(0);//meshobject
 	RootParam[1].InitAsConstantBufferView(1);//viewport
 	RootParam[2].InitAsConstantBufferView(2);//light

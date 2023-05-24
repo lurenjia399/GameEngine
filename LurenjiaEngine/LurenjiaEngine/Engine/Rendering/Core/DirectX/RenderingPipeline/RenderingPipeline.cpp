@@ -97,22 +97,33 @@ void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo
 
 void FRenderingPipeline::PreDraw(float DeltaTime)
 {
+	// 向命令列表中添加 设置pso
 	DirectXPiepelineState.PreDraw(DeltaTime);
+	// 这个里面现在啥都没有
 	FRenderLayerManage::GetRenderLayerManage()->PreDraw(DeltaTime);
 	
 }
 
 void FRenderingPipeline::Draw(float DeltaTime)
 {
+	// 向命令列表中添加 描述符堆，这个堆里存储的各种不变的资源，贴图
 	GeometryMap.PreDraw(DeltaTime);
+	// 向命令列表中添加 根签名
 	DirectXRootSignature.PreDraw(DeltaTime);
+
+	// 这里面全是根据根签名的序号，设置gpu内存地址，也就是告诉着色器相应的资源放在哪个寄存器里面了
 	GeometryMap.Draw(DeltaTime);
+
+	// 向命令列表中添加 绘制模型
 	FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);//Draw每个渲染层级上的mesh
+	// 切换pso用的，放在这合适么?
 	DirectXPiepelineState.Draw(DeltaTime);//用做捕获keyboard 4 5
 }
 
 void FRenderingPipeline::PostDraw(float DeltaTime)
 {
+	// 目前这里面啥都没有
 	GeometryMap.PostDraw(DeltaTime);
+	// 目前这里面啥都没有
 	FRenderLayerManage::GetRenderLayerManage()->PostDraw(DeltaTime);
 }
