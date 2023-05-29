@@ -18,7 +18,7 @@ protected:
 	virtual void BuildDepthStencil();
 
 protected:
-	std::unique_ptr<FCubeMapRenderTarget> RenderTarget;
+	std::unique_ptr<FCubeMapRenderTarget*> RenderTarget;
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptor;
 
 	std::vector<AClientViewport*> Viewport;
