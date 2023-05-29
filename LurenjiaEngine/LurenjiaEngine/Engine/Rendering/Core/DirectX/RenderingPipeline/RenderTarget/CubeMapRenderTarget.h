@@ -9,6 +9,10 @@
 
 
 // cubemap的rtv，也就是画布，通过离屏渲染
+/*
+* 离屏渲染就是通过cpu准备一些数据，然后传递到gpu中进行计算，然后将结果放到一个画布也就是rendertargetview当中
+* 然后需要显示的时候就通过交换链来显示出来
+*/
 class FCubeMapRenderTarget
 	: public IDirectXDeviceInterface
 	, std::enable_shared_from_this<FCubeMapRenderTarget>
@@ -30,6 +34,9 @@ public:
 	// 重新设置私有变量
 	void ResetViewport(UINT InWidth, UINT InHeight);
 	void ResetScissorRect(UINT InWidth, UINT InHeight);
+
+public:
+	void ResetRenderTarget(UINT InWidth, UINT InHeight);
 
 private:
 	// 私有数据部分

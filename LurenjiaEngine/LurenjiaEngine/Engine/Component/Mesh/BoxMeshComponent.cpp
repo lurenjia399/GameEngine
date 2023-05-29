@@ -6,6 +6,15 @@ CBoxMeshComponent::CBoxMeshComponent()
 
 void CBoxMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth)
 {
+	// 世界中创建立方体
+	// x轴指向右边，y轴指向上边，z轴指向里边
+	/*
+	* 从z轴负方向看向z轴正方向
+	* 1 —— 2	5 —— 6
+	* |    |    |    |
+	* |    |	|    |
+	* 0 —— 3	4 —— 7
+	*/
 	//构建顶点数据
 	float cheight = Inheight / 2;
 	float cwidth = Inwidth / 2;

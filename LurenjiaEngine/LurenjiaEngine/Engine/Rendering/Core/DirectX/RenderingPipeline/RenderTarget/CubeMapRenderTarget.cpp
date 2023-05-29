@@ -17,6 +17,8 @@ void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InForma
 	
 	ResetViewport(InWidth, InHeight);
 	ResetScissorRect(InWidth, InHeight);
+
+	BuildRenderTargetMap();
 }
 
 void FCubeMapRenderTarget::BuildRenderTargetMap()
@@ -95,6 +97,7 @@ void FCubeMapRenderTarget::BuildRTVDescriptors()
 		RTVDesc.Texture2DArray.FirstArraySlice = i;
 		RTVDesc.Texture2DArray.MipSlice = 0;
 		RTVDesc.Texture2DArray.PlaneSlice = 0;
+		//MipSlice + ArraySize * MipLevels
 
 		D3dDevice->CreateRenderTargetView(RenderTargetMap.Get(), &RTVDesc, CPURenderTarget_DescriptorHandle[i]);
 	}
@@ -120,4 +123,17 @@ void FCubeMapRenderTarget::ResetScissorRect(UINT InWidth, UINT InHeight)
 		(LONG)InWidth,	// right
 		(LONG)InHeight	// bottom
 	};
+}
+
+void FCubeMapRenderTarget::ResetRenderTarget(UINT InWidth, UINT InHeight)
+{
+	if (InWidth != Width || InHeight != Height)
+	{
+		Width = InWidth;
+		Height = InHeight;
+
+		BuildRenderTargetMap();
+		BuildSRVDescriptors();
+		BuildRTVDescriptors();
+	}
 }
