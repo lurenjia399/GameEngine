@@ -1,18 +1,64 @@
 #include "DynamicCubeMap.h"
 #include "../../../../../Core/Viewport/ClientViewport.h"
 #include "../../../../../Core/Construction/ObjectConstruction.h"
+#include "../RenderTarget/CubeMapRenderTarget.h"
 
 FDynamicCubeMap::FDynamicCubeMap()
-	: GeometryMap(nullptr)
+	: Viewport({})
+	, GeometryMap(nullptr)
 	, DirectXPiepelineState(nullptr)
+	, Width(512)
+	, Height(512)
 {
-
+	RenderTarget = make_shared<FCubeMapRenderTarget>();
 }
 
 void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState)
 {
 	GeometryMap = InGeometryMap;
 	DirectXPiepelineState = InDirectXPiepelineState;
+}
+
+void FDynamicCubeMap::Draw(float DeltaTime)
+{
+	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
+
+	GetGraphicsCommandList()->RSSetViewports(1, &RenderTarget->GetViewport());
+	GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTarget->GetScissorRect());
+
+	for (SIZE_T i = 0; i < 6; i++)
+	{
+		GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
+		GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptor, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+		//给RenderTarget和DepthSencil设置Resource Descriptor handle
+		GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptor);
+	
+		GeometryMap->Draw(DeltaTime);
+		FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
+	}
+
+	//Draw other content
+	//MeshManage->Draw(DeltaTime);	//将图形渲染命令添加到commandList中
+	//MeshManage->PostDraw(DeltaTime);
+
+	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
+		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
+
+	//close commandlist and commit to commandqueue
+	GetGraphicsCommandList()->Close();
+	ID3D12CommandList* CommandList[] = { GetGraphicsCommandList().Get() };
+	GetCommandQueue()->ExecuteCommandLists(_countof(CommandList), CommandList);
+
+	//将画面呈现到屏幕上
+	//SwapChain->Present(0, 0);
+	//改变交换链索引
+	//CurrentSwapBufferIndex = (CurrentSwapBufferIndex + 1) % 2;
+
+	//cpu等待gpu执行
+	//WaitGPUCommandQueueComplete();
 }
 
 void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
@@ -57,4 +103,47 @@ void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
 
 void FDynamicCubeMap::BuildDepthStencil()
 {
+	// 资源描述
+	D3D12_RESOURCE_DESC ResourceDesc = {};
+	ResourceDesc.Width = Width;
+	ResourceDesc.Height = Height;
+	ResourceDesc.Alignment = 0;//资源的对齐方式
+	ResourceDesc.MipLevels = 1;
+	ResourceDesc.DepthOrArraySize = 1;
+	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION::D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	ResourceDesc.SampleDesc.Count = 1;
+	ResourceDesc.SampleDesc.Quality = 0;
+	ResourceDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+	ResourceDesc.Flags = D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_UNKNOWN;
+
+	//depthstencilbuffer的清除规则描述
+	D3D12_CLEAR_VALUE ClearValue;
+	ClearValue.DepthStencil.Depth = 1.f;
+	ClearValue.DepthStencil.Stencil = 0;
+	ClearValue.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	D3D12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	//gpu资源都存储在堆中
+	//创建一个深度模板缓冲区和一个堆，，，将此缓冲区提交到堆中
+	GetD3dDevice()->CreateCommittedResource(
+		&HeapProperties,
+		D3D12_HEAP_FLAG_NONE,
+		&ResourceDesc,
+		D3D12_RESOURCE_STATE_COMMON,
+		&ClearValue,
+		IID_PPV_ARGS(DepthStencilBuffer.GetAddressOf()));
+
+	D3D12_DEPTH_STENCIL_VIEW_DESC DSVDesc = {};
+	DSVDesc.Flags = D3D12_DSV_FLAGS::D3D12_DSV_FLAG_NONE;
+	DSVDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+	DSVDesc.Texture2D.MipSlice = 0;
+	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION::D3D12_DSV_DIMENSION_TEXTURE2D;//深度模板缓冲的尺寸
+
+	//创建深度模板资源描述符
+	GetD3dDevice()->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVDescriptor);
+
+	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
+	GetGraphicsCommandList()->Close();
 }

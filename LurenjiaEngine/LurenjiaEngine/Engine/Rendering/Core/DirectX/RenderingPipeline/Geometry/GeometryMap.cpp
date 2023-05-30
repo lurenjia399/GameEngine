@@ -307,7 +307,7 @@ void FGeometryMap::PreDraw(float DeltaTime)
 void FGeometryMap::Draw(float DeltaTime)
 {
 	DrawFog(DeltaTime);
-	DrawViewport(DeltaTime);
+	//DrawViewport(DeltaTime);
 	DrawLight(DeltaTime);
 	DrawTexture(DeltaTime);
 	DrawMaterial(DeltaTime);

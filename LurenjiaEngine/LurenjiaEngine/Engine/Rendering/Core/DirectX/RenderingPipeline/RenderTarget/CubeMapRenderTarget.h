@@ -29,6 +29,8 @@ public:
 	FORCEINLINE ID3D12Resource* GetRenderTarget() const  { return RenderTargetMap.Get(); }
 	FORCEINLINE D3D12_VIEWPORT GetViewport() const { return Viewport; }
 	FORCEINLINE D3D12_RECT GetScissorRect() const { return ScissorRect; }
+	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE* GetRenderTargetDescriptor() { return CPURenderTarget_DescriptorHandle; }
+
 	
 public:
 	// 重新设置私有变量
@@ -54,4 +56,4 @@ private:
 };
 
 
-#endif // !CubeMapRenderTarget_H
+#endif // 

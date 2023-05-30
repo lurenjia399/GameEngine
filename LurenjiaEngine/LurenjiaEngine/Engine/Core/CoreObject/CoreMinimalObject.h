@@ -4,6 +4,7 @@
 #include "../../Platform/Windows/WindowsPlatform.h"
 #include "../../CodeReflection/CodeReflectionMacroTag.h"		//反射头文件
 #include "../Construction/ObjectConstruction.h"
+#include "../Construction/SingleInstanceConstruction.h"
 
 class CCoreMinimalObject : public IGuidInterface
 {

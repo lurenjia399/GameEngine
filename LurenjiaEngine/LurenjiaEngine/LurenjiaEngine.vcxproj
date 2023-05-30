@@ -53,6 +53,7 @@
     <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction.cpp" />
     <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction_Inner.cpp" />
     <ClCompile Include="Engine\Core\Construction\ObjectConstruction.cpp" />
+    <ClCompile Include="Engine\Core\Construction\SingleInstanceConstruction.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
@@ -188,6 +189,7 @@
     <ClInclude Include="Engine\Core\Construction\MacroConstruction.h" />
     <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction_Inner.h" />
     <ClInclude Include="Engine\Core\Construction\ObjectConstruction.h" />
+    <ClInclude Include="Engine\Core\Construction\SingleInstanceConstruction.h" />
     <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h" />
     <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h" />
     <ClInclude Include="Engine\Core\Engine.h" />

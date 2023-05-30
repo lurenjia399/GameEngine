@@ -111,6 +111,7 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// 向命令列表中添加 根签名
 	DirectXRootSignature.PreDraw(DeltaTime);
 
+	GeometryMap.DrawViewport(DeltaTime);
 	// 这里面全是根据根签名的序号，设置gpu内存地址，也就是告诉着色器相应的资源放在哪个寄存器里面了
 	GeometryMap.Draw(DeltaTime);
 
