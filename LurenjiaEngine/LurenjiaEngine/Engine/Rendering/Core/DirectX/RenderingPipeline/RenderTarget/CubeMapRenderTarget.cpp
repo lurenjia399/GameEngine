@@ -1,4 +1,5 @@
 #include "CubeMapRenderTarget.h"
+#include "../../../../../Config/EngineRenderConfig.h"
 
 FCubeMapRenderTarget::FCubeMapRenderTarget()
 	: Width(256)
@@ -18,10 +19,28 @@ void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InForma
 	ResetViewport(InWidth, InHeight);
 	ResetScissorRect(InWidth, InHeight);
 
-	BuildRenderTargetMap();
+	BuildRenderTargetResource();
 }
 
-void FCubeMapRenderTarget::BuildRenderTargetMap()
+void FCubeMapRenderTarget::BuildRenderTargetDescriptor()
+{
+	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
+	D3D12_CPU_DESCRIPTOR_HANDLE RTVDewcriptorStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
+	for (size_t i = 0; i < 6; i++)
+	{
+		RenderTargetDescriptor[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+			RTVDewcriptorStart,
+			FEngineRenderConfig::GetRenderConfig()->SwapChainCount + i,
+			size);
+	}
+}
+
+void FCubeMapRenderTarget::BuildShaderResourceDescriptor()
+{
+
+}
+
+void FCubeMapRenderTarget::BuildRenderTargetResource()
 {
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
@@ -53,10 +72,10 @@ void FCubeMapRenderTarget::BuildRenderTargetMap()
 		&ResourceDesc,
 		D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON,
 		nullptr,
-		IID_PPV_ARGS(RenderTargetMap.GetAddressOf())));
+		IID_PPV_ARGS(RenderTargetResource.GetAddressOf())));
 }
 
-void FCubeMapRenderTarget::BuildSRVDescriptors()
+void FCubeMapRenderTarget::BuildShaderResourceView()
 {
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
@@ -74,12 +93,12 @@ void FCubeMapRenderTarget::BuildSRVDescriptors()
 	SRVDesc.TextureCube.ResourceMinLODClamp = 0.f;
 
 	D3dDevice->CreateShaderResourceView(
-		RenderTargetMap.Get(),
+		RenderTargetResource.Get(),
 		&SRVDesc,
-		CPUShaderResource_DescriptorHandle);
+		ShaderResourceDescriptor);
 }
 
-void FCubeMapRenderTarget::BuildRTVDescriptors()
+void FCubeMapRenderTarget::BuildRenderTargetView()
 {
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
@@ -99,7 +118,7 @@ void FCubeMapRenderTarget::BuildRTVDescriptors()
 		RTVDesc.Texture2DArray.PlaneSlice = 0;
 		//MipSlice + ArraySize * MipLevels
 
-		D3dDevice->CreateRenderTargetView(RenderTargetMap.Get(), &RTVDesc, CPURenderTarget_DescriptorHandle[i]);
+		D3dDevice->CreateRenderTargetView(RenderTargetResource.Get(), &RTVDesc, RenderTargetDescriptor[i]);
 	}
 }
 
@@ -132,8 +151,8 @@ void FCubeMapRenderTarget::ResetRenderTarget(UINT InWidth, UINT InHeight)
 		Width = InWidth;
 		Height = InHeight;
 
-		BuildRenderTargetMap();
-		BuildSRVDescriptors();
-		BuildRTVDescriptors();
+		BuildRenderTargetResource();
+		BuildShaderResourceView();
+		BuildRenderTargetView();
 	}
 }

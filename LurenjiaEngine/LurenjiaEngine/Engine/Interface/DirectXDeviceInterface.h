@@ -28,6 +28,12 @@ public:
 	CMeshManage* GetMeshManage() const;
 	//获取light管理器
 	CLightManage* GetLightManage() const;
+	//获取RTV描述符堆
+	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
+	//获取DSV描述符堆
+	ComPtr<ID3D12DescriptorHeap> GetDSVHeap() const;
+	//获取某种描述符大小
+	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 	//获取引擎
 #if defined(_WIN32)
 	CWindowsEngine* GetEngine() const;
@@ -55,7 +61,12 @@ struct IDirectXDeviceInterface_struct
 	CMeshManage* GetMeshManage() const;
 	//获取light管理器
 	CLightManage* GetLightManage() const;
-
+	//获取RTV描述符堆
+	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
+	//获取DSV描述符堆
+	ComPtr<ID3D12DescriptorHeap> GetDSVHeap() const;
+	//获取某种描述符大小
+	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 #if defined(_WIN32)
 	CWindowsEngine* GetEngine() const;
 #else

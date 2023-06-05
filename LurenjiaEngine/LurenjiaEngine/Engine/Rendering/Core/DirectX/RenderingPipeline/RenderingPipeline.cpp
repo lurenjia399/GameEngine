@@ -86,13 +86,13 @@ void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo
 	//更新每个层级中模型的常量缓冲区资源
 	FRenderLayerManage::GetRenderLayerManage()->UpdateObjectConstantBuffer();
 	//更新材质常量缓冲区
-	GeometryMap.UpdateMaterialShaderResourceView(DeltaTime, ViewportInfo);
+	GeometryMap.UpdateMaterialShaderResourceView(DeltaTime);
 	//更新灯光的常量缓冲区
-	GeometryMap.UpdateLightConstantBufferView(DeltaTime, ViewportInfo);
+	GeometryMap.UpdateLightConstantBufferView(DeltaTime);
 	//更新视口的常量缓冲区
-	GeometryMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo);
+	GeometryMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo, 0);
 	//更新雾气的常量缓冲区
-	GeometryMap.UpdateFogConstantBufferView(DeltaTime, ViewportInfo);
+	GeometryMap.UpdateFogConstantBufferView(DeltaTime);
 }
 
 void FRenderingPipeline::PreDraw(float DeltaTime)

@@ -63,10 +63,10 @@ public:
 	UINT GetDrawTextureObjectCount();
 	UINT GetDrawCubeMapCount();
 
-	void UpdateLightConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
-	void UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
-	void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
-	void UpdateFogConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
+	void UpdateLightConstantBufferView(float DeltaTime);
+	void UpdateMaterialShaderResourceView(float DeltaTime);
+	void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo, UINT InCBVOffset);
+	void UpdateFogConstantBufferView(float DeltaTime);
 
 	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InMeshRenderingData);

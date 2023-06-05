@@ -195,7 +195,7 @@ void FGeometryMap::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryD
 	}
 }
 
-void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo)
+void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 {
 	//更新shader中的灯光 常量缓冲区
 	FLightConstantBuffer lightTransformation;
@@ -242,7 +242,7 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime, const FViewpor
 	LightConstantBufferView.Update(0, &lightTransformation);
 }
 
-void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo)
+void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime)
 {
 	CMaterialConstantBuffer MaterialTransformation;
 	for (CMaterial* InMaterial : Materials)
@@ -265,7 +265,7 @@ void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime, const FView
 	}
 }
 
-void FGeometryMap::UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo)
+void FGeometryMap::UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo, UINT InCBVOffset)
 {
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
@@ -277,10 +277,10 @@ void FGeometryMap::UpdateViewportConstantBufferView(float DeltaTime, const FView
 	ViewportTransformation.cameraPosition = ViewportInfo.cameraPosition;
 	//Engine_Log("cameraPisition [x] = %f, [y] = %f, [z] = %f", ViewportInfo.cameraPosition.x, ViewportInfo.cameraPosition.y, ViewportInfo.cameraPosition.z);
 
-	ViewportConstantBufferView.Update(0, &ViewportTransformation);
+	ViewportConstantBufferView.Update(InCBVOffset, &ViewportTransformation);
 }
 
-void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo)
+void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime)
 {
 	CFogComponent* FogComponent = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog()->GetComponent();
 	if (FogComponent != nullptr)

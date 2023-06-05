@@ -6,6 +6,6 @@ class FViewport
 public:
 	FViewport();
 	void ViewportInit();
-	XMFLOAT4X4 ViewMatrix;
-	XMFLOAT4X4 ProjectMatrix;
+	XMFLOAT4X4 ViewMatrix;//…„œÒª˙æÿ’Û
+	XMFLOAT4X4 ProjectMatrix;//Õ∂”∞æÿ’Û
 };

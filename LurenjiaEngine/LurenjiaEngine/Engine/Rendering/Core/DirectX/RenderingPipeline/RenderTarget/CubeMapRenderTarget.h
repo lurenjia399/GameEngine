@@ -21,15 +21,20 @@ public:
 	// 初始化部分
 	FCubeMapRenderTarget();
 	void Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat);
-	void BuildRenderTargetMap();
-	void BuildSRVDescriptors();
-	void BuildRTVDescriptors();
+
+	void BuildRenderTargetDescriptor();
+	void BuildShaderResourceDescriptor();
+
+	void BuildRenderTargetResource();
+
+	void BuildShaderResourceView();
+	void BuildRenderTargetView();
 public:
 	// 给外部提供的接口
-	FORCEINLINE ID3D12Resource* GetRenderTarget() const  { return RenderTargetMap.Get(); }
+	FORCEINLINE ID3D12Resource* GetRenderTarget() const  { return RenderTargetResource.Get(); }
 	FORCEINLINE D3D12_VIEWPORT GetViewport() const { return Viewport; }
 	FORCEINLINE D3D12_RECT GetScissorRect() const { return ScissorRect; }
-	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE* GetRenderTargetDescriptor() { return CPURenderTarget_DescriptorHandle; }
+	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE* GetRenderTargetDescriptor() { return RenderTargetDescriptor; }
 
 	
 public:
@@ -49,10 +54,10 @@ private:
 	D3D12_VIEWPORT Viewport;// Describes the dimensions of a viewport
 	D3D12_RECT ScissorRect; // Describes the dimensions of a viewport
 
-	ComPtr<ID3D12Resource> RenderTargetMap;
+	ComPtr<ID3D12Resource> RenderTargetResource;
 
-	CD3DX12_CPU_DESCRIPTOR_HANDLE CPUShaderResource_DescriptorHandle;
-	CD3DX12_CPU_DESCRIPTOR_HANDLE CPURenderTarget_DescriptorHandle[6];
+	CD3DX12_CPU_DESCRIPTOR_HANDLE ShaderResourceDescriptor;
+	CD3DX12_CPU_DESCRIPTOR_HANDLE RenderTargetDescriptor[6];
 };
 
 

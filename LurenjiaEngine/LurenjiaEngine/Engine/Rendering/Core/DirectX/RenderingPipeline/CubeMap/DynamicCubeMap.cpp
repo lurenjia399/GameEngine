@@ -1,7 +1,11 @@
 #include "DynamicCubeMap.h"
 #include "../../../../../Core/Viewport/ClientViewport.h"
+#include "../../../../../Core/Viewport/ViewportInfo.h"
+#include "../../../../../Core/Viewport/ViewportTransformation.h"
 #include "../../../../../Core/Construction/ObjectConstruction.h"
 #include "../RenderTarget/CubeMapRenderTarget.h"
+
+
 
 FDynamicCubeMap::FDynamicCubeMap()
 	: Viewport({})
@@ -11,6 +15,21 @@ FDynamicCubeMap::FDynamicCubeMap()
 	, Height(512)
 {
 	RenderTarget = make_shared<FCubeMapRenderTarget>();
+}
+
+void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	if (Viewport.size() == 6)
+	{
+		for (size_t i = 0; i < 6; i++)
+		{
+			FViewportInfo MyViewportInfo = {};
+			MyViewportInfo.cameraPosition = XMFLOAT4(Viewport[i]->GetPosition().x, Viewport[i]->GetPosition().y, Viewport[i]->GetPosition().z, 1.0f);
+			MyViewportInfo.ViewMatrix = Viewport[i]->ViewMatrix;
+			MyViewportInfo.ProjectMatrix = Viewport[i]->ProjectMatrix;
+			GeometryMap->UpdateViewportConstantBufferView(DeltaTime, MyViewportInfo, i + 1);
+		}
+	}
 }
 
 void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState)
@@ -25,8 +44,10 @@ void FDynamicCubeMap::Draw(float DeltaTime)
 		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
 	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
 
-	GetGraphicsCommandList()->RSSetViewports(1, &RenderTarget->GetViewport());
-	GetGraphicsCommandList()->RSSetScissorRects(1, &RenderTarget->GetScissorRect());
+	D3D12_VIEWPORT ViewPort_temp = RenderTarget->GetViewport();
+	GetGraphicsCommandList()->RSSetViewports(1, &ViewPort_temp);
+	D3D12_RECT ScissorRect_temp = RenderTarget->GetScissorRect();
+	GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
 
 	for (SIZE_T i = 0; i < 6; i++)
 	{
@@ -146,4 +167,23 @@ void FDynamicCubeMap::BuildDepthStencil()
 	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
 	GetGraphicsCommandList()->Close();
+}
+
+void FDynamicCubeMap::BuildDepthStencilDescriptor()
+{
+	// 通过d3d的驱动，获取DSV描述符的大小
+	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	// 获取DSV描述符堆的首地址，然后向后偏移1位（因为程序中有两个DSV，一个是最终的深度模板视图，一个是CubeMap的深度模板视图）
+	DSVDescriptor = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(), 1, size);
+
+}
+
+void FDynamicCubeMap::BuildRenderTargetDescriptor()
+{
+	RenderTarget->BuildRenderTargetDescriptor();
+}
+
+void FDynamicCubeMap::BuildShaderSourceDescriptor()
+{
+	RenderTarget->BuildShaderResourceDescriptor();
 }

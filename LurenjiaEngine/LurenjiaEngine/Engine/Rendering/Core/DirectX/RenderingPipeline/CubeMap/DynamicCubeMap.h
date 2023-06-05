@@ -13,11 +13,16 @@ class FDynamicCubeMap : public IDirectXDeviceInterface
 public:
 	FDynamicCubeMap();
 
+	virtual void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	virtual void Draw(float DeltaTime);
 protected:
 	virtual void BuildViewport(const XMFLOAT3& InCenterPoint);//¹¹½¨ÉãÏñ»ú
 	virtual void BuildDepthStencil();
+
+	virtual void BuildDepthStencilDescriptor();
+	virtual void BuildRenderTargetDescriptor();
+	virtual void BuildShaderSourceDescriptor();
 
 protected:
 	std::shared_ptr<FCubeMapRenderTarget> RenderTarget;

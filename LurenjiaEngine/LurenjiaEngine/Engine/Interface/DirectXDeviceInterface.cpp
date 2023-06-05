@@ -90,6 +90,31 @@ CLightManage* IDirectXDeviceInterface::GetLightManage() const
     return nullptr;
 }
 
+ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetRTVHeap() const
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        return WindowsEngine->GetRenderingEngine()->RTVHeap;
+    }
+    return nullptr;
+}
+
+ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetDSVHeap() const
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        return WindowsEngine->GetRenderingEngine()->DSVHeap;
+    }
+    return nullptr;
+}
+
+UINT IDirectXDeviceInterface::GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const
+{
+    return GetD3dDevice()->GetDescriptorHandleIncrementSize(InDescriptorHeapType);
+}
+
 #if defined(_WIN32)
 CWindowsEngine* IDirectXDeviceInterface::GetEngine() const
 {
@@ -149,6 +174,21 @@ CMeshManage* IDirectXDeviceInterface_struct::GetMeshManage() const
 CLightManage* IDirectXDeviceInterface_struct::GetLightManage() const
 {
     return DXDeviceInterface.GetLightManage();
+}
+
+ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface_struct::GetRTVHeap() const
+{
+    return DXDeviceInterface.GetRTVHeap();
+}
+
+ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface_struct::GetDSVHeap() const
+{
+    return DXDeviceInterface.GetDSVHeap();
+}
+
+UINT IDirectXDeviceInterface_struct::GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const
+{
+    return DXDeviceInterface.GetDescriptorHandleIncrementSize(InDescriptorHeapType);
 }
 
 #if defined(_WIN32)
