@@ -95,7 +95,7 @@ void FCubeMapRenderTarget::BuildShaderResourceView()
 	D3dDevice->CreateShaderResourceView(
 		RenderTargetResource.Get(),
 		&SRVDesc,
-		ShaderResourceDescriptor);
+		ShaderResourceDescriptorCPU);
 }
 
 void FCubeMapRenderTarget::BuildRenderTargetView()

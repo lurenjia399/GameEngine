@@ -27,6 +27,7 @@ void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FV
 			MyViewportInfo.cameraPosition = XMFLOAT4(Viewport[i]->GetPosition().x, Viewport[i]->GetPosition().y, Viewport[i]->GetPosition().z, 1.0f);
 			MyViewportInfo.ViewMatrix = Viewport[i]->ViewMatrix;
 			MyViewportInfo.ProjectMatrix = Viewport[i]->ProjectMatrix;
+			// 构建出来的这个常量缓冲区数量不对吧
 			GeometryMap->UpdateViewportConstantBufferView(DeltaTime, MyViewportInfo, i + 1);
 		}
 	}
@@ -181,6 +182,23 @@ void FDynamicCubeMap::BuildDepthStencilDescriptor()
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
 {
 	RenderTarget->BuildRenderTargetDescriptor();
+
+	// 给shader使用
+	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	
+	D3D12_CPU_DESCRIPTOR_HANDLE CPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	
+	D3D12_GPU_DESCRIPTOR_HANDLE GPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart();
+	//RenderTarget->BuildShaderResourceDescriptor();
+	RenderTarget->GetShaderResourceDescriptorCPU() = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		CPU_SRVHeapStart, 
+		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(), 
+		size);
+
+	RenderTarget->GetShaderResourceDescriptorGPU() = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		GPU_SRVHeapStart,
+		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
+		size);
 }
 
 void FDynamicCubeMap::BuildShaderSourceDescriptor()

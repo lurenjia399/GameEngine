@@ -53,7 +53,10 @@ void FGeometryMap::BuildMeshBuffer()
 
 void FGeometryMap::BuildDescriptorHeap()
 {
-	DescriptorHeap.BuildDescriptorHeap(GetDrawTextureObjectCount() + GetDrawCubeMapCount());
+	DescriptorHeap.BuildDescriptorHeap(
+		GetDrawTextureObjectCount() //texture2d
+		+ GetDrawCubeMapCount() //¾²Ì¬cubemap
+		+ 1);// ¶¯Ì¬cubemap
 }
 
 void FGeometryMap::LoadTexture()
