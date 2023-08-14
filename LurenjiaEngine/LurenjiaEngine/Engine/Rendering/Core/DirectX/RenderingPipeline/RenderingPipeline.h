@@ -6,6 +6,7 @@
 #include "PiepelineState/DirectXPipelineState.h"
 #include "RootSignature/DirectXRootSignature.h"
 #include "RenderingLayer/RenderLayerManage.h"
+#include "CubeMap/DynamicCubeMap.h"
 
 
 class FRenderingPipeline : public IDirectXDeviceInterface
@@ -27,4 +28,6 @@ protected:
 	FGeometryMap GeometryMap;								//模型容器
 	FDirectXRootSignature DirectXRootSignature;				//根签名
 	FDirectXPiepelineState DirectXPiepelineState;			//pso
+
+	FDynamicCubeMap DynamicCubeMap;							//动态反射
 };

@@ -39,7 +39,7 @@ void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* 
 	DirectXPiepelineState = InDirectXPiepelineState;
 }
 
-void FDynamicCubeMap::Draw(float DeltaTime)
+void FDynamicCubeMap::PreDraw(float DeltaTime)
 {
 	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -50,13 +50,26 @@ void FDynamicCubeMap::Draw(float DeltaTime)
 	D3D12_RECT ScissorRect_temp = RenderTarget->GetScissorRect();
 	GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
 
+	UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
 	for (SIZE_T i = 0; i < 6; i++)
 	{
+		//auto a = RenderTarget->GetRenderTargetDescriptor()[i];
+		// 
+		// 
+		// 
+		// 
+		// 
+		// 注意这里会崩掉，还没细看为啥，明天必须解决，今天先到这了
+
 		GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
 		GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptor, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
 		//给RenderTarget和DepthSencil设置Resource Descriptor handle
 		GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptor);
 	
+		D3D12_GPU_VIRTUAL_ADDRESS ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
+		ViewportAddr += (1 + i) * ViewportByteSize;
+		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
+
 		GeometryMap->Draw(DeltaTime);
 		FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
 	}
@@ -181,6 +194,13 @@ void FDynamicCubeMap::BuildDepthStencilDescriptor()
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
 {
+	/*
+	* 两部分：
+	* 1 构建每个RendertargetDescriptor句柄
+	* 2 构建ShaderResourceDescriptor句柄（注意分为cpu一个，gpu一个）
+	*/
+
+
 	RenderTarget->BuildRenderTargetDescriptor();
 
 	// 给shader使用

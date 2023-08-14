@@ -25,10 +25,14 @@ void FRenderingPipeline::BuildPipeline()
 {
 	DirectXPiepelineState.ResetGPSDesc();
 
-	//初始化渲染层级
-	FRenderLayerManage::GetRenderLayerManage()->Init(&GeometryMap, &DirectXPiepelineState);
-	//对渲染层级进行排序
-	FRenderLayerManage::GetRenderLayerManage()->sort();
+	
+
+	{
+		//初始化渲染层级
+		FRenderLayerManage::GetRenderLayerManage()->Init(&GeometryMap, &DirectXPiepelineState);
+		//对渲染层级进行排序
+		FRenderLayerManage::GetRenderLayerManage()->sort();
+	}
 
 	//加载贴图资源
 	GeometryMap.LoadTexture();
@@ -77,6 +81,20 @@ void FRenderingPipeline::BuildPipeline()
 		GeometryMap.BuildTextureShaderResource();
 	}
 
+	{
+		//// 构建动态的cubemap
+		DynamicCubeMap.Init(&GeometryMap, &DirectXPiepelineState);
+		DynamicCubeMap.BuildViewport(XMFLOAT3(0.f, 5.f, 2.f)); // 那个测试球的位置
+
+		//构建深度模板描述符句柄（记住先后顺序，先构建句柄然后在构建描述符）
+		DynamicCubeMap.BuildDepthStencilDescriptor();
+		//构建深度模板描述符
+		DynamicCubeMap.BuildDepthStencil();
+		//构建rtv句柄和srv句柄
+		DynamicCubeMap.BuildRenderTargetDescriptor();
+
+	}
+
 	//构建pso
 	FRenderLayerManage::GetRenderLayerManage()->BuildPSO();
 }
@@ -89,6 +107,8 @@ void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo
 	GeometryMap.UpdateMaterialShaderResourceView(DeltaTime);
 	//更新灯光的常量缓冲区
 	GeometryMap.UpdateLightConstantBufferView(DeltaTime);
+	//更新动态反射视口常量缓冲区
+	DynamicCubeMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo);
 	//更新视口的常量缓冲区
 	GeometryMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo, 0);
 	//更新雾气的常量缓冲区
@@ -104,6 +124,9 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	GeometryMap.PreDraw(DeltaTime);
 	// 向命令列表中添加 根签名
 	DirectXRootSignature.PreDraw(DeltaTime);
+
+	// 渲染动态反射
+	DynamicCubeMap.PreDraw(DeltaTime);
 
 	// 这个里面现在啥都没有
 	FRenderLayerManage::GetRenderLayerManage()->PreDraw(DeltaTime);

@@ -40,6 +40,20 @@ namespace ReflectTest
 				SphereMesh->SetSubMaterials(0, SphereMaterial);
 			}
 		}
+		if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("DynamicReflectTest::SphereMesh"))
+		{
+			SphereMesh->SetMeshComponent("DynamicReflectTest::SphereMeshComponent", 2.f, 50, 50);
+			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, 5.f, 2.f));
+			if (CMaterial* SphereMaterial = new CMaterial())
+			{
+				SphereMaterial->ResetGuid("DynamicReflectTest::SphereMaterial");
+				//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
+				SphereMaterial->SetMaterialType(EMaterialType::Phone);
+				//SphereMaterial->SetRoughness(0.1f);
+				//SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
+				SphereMesh->SetSubMaterials(0, SphereMaterial);
+			}
+		}
 		//if (ASphereMesh* SphereMesh_16 = World->CreateActor<ASphereMesh>("SphereMesh_16"))
 		//{
 		//	SphereMesh_16->SetMeshComponent("SphereMesh_16Component", 2.f, 20, 20);

@@ -151,8 +151,8 @@ void FCubeMapRenderTarget::ResetRenderTarget(UINT InWidth, UINT InHeight)
 		Width = InWidth;
 		Height = InHeight;
 
-		BuildRenderTargetResource();
-		BuildShaderResourceView();
-		BuildRenderTargetView();
+		BuildRenderTargetResource();	// 构建RenderTargetResource
+		BuildShaderResourceView();		// 构建srv
+		BuildRenderTargetView();		// 构建rtv
 	}
 }
