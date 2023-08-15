@@ -53,30 +53,24 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 	UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
 	for (SIZE_T i = 0; i < 6; i++)
 	{
-		//auto a = RenderTarget->GetRenderTargetDescriptor()[i];
-		// 
-		// 
-		// 
-		// 
-		// 
-		// 注意这里会崩掉，还没细看为啥，明天必须解决，今天先到这了
+		auto a = RenderTarget->GetRenderTargetDescriptor()[i];
 
 		GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
 		GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptor, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
 		//给RenderTarget和DepthSencil设置Resource Descriptor handle
 		GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptor);
 	
-		D3D12_GPU_VIRTUAL_ADDRESS ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
+		auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
 		ViewportAddr += (1 + i) * ViewportByteSize;
+		/// <summary>
+		///  这个位置会崩溃，，，，，
+		/// </summary>
+		/// <param name="DeltaTime"></param>
 		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
 
 		GeometryMap->Draw(DeltaTime);
 		FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
 	}
-
-	//Draw other content
-	//MeshManage->Draw(DeltaTime);	//将图形渲染命令添加到commandList中
-	//MeshManage->PostDraw(DeltaTime);
 
 	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
 		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
@@ -86,14 +80,6 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 	GetGraphicsCommandList()->Close();
 	ID3D12CommandList* CommandList[] = { GetGraphicsCommandList().Get() };
 	GetCommandQueue()->ExecuteCommandLists(_countof(CommandList), CommandList);
-
-	//将画面呈现到屏幕上
-	//SwapChain->Present(0, 0);
-	//改变交换链索引
-	//CurrentSwapBufferIndex = (CurrentSwapBufferIndex + 1) % 2;
-
-	//cpu等待gpu执行
-	//WaitGPUCommandQueueComplete();
 }
 
 void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
@@ -200,8 +186,8 @@ void FDynamicCubeMap::BuildRenderTargetDescriptor()
 	* 2 构建ShaderResourceDescriptor句柄（注意分为cpu一个，gpu一个）
 	*/
 
-
 	RenderTarget->BuildRenderTargetDescriptor();
+	//RenderTarget->BuildShaderResourceDescriptor();
 
 	// 给shader使用
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
@@ -219,6 +205,11 @@ void FDynamicCubeMap::BuildRenderTargetDescriptor()
 		GPU_SRVHeapStart,
 		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
 		size);
+
+
+	RenderTarget->Init(Width, Height, DXGI_FORMAT_R8G8B8A8_UNORM);
+
+	
 }
 
 void FDynamicCubeMap::BuildShaderSourceDescriptor()

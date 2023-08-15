@@ -34,7 +34,7 @@ public:
 	FORCEINLINE ID3D12Resource* GetRenderTarget() const  { return RenderTargetResource.Get(); }
 	FORCEINLINE D3D12_VIEWPORT GetViewport() const { return Viewport; }
 	FORCEINLINE D3D12_RECT GetScissorRect() const { return ScissorRect; }
-	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE* GetRenderTargetDescriptor() { return RenderTargetDescriptor; }
+	FORCEINLINE std::vector<CD3DX12_CPU_DESCRIPTOR_HANDLE>& GetRenderTargetDescriptor() { return RenderTargetDescriptor; }
 	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE& GetShaderResourceDescriptorCPU()  { return ShaderResourceDescriptorCPU; }
 	FORCEINLINE CD3DX12_GPU_DESCRIPTOR_HANDLE& GetShaderResourceDescriptorGPU()  { return ShaderResourceDescriptorGPU; }
 
@@ -60,7 +60,8 @@ private:
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE ShaderResourceDescriptorCPU;
 	CD3DX12_GPU_DESCRIPTOR_HANDLE ShaderResourceDescriptorGPU;
-	CD3DX12_CPU_DESCRIPTOR_HANDLE RenderTargetDescriptor[6];
+	std::vector<CD3DX12_CPU_DESCRIPTOR_HANDLE> RenderTargetDescriptor;
+	//CD3DX12_CPU_DESCRIPTOR_HANDLE RenderTargetDescriptor[6];
 };
 
 

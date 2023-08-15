@@ -41,6 +41,7 @@ struct FGeometryMap : public IDirectXDeviceInterface_struct
 {
 	friend class FRenderingLayer;
 	friend class FDynamicCubeMap;
+	friend class FCubeMapRenderTarget;
 public:
 
 	FGeometryMap();

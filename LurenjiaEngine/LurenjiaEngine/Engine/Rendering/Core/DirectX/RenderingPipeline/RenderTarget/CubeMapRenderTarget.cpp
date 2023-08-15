@@ -8,6 +8,8 @@ FCubeMapRenderTarget::FCubeMapRenderTarget()
 {
 	ResetViewport(Width, Height);
 	ResetScissorRect(Width, Height);
+
+	RenderTargetDescriptor.resize(6);
 }
 
 void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat)
@@ -20,6 +22,10 @@ void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InForma
 	ResetScissorRect(InWidth, InHeight);
 
 	BuildRenderTargetResource();
+
+	BuildShaderResourceView();
+	BuildRenderTargetView();
+	
 }
 
 void FCubeMapRenderTarget::BuildRenderTargetDescriptor()
@@ -37,7 +43,21 @@ void FCubeMapRenderTarget::BuildRenderTargetDescriptor()
 
 void FCubeMapRenderTarget::BuildShaderResourceDescriptor()
 {
+	// ¸øshaderÊ¹ÓÃ
+	/*UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
+	D3D12_CPU_DESCRIPTOR_HANDLE CPU_SRVHeapStart = DescriptorHeap->GetCPUDescriptorHandleForHeapStart();
+
+	D3D12_GPU_DESCRIPTOR_HANDLE GPU_SRVHeapStart = GetGPUDescriptorHandleForHeapStart();
+	ShaderResourceDescriptorCPU = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+		CPU_SRVHeapStart,
+		GetDrawTextureObjectCount() + GetDrawCubeMapCount(),
+		size);
+
+	ShaderResourceDescriptorGPU = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+		GPU_SRVHeapStart,
+		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
+		size);*/
 }
 
 void FCubeMapRenderTarget::BuildRenderTargetResource()
