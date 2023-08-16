@@ -17,6 +17,6 @@ void APointLight::Tick(float DeltaTime)
 
 	XMFLOAT3 location = RangeLightComponent->GetPosition();
 	
-	location.y += cos(time) * 0.3;
+	location.y += cos(time) * 0.3f;
 	//SetPosition(location);
 }

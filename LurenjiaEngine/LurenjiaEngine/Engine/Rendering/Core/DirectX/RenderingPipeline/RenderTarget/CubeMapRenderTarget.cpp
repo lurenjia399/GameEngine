@@ -71,6 +71,8 @@ void FCubeMapRenderTarget::BuildRenderTargetResource()
 
 	// 堆得类型，此出是默认堆，只供gpu访问
 	D3D12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+
+
 	// 资源描述结构体，用来描述放在默认堆中的资源
 	D3D12_RESOURCE_DESC ResourceDesc = {};
 	memset(&ResourceDesc, 0, sizeof(ResourceDesc));// 清数据

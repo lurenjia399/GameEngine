@@ -27,7 +27,6 @@ void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FV
 			MyViewportInfo.cameraPosition = XMFLOAT4(Viewport[i]->GetPosition().x, Viewport[i]->GetPosition().y, Viewport[i]->GetPosition().z, 1.0f);
 			MyViewportInfo.ViewMatrix = Viewport[i]->ViewMatrix;
 			MyViewportInfo.ProjectMatrix = Viewport[i]->ProjectMatrix;
-			// 构建出来的这个常量缓冲区数量不对吧
 			GeometryMap->UpdateViewportConstantBufferView(DeltaTime, MyViewportInfo, i + 1);
 		}
 	}
@@ -53,19 +52,14 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 	UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
 	for (SIZE_T i = 0; i < 6; i++)
 	{
-		auto a = RenderTarget->GetRenderTargetDescriptor()[i];
 
 		GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
-		GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptor, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+		GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
 		//给RenderTarget和DepthSencil设置Resource Descriptor handle
-		GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptor);
+		GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
 	
 		auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
 		ViewportAddr += (1 + i) * ViewportByteSize;
-		/// <summary>
-		///  这个位置会崩溃，，，，，
-		/// </summary>
-		/// <param name="DeltaTime"></param>
 		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
 
 		GeometryMap->Draw(DeltaTime);
@@ -75,11 +69,6 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
 		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
 	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
-
-	//close commandlist and commit to commandqueue
-	GetGraphicsCommandList()->Close();
-	ID3D12CommandList* CommandList[] = { GetGraphicsCommandList().Get() };
-	GetCommandQueue()->ExecuteCommandLists(_countof(CommandList), CommandList);
 }
 
 void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
@@ -115,14 +104,15 @@ void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
 	{
 		Viewport.emplace_back(LurenjiaEngine::CreateObject<AClientViewport>("CubeMapViewport_" + std::to_string(i)));
 		AClientViewport* ClientViewport = Viewport[Viewport.size() - 1];
-
+		
+		ClientViewport->SetPosition(InCenterPoint);
 		ClientViewport->FaceTarget(InCenterPoint, Capture.TargetPosition[i], Capture.UpDirection[i]);
 		ClientViewport->SetFrustum(0.5f * XM_PI, 1.f, 0.1f, 10000.f);
 		ClientViewport->BulidViewMatrix(30.f);
 	}
 }
 
-void FDynamicCubeMap::BuildDepthStencil()
+void FDynamicCubeMap::BuildDepthStencilView()
 {
 	// 资源描述
 	D3D12_RESOURCE_DESC ResourceDesc = {};
@@ -153,28 +143,24 @@ void FDynamicCubeMap::BuildDepthStencil()
 		&ResourceDesc,
 		D3D12_RESOURCE_STATE_COMMON,
 		&ClearValue,
-		IID_PPV_ARGS(DepthStencilBuffer.GetAddressOf()));
-
-	D3D12_DEPTH_STENCIL_VIEW_DESC DSVDesc = {};
-	DSVDesc.Flags = D3D12_DSV_FLAGS::D3D12_DSV_FLAG_NONE;
-	DSVDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
-	DSVDesc.Texture2D.MipSlice = 0;
-	DSVDesc.ViewDimension = D3D12_DSV_DIMENSION::D3D12_DSV_DIMENSION_TEXTURE2D;//深度模板缓冲的尺寸
+		IID_PPV_ARGS(DepthStencilResource.GetAddressOf()));
 
 	//创建深度模板资源描述符
-	GetD3dDevice()->CreateDepthStencilView(DepthStencilBuffer.Get(), &DSVDesc, DSVDescriptor);
+	GetD3dDevice()->CreateDepthStencilView(DepthStencilResource.Get(), nullptr, DSVDescriptorHandle);
 
-	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilBuffer.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
+	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilResource.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
 	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
-	GetGraphicsCommandList()->Close();
+
+	// 这里关不关掉都行
+	//GetGraphicsCommandList()->Close();
 }
 
-void FDynamicCubeMap::BuildDepthStencilDescriptor()
+void FDynamicCubeMap::BuildDepthStencilDescriptorHandle()
 {
 	// 通过d3d的驱动，获取DSV描述符的大小
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
 	// 获取DSV描述符堆的首地址，然后向后偏移1位（因为程序中有两个DSV，一个是最终的深度模板视图，一个是CubeMap的深度模板视图）
-	DSVDescriptor = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(), 1, size);
+	DSVDescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(), 1, size);
 
 }
 
@@ -187,7 +173,6 @@ void FDynamicCubeMap::BuildRenderTargetDescriptor()
 	*/
 
 	RenderTarget->BuildRenderTargetDescriptor();
-	//RenderTarget->BuildShaderResourceDescriptor();
 
 	// 给shader使用
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);

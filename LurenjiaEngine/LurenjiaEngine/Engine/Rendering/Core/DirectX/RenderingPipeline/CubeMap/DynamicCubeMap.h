@@ -5,8 +5,8 @@
 
 class FCubeMapRenderTarget;
 class AClientViewport;
-class FGeometryMap;
-class FDirectXPiepelineState;
+struct FGeometryMap;
+struct FDirectXPiepelineState;
 
 class FDynamicCubeMap : public IDirectXDeviceInterface
 {
@@ -18,9 +18,9 @@ public:
 	virtual void PreDraw(float DeltaTime);
 
 	virtual void BuildViewport(const XMFLOAT3& InCenterPoint);//¹¹½¨ÉãÏñ»ú
-	virtual void BuildDepthStencil();
+	virtual void BuildDepthStencilView();
 
-	virtual void BuildDepthStencilDescriptor();
+	virtual void BuildDepthStencilDescriptorHandle();
 	virtual void BuildRenderTargetDescriptor();
 	virtual void BuildShaderSourceDescriptor();
 
@@ -32,8 +32,8 @@ protected:
 	FGeometryMap* GeometryMap;
 	FDirectXPiepelineState* DirectXPiepelineState;
 
-	ComPtr<ID3D12Resource> DepthStencilBuffer;
-	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptor;
+	ComPtr<ID3D12Resource> DepthStencilResource;
+	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptorHandle;
 	UINT Width;
 	UINT Height;
 };

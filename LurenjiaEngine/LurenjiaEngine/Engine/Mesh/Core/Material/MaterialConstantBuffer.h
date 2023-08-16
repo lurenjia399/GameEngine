@@ -15,15 +15,15 @@ public:
 
 	UINT32 MaterialType;
 	float Roughness;
-	int TextureMapIndex; //使用的贴图序号，不使用为-1
-	int NormalMapIndex;//使用法线贴图序号， 不使用为-1
+	int TextureMapIndex;			//texture index ,unused -1
+	int NormalMapIndex;				//normal texture index ,unused -1
 
-	int SpecularMapIndex;//使用的高光贴图序号, 不适用为-1
-	XMFLOAT3 SpecularColor;//默认使用的高光颜色基数
+	int SpecularMapIndex;			//Specular texture index, unused -1
+	XMFLOAT3 SpecularColor;			//default specular color pivot
 
 	XMFLOAT3 FresnelF0;
 	float xx;
 
 	XMFLOAT4X4 TransformInformation;
 };
-#endif // !MaterialConstantBuffer
+#endif

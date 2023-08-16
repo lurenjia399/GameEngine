@@ -130,7 +130,7 @@ void FGeometryMap::BuildLightConstantBufferView()
 
 void FGeometryMap::BuildViewportConstantBufferView()
 {
-	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 1);
+	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 1 + 6);
 	//CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
 	//ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawMeshObjectCount() + GetDrawLightObjectCount());
 }

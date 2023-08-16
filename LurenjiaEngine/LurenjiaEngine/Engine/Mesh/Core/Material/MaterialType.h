@@ -31,7 +31,8 @@ enum class EMaterialDisplayStatusType
 {
 	Undefined,				//默认显示
 	PointDisplay,			//点的方式
-	WireframeDisplay,		//线框的方式
+	LineListDisplay,		//行列表
+	WireframeDisplay,		//线框的方式，线条条带
 	TriangleDisplay = 4,	//三角形的方式
 };
 
