@@ -312,7 +312,8 @@ void FGeometryMap::Draw(float DeltaTime)
 	DrawFog(DeltaTime);
 	//DrawViewport(DeltaTime);
 	DrawLight(DeltaTime);
-	DrawTexture(DeltaTime);
+	Draw2DTexture(DeltaTime);
+	DrawCubeMapTexture(DeltaTime);
 	DrawMaterial(DeltaTime);
 }
 
@@ -353,12 +354,18 @@ void FGeometryMap::DrawMaterial(float DeltaTime)
 	GetGraphicsCommandList()->SetGraphicsRootShaderResourceView(4, MaterialConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
 }
 
-void FGeometryMap::DrawTexture(float DeltaTime)
+void FGeometryMap::Draw2DTexture(float DeltaTime)
 {
-	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	UINT HandleSize = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(5, Handle);
+}
 
+void FGeometryMap::DrawCubeMapTexture(float DeltaTime)
+{
+	
+	UINT HandleSize = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 	Handle.Offset(GetDrawTextureObjectCount(), HandleSize);
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, Handle);
 }

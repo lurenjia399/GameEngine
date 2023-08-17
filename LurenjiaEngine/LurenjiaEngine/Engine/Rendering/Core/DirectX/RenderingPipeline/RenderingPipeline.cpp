@@ -136,11 +136,22 @@ void FRenderingPipeline::Draw(float DeltaTime)
 {
 	
 	GeometryMap.DrawViewport(DeltaTime);
-	// 这里面全是根据根签名的序号，设置gpu内存地址，也就是告诉着色器相应的资源放在哪个寄存器里面了
-	GeometryMap.Draw(DeltaTime);
 
-	// 向命令列表中添加 绘制模型
-	FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);//Draw每个渲染层级上的mesh
+
+	// 绘制动态cubemap
+	DynamicCubeMap.Draw(DeltaTime);
+
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, DeltaTime);
+
+	// 这里面全是根据根签名的序号，设置gpu内存地址，也就是告诉着色器相应的资源放在哪个寄存器里面了
+	GeometryMap.DrawCubeMapTexture(DeltaTime);
+
+	// Draw每个渲染层级 背景 -> 不透明物体 -> 透明物体
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+	//FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
+
 	// 切换pso用的，放在这合适么?
 	DirectXPiepelineState.Draw(DeltaTime);//用做捕获keyboard 4 5
 }

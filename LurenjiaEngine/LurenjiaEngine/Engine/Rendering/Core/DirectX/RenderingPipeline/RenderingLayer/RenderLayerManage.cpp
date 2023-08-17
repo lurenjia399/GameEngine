@@ -3,6 +3,7 @@
 #include "RenderLayer/OpaqueRenderLayer.h"
 #include "RenderLayer/TransparentRenderLayer.h"
 #include "RenderLayer/BackgroundRenderLayer.h"
+#include "RenderLayer/OpaqueReflectorRenderLayer.h"
 
 FRenderLayerManage* FRenderLayerManage::RenderLayerManage = nullptr;
 std::vector<std::shared_ptr<FRenderingLayer>> FRenderLayerManage::RenderingLayers;
@@ -19,9 +20,10 @@ FRenderLayerManage::FRenderLayerManage()
 
 	//在初始化renderlayer的时候，首先默认添加一些层级
 	CreateRenderLayer<FBackgroundRenderLayer>();
-	CreateRenderLayer<FAlphaTestRenderLayer>();
+	//CreateRenderLayer<FAlphaTestRenderLayer>();
 	CreateRenderLayer<FOpaqueRenderLayer>();
 	CreateRenderLayer<FTransparentRenderLayer>();
+	CreateRenderLayer<FOpaqueReflectorRenderLayer>();
 }
 
 std::shared_ptr<FRenderingLayer> FRenderLayerManage::FindRenderingLayerByInt(int InRenderLayer)
@@ -76,6 +78,18 @@ void FRenderLayerManage::Draw(float DeltaTime)
 	for (auto& tem : RenderingLayers)
 	{
 		tem->Draw(DeltaTime);
+	}
+}
+
+void FRenderLayerManage::Draw(int inLayer, float DeltaTime)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		if (tem->GetRenderLayerType() == inLayer)
+		{
+			tem->Draw(DeltaTime);
+			break;
+		}
 	}
 }
 

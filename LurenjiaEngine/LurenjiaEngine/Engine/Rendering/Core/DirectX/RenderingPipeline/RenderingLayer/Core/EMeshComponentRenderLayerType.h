@@ -12,6 +12,7 @@ enum class EMeshComponentRenderLayerType
 	RENDERLAYER_TRANSPARENT,		//透明
 	RENDERLAYER_ALPHATEST,			//测试
 	RENDERLAYER_BACKGROUND,			//背景
+	RENDERLAYER_OPAQUEREFLECT,		//不透明反射
 };
 
 #endif // !MeshComponentType_H

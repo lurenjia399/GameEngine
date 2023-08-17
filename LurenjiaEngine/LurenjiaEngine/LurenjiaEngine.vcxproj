@@ -96,6 +96,7 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
@@ -235,6 +236,7 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />

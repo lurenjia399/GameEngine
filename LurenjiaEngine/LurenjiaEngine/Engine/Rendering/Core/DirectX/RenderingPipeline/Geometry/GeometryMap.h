@@ -81,7 +81,8 @@ public:
 	void DrawMaterial(float DeltaTime);
 	void DrawLight(float DeltaTime);
 	void DrawViewport(float DeltaTime);
-	void DrawTexture(float DeltaTime);
+	void Draw2DTexture(float DeltaTime);
+	void DrawCubeMapTexture(float DeltaTime);
 public:
 	bool IsStartUpFog();
 public:

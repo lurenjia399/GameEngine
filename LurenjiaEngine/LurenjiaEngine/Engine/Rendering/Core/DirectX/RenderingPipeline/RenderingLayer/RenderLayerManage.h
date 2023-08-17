@@ -26,6 +26,7 @@ public:
 	void sort();
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
+	void Draw(int inLayer, float DeltaTime);
 	void PostDraw(float DeltaTime);
 	void UpdateObjectConstantBuffer();
 	void BuildPSO();

@@ -16,6 +16,7 @@ public:
 	virtual void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	virtual void PreDraw(float DeltaTime);
+	virtual void Draw(float DeltaTime);
 
 	virtual void BuildViewport(const XMFLOAT3& InCenterPoint);//¹¹½¨ÉãÏñ»ú
 	virtual void BuildDepthStencilView();

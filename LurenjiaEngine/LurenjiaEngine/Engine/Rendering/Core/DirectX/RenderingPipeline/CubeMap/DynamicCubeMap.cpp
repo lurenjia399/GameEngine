@@ -40,6 +40,8 @@ void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* 
 
 void FDynamicCubeMap::PreDraw(float DeltaTime)
 {
+	GeometryMap->Draw(DeltaTime);
+
 	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
 		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
 	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
@@ -62,13 +64,23 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 		ViewportAddr += (1 + i) * ViewportByteSize;
 		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
 
-		GeometryMap->Draw(DeltaTime);
-		FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
+		
+
+		FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
+		FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
+		FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+
+		//FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
 	}
 
 	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
 		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
 	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
+}
+
+void FDynamicCubeMap::Draw(float DeltaTime)
+{
+	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, RenderTarget->GetShaderResourceDescriptorGPU());
 }
 
 void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
