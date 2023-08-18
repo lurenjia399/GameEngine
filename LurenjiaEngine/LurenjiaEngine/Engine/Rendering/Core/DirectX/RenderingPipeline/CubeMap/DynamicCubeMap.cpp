@@ -92,23 +92,23 @@ void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
 	};
 
 	FTempViewportCapture Capture = {};
-	//前面
-	Capture.TargetPosition[0] = XMFLOAT3(InCenterPoint.x - 1.0f, InCenterPoint.y, InCenterPoint.z);
-	Capture.UpDirection[0] = XMFLOAT3(0.f, 1.f, 0.f);
-	//后面
-	Capture.TargetPosition[1] = XMFLOAT3(InCenterPoint.x + 1.0f, InCenterPoint.y, InCenterPoint.z);
-	Capture.UpDirection[1] = XMFLOAT3(0.f, 1.f, 0.f);
-	//左面
-	Capture.TargetPosition[2] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y - 1.0f, InCenterPoint.z);
-	Capture.UpDirection[2] = XMFLOAT3(0.f, 1.f, 0.f);
 	//右面
-	Capture.TargetPosition[3] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y + 1.0f, InCenterPoint.z);
-	Capture.UpDirection[3] = XMFLOAT3(0.f, 1.f, 0.f);
+	Capture.TargetPosition[0] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y + 1.0f, InCenterPoint.z);
+	Capture.UpDirection[0] = XMFLOAT3(0.f, 0.f, 1.f);
+	//左面
+	Capture.TargetPosition[1] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y - 1.0f, InCenterPoint.z);
+	Capture.UpDirection[1] = XMFLOAT3(0.f, 0.f, 1.f);
 	//上面
-	Capture.TargetPosition[4] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y, InCenterPoint.z + 1.0f);
-	Capture.UpDirection[4] = XMFLOAT3(0.f, 0.f, -1.f);
+	Capture.TargetPosition[2] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y , InCenterPoint.z + 1.0f);
+	Capture.UpDirection[2] = XMFLOAT3(-1.f, 0.f, 0.f);
 	//下面
-	Capture.TargetPosition[5] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y, InCenterPoint.z - 1.0f);
+	Capture.TargetPosition[3] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y , InCenterPoint.z - 1.0f);
+	Capture.UpDirection[3] = XMFLOAT3(1.f, 0.f, 0.f);
+	//前面
+	Capture.TargetPosition[4] = XMFLOAT3(InCenterPoint.x + 1.0f, InCenterPoint.y, InCenterPoint.z );
+	Capture.UpDirection[4] = XMFLOAT3(0.f, 0.f, 1.f);
+	//后面
+	Capture.TargetPosition[5] = XMFLOAT3(InCenterPoint.x - 1.0f, InCenterPoint.y, InCenterPoint.z );
 	Capture.UpDirection[5] = XMFLOAT3(0.f, 0.f, 1.f);
 
 
