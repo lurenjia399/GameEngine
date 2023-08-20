@@ -34,21 +34,21 @@ namespace ReflectTest
 			{
 				SphereMaterial->ResetGuid("ReflectTest::SphereMaterial");
 				//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
-				SphereMaterial->SetMaterialType(EMaterialType::BlinnPhone);
+				SphereMaterial->SetMaterialType(EMaterialType::Phone);
 				SphereMaterial->SetRoughness(0.1f);
-				SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
+				SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.2f, 0.2f, 0.2f));
 				SphereMesh->SetSubMaterials(0, SphereMaterial);
 			}
 		}
 		if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("DynamicReflectTest::SphereMesh"))
 		{
 			SphereMesh->SetMeshComponent("DynamicReflectTest::SphereMeshComponent", 2.f, 50, 50, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT);
-			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, 5.f, 2.f));
+			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, 5.f, 7.f));
 			if (CMaterial* SphereMaterial = new CMaterial())
 			{
 				SphereMaterial->ResetGuid("DynamicReflectTest::SphereMaterial");
 				//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
-				SphereMaterial->SetMaterialType(EMaterialType::BlinnPhone);
+				SphereMaterial->SetMaterialType(EMaterialType::Transparency);
 				SphereMaterial->SetRoughness(0.1f);
 				SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
 				SphereMesh->SetSubMaterials(0, SphereMaterial);

@@ -64,21 +64,21 @@ float3 GetShininess(MaterialConstantBuffer MatConstBuffer)
     return 1.f - MatConstBuffer.Roughness;
 }
 
-float3 FresnelSchlickFactor(MaterialConstantBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 CameraDirection, float Pow)
+float3 FresnelSchlickFactor(MaterialConstantBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 ReflectDirection, float Pow)
 {
 
-    return FresnelSchlickMethod(MatConstBuffer.FresnelF0, InUnitWorldNormal, CameraDirection, Pow);
+    return FresnelSchlickMethod(MatConstBuffer.FresnelF0, InUnitWorldNormal, ReflectDirection, Pow);
 }
 
-float3 GetReflectionColor(MaterialConstantBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 CameraDirection, float Pow)
+float3 GetReflectionColor(MaterialConstantBuffer MatConstBuffer, float3 InUnitWorldNormal, float3 CameraDirection, float Pow, float3x3 WorldMatrix)
 {
-    float3 NewReflect = GetReflect(CameraDirection, InUnitWorldNormal);
-    float3 temp = float3(NewReflect.x, -NewReflect.z, NewReflect.y);
+    float3 NewReflect = GetReflect(-CameraDirection, InUnitWorldNormal);
+    float3 temp = normalize(mul(NewReflect, WorldMatrix)); // 着色器里面都是行向量，所以右乘世界矩阵
     float3 SampleColor = GetReflectionSampleColor(temp);
     float3 Shininess = GetShininess(MatConstBuffer);
-    float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, temp, Pow);
+    //float3 FresnelFactor = FresnelSchlickFactor(MatConstBuffer, InUnitWorldNormal, temp, Pow);
 
-    return FresnelFactor * SampleColor * Shininess;
+    return SampleColor * Shininess; // *FresnelFactor
 }
 
 #endif

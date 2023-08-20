@@ -10,6 +10,15 @@ struct FDirectXPiepelineState;
 
 class FDynamicCubeMap : public IDirectXDeviceInterface
 {
+	struct FTempViewportCapture
+	{
+		FTempViewportCapture();
+		FTempViewportCapture(const XMFLOAT3& InCenterPoint = XMFLOAT3(0.f, 0.f, 0.f));
+		XMFLOAT3 TargetPosition[6];
+		XMFLOAT3 UpDirection[6];
+
+		void BuildViewportCapture(const XMFLOAT3& InCenterPoint);
+	};
 public:
 	FDynamicCubeMap();
 
@@ -24,6 +33,9 @@ public:
 	virtual void BuildDepthStencilDescriptorHandle();
 	virtual void BuildRenderTargetDescriptor();
 	virtual void BuildShaderSourceDescriptor();
+
+public:
+	void SetCubeMapViewportPosition(const XMFLOAT3& InCenterPoint);
 
 protected:
 	std::shared_ptr<FCubeMapRenderTarget> RenderTarget;

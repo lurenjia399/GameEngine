@@ -53,7 +53,7 @@ public:
 	int GetTextureIndex(const string& Key);
 
 	void BuildMeshConstantBufferView();
-	void BuildViewportConstantBufferView();
+	void BuildViewportConstantBufferView(UINT InViewportOffset = 0.f);
 	void BuildMaterialShaderResourseView();
 	void BuildLightConstantBufferView();
 	void BuildTextureShaderResource();
@@ -64,6 +64,7 @@ public:
 	UINT GetDrawLightObjectCount();
 	UINT GetDrawTextureObjectCount();
 	UINT GetDrawCubeMapCount();
+	UINT GetDynamicReflectionViewportNum();
 
 	void UpdateLightConstantBufferView(float DeltaTime);
 	void UpdateMaterialShaderResourceView(float DeltaTime);
@@ -100,4 +101,6 @@ private:
 	shared_ptr<FRenderingTextureResourcesUpdate> TextureShaderResourceView;
 	shared_ptr<FRenderingTextureResourcesUpdate> CubeMapResourceView;
 	std::vector<CMaterial*> Materials;
+
+	std::vector<CMeshComponent*> DynamicReflectionMeshComponents;
 };

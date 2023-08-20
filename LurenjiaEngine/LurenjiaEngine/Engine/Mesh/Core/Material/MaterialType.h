@@ -5,7 +5,7 @@
 
 enum class EMaterialType
 {
-	Default,				//只是用材质颜色
+	Default = 0,				//只是用材质颜色
 	Lambert,				//兰伯特
 	HalfLambert,			//半兰伯特，
 	Phone,					//高光，金属效果
@@ -18,6 +18,8 @@ enum class EMaterialType
 	Back,					//次表面散射，模拟玉
 	AnisotropyKajiyaKay,	//各向异性
 	OrenNayar,				//模拟粗糙表面,比如沙漠
+
+	Transparency = 15,		//透明
 
 	Normal = 97,			//局部法线
 	WorldNormal = 98,		//世界法线

@@ -152,30 +152,19 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 	//----------clear old different data start-----
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
 
+
+	
+
 	MeshManage->PreDraw(DeltaTime);
 
-	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
-	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier);
-
-	GraphicsCommandList->RSSetViewports(1, &ViewPortInfo);
-	GraphicsCommandList->RSSetScissorRects(1, &ViewPortRect);
-	//clear curr SwapChainResourceDescriptor
-	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(), DirectX::Colors::Black, 0, nullptr);
-	//clear curr DepthSencilResourceDesciptor
-	GraphicsCommandList->ClearDepthStencilView(GetCurrentDSBufferView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
-	//----------clear old different data finish-----
-	// 
-		//给RenderTarget和DepthSencil设置Resource Descriptor handle
-	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
-	D3D12_CPU_DESCRIPTOR_HANDLE DSBufferView = GetCurrentDSBufferView();
-	GraphicsCommandList->OMSetRenderTargets(1, &SwapBufferView, true, &DSBufferView);
+	StartSetMainViewportRenderTarget();
+	ClearMainSwapChain();
 
 	//Draw other content
 	MeshManage->Draw(DeltaTime);	//将图形渲染命令添加到commandList中
 	MeshManage->PostDraw(DeltaTime);
 
-	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
-	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier2);
+	EndSetMainViewportRenderTarget();
 
 	//close commandlist and commit to commandqueue
 	GraphicsCommandList->Close();
@@ -215,6 +204,34 @@ int CDirectXRenderingEngine::PostExit()
 void CDirectXRenderingEngine::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
 	MeshManage->UpdateConstantView(DeltaTime, ViewportInfo);
+}
+
+void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
+{
+	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier);
+
+	GraphicsCommandList->RSSetViewports(1, &ViewPortInfo);
+	GraphicsCommandList->RSSetScissorRects(1, &ViewPortRect);
+
+	//给RenderTarget和DepthSencil设置Resource Descriptor handle
+	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
+	D3D12_CPU_DESCRIPTOR_HANDLE DSBufferView = GetCurrentDSBufferView();
+	GraphicsCommandList->OMSetRenderTargets(1, &SwapBufferView, true, &DSBufferView);
+}
+
+void CDirectXRenderingEngine::EndSetMainViewportRenderTarget()
+{
+	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_PRESENT);
+	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier2);
+}
+
+void CDirectXRenderingEngine::ClearMainSwapChain()
+{
+	//clear curr SwapChainResourceDescriptor
+	GraphicsCommandList->ClearRenderTargetView(GetCurrentSwapBufferView(), DirectX::Colors::Black, 0, nullptr);
+	//clear curr DepthSencilResourceDesciptor
+	GraphicsCommandList->ClearDepthStencilView(GetCurrentDSBufferView(), D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
 }
 
 ComPtr<ID3D12Device> CDirectXRenderingEngine::GetD3dDevice() const

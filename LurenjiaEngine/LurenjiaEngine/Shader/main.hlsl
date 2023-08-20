@@ -261,8 +261,20 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     mvOut.Color = Material.FinalColor * Ambient + LightStrengths * (Material.FinalColor + Material.FinalColor * specular)+ Material.FinalColor * Fresnel;
     mvOut.Color.a = Material.FinalColor.a;
     
-    float3 ReflectColor = GetReflectionColor(currMaterial, N, V, 5);
-    mvOut.Color.xyz += ReflectColor;
+    switch (currMaterial.MaterialType)
+    {
+        case 2:
+        case 3:
+        case 9:
+        case 15:
+		{
+			//º∆À„∑¥…‰
+            float3 ReflectColor = GetReflectionColor(currMaterial, N, V, 5, (float3x3) WorldMatrix);
+            mvOut.Color.xyz += ReflectColor;
+            break;
+        }
+    }
+    
     
     // º∆À„ŒÌ
     //mvOut.Color = GetFogValue(mvOut.Color, mvOut.worldPosition.xyz);

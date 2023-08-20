@@ -128,9 +128,12 @@ void FGeometryMap::BuildLightConstantBufferView()
 	//LightConstantBufferView.BuildConstantBuffer(Handle, GetDrawLightObjectCount(), GetDrawMeshObjectCount());
 }
 
-void FGeometryMap::BuildViewportConstantBufferView()
+void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 {
-	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 1 + 6);
+	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 
+		1 + //主视口
+		GetDynamicReflectionViewportNum() + //这个是动态反射的视口
+		InViewportOffset);
 	//CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
 	//ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawMeshObjectCount() + GetDrawLightObjectCount());
 }
@@ -176,6 +179,11 @@ UINT FGeometryMap::GetDrawTextureObjectCount()
 UINT FGeometryMap::GetDrawCubeMapCount()
 {
 	return CubeMapResourceView->GetTextureCount();
+}
+
+UINT FGeometryMap::GetDynamicReflectionViewportNum()
+{
+	return DynamicReflectionMeshComponents.size() * 6;
 }
 
 bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)

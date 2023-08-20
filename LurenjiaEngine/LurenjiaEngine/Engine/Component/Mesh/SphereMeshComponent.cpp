@@ -17,7 +17,7 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 		float vertical = j * verticalAngle;
 		for (uint32_t i = 0; i <= InAxialSubdivision; i++)
 		{
-			float horizontal = i * horizontalAngle;
+			float horizontal = i * horizontalAngle; 
 			float x = InRadius * sinf(vertical) * cosf(horizontal);
 			float y = InRadius * cosf(vertical);
 			float z = InRadius * sinf(vertical) * sinf(horizontal);
@@ -29,7 +29,7 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 			XMVECTOR normal = XMLoadFloat3(&InRenderingData.VertexData[currIndex].Pos);
 			XMStoreFloat3(&InRenderingData.VertexData[currIndex].Normal, normal);
 
-			XMFLOAT3 UTangent = XMFLOAT3(-z, 0, x);
+			XMFLOAT3 UTangent = XMFLOAT3(-x, 0, z); // 这里之前是XMFLOAT3(-z, 0, x)没有验证这次修改是否正确
 			XMVECTOR Tangent = XMLoadFloat3(&UTangent);
 			XMStoreFloat3(&InRenderingData.VertexData[currIndex].UTangent, Tangent);
 

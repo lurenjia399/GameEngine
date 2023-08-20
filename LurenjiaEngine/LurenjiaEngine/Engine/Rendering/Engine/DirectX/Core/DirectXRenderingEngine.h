@@ -20,6 +20,11 @@ public:
 	virtual void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo) override;//重写父类的虚函数
 
 public:
+	void StartSetMainViewportRenderTarget();// 开始设置主视口的rendertarget
+	void EndSetMainViewportRenderTarget();// 结束设置主视口的rendertarget
+	void ClearMainSwapChain();// 清除主视口的交换链
+
+public:
 	//获取引擎驱动
 	ComPtr<ID3D12Device> GetD3dDevice() const;
 	//获取命令列表

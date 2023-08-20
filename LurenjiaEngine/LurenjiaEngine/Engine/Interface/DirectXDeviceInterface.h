@@ -12,6 +12,10 @@ class CEngien;
 class IDirectXDeviceInterface
 {
 public:
+	void StartSetMainViewportRenderTarget();// 开始设置主视口的rendertarget
+	void EndSetMainViewportRenderTarget();// 结束设置主视口的rendertarget
+	void ClearMainSwapChain();// 清除主视口的交换链
+public:
 	//获取当前围栏
 	ComPtr<ID3D12Fence> GetFence() const;
 	//获取引擎驱动
@@ -45,6 +49,14 @@ public:
 
 struct IDirectXDeviceInterface_struct
 {
+	// 开始设置主视口的rendertarget
+	void StartSetMainViewportRenderTarget();
+	// 结束设置主视口的rendertarget
+	void EndSetMainViewportRenderTarget();
+	// 清除主视口的交换链
+	void ClearMainSwapChain();
+
+
 	//获取当前围栏
 	ComPtr<ID3D12Fence> GetFence() const;
 	//获取引擎驱动

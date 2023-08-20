@@ -2,6 +2,36 @@
 #include "../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
 #include "../Platform/Windows/WindowsEngine.h"
 
+void IDirectXDeviceInterface::StartSetMainViewportRenderTarget()
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        WindowsEngine->GetRenderingEngine()->StartSetMainViewportRenderTarget();
+        Engine_Log_Success("excute  StartSetMainViewportRenderTarget success")
+    }
+}
+
+void IDirectXDeviceInterface::EndSetMainViewportRenderTarget()
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        WindowsEngine->GetRenderingEngine()->EndSetMainViewportRenderTarget();
+        Engine_Log_Success("excute  EndSetMainViewportRenderTarget success")
+    }
+}
+
+void IDirectXDeviceInterface::ClearMainSwapChain()
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        WindowsEngine->GetRenderingEngine()->ClearMainSwapChain();
+        Engine_Log_Success("excute  ClearMainSwapChain success")
+    }
+}
+
 ComPtr<ID3D12Fence> IDirectXDeviceInterface::GetFence() const
 {
     CWindowsEngine* WindowsEngine = GetEngine();
@@ -135,6 +165,21 @@ CEngien* IDirectXDeviceInterface::GetEngine() const
     return nullptr;
 }
 #endif
+
+void IDirectXDeviceInterface_struct::StartSetMainViewportRenderTarget()
+{
+    DXDeviceInterface.StartSetMainViewportRenderTarget();
+}
+
+void IDirectXDeviceInterface_struct::EndSetMainViewportRenderTarget()
+{
+    DXDeviceInterface.EndSetMainViewportRenderTarget();
+}
+
+void IDirectXDeviceInterface_struct::ClearMainSwapChain()
+{
+    DXDeviceInterface.ClearMainSwapChain();
+}
 
 ComPtr<ID3D12Fence> IDirectXDeviceInterface_struct::GetFence() const
 {

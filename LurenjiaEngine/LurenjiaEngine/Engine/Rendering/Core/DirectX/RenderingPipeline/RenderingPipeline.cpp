@@ -66,7 +66,7 @@ void FRenderingPipeline::BuildPipeline()
 		//构建灯光的上传堆
 		GeometryMap.BuildLightConstantBufferView();
 		//构建视口的上传堆
-		GeometryMap.BuildViewportConstantBufferView();
+		GeometryMap.BuildViewportConstantBufferView(0);
 	}
 
 	{
