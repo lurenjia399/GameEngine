@@ -24,10 +24,13 @@ public:
 	void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	void BuildShader();
 	void sort();
+
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
 	void Draw(int inLayer, float DeltaTime);
 	void PostDraw(float DeltaTime);
+	void FindObjectDraw(float DeltaTime, int InLayer, const CMeshComponent* InKey);
+
 	void UpdateObjectConstantBuffer();
 	void BuildPSO();
 private:

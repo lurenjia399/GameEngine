@@ -51,6 +51,13 @@ void FGeometryMap::BuildMeshBuffer()
 	}
 }
 
+void FGeometryMap::BuildDynamicReflectionMesh()
+{
+	// 这里面要根据是否是反射component来将component添加到这个数组里面
+	// 
+	// DynamicReflectionMeshComponents
+}
+
 void FGeometryMap::BuildDescriptorHeap()
 {
 	DescriptorHeap.BuildDescriptorHeap(

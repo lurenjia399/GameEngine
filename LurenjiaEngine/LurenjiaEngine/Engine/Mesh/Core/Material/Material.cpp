@@ -14,6 +14,7 @@ CMaterial::CMaterial()
 	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
+	, bDynamicReflection(false)
 	, bDirty(true)
 	
 {
@@ -32,6 +33,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor)
 	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
+	, bDynamicReflection(false)
 	, bDirty(true)
 {
 }
@@ -49,6 +51,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType)
 	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
+	, bDynamicReflection(false)
 	, bDirty(true)
 {
 }
@@ -66,6 +69,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
+	, bDynamicReflection(false)
 	, bDirty(true)
 {
 }
@@ -83,6 +87,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(EMaterialDisplayStatusType::TriangleDisplay)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
+	, bDynamicReflection(false)
 	, bDirty(true)
 {
 }
@@ -100,6 +105,7 @@ CMaterial::CMaterial(XMFLOAT4 InBaseColor, EMaterialType InMaterialType, float I
 	, MaterialSpecularMapIndex(-1)
 	, MaterialDisplayStatusType(InMaterialDisplayStatusType)
 	, MaterialTransform(EngineMath::IdentityMatrix4x4())
+	, bDynamicReflection(false)
 	, bDirty(true)
 {
 }
@@ -154,6 +160,19 @@ void CMaterial::SetMaterialTransform(XMFLOAT4X4 InTransform)
 void CMaterial::SetMaterialFresnelF0(XMFLOAT3 InFresnelF0)
 {
 	FresnelF0 = InFresnelF0;
+	SetDirty(true);
+}
+
+void CMaterial::SetDynamicReflection(bool InDynamicReflection)
+{
+	if (MaterialType == EMaterialType::Back || MaterialType == EMaterialType::Phone || MaterialType == EMaterialType::BlinnPhone)
+	{
+		bDynamicReflection = InDynamicReflection;
+	}
+	else
+	{
+		bDynamicReflection = false;
+	}
 	SetDirty(true);
 }
 

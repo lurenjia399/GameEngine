@@ -52,6 +52,11 @@ void FRenderingPipeline::BuildPipeline()
 	}
 
 	{
+		//构建动态反射Mesh
+		GeometryMap.BuildDynamicReflectionMesh();
+	}
+
+	{
 		/*
 		* 这部分资源应该是常量，也就是通过cpu来计算数据，然后通过将数据与上传堆映射，进而等同于放到上传堆中
 		* gpu每次渲染的时候读取上传堆中的数据，进而在着色器中计算
@@ -124,6 +129,7 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// 向命令列表中添加 根签名
 	DirectXRootSignature.PreDraw(DeltaTime);
 
+	GeometryMap.Draw(DeltaTime);
 	// 渲染动态反射
 	DynamicCubeMap.PreDraw(DeltaTime);
 
@@ -139,9 +145,9 @@ void FRenderingPipeline::Draw(float DeltaTime)
 
 
 	// 绘制动态cubemap
-	DynamicCubeMap.Draw(DeltaTime);
+	//DynamicCubeMap.Draw(DeltaTime);
 
-	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, DeltaTime);
+	//FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, DeltaTime);
 
 	// 这里面全是根据根签名的序号，设置gpu内存地址，也就是告诉着色器相应的资源放在哪个寄存器里面了
 	GeometryMap.DrawCubeMapTexture(DeltaTime);

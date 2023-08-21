@@ -47,6 +47,7 @@ public:
 	FGeometryMap();
 	void BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey);
 	void BuildMeshBuffer();
+	void BuildDynamicReflectionMesh();
 	void BuildDescriptorHeap();
 
 	void LoadTexture();

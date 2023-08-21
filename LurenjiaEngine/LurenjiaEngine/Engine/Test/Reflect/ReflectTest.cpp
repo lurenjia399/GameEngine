@@ -42,15 +42,17 @@ namespace ReflectTest
 		}
 		if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("DynamicReflectTest::SphereMesh"))
 		{
+			//主要测试用的反射球
 			SphereMesh->SetMeshComponent("DynamicReflectTest::SphereMeshComponent", 2.f, 50, 50, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT);
 			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, 5.f, 7.f));
 			if (CMaterial* SphereMaterial = new CMaterial())
 			{
 				SphereMaterial->ResetGuid("DynamicReflectTest::SphereMaterial");
 				//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
-				SphereMaterial->SetMaterialType(EMaterialType::Transparency);
+				SphereMaterial->SetMaterialType(EMaterialType::Phone);
 				SphereMaterial->SetRoughness(0.1f);
 				SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
+				SphereMaterial->SetDynamicReflection(true);
 				SphereMesh->SetSubMaterials(0, SphereMaterial);
 			}
 		}

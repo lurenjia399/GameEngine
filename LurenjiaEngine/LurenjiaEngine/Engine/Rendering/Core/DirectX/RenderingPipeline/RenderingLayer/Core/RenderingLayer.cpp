@@ -104,33 +104,9 @@ void FRenderingLayer::PreDraw(float DeltaTime)
 
 void FRenderingLayer::Draw(float DeltaTime)
 {
-	UINT MeshObjectConstantViewSize = GeometryMap->MeshConstantBufferView.GetBufferByteSize();
-	const D3D12_GPU_VIRTUAL_ADDRESS virtualAddressBegin = GeometryMap->MeshConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
 	for (auto& data : GeometryDescDatas)
 	{
-		//获取geometry的顶点缓冲区描述
-		D3D12_VERTEX_BUFFER_VIEW VBV = GeometryMap->Geometrys[data.GeometryKey].GetVertexBufferView();
-		//获取geometry的索引缓冲区描述
-		D3D12_INDEX_BUFFER_VIEW IBV = GeometryMap->Geometrys[data.GeometryKey].GetIndexBufferView();
-		//向命令列表中 添加顶点缓冲区描述(描述geometry的顶点信息)
-		GetGraphicsCommandList()->IASetVertexBuffers(0, 1, &VBV);
-		//向命令列表中 添加索引缓冲区描述(描述geometry的索引信息)
-		GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
-		//向命令列表中 添加图元拓扑 命令(决定geometry的拓扑方式)
-		EMaterialDisplayStatusType TopologyType = (*data.MeshComponet->GetMaterials())[0]->GetMaterialDisplayStatusType();
-		GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)TopologyType);
-		//设置当前meshobject的gpu地址
-		D3D12_GPU_VIRTUAL_ADDRESS Address = virtualAddressBegin + data.MeshObjectOffset * MeshObjectConstantViewSize;
-		//将meshObjectConstantView中的数据放到0号寄存器中
-		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(0, Address);
-
-		// Draw Call !!!
-		GetGraphicsCommandList()->DrawIndexedInstanced(
-			data.IndexSize,				//绘制的实例所需的索引数量
-			1,							//绘制的实例个数
-			data.IndexoffsetPosition,	//索引缓冲数据的起始偏移
-			data.VertexoffsetPostion,	//顶点缓冲数据的起始偏移
-			0);							//从顶点缓冲区读取每个实例数据之前添加到每个索引的值
+		DrawObject(DeltaTime, data);
 	}
 
 }
@@ -143,4 +119,46 @@ void FRenderingLayer::BuildPSO()
 {
 	BuildShader();
 	DirectXPiepelineState->BuildParam(D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID, D3D12_CULL_MODE::D3D12_CULL_MODE_BACK);
+}
+
+void FRenderingLayer::DrawObject(float DeltaTime, const FGeometryDescData& data)
+{
+	UINT MeshObjectConstantViewSize = GeometryMap->MeshConstantBufferView.GetBufferByteSize();
+	const D3D12_GPU_VIRTUAL_ADDRESS virtualAddressBegin = GeometryMap->MeshConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
+
+	//获取geometry的顶点缓冲区描述
+	D3D12_VERTEX_BUFFER_VIEW VBV = GeometryMap->Geometrys[data.GeometryKey].GetVertexBufferView();
+	//获取geometry的索引缓冲区描述
+	D3D12_INDEX_BUFFER_VIEW IBV = GeometryMap->Geometrys[data.GeometryKey].GetIndexBufferView();
+	//向命令列表中 添加顶点缓冲区描述(描述geometry的顶点信息)
+	GetGraphicsCommandList()->IASetVertexBuffers(0, 1, &VBV);
+	//向命令列表中 添加索引缓冲区描述(描述geometry的索引信息)
+	GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
+	//向命令列表中 添加图元拓扑 命令(决定geometry的拓扑方式)
+	EMaterialDisplayStatusType TopologyType = (*data.MeshComponet->GetMaterials())[0]->GetMaterialDisplayStatusType();
+	GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)TopologyType);
+	//设置当前meshobject的gpu地址
+	D3D12_GPU_VIRTUAL_ADDRESS Address = virtualAddressBegin + data.MeshObjectOffset * MeshObjectConstantViewSize;
+	//将meshObjectConstantView中的数据放到0号寄存器中
+	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(0, Address);
+
+	// Draw Call !!!
+	GetGraphicsCommandList()->DrawIndexedInstanced(
+		data.IndexSize,				//绘制的实例所需的索引数量
+		1,							//绘制的实例个数
+		data.IndexoffsetPosition,	//索引缓冲数据的起始偏移
+		data.VertexoffsetPostion,	//顶点缓冲数据的起始偏移
+		0);							//从顶点缓冲区读取每个实例数据之前添加到每个索引的值
+}
+
+void FRenderingLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKey)
+{
+	for (auto& GeometryDescData : GeometryDescDatas)
+	{
+		if (GeometryDescData.MeshComponet == InKey)
+		{
+			DrawObject(DeltaTime, GeometryDescData);
+			break;
+		}
+	}
 }

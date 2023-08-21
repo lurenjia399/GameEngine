@@ -101,6 +101,18 @@ void FRenderLayerManage::PostDraw(float DeltaTime)
 	}
 }
 
+void FRenderLayerManage::FindObjectDraw(float DeltaTime, int InLayer, const CMeshComponent* InKey)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		if (tem->GetRenderLayerType() == InLayer)
+		{
+			tem->FindObjectDraw(DeltaTime, InKey);
+			break;
+		}
+	}
+}
+
 void FRenderLayerManage::UpdateObjectConstantBuffer()
 {
 	for (auto& tem : RenderingLayers)

@@ -25,6 +25,8 @@ public:
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 	virtual void BuildPSO();
+	virtual void DrawObject(float DeltaTime, const FGeometryDescData& InRenderingData);
+	virtual void FindObjectDraw(float DeltaTime, const CMeshComponent* InKey);
 public:
 	virtual void BuildShader() = 0;	//纯虚函数，必须实现方法
 	virtual int GetRenderLayerType() const = 0; // 纯虚函数，必须实现方法

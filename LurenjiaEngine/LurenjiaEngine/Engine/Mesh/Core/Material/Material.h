@@ -29,6 +29,7 @@ public:
 	void SetMaterialDisplayStatusType(EMaterialDisplayStatusType InDisplayStatusType);
 	void SetMaterialTransform(XMFLOAT4X4 InTransform);
 	void SetMaterialFresnelF0(XMFLOAT3 InFresnelF0);
+	void SetDynamicReflection(bool InDynamicReflection);
 	void SetDirty(bool InDirty);
 	
 
@@ -45,6 +46,7 @@ public:
 	FORCEINLINE EMaterialDisplayStatusType	GetMaterialDisplayStatusType() const	{ return MaterialDisplayStatusType; }
 	FORCEINLINE XMFLOAT4X4					GetMaterialTransform() const			{ return MaterialTransform; }
 	FORCEINLINE XMFLOAT3					GetMaterialFresnelF0() const			{ return FresnelF0; }
+	FORCEINLINE bool						GetbIsDynamicReflection()const			{ return bDynamicReflection; }
 	FORCEINLINE bool						isDirty() const							{ return bDirty; }
 	
 private:
@@ -61,7 +63,9 @@ private:
 	EMaterialDisplayStatusType MaterialDisplayStatusType;//材质的显示方式
 	XMFLOAT4X4 MaterialTransform;			//材质的变换信息，应用于模型的uv坐标
 	XMFLOAT3 FresnelF0;						//材质的菲涅尔因子
+	bool bDynamicReflection;				//是否开启动态反射
 	bool bDirty;							//标志当前材质是否动态更改
+	
 };
 
 #endif // !Material

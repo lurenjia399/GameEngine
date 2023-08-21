@@ -47,42 +47,60 @@ void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* 
 
 void FDynamicCubeMap::PreDraw(float DeltaTime)
 {
-	GeometryMap->Draw(DeltaTime);
-
-	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
-	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
-
-	D3D12_VIEWPORT ViewPort_temp = RenderTarget->GetViewport();
-	GetGraphicsCommandList()->RSSetViewports(1, &ViewPort_temp);
-	D3D12_RECT ScissorRect_temp = RenderTarget->GetScissorRect();
-	GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
-
-	UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
-	for (SIZE_T i = 0; i < 6; i++)
-	{
-
-		GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
-		GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
-		//给RenderTarget和DepthSencil设置Resource Descriptor handle
-		GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
 	
-		auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
-		ViewportAddr += (1 + i) * ViewportByteSize;
-		GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
+	ClearMainSwapChain();
 
-		
+	for (int j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); ++j)
+	{
+		D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+			RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
 
-		FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
-		FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
-		FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+		D3D12_VIEWPORT ViewPort_temp = RenderTarget->GetViewport();
+		GetGraphicsCommandList()->RSSetViewports(1, &ViewPort_temp);
+		D3D12_RECT ScissorRect_temp = RenderTarget->GetScissorRect();
+		GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
 
-		//FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
+		UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
+		for (SIZE_T i = 0; i < 6; i++)
+		{
+
+			GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
+			GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+			//给RenderTarget和DepthSencil设置Resource Descriptor handle
+			GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
+
+			auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
+			ViewportAddr += (1+ i + j * 6) * ViewportByteSize;
+			GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
+
+
+
+			FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
+			FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
+			FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+		}
+
+		D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
+			RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
+
+		StartSetMainViewportRenderTarget();
+
+		GeometryMap->DrawViewport(DeltaTime);
+
+		Draw(DeltaTime);
+
+		// 对相应模型进行渲染
+		FRenderLayerManage::GetRenderLayerManage()->FindObjectDraw(
+			DeltaTime, 
+			(int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, 
+			GeometryMap->DynamicReflectionMeshComponents[j]);
+
+		GeometryMap->DrawCubeMapTexture(DeltaTime);
+
+		EndSetMainViewportRenderTarget();
 	}
-
-	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
-		RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
-	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
 }
 
 void FDynamicCubeMap::Draw(float DeltaTime)
