@@ -31,7 +31,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     }
     else
     {
-        MV_out.Normal = mul((float3x3) WorldMatrix, mv.Normal); //拿到世界空间下的顶点法向
+        MV_out.Normal = mul((float3x3) WorldMatrix, mv.Normal); //拿到世界空间下的顶点法向，这里应该乘上逆转置矩阵
     }
     
     MV_out.Tangent = mul((float3x3) WorldMatrix, mv.Tangent); //拿到世界空间下的切线

@@ -30,6 +30,7 @@ namespace ReflectTest
 		{
 			SphereMesh->SetMeshComponent("ReflectTest::SphereMeshComponent", 2.f, 50, 50);
 			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, -5.f, 2.f));
+			//SphereMesh->SetComponentScale(XMFLOAT3(1.f, 1.f, 1.5f));
 			if (CMaterial* SphereMaterial = new CMaterial())
 			{
 				SphereMaterial->ResetGuid("ReflectTest::SphereMaterial");
@@ -40,32 +41,34 @@ namespace ReflectTest
 				SphereMesh->SetSubMaterials(0, SphereMaterial);
 			}
 		}
-		if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("DynamicReflectTest::SphereMesh"))
-		{
-			//主要测试用的反射球
-			SphereMesh->SetMeshComponent("DynamicReflectTest::SphereMeshComponent", 2.f, 50, 50, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT);
-			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, 5.f, 7.f));
-			if (CMaterial* SphereMaterial = new CMaterial())
-			{
-				SphereMaterial->ResetGuid("DynamicReflectTest::SphereMaterial");
-				//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
-				SphereMaterial->SetMaterialType(EMaterialType::Phone);
-				SphereMaterial->SetRoughness(0.1f);
-				SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
-				SphereMaterial->SetDynamicReflection(true);
-				SphereMesh->SetSubMaterials(0, SphereMaterial);
-			}
-		}
+		//if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("DynamicReflectTest::SphereMesh"))
+		//{
+		//	//主要测试用的反射球
+		//	SphereMesh->SetMeshComponent("DynamicReflectTest::SphereMeshComponent", 2.f, 50, 50, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT);
+		//	SphereMesh->SetComponentPosition(XMFLOAT3(0.f, 5.f, 7.f));
+		//	
+		//	if (CMaterial* SphereMaterial = new CMaterial())
+		//	{
+		//		SphereMaterial->ResetGuid("DynamicReflectTest::SphereMaterial");
+		//		//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
+		//		SphereMaterial->SetMaterialType(EMaterialType::Phone);
+		//		SphereMaterial->SetRoughness(0.1f);
+		//		SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
+		//		SphereMaterial->SetDynamicReflection(true);
+		//		SphereMesh->SetSubMaterials(0, SphereMaterial);
+		//	}
+		//}
 		if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("DynamicReflectTest::SphereMeshs"))
 		{
 			SphereMesh->SetMeshComponent("DynamicReflectTest::SphereMeshComponents", 2.f, 50, 50, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
 			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, 10.f, 2.f));
+			
 			if (CMaterial* SphereMaterial = new CMaterial())
 			{
 				SphereMaterial->ResetGuid("DynamicReflectTest::SphereMaterialss");
 				SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 0.f, 1.f, 1.0f));
-				SphereMaterial->SetMaterialType(EMaterialType::Default);
-				//SphereMaterial->SetRoughness(0.1f);
+				SphereMaterial->SetMaterialType(EMaterialType::BlinnPhone);
+				SphereMaterial->SetRoughness(0.1f);
 				//SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
 				SphereMesh->SetSubMaterials(0, SphereMaterial);
 			}
@@ -86,6 +89,7 @@ namespace ReflectTest
 		{
 			SphereMesh_17->SetMeshComponent("SphereMesh_17Component", 2.f, 20, 20);
 			SphereMesh_17->SetComponentPosition(XMFLOAT3(0.f, -2, 22.f));
+			
 			if (CMaterial* SphereMaterial_17 = new CMaterial())
 			{
 				SphereMaterial_17->ResetGuid("SphereMaterial_17");//给创建的材质设置Guid

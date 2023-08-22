@@ -29,6 +29,7 @@ namespace TextureTest
 		{
 			SphereMesh_1->SetMeshComponent("SphereMesh_1Component", 2.f, 50, 50);
 			SphereMesh_1->SetComponentPosition(XMFLOAT3(0.f, -5.f, 2.f));
+			//SphereMesh_1->SetComponentScale(XMFLOAT3(0.5f, 1.f, 1.f));
 			if (CMaterial* SphereMaterial_1 = new CMaterial())
 			{
 				SphereMaterial_1->ResetGuid("SphereMaterial_1");//给创建的材质设置Guid
@@ -47,6 +48,7 @@ namespace TextureTest
 		{
 			SphereMesh_2->SetMeshComponent("SphereMesh_2Component", 2.f, 50, 50);
 			SphereMesh_2->SetComponentPosition(XMFLOAT3(0.f, 0.f, 2.f));
+			
 			if (CMaterial* SphereMaterial_2 = new CMaterial())
 			{
 				SphereMaterial_2->ResetGuid("SphereMaterial_2");//给创建的材质设置Guid
