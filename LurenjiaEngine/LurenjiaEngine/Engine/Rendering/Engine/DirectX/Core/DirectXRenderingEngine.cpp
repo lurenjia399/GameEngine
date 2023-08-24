@@ -128,8 +128,8 @@ int CDirectXRenderingEngine::PostInit()
 
 
 	//MaterialTest::BuildMaterialTestData();
-	TextureTest::BuildTextureTestData();
-	//ReflectTest::BuildReflectTestData();
+	//TextureTest::BuildTextureTestData();
+	ReflectTest::BuildReflectTestData();
 	//TransparentTest::BuildTransparentTestData();
 	
 	
@@ -152,13 +152,10 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 	//----------clear old different data start-----
 	ANALYSIS_HRESULT(CommandAllocator->Reset());
 
-
-	
-
 	MeshManage->PreDraw(DeltaTime);
 
 	StartSetMainViewportRenderTarget();
-	ClearMainSwapChain();
+	//ClearMainSwapChain();
 
 	//Draw other content
 	MeshManage->Draw(DeltaTime);	//将图形渲染命令添加到commandList中

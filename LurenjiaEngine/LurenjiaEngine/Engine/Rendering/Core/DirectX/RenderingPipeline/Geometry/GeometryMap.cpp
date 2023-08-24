@@ -54,8 +54,18 @@ void FGeometryMap::BuildMeshBuffer()
 void FGeometryMap::BuildDynamicReflectionMesh()
 {
 	// 这里面要根据是否是反射component来将component添加到这个数组里面
-	// 
-	// DynamicReflectionMeshComponents
+	// 现在这里是从所有的池子里挑出动态反射的component
+	// 之后改下吧，在设置子材质的时候，顺便写个static数组啥的？记录下
+	for (auto& Tmp : ObjectPool)
+	{
+		if (CMeshComponent* InMeshComponent = dynamic_cast<CMeshComponent*>(Tmp))
+		{
+			if (InMeshComponent->GetbIsDynamicReflection())
+			{
+				DynamicReflectionMeshComponents.emplace_back(InMeshComponent);
+			}
+		}
+	}
 }
 
 void FGeometryMap::BuildDescriptorHeap()

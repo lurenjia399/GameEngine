@@ -94,6 +94,7 @@ void FRenderingPipeline::BuildPipeline()
 		DynamicCubeMap.BuildDepthStencilDescriptorHandle();
 		//构建深度模板描述符
 		DynamicCubeMap.BuildDepthStencilView();
+
 		//构建rtv句柄和srv句柄
 		DynamicCubeMap.BuildRenderTargetDescriptor();
 
@@ -130,8 +131,16 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	DirectXRootSignature.PreDraw(DeltaTime);
 
 	GeometryMap.Draw(DeltaTime);
+
+
+	ClearMainSwapChain();
+
 	// 渲染动态反射
-	DynamicCubeMap.PreDraw(DeltaTime);
+	if (DynamicCubeMap.IsExitDynamicReflectionMesh())
+	{
+		DynamicCubeMap.PreDraw(DeltaTime);
+	}
+	
 
 	// 这个里面现在啥都没有
 	FRenderLayerManage::GetRenderLayerManage()->PreDraw(DeltaTime);

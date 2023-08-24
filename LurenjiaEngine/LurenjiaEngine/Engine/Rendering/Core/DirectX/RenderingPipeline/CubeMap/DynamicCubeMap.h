@@ -36,6 +36,7 @@ public:
 
 public:
 	void SetCubeMapViewportPosition(const XMFLOAT3& InCenterPoint);
+	bool IsExitDynamicReflectionMesh();
 
 protected:
 	std::shared_ptr<FCubeMapRenderTarget> RenderTarget;

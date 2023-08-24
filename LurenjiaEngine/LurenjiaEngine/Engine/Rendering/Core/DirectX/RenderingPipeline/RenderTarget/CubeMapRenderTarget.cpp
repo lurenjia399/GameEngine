@@ -23,7 +23,10 @@ void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InForma
 
 	BuildRenderTargetResource();
 
+	BuildShaderResourceDescriptor();//应该先这样，但是这里啥都没有，需要更改
 	BuildShaderResourceView();
+
+	BuildRenderTargetDescriptor();
 	BuildRenderTargetView();
 	
 }
@@ -43,6 +46,7 @@ void FCubeMapRenderTarget::BuildRenderTargetDescriptor()
 
 void FCubeMapRenderTarget::BuildShaderResourceDescriptor()
 {
+
 }
 
 void FCubeMapRenderTarget::BuildRenderTargetResource()

@@ -29,6 +29,19 @@ const vector<CMaterial*>* CMeshComponent::GetMaterials() const
 	return &Materials;
 }
 
+bool CMeshComponent::GetbIsDynamicReflection() const
+{
+	
+	if (Materials.size() > 0)
+	{
+		for (CMaterial* Material : Materials)
+		{
+			return Material->GetbIsDynamicReflection();
+		}
+	}
+	return false;
+}
+
 void CMeshComponent::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)
 {
 	MeshCompLayerType = InType;

@@ -47,8 +47,6 @@ void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* 
 
 void FDynamicCubeMap::PreDraw(float DeltaTime)
 {
-	
-	ClearMainSwapChain();
 
 	for (int j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); ++j)
 	{
@@ -178,14 +176,7 @@ void FDynamicCubeMap::BuildDepthStencilDescriptorHandle()
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
 {
-	/*
-	* 两部分：
-	* 1 构建每个RendertargetDescriptor句柄
-	* 2 构建ShaderResourceDescriptor句柄（注意分为cpu一个，gpu一个）
-	*/
-
-	RenderTarget->BuildRenderTargetDescriptor();
-
+	// 这里面很杂乱，需要整合修改，构建srvhandle和srv的地方写的不好，
 	// 给shader使用
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	
@@ -225,6 +216,12 @@ void FDynamicCubeMap::SetCubeMapViewportPosition(const XMFLOAT3& InCenterPoint)
 		Viewport[i]->FaceTarget(InCenterPoint, Capture.TargetPosition[i], Capture.UpDirection[i]);
 		Viewport[i]->BulidViewMatrix(30.f);
 	}
+}
+
+bool FDynamicCubeMap::IsExitDynamicReflectionMesh()
+{
+
+	return GeometryMap->DynamicReflectionMeshComponents.size() > 0;
 }
 
 FDynamicCubeMap::FTempViewportCapture::FTempViewportCapture()

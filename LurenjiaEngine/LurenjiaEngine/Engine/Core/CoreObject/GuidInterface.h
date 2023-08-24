@@ -11,6 +11,7 @@ public:
 	}
 
 	string GetGuid() { return RealityGuid; }
+	string GetName() { return name; }
 	void ResetGuid(string inName);
 private:
 

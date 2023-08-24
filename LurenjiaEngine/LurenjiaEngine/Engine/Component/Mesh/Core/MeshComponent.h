@@ -22,6 +22,8 @@ public:
 	UINT GetMaterialsCount() const;
 	const vector<CMaterial*>* GetMaterials() const;
 
+	bool GetbIsDynamicReflection() const;
+
 	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);
 	EMeshComponentRenderLayerType GetMeshComponentLayerType();
 private:
