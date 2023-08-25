@@ -17,6 +17,7 @@ void CMeshComponent::BuildMesh(const FMeshRenderingData* InRenderingData)
 void CMeshComponent::SetSubMaterials(const int& index, CMaterial* InMaterial)
 {
 	Materials[index] = InMaterial;
+
 }
 
 UINT CMeshComponent::GetMaterialsCount() const

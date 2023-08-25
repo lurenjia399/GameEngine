@@ -353,19 +353,12 @@ FDirectXDescriptorHeap* FGeometryMap::GetDescriptorHeap()
 
 void FGeometryMap::DrawViewport(float DeltaTime)
 {
-	//UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	//CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
-	//Handle.Offset(GetDrawMeshObjectCount() + GetDrawLightObjectCount(), HandleSize);
-	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(1, Handle);
 	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
 }
 
 void FGeometryMap::DrawLight(float DeltaTime)
 {
-	//UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	//CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
-	//Handle.Offset(GetDrawMeshObjectCount(), HandleSize);
-	//GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(2, Handle);//根参数中的索引
+
 	GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(2, LightConstantBufferView.GetBuffer()->GetGPUVirtualAddress());
 }
 

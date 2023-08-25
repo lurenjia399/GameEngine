@@ -155,7 +155,6 @@ void CDirectXRenderingEngine::Tick(float DeltaTime)
 	MeshManage->PreDraw(DeltaTime);
 
 	StartSetMainViewportRenderTarget();
-	//ClearMainSwapChain();
 
 	//Draw other content
 	MeshManage->Draw(DeltaTime);	//将图形渲染命令添加到commandList中

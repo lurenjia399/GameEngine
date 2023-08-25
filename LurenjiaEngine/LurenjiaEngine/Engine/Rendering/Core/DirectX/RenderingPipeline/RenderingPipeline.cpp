@@ -86,7 +86,7 @@ void FRenderingPipeline::BuildPipeline()
 	}
 
 	{
-		//// 构建动态的cubemap
+		// 构建动态的cubemap
 		DynamicCubeMap.Init(&GeometryMap, &DirectXPiepelineState);
 		DynamicCubeMap.BuildViewport(XMFLOAT3(0.f, 5.f, 2.f)); // 那个测试球的位置
 
@@ -151,12 +151,6 @@ void FRenderingPipeline::Draw(float DeltaTime)
 {
 	
 	GeometryMap.DrawViewport(DeltaTime);
-
-
-	// 绘制动态cubemap
-	//DynamicCubeMap.Draw(DeltaTime);
-
-	//FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, DeltaTime);
 
 	// 这里面全是根据根签名的序号，设置gpu内存地址，也就是告诉着色器相应的资源放在哪个寄存器里面了
 	GeometryMap.DrawCubeMapTexture(DeltaTime);

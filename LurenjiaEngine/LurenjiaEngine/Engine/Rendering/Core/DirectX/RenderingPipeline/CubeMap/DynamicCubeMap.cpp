@@ -50,51 +50,62 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 
 	for (int j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); ++j)
 	{
-		D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-			RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
-		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
-
-		D3D12_VIEWPORT ViewPort_temp = RenderTarget->GetViewport();
-		GetGraphicsCommandList()->RSSetViewports(1, &ViewPort_temp);
-		D3D12_RECT ScissorRect_temp = RenderTarget->GetScissorRect();
-		GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
-
-		UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
-		for (SIZE_T i = 0; i < 6; i++)
+		// 这部分就相当于创建了6张贴图，以及他们对应的srv
 		{
+			D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+				RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
+			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
 
-			GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
-			GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
-			//给RenderTarget和DepthSencil设置Resource Descriptor handle
-			GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
+			D3D12_VIEWPORT ViewPort_temp = RenderTarget->GetViewport();
+			GetGraphicsCommandList()->RSSetViewports(1, &ViewPort_temp);
+			D3D12_RECT ScissorRect_temp = RenderTarget->GetScissorRect();
+			GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
 
-			auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
-			ViewportAddr += (1+ i + j * 6) * ViewportByteSize;
-			GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
+			UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
+			for (SIZE_T i = 0; i < 6; i++)
+			{
+
+				GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
+				GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+				// 这句话的意思是，设置当前的rendertarget（这玩意看成一张贴图），后面draw命令执行完后，rendertaargetview就变成了一张完整贴图
+				GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
+
+				// 这部分都是在给rtv上绘制东西
+				{
+					auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
+					ViewportAddr += (1 + i + j * 6) * ViewportByteSize;
+					GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
 
 
 
-			FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
-			FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
-			FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+					FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
+					FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
+					FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+				}
+			}
+
+			D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
+				RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
 		}
-
-		D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
-			RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
-		GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
 
 		StartSetMainViewportRenderTarget();
 
 		GeometryMap->DrawViewport(DeltaTime);
 
-		Draw(DeltaTime);
+		// 这部分就是往着色器上传递6参数，，查看rootsignature后可知，6参数是cubemap参数
+		// 也就是对相应模型渲染的时候，用cubemap贴图来进行渲染
+		{
+			Draw(DeltaTime);
 
-		// 对相应模型进行渲染
-		FRenderLayerManage::GetRenderLayerManage()->FindObjectDraw(
-			DeltaTime, 
-			(int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, 
-			GeometryMap->DynamicReflectionMeshComponents[j]);
+			// 对相应模型进行渲染
+			FRenderLayerManage::GetRenderLayerManage()->FindObjectDraw(
+				DeltaTime,
+				(int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT,
+				GeometryMap->DynamicReflectionMeshComponents[j]);
+		}
 
+		// 这句话目前不知道干什么用的
 		GeometryMap->DrawCubeMapTexture(DeltaTime);
 
 		EndSetMainViewportRenderTarget();

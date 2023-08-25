@@ -3,10 +3,10 @@
 
 #include "Light.hlsl"
 
-SamplerState TextureSampler : register(s0); //静态采样器
-SamplerState AnisotropicSampler : register(s1); //各向异性采样器
+SamplerState TextureSampler : register(s0); //静态采样器             rootsignature中StaticSampler 0参数
+SamplerState AnisotropicSampler : register(s1); //各向异性采样器       rootsignature中StaticSampler 1参数
 
-cbuffer ObjectConstBuffer : register(b0) //模型CBV
+cbuffer ObjectConstBuffer : register(b0) //模型CBV    rootsignature中0参数
 {
     float4x4 WorldMatrix;
     float4x4 ObjectTextureTransformation;
@@ -17,16 +17,16 @@ cbuffer ObjectConstBuffer : register(b0) //模型CBV
     int xx3;
 
 }
-cbuffer ViewportConstBuffer : register(b1) //视口CBV
+cbuffer ViewportConstBuffer : register(b1) //视口CBV  rootsignature中1参数
 {
     float4 cameraPosition;
     float4x4 ViewProjectionMatrix;
 }
-cbuffer LightConstantBufferView : register(b2) //灯光CBV
+cbuffer LightConstantBufferView : register(b2) //灯光CBV rootsignature中2参数
 {
     Light SceneLight[16];
 }
-cbuffer FogConstantBufferView : register(b3) //雾CBV
+cbuffer FogConstantBufferView : register(b3) //雾CBV rootsignature中3参数
 {
     float3 FogColor;
     float FogStart;
@@ -37,7 +37,7 @@ cbuffer FogConstantBufferView : register(b3) //雾CBV
     float xx5;
 }
 
-struct MaterialConstantBuffer
+struct MaterialConstantBuffer  
 {
     float4 BaseColor;
     
@@ -54,9 +54,9 @@ struct MaterialConstantBuffer
     
     float4x4 TransformInformation;
 };
-StructuredBuffer<MaterialConstantBuffer> AMaterials : register(t0, space1); //所有材质数组
-Texture2D SimpleTexture2DMap[MAPCOUNT] : register(t1); //所有贴图数组
+StructuredBuffer<MaterialConstantBuffer> AMaterials : register(t0, space1); //所有材质数组 //rootsignature中4参数
+Texture2D SimpleTexture2DMap[MAPCOUNT] : register(t1); //所有贴图数组     //rootsignature中5参数
 
-TextureCube SampleTextureCubeMap : register(t0);
+TextureCube SampleTextureCubeMap : register(t0); //rootsignature中6参数
 
 #endif
