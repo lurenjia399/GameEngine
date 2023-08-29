@@ -95,9 +95,8 @@ void FRenderingPipeline::BuildPipeline()
 		//构建深度模板描述符
 		DynamicCubeMap.BuildDepthStencilView();
 
-		//构建rtv句柄和srv句柄
+		//构建RTV和SRV
 		DynamicCubeMap.BuildRenderTargetDescriptor();
-
 	}
 
 	//构建pso
@@ -130,9 +129,10 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// 向命令列表中添加 根签名
 	DirectXRootSignature.PreDraw(DeltaTime);
 
+	// 这个方法就是绑定跟签名，感觉需要改下名字更好
 	GeometryMap.Draw(DeltaTime);
 
-
+	// 清掉rtv上面的东西
 	ClearMainSwapChain();
 
 	// 渲染动态反射
@@ -159,7 +159,6 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
-	//FRenderLayerManage::GetRenderLayerManage()->Draw(DeltaTime);
 
 	// 切换pso用的，放在这合适么?
 	DirectXPiepelineState.Draw(DeltaTime);//用做捕获keyboard 4 5

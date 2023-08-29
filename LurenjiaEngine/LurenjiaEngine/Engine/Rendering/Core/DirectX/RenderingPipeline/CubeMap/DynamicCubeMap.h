@@ -41,7 +41,7 @@ public:
 protected:
 	std::shared_ptr<FCubeMapRenderTarget> RenderTarget;
 
-	std::vector<AClientViewport*> Viewport;//我们的视口，也就是摄像机
+	std::vector<AClientViewport*> Viewport;//我们的视口，也就是6个摄像机
 
 	FGeometryMap* GeometryMap;
 	FDirectXPiepelineState* DirectXPiepelineState;

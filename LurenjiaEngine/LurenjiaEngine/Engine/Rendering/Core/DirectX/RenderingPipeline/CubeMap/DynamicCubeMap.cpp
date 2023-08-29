@@ -50,7 +50,7 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 
 	for (int j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); ++j)
 	{
-		// 这部分就相当于创建了6张贴图，以及他们对应的srv
+		// 找到所有能够反射的物体
 		{
 			D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
 				RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
@@ -62,25 +62,28 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 			GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
 
 			UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
-			for (SIZE_T i = 0; i < 6; i++)
 			{
-
-				GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
-				GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
-				// 这句话的意思是，设置当前的rendertarget（这玩意看成一张贴图），后面draw命令执行完后，rendertaargetview就变成了一张完整贴图
-				GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
-
-				// 这部分都是在给rtv上绘制东西
+				// 这部分就是根据摄像机位置，把6张rtv贴图全部获取成功
+				for (SIZE_T i = 0; i < 6; i++)
 				{
-					auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
-					ViewportAddr += (1 + i + j * 6) * ViewportByteSize;
-					GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
+
+					GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
+					GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
+					// 这句话的意思是，设置当前的rendertarget（这玩意看成一张贴图），后面draw命令执行完后，rendertaargetview就变成了一张完整贴图
+					GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
+
+					// 这部分都是在给rtv上绘制东西
+					{
+						auto ViewportAddr = GeometryMap->ViewportConstantBufferView.GetBuffer()->GetGPUVirtualAddress();
+						ViewportAddr += (1 + i + j * 6) * ViewportByteSize;
+						GetGraphicsCommandList()->SetGraphicsRootConstantBufferView(1, ViewportAddr);
 
 
 
-					FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
-					FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
-					FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+						FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
+						FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
+						FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+					}
 				}
 			}
 
@@ -89,13 +92,16 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
 		}
 
+		// 开始设置交换链上面那个rtv
 		StartSetMainViewportRenderTarget();
 
+		// 设置跟签名，把主摄像机传进去
 		GeometryMap->DrawViewport(DeltaTime);
 
 		// 这部分就是往着色器上传递6参数，，查看rootsignature后可知，6参数是cubemap参数
 		// 也就是对相应模型渲染的时候，用cubemap贴图来进行渲染
 		{
+			// 设置跟签名6，也就是cubemap的srv
 			Draw(DeltaTime);
 
 			// 对相应模型进行渲染
@@ -104,9 +110,6 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 				(int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT,
 				GeometryMap->DynamicReflectionMeshComponents[j]);
 		}
-
-		// 这句话目前不知道干什么用的
-		GeometryMap->DrawCubeMapTexture(DeltaTime);
 
 		EndSetMainViewportRenderTarget();
 	}
@@ -162,18 +165,12 @@ void FDynamicCubeMap::BuildDepthStencilView()
 		&HeapProperties,
 		D3D12_HEAP_FLAG_NONE,
 		&ResourceDesc,
-		D3D12_RESOURCE_STATE_COMMON,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
 		&ClearValue,
 		IID_PPV_ARGS(DepthStencilResource.GetAddressOf()));
 
 	//创建深度模板资源描述符
 	GetD3dDevice()->CreateDepthStencilView(DepthStencilResource.Get(), nullptr, DSVDescriptorHandle);
-
-	CD3DX12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(DepthStencilResource.Get(), D3D12_RESOURCE_STATE_COMMON, D3D12_RESOURCE_STATE_DEPTH_WRITE);
-	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
-
-	// 这里关不关掉都行
-	//GetGraphicsCommandList()->Close();
 }
 
 void FDynamicCubeMap::BuildDepthStencilDescriptorHandle()
@@ -187,19 +184,17 @@ void FDynamicCubeMap::BuildDepthStencilDescriptorHandle()
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
 {
-	// 这里面很杂乱，需要整合修改，构建srvhandle和srv的地方写的不好，
-	// 给shader使用
+	// 因为GeometryMap这个值在FCubeMapRenderTarget这个里面取不到，
+	// 所以在RenderTarget->Init开始前，创建了ShaderResourceDescriptorHandle，cpu用于创建srv，gpu用于绑定跟签名
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 	
 	D3D12_CPU_DESCRIPTOR_HANDLE CPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetCPUDescriptorHandleForHeapStart();
-	
-	D3D12_GPU_DESCRIPTOR_HANDLE GPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart();
-	//RenderTarget->BuildShaderResourceDescriptor();
 	RenderTarget->GetShaderResourceDescriptorCPU() = CD3DX12_CPU_DESCRIPTOR_HANDLE(
-		CPU_SRVHeapStart, 
-		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(), 
+		CPU_SRVHeapStart,
+		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
 		size);
 
+	D3D12_GPU_DESCRIPTOR_HANDLE GPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart();
 	RenderTarget->GetShaderResourceDescriptorGPU() = CD3DX12_GPU_DESCRIPTOR_HANDLE(
 		GPU_SRVHeapStart,
 		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
@@ -247,6 +242,8 @@ FDynamicCubeMap::FTempViewportCapture::FTempViewportCapture(const XMFLOAT3& InCe
 
 void FDynamicCubeMap::FTempViewportCapture::BuildViewportCapture(const XMFLOAT3& InCenterPoint)
 {
+	// 注意这里为什么是这个顺序，不是很理解，cubemap的顺序么?
+	// 
 	//右面
 	TargetPosition[0] = XMFLOAT3(InCenterPoint.x, InCenterPoint.y + 1.0f, InCenterPoint.z);
 	UpDirection[0] = XMFLOAT3(0.f, 0.f, 1.f);

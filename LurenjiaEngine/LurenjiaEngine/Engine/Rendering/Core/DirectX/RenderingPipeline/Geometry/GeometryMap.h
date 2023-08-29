@@ -91,7 +91,7 @@ public:
 	FDirectXDescriptorHeap* GetDescriptorHeap();
 private:
 	map<int, FGeometry> Geometrys;
-	FDirectXDescriptorHeap DescriptorHeap;
+	FDirectXDescriptorHeap DescriptorHeap;// CBV_SRV_UAV’‚÷÷√Ë ˆ∑˚∂—
 
 	FDirectXConstBufferView MeshConstantBufferView;
 	FDirectXConstBufferView ViewportConstantBufferView;
