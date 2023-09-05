@@ -86,8 +86,10 @@
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.cpp" />
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryDescData.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.cpp" />
@@ -100,7 +102,9 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSampleObject.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Rendering.cpp" />
@@ -227,6 +231,9 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\Geometry\GeometryDescData.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\DirectXPipelineState.h" />
@@ -240,7 +247,9 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingPipeline.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RootSignature\DirectXRootSignature.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\StaticSampler\StaticSampleObject.h" />
     <ClInclude Include="Engine\Rendering\Core\Rendering.h" />

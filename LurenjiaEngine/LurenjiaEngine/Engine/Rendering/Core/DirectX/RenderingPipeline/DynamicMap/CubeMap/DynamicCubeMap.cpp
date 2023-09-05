@@ -1,9 +1,9 @@
 #include "DynamicCubeMap.h"
-#include "../../../../../Core/Viewport/ClientViewport.h"
-#include "../../../../../Core/Viewport/ViewportInfo.h"
-#include "../../../../../Core/Viewport/ViewportTransformation.h"
-#include "../../../../../Core/Construction/ObjectConstruction.h"
-#include "../RenderTarget/CubeMapRenderTarget.h"
+#include "../../../../../../Core/Viewport/ClientViewport.h"
+#include "../../../../../../Core/Viewport/ViewportInfo.h"
+#include "../../../../../../Core/Viewport/ViewportTransformation.h"
+#include "../../../../../../Core/Construction/ObjectConstruction.h"
+#include "../../RenderTarget/CubeMapRenderTarget.h"
 
 
 
@@ -21,7 +21,7 @@ void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FV
 {
 	if (Viewport.size() == 6)
 	{
-		for (int i = 0; i < GeometryMap->DynamicReflectionMeshComponents.size(); i++)
+		for (UINT i = 0; i < GeometryMap->DynamicReflectionMeshComponents.size(); i++)
 		{
 			CMeshComponent* Tmp = GeometryMap->DynamicReflectionMeshComponents[i];
 			XMFLOAT3 F3 = Tmp->GetPosition();
@@ -48,7 +48,7 @@ void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* 
 void FDynamicCubeMap::PreDraw(float DeltaTime)
 {
 
-	for (int j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); ++j)
+	for (UINT j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); ++j)
 	{
 		// 找到所有能够反射的物体
 		{
@@ -208,7 +208,7 @@ void FDynamicCubeMap::BuildRenderTargetDescriptor()
 
 void FDynamicCubeMap::BuildShaderSourceDescriptor()
 {
-	RenderTarget->BuildShaderResourceDescriptor();
+	RenderTarget->BuildShaderResourceDescriptorHandle();
 }
 
 void FDynamicCubeMap::SetCubeMapViewportPosition(const XMFLOAT3& InCenterPoint)

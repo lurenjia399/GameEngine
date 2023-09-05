@@ -6,7 +6,7 @@
 #include "PiepelineState/DirectXPipelineState.h"
 #include "RootSignature/DirectXRootSignature.h"
 #include "RenderingLayer/RenderLayerManage.h"
-#include "CubeMap/DynamicCubeMap.h"
+#include "DynamicMap/CubeMap/DynamicCubeMap.h"
 
 
 class FRenderingPipeline : public IDirectXDeviceInterface

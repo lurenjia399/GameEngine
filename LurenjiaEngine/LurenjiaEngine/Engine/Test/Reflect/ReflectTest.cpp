@@ -84,7 +84,7 @@ namespace ReflectTest
 			{
 				SphereMaterial->ResetGuid("DynamicReflectTest::SphereMaterialss");
 				SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 0.f, 1.f, 1.0f));
-				SphereMaterial->SetMaterialType(EMaterialType::HalfLambert);
+				SphereMaterial->SetMaterialType(EMaterialType::Lambert);
 				SphereMaterial->SetRoughness(0.1f);
 				//SphereMaterial->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
 				SphereMesh->SetSubMaterials(0, SphereMaterial);

@@ -1,37 +1,20 @@
 #include "CubeMapRenderTarget.h"
 #include "../../../../../Config/EngineRenderConfig.h"
 
-FCubeMapRenderTarget::FCubeMapRenderTarget()
-	: Width(256)
-	, Height(256)
-	, Format(DXGI_FORMAT_R8G8B8A8_SNORM)
+FCubeMapRenderTarget::FCubeMapRenderTarget() : Super(256, 256, DXGI_FORMAT_R8G8B8A8_SNORM)
 {
-	ResetViewport(Width, Height);
-	ResetScissorRect(Width, Height);
-
 	RenderTargetDescriptor.resize(6);
 }
 
 void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat)
 {
-	Width = InWidth;
-	Height = InHeight;
-	Format = InFormat;
-	
-	ResetViewport(InWidth, InHeight);
-	ResetScissorRect(InWidth, InHeight);
+	Super::Init(InWidth, InHeight, InFormat);
 
-	BuildRenderTargetResource();
-
-	BuildShaderResourceDescriptor();//应该先这样，但是这里啥都没有，需要更改
-	BuildShaderResourceView();
-
-	BuildRenderTargetDescriptor();
+	BuildRenderTargetDescriptorHandle();
 	BuildRenderTargetView();
-	
 }
 
-void FCubeMapRenderTarget::BuildRenderTargetDescriptor()
+void FCubeMapRenderTarget::BuildRenderTargetDescriptorHandle()
 {
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	D3D12_CPU_DESCRIPTOR_HANDLE RTVDewcriptorStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
@@ -44,7 +27,7 @@ void FCubeMapRenderTarget::BuildRenderTargetDescriptor()
 	}
 }
 
-void FCubeMapRenderTarget::BuildShaderResourceDescriptor()
+void FCubeMapRenderTarget::BuildShaderResourceDescriptorHandle()
 {
 
 }
@@ -106,7 +89,7 @@ void FCubeMapRenderTarget::BuildShaderResourceView()
 	D3dDevice->CreateShaderResourceView(
 		RenderTargetResource.Get(),
 		&SRVDesc,
-		ShaderResourceDescriptorCPU);
+		ShaderResourceDescriptorHandle_CPU);
 }
 
 void FCubeMapRenderTarget::BuildRenderTargetView()
@@ -133,37 +116,14 @@ void FCubeMapRenderTarget::BuildRenderTargetView()
 	}
 }
 
-void FCubeMapRenderTarget::ResetViewport(UINT InWidth, UINT InHeight)
-{
-	Viewport = {
-		0.f,			// TopLeftX
-		0.f,			// TopLeftY
-		(float)InWidth,	// Width
-		(float)InHeight,// Height
-		0.f,			// MinDepth
-		1.f				// MaxDepth
-	};
-}
-
-void FCubeMapRenderTarget::ResetScissorRect(UINT InWidth, UINT InHeight)
-{
-	ScissorRect = {
-		0,				// left
-		0,				// top
-		(LONG)InWidth,	// right
-		(LONG)InHeight	// bottom
-	};
-}
 
 void FCubeMapRenderTarget::ResetRenderTarget(UINT InWidth, UINT InHeight)
 {
 	if (InWidth != Width || InHeight != Height)
 	{
-		Width = InWidth;
-		Height = InHeight;
+		Super::ResetRenderTarget(InWidth, InHeight);
 
-		BuildRenderTargetResource();	// 构建RenderTargetResource
-		BuildShaderResourceView();		// 构建srv
-		BuildRenderTargetView();		// 构建rtv
+		BuildRenderTargetView();
 	}
+	
 }

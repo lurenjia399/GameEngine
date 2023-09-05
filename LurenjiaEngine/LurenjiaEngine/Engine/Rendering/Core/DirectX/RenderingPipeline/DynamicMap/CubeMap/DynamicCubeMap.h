@@ -1,14 +1,14 @@
 #pragma once
-#include "../../../../../Core/Engine.h"
-#include "../../../../../Interface/DirectXDeviceInterface.h"
-#include "../RenderingLayer/RenderLayerManage.h"
+#include "../../../../../../Core/Engine.h"
+#include "../../RenderingLayer/RenderLayerManage.h"
+#include "../Core/DynamicMap.h"
 
 class FCubeMapRenderTarget;
 class AClientViewport;
 struct FGeometryMap;
 struct FDirectXPiepelineState;
 
-class FDynamicCubeMap : public IDirectXDeviceInterface
+class FDynamicCubeMap : public FDynamicMap
 {
 	struct FTempViewportCapture
 	{

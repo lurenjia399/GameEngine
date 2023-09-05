@@ -405,13 +405,25 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\CubeMapRenderTarget.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Core\Construction\SingleInstanceConstruction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -879,6 +891,21 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\Core\RenderTarget.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\ShadowMap\DynamicShadowMap.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
