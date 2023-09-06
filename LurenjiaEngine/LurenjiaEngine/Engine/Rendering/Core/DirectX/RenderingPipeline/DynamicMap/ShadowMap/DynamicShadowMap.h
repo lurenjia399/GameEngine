@@ -7,6 +7,7 @@
 
 class FDynamicShadowMap : public FDynamicMap
 {
+	typedef FDynamicMap Super;
 public:
 	FDynamicShadowMap();
 };

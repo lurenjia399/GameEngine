@@ -10,6 +10,8 @@ struct FDirectXPiepelineState;
 
 class FDynamicCubeMap : public FDynamicMap
 {
+	typedef FDynamicMap Super;
+
 	struct FTempViewportCapture
 	{
 		FTempViewportCapture();
@@ -22,10 +24,10 @@ class FDynamicCubeMap : public FDynamicMap
 public:
 	FDynamicCubeMap();
 
-	virtual void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo);
-	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
-	virtual void PreDraw(float DeltaTime);
-	virtual void Draw(float DeltaTime);
+	virtual void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo) override;
+	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState) override;
+	virtual void PreDraw(float DeltaTime) override;
+	virtual void Draw(float DeltaTime) override;
 
 	virtual void BuildViewport(const XMFLOAT3& InCenterPoint);//构建摄像机
 	virtual void BuildDepthStencilView();
@@ -39,15 +41,9 @@ public:
 	bool IsExitDynamicReflectionMesh();
 
 protected:
-	std::shared_ptr<FCubeMapRenderTarget> RenderTarget;
 
 	std::vector<AClientViewport*> Viewport;//我们的视口，也就是6个摄像机
 
-	FGeometryMap* GeometryMap;
-	FDirectXPiepelineState* DirectXPiepelineState;
-
 	ComPtr<ID3D12Resource> DepthStencilResource;
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptorHandle;
-	UINT Width;
-	UINT Height;
 };

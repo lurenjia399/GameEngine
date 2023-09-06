@@ -8,13 +8,11 @@
 
 
 FDynamicCubeMap::FDynamicCubeMap()
-	: Viewport({})
-	, GeometryMap(nullptr)
-	, DirectXPiepelineState(nullptr)
-	, Width(512)
-	, Height(512)
+	: Super(512, 512, nullptr, nullptr)
+	, Viewport({})
 {
-	RenderTarget = make_shared<FCubeMapRenderTarget>();
+	//RenderTarget = make_shared<FCubeMapRenderTarget>();
+	CreateRenderTarget<FCubeMapRenderTarget>();
 }
 
 void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo)
@@ -41,24 +39,29 @@ void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FV
 
 void FDynamicCubeMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState)
 {
-	GeometryMap = InGeometryMap;
-	DirectXPiepelineState = InDirectXPiepelineState;
+	Super::Init(InGeometryMap, InDirectXPiepelineState);
 }
 
 void FDynamicCubeMap::PreDraw(float DeltaTime)
 {
-
+	FCubeMapRenderTarget* CubeMapRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get());
+	if (! CubeMapRenderTarget)
+	{
+		Engine_Log_Error("RenderTarget dynamic_cast 失败");
+		return;
+	}
 	for (UINT j = 0; j < GeometryMap->DynamicReflectionMeshComponents.size(); ++j)
 	{
 		// 找到所有能够反射的物体
 		{
+			
 			D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
-				RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
+				CubeMapRenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_GENERIC_READ, D3D12_RESOURCE_STATE_RENDER_TARGET);
 			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
 
-			D3D12_VIEWPORT ViewPort_temp = RenderTarget->GetViewport();
+			D3D12_VIEWPORT ViewPort_temp = CubeMapRenderTarget->GetViewport();
 			GetGraphicsCommandList()->RSSetViewports(1, &ViewPort_temp);
-			D3D12_RECT ScissorRect_temp = RenderTarget->GetScissorRect();
+			D3D12_RECT ScissorRect_temp = CubeMapRenderTarget->GetScissorRect();
 			GetGraphicsCommandList()->RSSetScissorRects(1, &ScissorRect_temp);
 
 			UINT ViewportByteSize = GeometryMap->ViewportConstantBufferView.GetBufferByteSize();
@@ -66,11 +69,10 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 				// 这部分就是根据摄像机位置，把6张rtv贴图全部获取成功
 				for (SIZE_T i = 0; i < 6; i++)
 				{
-
-					GetGraphicsCommandList()->ClearRenderTargetView(RenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
+					GetGraphicsCommandList()->ClearRenderTargetView(CubeMapRenderTarget->GetRenderTargetDescriptor()[i], DirectX::Colors::Black, 0, nullptr);
 					GetGraphicsCommandList()->ClearDepthStencilView(DSVDescriptorHandle, D3D12_CLEAR_FLAG_DEPTH | D3D12_CLEAR_FLAG_STENCIL, 1, 0, 0, nullptr);
 					// 这句话的意思是，设置当前的rendertarget（这玩意看成一张贴图），后面draw命令执行完后，rendertaargetview就变成了一张完整贴图
-					GetGraphicsCommandList()->OMSetRenderTargets(1, &RenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
+					GetGraphicsCommandList()->OMSetRenderTargets(1, &CubeMapRenderTarget->GetRenderTargetDescriptor()[i], true, &DSVDescriptorHandle);
 
 					// 这部分都是在给rtv上绘制东西
 					{
@@ -88,7 +90,7 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 			}
 
 			D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
-				RenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
+				CubeMapRenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_RENDER_TARGET, D3D12_RESOURCE_STATE_GENERIC_READ);
 			GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
 		}
 
