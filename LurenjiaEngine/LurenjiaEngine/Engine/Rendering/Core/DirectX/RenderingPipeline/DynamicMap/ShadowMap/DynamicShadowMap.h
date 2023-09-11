@@ -10,6 +10,11 @@ class FDynamicShadowMap : public FDynamicMap
 	typedef FDynamicMap Super;
 public:
 	FDynamicShadowMap();
+
+	virtual void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo) override;
+	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState) override;
+	virtual void PreDraw(float DeltaTime) override;
+	virtual void Draw(float DeltaTime) override;
 };
 
-#endif // !DynamicMap_H
+#endif

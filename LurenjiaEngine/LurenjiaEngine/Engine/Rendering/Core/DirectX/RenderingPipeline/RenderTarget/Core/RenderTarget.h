@@ -5,6 +5,7 @@
 
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 
+// 模拟了一张画布
 class FRenderTarget : public IDirectXDeviceInterface, std::enable_shared_from_this<FRenderTarget>
 {
 public:
@@ -13,17 +14,21 @@ public:
 	virtual void Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat);
 
 	// 创建RTV资源
-	virtual void BuildRenderTargetResource();
+	virtual void BuildResource();
 
 	// 创建SRVHandle 和 SRV
 	virtual void BuildShaderResourceDescriptorHandle();
 	virtual void BuildShaderResourceView();
 
+	// 创建DSVHandle 和 DSV
+	virtual void BuildDepthStencilDescriptorHandle();
+	virtual void BuildDepthStencilView();
+
 	virtual void ResetRenderTarget(UINT InWidth, UINT InHeight);
 
 public:
 	// 给外部提供的接口
-	FORCEINLINE ID3D12Resource* GetRenderTarget() const { return RenderTargetResource.Get(); }
+	FORCEINLINE ID3D12Resource* GetRenderTarget() const { return Resource.Get(); }
 	FORCEINLINE D3D12_VIEWPORT GetViewport() const { return Viewport; }
 	FORCEINLINE D3D12_RECT GetScissorRect() const { return ScissorRect; }
 
@@ -42,7 +47,7 @@ protected:
 	D3D12_VIEWPORT Viewport;// 视口
 	D3D12_RECT ScissorRect;
 
-	ComPtr<ID3D12Resource> RenderTargetResource;
+	ComPtr<ID3D12Resource> Resource;
 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE ShaderResourceDescriptorHandle_CPU;
 	CD3DX12_GPU_DESCRIPTOR_HANDLE ShaderResourceDescriptorHandle_GPU;

@@ -18,13 +18,19 @@ void FRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat)
 	ResetViewport(InWidth, InHeight);
 	ResetScissorRect(InWidth, InHeight);
 
-	BuildRenderTargetResource();
+	BuildResource();
+
+	// 应该要记住，在创建view之前就要创建DescriptorHandle
+	// 需要把咱们创建出的资源变成view
 
 	BuildShaderResourceDescriptorHandle();//应该先这样，但是这里啥都没有，需要更改
 	BuildShaderResourceView();
+
+	BuildDepthStencilDescriptorHandle();
+	BuildDepthStencilView();
 }
 
-void FRenderTarget::BuildRenderTargetResource()
+void FRenderTarget::BuildResource()
 {
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
@@ -60,9 +66,17 @@ void FRenderTarget::BuildShaderResourceView()
 	SRVDesc.TextureCube.ResourceMinLODClamp = 0.f;
 
 	D3dDevice->CreateShaderResourceView(
-		RenderTargetResource.Get(),
+		Resource.Get(),
 		&SRVDesc,
 		ShaderResourceDescriptorHandle_CPU);
+}
+
+void FRenderTarget::BuildDepthStencilDescriptorHandle()
+{
+}
+
+void FRenderTarget::BuildDepthStencilView()
+{
 }
 
 void FRenderTarget::ResetRenderTarget(UINT InWidth, UINT InHeight)
@@ -71,11 +85,15 @@ void FRenderTarget::ResetRenderTarget(UINT InWidth, UINT InHeight)
 	Height = InHeight;
 
 	// 重新创建RTVResource
-	BuildRenderTargetResource();
+	BuildResource();
 
 	// 重新创建SRVHandle和SRV
 	BuildShaderResourceDescriptorHandle();
 	BuildShaderResourceView();
+
+	// 重新创建dsvHandle和dsv
+	BuildDepthStencilDescriptorHandle();
+	BuildDepthStencilView();
 }
 
 void FRenderTarget::ResetViewport(UINT InWidth, UINT InHeight)

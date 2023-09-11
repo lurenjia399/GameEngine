@@ -24,7 +24,7 @@ public:
 
 	virtual void Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InFormat) override;
 
-	virtual void BuildRenderTargetResource() override;
+	virtual void BuildResource() override;
 
 	virtual void BuildShaderResourceDescriptorHandle() override;
 	virtual void BuildShaderResourceView() override;

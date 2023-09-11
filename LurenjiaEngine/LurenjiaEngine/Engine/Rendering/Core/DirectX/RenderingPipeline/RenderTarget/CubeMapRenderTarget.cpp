@@ -32,12 +32,12 @@ void FCubeMapRenderTarget::BuildShaderResourceDescriptorHandle()
 
 }
 
-void FCubeMapRenderTarget::BuildRenderTargetResource()
+void FCubeMapRenderTarget::BuildResource()
 {
 	ComPtr<ID3D12Device> D3dDevice = GetD3dDevice();
 	if (D3dDevice == nullptr)
 	{
-		Engine_Log_Error("FCubeMapRenderTarget::BuildRenderTargetMap D3dDevice is nullptr");
+		Engine_Log_Error("FCubeMapRenderTarget::BuildRenderTargetResource D3dDevice is nullptr");
 		return;
 	}
 
@@ -66,7 +66,7 @@ void FCubeMapRenderTarget::BuildRenderTargetResource()
 		&ResourceDesc,
 		D3D12_RESOURCE_STATES::D3D12_RESOURCE_STATE_COMMON,
 		nullptr,
-		IID_PPV_ARGS(RenderTargetResource.GetAddressOf())));
+		IID_PPV_ARGS(Resource.GetAddressOf())));
 }
 
 void FCubeMapRenderTarget::BuildShaderResourceView()
@@ -87,7 +87,7 @@ void FCubeMapRenderTarget::BuildShaderResourceView()
 	SRVDesc.TextureCube.ResourceMinLODClamp = 0.f;
 
 	D3dDevice->CreateShaderResourceView(
-		RenderTargetResource.Get(),
+		Resource.Get(),
 		&SRVDesc,
 		ShaderResourceDescriptorHandle_CPU);
 }
@@ -112,7 +112,7 @@ void FCubeMapRenderTarget::BuildRenderTargetView()
 		RTVDesc.Texture2DArray.PlaneSlice = 0;
 		//MipSlice + ArraySize * MipLevels
 
-		D3dDevice->CreateRenderTargetView(RenderTargetResource.Get(), &RTVDesc, RenderTargetDescriptor[i]);
+		D3dDevice->CreateRenderTargetView(Resource.Get(), &RTVDesc, RenderTargetDescriptor[i]);
 	}
 }
 
