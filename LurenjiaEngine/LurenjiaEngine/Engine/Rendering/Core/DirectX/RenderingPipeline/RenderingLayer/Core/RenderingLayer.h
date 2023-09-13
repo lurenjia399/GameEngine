@@ -26,7 +26,10 @@ public:
 	virtual void PostDraw(float DeltaTime);
 	virtual void BuildPSO();
 	virtual void DrawObject(float DeltaTime, const FGeometryDescData& InRenderingData);
-	virtual void FindObjectDraw(float DeltaTime, const CMeshComponent* InKey);
+	virtual void DrawObjectByLayer(float DeltaTime, const CMeshComponent* InKey);
+	virtual void DrawAllObjectsByLayer(float DeltaTime);
+	virtual void ResetPSO();
+	
 public:
 	virtual void BuildShader() = 0;	//纯虚函数，必须实现方法
 	virtual int GetRenderLayerType() const = 0; // 纯虚函数，必须实现方法

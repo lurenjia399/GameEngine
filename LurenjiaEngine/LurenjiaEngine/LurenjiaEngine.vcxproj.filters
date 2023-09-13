@@ -354,15 +354,6 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\RenderingLayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -379,9 +370,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\EMeshComponentRenderLayerType.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Actor\Sky\Fog.cpp">
@@ -408,9 +396,6 @@
     <ClCompile Include="Engine\Core\Construction\SingleInstanceConstruction.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -424,6 +409,24 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueShadowRenderLayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -827,15 +830,6 @@
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\RenderingLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -855,9 +849,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\Core\EMeshComponentRenderLayerType.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\PiepelineState\PiepelineStateType.h">
@@ -890,9 +881,6 @@
     <ClInclude Include="Engine\Core\Construction\SingleInstanceConstruction.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\CubeMap\DynamicCubeMap.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -906,6 +894,24 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderTarget\ShadowMapRenderTarget.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\AlphaTestRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\BackgroundRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueReflectorRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\TransparentRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OpaqueShadowRenderLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

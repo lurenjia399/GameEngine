@@ -107,7 +107,7 @@ void FDynamicCubeMap::PreDraw(float DeltaTime)
 			Draw(DeltaTime);
 
 			// 对相应模型进行渲染
-			FRenderLayerManage::GetRenderLayerManage()->FindObjectDraw(
+			FRenderLayerManage::GetRenderLayerManage()->DrawObjectByLayer(
 				DeltaTime,
 				(int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT,
 				GeometryMap->DynamicReflectionMeshComponents[j]);

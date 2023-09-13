@@ -11,6 +11,7 @@ enum class EPiepelineStateType
 	REFLECTION = 2,		//反射pso
 	WIREFRAME = 4,		//线框pso
 	GRAYMODEL = 5,		//模型pso
+	SHADOW = 6,			//阴影pso
 };
 
 #endif

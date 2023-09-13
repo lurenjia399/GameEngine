@@ -27,10 +27,15 @@ public:
 
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
-	void Draw(int inLayer, float DeltaTime);
+	void Draw(int inLayer, float DeltaTime);// // draw某个层级中的所有Object
 	void PostDraw(float DeltaTime);
-	void FindObjectDraw(float DeltaTime, int InLayer, const CMeshComponent* InKey);
-
+	// 找到层级中某个object
+	void DrawObjectByLayer(float DeltaTime, int InLayer, const CMeshComponent* InKey);
+	// draw某个层级中的所有Object，这个和draw有区别么，目前看上去没区别
+	void DrawAllObjectsByLayer(float DeltaTime, int InLayer); 
+	// reset某个层级的pso
+	void ResetPSO(int InLayer);
+	
 	void UpdateObjectConstantBuffer();
 	void BuildPSO();
 private:

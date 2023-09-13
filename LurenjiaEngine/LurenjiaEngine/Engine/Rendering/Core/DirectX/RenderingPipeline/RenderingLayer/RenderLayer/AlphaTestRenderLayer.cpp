@@ -11,5 +11,5 @@ void FAlphaTestRenderLayer::BuildShader()
 
 int FAlphaTestRenderLayer::GetRenderLayerType() const
 {
-	return (int)EPiepelineStateType::ALPHATEST;
+	return (int)EMeshComponentRenderLayerType::RENDERLAYER_ALPHATEST;
 }

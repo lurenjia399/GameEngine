@@ -54,11 +54,12 @@ void FTransparentRenderLayer::BuildShader()
 
 void FTransparentRenderLayer::Draw(float DeltaTime)
 {
+	// 这边每次在draw的时候，需要切换pso，
+	// 这个地方没有注意过，看下这个阴影是否需要切换把
 	DirectXPiepelineState->isTemporaryResetPSO((int)EPiepelineStateType::TRANSPARENTS);
 
 	super::Draw(DeltaTime);
 
-	//每次渲染完当前层级后，需要还原pso的状态
 	RestorePSO();
 }
 

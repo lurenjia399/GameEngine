@@ -104,11 +104,11 @@ void FRenderingLayer::PreDraw(float DeltaTime)
 
 void FRenderingLayer::Draw(float DeltaTime)
 {
-	for (auto& data : GeometryDescDatas)
-	{
-		DrawObject(DeltaTime, data);
-	}
-
+	//for (auto& data : GeometryDescDatas)
+	//{
+	//	DrawObject(DeltaTime, data);
+	//}
+	DrawAllObjectsByLayer(DeltaTime);
 }
 
 void FRenderingLayer::PostDraw(float DeltaTime)
@@ -151,7 +151,7 @@ void FRenderingLayer::DrawObject(float DeltaTime, const FGeometryDescData& data)
 		0);							//从顶点缓冲区读取每个实例数据之前添加到每个索引的值
 }
 
-void FRenderingLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKey)
+void FRenderingLayer::DrawObjectByLayer(float DeltaTime, const CMeshComponent* InKey)
 {
 	for (auto& GeometryDescData : GeometryDescDatas)
 	{
@@ -160,5 +160,18 @@ void FRenderingLayer::FindObjectDraw(float DeltaTime, const CMeshComponent* InKe
 			DrawObject(DeltaTime, GeometryDescData);
 			break;
 		}
+	}
+}
+
+void FRenderingLayer::ResetPSO()
+{
+	// 父类这里先是空的
+}
+
+void FRenderingLayer::DrawAllObjectsByLayer(float DeltaTime)
+{
+	for (auto& data : GeometryDescDatas)
+	{
+		DrawObject(DeltaTime, data);
 	}
 }
