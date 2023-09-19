@@ -38,6 +38,8 @@ public:
 	/// </summary>
 	void Build(int InPipelineType);
 
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC& GetPSODesc();
+
 	void isTemporaryResetPSO(int InPiepelType, bool isTemp = true);
 
 	void PreDraw(float DeltaTime);

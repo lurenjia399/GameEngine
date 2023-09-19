@@ -72,6 +72,11 @@ void FDirectXPiepelineState::Build(int InPipelineType)
 	ANALYSIS_HRESULT(GetD3dDevice()->CreateGraphicsPipelineState(&GPSDesc, IID_PPV_ARGS(&PSO[InPipelineType])));
 }
 
+D3D12_GRAPHICS_PIPELINE_STATE_DESC& FDirectXPiepelineState::GetPSODesc()
+{
+	return GPSDesc;
+}
+
 void FDirectXPiepelineState::isTemporaryResetPSO(int InPiepelType, bool isTemp)
 {
 	if (isTemp)

@@ -33,8 +33,26 @@ void FOpaqueShadowRenderLayer::BuildPSO()
 {
 	super::BuildPSO();
 
+	// 偏移补偿，用来解决shadowmap自遮挡问题
+	// Bias = (float)DepthBias * r + SlopeScaledDepthBias * MaxDepthSlope
+	// where r is the minimum representable value > 0 in the depth-buffer format converted to float32
+	// The MaxDepthSlope value is the maximum of the horizontal and vertical slopes of the depth value at the pixel
+	D3D12_GRAPHICS_PIPELINE_STATE_DESC& PSODesc = DirectXPiepelineState->GetPSODesc();
+	// 固定的应用偏移量
+	PSODesc.RasterizerState.DepthBias = 100000;
+	// 所允许的最大深度偏移量
+	PSODesc.RasterizerState.DepthBiasClamp = 0.0f;
+	// 根据多边形的斜率控制偏移程度的缩放因子
+	PSODesc.RasterizerState.SlopeScaledDepthBias = 1.0f;
+
+	// 关掉rtv
+	PSODesc.RTVFormats[0] = DXGI_FORMAT_UNKNOWN;
+	PSODesc.NumRenderTargets = 0;
+
 	//构建阴影pso
 	DirectXPiepelineState->Build((int)EPiepelineStateType::SHADOW);
+
+
 }
 
 void FOpaqueShadowRenderLayer::Draw(float DeltaTime)
