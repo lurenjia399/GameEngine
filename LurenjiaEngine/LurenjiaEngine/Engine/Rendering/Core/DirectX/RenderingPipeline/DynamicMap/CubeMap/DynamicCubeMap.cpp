@@ -23,7 +23,7 @@ void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FV
 		{
 			CMeshComponent* Tmp = GeometryMap->DynamicReflectionMeshComponents[i];
 			XMFLOAT3 F3 = Tmp->GetPosition();
-			SetCubeMapViewportPosition(F3);
+			SetViewportPosition(F3);
 
 			for (size_t j = 0; j < 6; j++)
 			{
@@ -140,25 +140,12 @@ void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
 
 void FDynamicCubeMap::BuildDepthStencilView()
 {
-	FCubeMapRenderTarget* CubeMapRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get());
-	if (!CubeMapRenderTarget)
-	{
-		Engine_Log_Error("RenderTarget dynamic_cast Ê§°Ü");
-		return;
-	}
-	CubeMapRenderTarget->BuildDepthStencilView();
+	RenderTarget->BuildDepthStencilView();
 }
 
 void FDynamicCubeMap::BuildDepthStencilDescriptorHandle()
 {
-	FCubeMapRenderTarget* CubeMapRenderTarget = dynamic_cast<FCubeMapRenderTarget*>(RenderTarget.get());
-	if (!CubeMapRenderTarget)
-	{
-		Engine_Log_Error("RenderTarget dynamic_cast Ê§°Ü");
-		return;
-	}
-	CubeMapRenderTarget->BuildDepthStencilDescriptorHandle();
-
+	RenderTarget->BuildDepthStencilDescriptorHandle();
 }
 
 void FDynamicCubeMap::BuildRenderTargetDescriptor()
@@ -179,18 +166,32 @@ void FDynamicCubeMap::BuildRenderTargetDescriptor()
 		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
 		size);
 
-
 	RenderTarget->Init(Width, Height, DXGI_FORMAT_R8G8B8A8_UNORM);
 
 	
 }
 
-void FDynamicCubeMap::BuildShaderSourceDescriptor()
+void FDynamicCubeMap::BuildShaderSourceView()
 {
-	RenderTarget->BuildShaderResourceDescriptorHandle();
+	//UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	//D3D12_CPU_DESCRIPTOR_HANDLE CPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	//RenderTarget->GetShaderResourceDescriptorCPU() = CD3DX12_CPU_DESCRIPTOR_HANDLE(
+	//	CPU_SRVHeapStart,
+	//	GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
+	//	size);
+
+	//D3D12_GPU_DESCRIPTOR_HANDLE GPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart();
+	//RenderTarget->GetShaderResourceDescriptorGPU() = CD3DX12_GPU_DESCRIPTOR_HANDLE(
+	//	GPU_SRVHeapStart,
+	//	GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount(),
+	//	size);
+	//RenderTarget->BuildShaderResourceDescriptorHandle();
+
+	//RenderTarget->BuildShaderResourceView();
 }
 
-void FDynamicCubeMap::SetCubeMapViewportPosition(const XMFLOAT3& InCenterPoint)
+void FDynamicCubeMap::SetViewportPosition(const XMFLOAT3& InCenterPoint)
 {
 	FTempViewportCapture Capture(InCenterPoint);
 

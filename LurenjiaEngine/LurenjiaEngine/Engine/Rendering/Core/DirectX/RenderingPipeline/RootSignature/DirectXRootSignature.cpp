@@ -6,17 +6,22 @@ FDirectXRootSignature::FDirectXRootSignature()
 
 bool FDirectXRootSignature::Build(const UINT& TextureCount)
 {
-	CD3DX12_ROOT_PARAMETER RootParam[7];
+	CD3DX12_ROOT_PARAMETER RootParam[8];
+
+	//Texture的descriptorRange
+	// 后面的1就是寄存器的序号 t2
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV = {};
+	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 2);
 
 	//CubeMap的descriptorRange
 	// 后面的0就是寄存器的序号 t0
 	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeCubeMapSRV = {};
 	DescriptorRangeCubeMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
 
-	//Texture的descriptorRange
-	// 后面的0就是寄存器的序号 t1
-	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeTextureSRV = {};
-	DescriptorRangeTextureSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, TextureCount, 1);
+	// Shadow的descriptorRange
+	// 后面的1就是寄存器的序号 t1
+	CD3DX12_DESCRIPTOR_RANGE DescriptorRangeShadowMapSRV = {};
+	DescriptorRangeShadowMapSRV.Init(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 1);
 
 	// 后面跟的参数序号就是寄存器的序号 b0 b1 b2 b3
 	// material这个有点不一样，(t0,space1)
@@ -28,12 +33,13 @@ bool FDirectXRootSignature::Build(const UINT& TextureCount)
 
 	RootParam[5].InitAsDescriptorTable(1, &DescriptorRangeTextureSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);//texture
 	RootParam[6].InitAsDescriptorTable(1, &DescriptorRangeCubeMapSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);//cubemap
+	RootParam[7].InitAsDescriptorTable(1, &DescriptorRangeShadowMapSRV, D3D12_SHADER_VISIBILITY::D3D12_SHADER_VISIBILITY_PIXEL);//shadowmap
 
 	//构建静态采样
 	StaticSamplerObject.BuildStaticSampler();
 
 	CD3DX12_ROOT_SIGNATURE_DESC RootSignatureDesc(
-		7, RootParam, StaticSamplerObject.GetSize(), StaticSamplerObject.GetData(),
+		8, RootParam, StaticSamplerObject.GetSize(), StaticSamplerObject.GetData(),
 		D3D12_ROOT_SIGNATURE_FLAG_ALLOW_INPUT_ASSEMBLER_INPUT_LAYOUT
 	);
 	ComPtr<ID3DBlob> SerializeRootSignature;

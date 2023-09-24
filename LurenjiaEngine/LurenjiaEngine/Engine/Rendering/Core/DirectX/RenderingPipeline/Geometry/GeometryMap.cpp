@@ -73,7 +73,8 @@ void FGeometryMap::BuildDescriptorHeap()
 	DescriptorHeap.BuildDescriptorHeap(
 		GetDrawTextureObjectCount() //texture2d
 		+ GetDrawCubeMapCount() //静态cubemap
-		+ 1);// 动态cubemap
+		+ 1	// 动态cubemap
+		+ 1); // 阴影
 }
 
 void FGeometryMap::LoadTexture()
@@ -150,6 +151,7 @@ void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 
 		1 + //主视口
 		GetDynamicReflectionViewportNum() + //这个是动态反射的视口
+		1 + // 阴影的视口
 		InViewportOffset);
 	//CD3DX12_CPU_DESCRIPTOR_HANDLE Handle = CD3DX12_CPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetCPUDescriptorHandleForHeapStart());
 	//ViewportConstantBufferView.BuildConstantBuffer(Handle, 1, GetDrawMeshObjectCount() + GetDrawLightObjectCount());
@@ -223,6 +225,20 @@ void FGeometryMap::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryD
 	}
 }
 
+void FGeometryMap::InitDynamicShadowMap(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState)
+{
+	DynamicShadowMap.Init(InGeometryMap, InDirectXPiepelineState);
+}
+
+void FGeometryMap::BuildShadowMap()
+{
+	DynamicShadowMap.BuildViewport(XMFLOAT3(0.0f, 0.0f, 0.f));
+
+	//DynamicShadowMap.BuildDepthStencilDescriptorHandle();
+
+	DynamicShadowMap.BuildRenderTargetDescriptor();
+}
+
 void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 {
 	//更新shader中的灯光 常量缓冲区
@@ -241,6 +257,24 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 				{
 					lightTransformation.SceneLight[i].LightDirection = ParallelLightComponent->GetForward();
 					lightTransformation.SceneLight[i].LightType = (int)ELightType::ParallelLight;
+
+
+					DynamicShadowMap.BuildParallelLightMatrix(XMFLOAT3(0.0f, 0.0f, 0.f), ParallelLightComponent->GetForward(), 200.0f);
+					XMFLOAT4X4 ProjectMatrixfloat = {}, ViewMatrixfloat = {};
+					DynamicShadowMap.GetViewportMatrix(ViewMatrixfloat, ProjectMatrixfloat);
+					XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ProjectMatrixfloat);
+					XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewMatrixfloat);
+					XMMATRIX Transform = {
+						0.5f,0.0f,0.0f,0.0f,
+						0.0f,-0.5f,0.0f,0.0f,
+						0.0f,0.0f,1.0f,0.0f,
+						0.5f,0.5f,0.0f,1.0f
+					};
+					//切记需要转置，，，主列的矩阵无法乘主行的矩阵,,,这里得到的因为在片元着色器里面的值，所以也是ndc空间下[-1, 1],需要转成[0, 1]
+					// 我看这里应该不对，明天必须解决这个
+					XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix * Transform;
+					
+					//XMStoreFloat4x4(&lightTransformation.SceneLight[i].ViewProjectionMatrix, ViewProjection);
 				}
 				break;
 			case ELightType::PointLight:
@@ -327,6 +361,11 @@ void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime)
 
 }
 
+void FGeometryMap::UpdateShadowMapShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo)
+{
+	DynamicShadowMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo);
+}
+
 void FGeometryMap::PreDraw(float DeltaTime)
 {
 	DescriptorHeap.PreDraw(DeltaTime);
@@ -386,6 +425,11 @@ void FGeometryMap::DrawCubeMapTexture(float DeltaTime)
 	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
 	Handle.Offset(GetDrawTextureObjectCount(), HandleSize);
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, Handle);
+}
+
+void FGeometryMap::DrawShadowMapTexture(float DeltaTime)
+{
+	DynamicShadowMap.DrawShadowMapTexture(DeltaTime);
 }
 
 bool FGeometryMap::IsStartUpFog()

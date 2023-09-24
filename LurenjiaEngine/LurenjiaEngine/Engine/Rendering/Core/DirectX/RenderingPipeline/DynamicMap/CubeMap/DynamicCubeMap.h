@@ -35,10 +35,11 @@ public:
 	virtual void BuildDepthStencilView();
 
 	virtual void BuildRenderTargetDescriptor();
-	virtual void BuildShaderSourceDescriptor();
+
+	virtual void BuildShaderSourceView();
 
 public:
-	void SetCubeMapViewportPosition(const XMFLOAT3& InCenterPoint);
+	void SetViewportPosition(const XMFLOAT3& InCenterPoint);
 	bool IsExitDynamicReflectionMesh();
 
 protected:

@@ -16,15 +16,17 @@ public:
 
 	virtual void BuildResource() override;
 
+
 	// 这个handle还没写，也就是ShaderResourceDescriptorHandle_CPU没赋值
 	virtual void BuildShaderResourceDescriptorHandle() override;
 	virtual void BuildShaderResourceView() override;
 
-	// 这个handle还没写，也就是DSVDescriptorHandle没赋值
 	virtual void BuildDepthStencilDescriptorHandle() override;
 	virtual void BuildDepthStencilView() override;
 
 	virtual void ResetRenderTarget(UINT InWidth, UINT InHeight) override;
+public:
+	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE& GetDepthStencilDescriptor() { return DSVDescriptorHandle; }
 
 protected:
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptorHandle;

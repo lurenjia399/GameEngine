@@ -19,6 +19,8 @@ struct FLight
 	float		ConicalOuterCorner;     //聚光灯锥形外角，弧度制
 	int			XX;                     //占位
 	int			XX2;                    //占位
+
+	XMFLOAT4X4	ViewProjectionMatrix;	//灯光的视口投影矩阵，用来算shadowmap的
 };
 
 

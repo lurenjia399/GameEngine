@@ -55,7 +55,8 @@ struct MaterialConstantBuffer
     float4x4 TransformInformation;
 };
 StructuredBuffer<MaterialConstantBuffer> AMaterials : register(t0, space1); //所有材质数组 //rootsignature中4参数
-Texture2D SimpleTexture2DMap[MAPCOUNT] : register(t1); //所有贴图数组     //rootsignature中5参数
+Texture2D SimpleTexture2DMap[MAPCOUNT] : register(t2); //所有贴图数组     //rootsignature中5参数
+Texture2D SimpleShadowMap : register(t1); //阴影贴图     //rootsignature中5参数
 
 TextureCube SampleTextureCubeMap : register(t0); //rootsignature中6参数
 

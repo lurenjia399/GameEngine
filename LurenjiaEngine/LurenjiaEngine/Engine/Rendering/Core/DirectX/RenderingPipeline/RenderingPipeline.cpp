@@ -91,12 +91,18 @@ void FRenderingPipeline::BuildPipeline()
 		DynamicCubeMap.BuildViewport(XMFLOAT3(0.f, 5.f, 2.f)); // 那个测试球的位置
 
 		//构建深度模板描述符句柄（记住先后顺序，先构建句柄然后在构建描述符）
-		DynamicCubeMap.BuildDepthStencilDescriptorHandle();
+		//DynamicCubeMap.BuildDepthStencilDescriptorHandle();
 		//构建深度模板描述符
-		DynamicCubeMap.BuildDepthStencilView();
+		//DynamicCubeMap.BuildDepthStencilView();
 
 		//构建RTV和SRV
 		DynamicCubeMap.BuildRenderTargetDescriptor();
+	}
+
+	{
+		// 初始化阴影
+		GeometryMap.InitDynamicShadowMap(&GeometryMap, &DirectXPiepelineState);
+		GeometryMap.BuildShadowMap();
 	}
 
 	//构建pso
@@ -117,6 +123,9 @@ void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo
 	GeometryMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo, 0);
 	//更新雾气的常量缓冲区
 	GeometryMap.UpdateFogConstantBufferView(DeltaTime);
+
+	//更新阴影的常量缓冲区
+	GeometryMap.UpdateShadowMapShaderResourceView(DeltaTime, ViewportInfo);
 }
 
 void FRenderingPipeline::PreDraw(float DeltaTime)

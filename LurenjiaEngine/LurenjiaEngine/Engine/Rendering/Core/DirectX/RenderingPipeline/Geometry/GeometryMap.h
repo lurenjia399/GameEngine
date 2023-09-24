@@ -7,6 +7,7 @@
 #include "../DescriptorHeap/DirectXDescriptorHeap.h"
 #include "../ConstantBuffer/DirectXConstBufferView.h"
 #include "../../../../../Component/Sky/FogComponent.h"
+#include "../DynamicMap/ShadowMap/DynamicShadowMap.h"
 
 
 struct FGeometry : public IDirectXDeviceInterface_struct
@@ -42,6 +43,7 @@ struct FGeometryMap : public IDirectXDeviceInterface_struct
 	friend class FRenderingLayer;
 	friend class FDynamicCubeMap;
 	friend class FCubeMapRenderTarget;
+	friend class FDynamicShadowMap;
 public:
 
 	FGeometryMap();
@@ -71,9 +73,13 @@ public:
 	void UpdateMaterialShaderResourceView(float DeltaTime);
 	void UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo, UINT InCBVOffset);
 	void UpdateFogConstantBufferView(float DeltaTime);
+	void UpdateShadowMapShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 
 	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InMeshRenderingData);
+
+	void InitDynamicShadowMap(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
+	void BuildShadowMap();
 
 	void PreDraw(float DeltaTime);
 	void Draw(float DeltaTime);
@@ -85,6 +91,7 @@ public:
 	void DrawViewport(float DeltaTime);
 	void Draw2DTexture(float DeltaTime);
 	void DrawCubeMapTexture(float DeltaTime);
+	void DrawShadowMapTexture(float DeltaTime);
 public:
 	bool IsStartUpFog();
 public:
@@ -104,4 +111,6 @@ private:
 	std::vector<CMaterial*> Materials;
 
 	std::vector<CMeshComponent*> DynamicReflectionMeshComponents;
+
+	FDynamicShadowMap DynamicShadowMap;
 };

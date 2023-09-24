@@ -9,6 +9,7 @@
 #include "DynamicMap/CubeMap/DynamicCubeMap.h"
 
 
+
 class FRenderingPipeline : public IDirectXDeviceInterface
 {
 public:
@@ -30,4 +31,6 @@ protected:
 	FDirectXPiepelineState DirectXPiepelineState;			//pso
 
 	FDynamicCubeMap DynamicCubeMap;							//∂ØÃ¨∑¥…‰
+
+						//“ı”∞
 };
