@@ -24,7 +24,7 @@ public:
 	void CreateRenderTarget();
 
 protected:
-	std::unique_ptr<FRenderTarget> RenderTarget;
+	std::shared_ptr<FRenderTarget> RenderTarget;
 
 	FGeometryMap* GeometryMap;
 	FDirectXPiepelineState* PSO;
@@ -40,7 +40,7 @@ void FDynamicMap::CreateRenderTarget()
 {
 	if (!RenderTarget)
 	{
-		RenderTarget = std::make_unique<T>();
+		RenderTarget = std::make_shared<T>();
 	}
 	
 }

@@ -15,6 +15,9 @@ public:
 	virtual void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState) override;
 	virtual void PreDraw(float DeltaTime) override;
 	virtual void Draw(float DeltaTime) override;
+
+public:
+	virtual void BuildDepthStencilDescriptorHandle();
 };
 
 #endif

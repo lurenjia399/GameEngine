@@ -29,6 +29,9 @@ public:
 	virtual void BuildShaderResourceDescriptorHandle() override;
 	virtual void BuildShaderResourceView() override;
 
+	virtual void BuildDepthStencilDescriptorHandle() override;
+	virtual void BuildDepthStencilView() override;
+
 	void BuildRenderTargetDescriptorHandle();
 	void BuildRenderTargetView();
 
@@ -37,9 +40,13 @@ public:
 public:
 	// 给外部提供的接口
 	FORCEINLINE std::vector<CD3DX12_CPU_DESCRIPTOR_HANDLE>& GetRenderTargetDescriptor() { return RenderTargetDescriptor; }
+	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE& GetDepthStencilDescriptor() { return DSVDescriptorHandle; }
 	
 private:
 	std::vector<CD3DX12_CPU_DESCRIPTOR_HANDLE> RenderTargetDescriptor;
+
+	ComPtr<ID3D12Resource> DepthStencilResource;
+	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptorHandle;
 };
 
 

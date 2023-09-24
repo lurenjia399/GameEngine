@@ -82,6 +82,8 @@ void FShadowMapRenderTarget::BuildShaderResourceView()
 
 void FShadowMapRenderTarget::BuildDepthStencilDescriptorHandle()
 {
+	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	DSVDescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(), 1 + 1, size);
 }
 
 void FShadowMapRenderTarget::BuildDepthStencilView()

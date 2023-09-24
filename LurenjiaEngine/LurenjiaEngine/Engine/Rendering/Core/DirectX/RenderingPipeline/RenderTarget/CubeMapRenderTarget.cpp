@@ -14,6 +14,51 @@ void FCubeMapRenderTarget::Init(UINT InWidth, UINT InHeight, DXGI_FORMAT InForma
 	BuildRenderTargetView();
 }
 
+void FCubeMapRenderTarget::BuildDepthStencilDescriptorHandle()
+{
+	// 通过d3d的驱动，获取DSV描述符的大小
+	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_DSV);
+	// 获取DSV描述符堆的首地址，然后向后偏移1位（因为程序中有两个DSV，一个是最终的深度模板视图，一个是CubeMap的深度模板视图）
+	DSVDescriptorHandle = CD3DX12_CPU_DESCRIPTOR_HANDLE(GetDSVHeap()->GetCPUDescriptorHandleForHeapStart(), 1, size);
+}
+
+void FCubeMapRenderTarget::BuildDepthStencilView()
+{
+	// 资源描述
+	D3D12_RESOURCE_DESC ResourceDesc = {};
+	ResourceDesc.Width = Width;
+	ResourceDesc.Height = Height;
+	ResourceDesc.Alignment = 0;//资源的对齐方式
+	ResourceDesc.MipLevels = 1;
+	ResourceDesc.DepthOrArraySize = 1;
+	ResourceDesc.Dimension = D3D12_RESOURCE_DIMENSION::D3D12_RESOURCE_DIMENSION_TEXTURE2D;
+	ResourceDesc.SampleDesc.Count = 1;
+	ResourceDesc.SampleDesc.Quality = 0;
+	ResourceDesc.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+	ResourceDesc.Flags = D3D12_RESOURCE_FLAGS::D3D12_RESOURCE_FLAG_ALLOW_DEPTH_STENCIL;
+	ResourceDesc.Layout = D3D12_TEXTURE_LAYOUT::D3D12_TEXTURE_LAYOUT_UNKNOWN;
+
+	//depthstencilbuffer的清除规则描述
+	D3D12_CLEAR_VALUE ClearValue;
+	ClearValue.DepthStencil.Depth = 1.f;
+	ClearValue.DepthStencil.Stencil = 0;
+	ClearValue.Format = DXGI_FORMAT::DXGI_FORMAT_D24_UNORM_S8_UINT;
+
+	D3D12_HEAP_PROPERTIES HeapProperties = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_DEFAULT);
+	//gpu资源都存储在堆中
+	//创建一个深度模板缓冲区和一个堆，，，将此缓冲区提交到堆中
+	GetD3dDevice()->CreateCommittedResource(
+		&HeapProperties,
+		D3D12_HEAP_FLAG_NONE,
+		&ResourceDesc,
+		D3D12_RESOURCE_STATE_DEPTH_WRITE,
+		&ClearValue,
+		IID_PPV_ARGS(DepthStencilResource.GetAddressOf()));
+
+	//创建深度模板资源描述符
+	GetD3dDevice()->CreateDepthStencilView(DepthStencilResource.Get(), nullptr, DSVDescriptorHandle);
+}
+
 void FCubeMapRenderTarget::BuildRenderTargetDescriptorHandle()
 {
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);

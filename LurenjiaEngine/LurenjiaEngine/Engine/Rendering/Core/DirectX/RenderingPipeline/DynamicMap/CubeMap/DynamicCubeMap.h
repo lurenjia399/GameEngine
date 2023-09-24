@@ -30,9 +30,10 @@ public:
 	virtual void Draw(float DeltaTime) override;
 
 	virtual void BuildViewport(const XMFLOAT3& InCenterPoint);//构建摄像机
+	
+	virtual void BuildDepthStencilDescriptorHandle();
 	virtual void BuildDepthStencilView();
 
-	virtual void BuildDepthStencilDescriptorHandle();
 	virtual void BuildRenderTargetDescriptor();
 	virtual void BuildShaderSourceDescriptor();
 
@@ -43,7 +44,4 @@ public:
 protected:
 
 	std::vector<AClientViewport*> Viewport;//我们的视口，也就是6个摄像机
-
-	ComPtr<ID3D12Resource> DepthStencilResource;
-	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptorHandle;
 };

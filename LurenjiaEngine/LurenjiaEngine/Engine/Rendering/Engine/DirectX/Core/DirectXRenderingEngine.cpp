@@ -433,7 +433,7 @@ bool CDirectXRenderingEngine::InitDirect3D()
 	//create Depth stencil View
 	D3D12_DESCRIPTOR_HEAP_DESC DSVDescriptorHeapDesc;
 	DSVDescriptorHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_DSV;
-	DSVDescriptorHeapDesc.NumDescriptors = 1 + 1;// 两个描述符，1个是最终的DSV，1个是cubemap的DSV
+	DSVDescriptorHeapDesc.NumDescriptors = 1 + 1 + 1;// 描述符堆里面有几个描述符，1个是最终的DSV，1个是cubemap的DSV, 1格式shadowmap的DSV
 	DSVDescriptorHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_NONE;
 	DSVDescriptorHeapDesc.NodeMask = 0;
 	ANALYSIS_HRESULT(D3dDevice->CreateDescriptorHeap(&DSVDescriptorHeapDesc, IID_PPV_ARGS(DSVHeap.GetAddressOf())));
