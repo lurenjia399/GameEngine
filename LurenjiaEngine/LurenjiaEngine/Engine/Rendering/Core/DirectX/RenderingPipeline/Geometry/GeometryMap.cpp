@@ -259,21 +259,22 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 					lightTransformation.SceneLight[i].LightType = (int)ELightType::ParallelLight;
 
 
-					DynamicShadowMap.BuildParallelLightMatrix(XMFLOAT3(0.0f, 0.0f, 0.f), ParallelLightComponent->GetForward(), 200.0f);
-					XMFLOAT4X4 ProjectMatrixfloat = {}, ViewMatrixfloat = {};
-					DynamicShadowMap.GetViewportMatrix(ViewMatrixfloat, ProjectMatrixfloat);
-					XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ProjectMatrixfloat);
-					XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewMatrixfloat);
-					XMMATRIX Transform = {
-						0.5f,0.0f,0.0f,0.0f,
-						0.0f,-0.5f,0.0f,0.0f,
-						0.0f,0.0f,1.0f,0.0f,
-						0.5f,0.5f,0.0f,1.0f
-					};
-					//切记需要转置，，，主列的矩阵无法乘主行的矩阵,,,这里得到的因为在片元着色器里面的值，所以也是ndc空间下[-1, 1],需要转成[0, 1]
-					// 我看这里应该不对，明天必须解决这个
-					XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix * Transform;
-					
+					//DynamicShadowMap.BuildParallelLightMatrix(XMFLOAT3(0.0f, 0.0f, 0.f), ParallelLightComponent->GetForward(), 200.0f);
+					//XMFLOAT4X4 ProjectMatrixfloat = {}, ViewMatrixfloat = {};
+					//DynamicShadowMap.GetViewportMatrix(ViewMatrixfloat, ProjectMatrixfloat);
+					//XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ProjectMatrixfloat);
+					//XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewMatrixfloat);
+					//XMMATRIX Transform = {
+					//	0.5f,0.0f,0.0f,0.0f,
+					//	0.0f,-0.5f,0.0f,0.0f,
+					//	0.0f,0.0f,1.0f,0.0f,
+					//	0.5f,0.5f,0.0f,1.0f
+					//};
+					//// dx的uv坐标在屏幕左上角u朝向右，v朝向下
+					////切记需要转置，，，主列的矩阵无法乘主行的矩阵,,,这里得到的因为在片元着色器里面的值，所以也是ndc空间下[-1, 1],需要转成[0, 1]
+					//// 我看这里应该不对，明天必须解决这个
+					//XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix * Transform;
+					//
 					//XMStoreFloat4x4(&lightTransformation.SceneLight[i].ViewProjectionMatrix, ViewProjection);
 				}
 				break;
@@ -379,6 +380,8 @@ void FGeometryMap::Draw(float DeltaTime)
 	Draw2DTexture(DeltaTime);
 	DrawCubeMapTexture(DeltaTime);
 	DrawMaterial(DeltaTime);
+
+	//DynamicShadowMap.Draw(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)

@@ -101,8 +101,8 @@ void FRenderingPipeline::BuildPipeline()
 
 	{
 		// 初始化阴影
-		GeometryMap.InitDynamicShadowMap(&GeometryMap, &DirectXPiepelineState);
-		GeometryMap.BuildShadowMap();
+		//GeometryMap.InitDynamicShadowMap(&GeometryMap, &DirectXPiepelineState);
+		//GeometryMap.BuildShadowMap();
 	}
 
 	//构建pso
@@ -125,7 +125,7 @@ void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo
 	GeometryMap.UpdateFogConstantBufferView(DeltaTime);
 
 	//更新阴影的常量缓冲区
-	GeometryMap.UpdateShadowMapShaderResourceView(DeltaTime, ViewportInfo);
+	//GeometryMap.UpdateShadowMapShaderResourceView(DeltaTime, ViewportInfo);
 }
 
 void FRenderingPipeline::PreDraw(float DeltaTime)
@@ -143,6 +143,7 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 
 	// 清掉rtv上面的东西
 	ClearMainSwapChain();
+
 
 	// 渲染动态反射
 	if (DynamicCubeMap.IsExitDynamicReflectionMesh())

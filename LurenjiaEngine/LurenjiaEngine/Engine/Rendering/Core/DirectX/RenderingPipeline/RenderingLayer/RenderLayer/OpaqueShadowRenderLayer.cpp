@@ -1,4 +1,5 @@
 #include "OpaqueShadowRenderLayer.h"
+#include "../RenderLayerManage.h"
 
 FOpaqueShadowRenderLayer::FOpaqueShadowRenderLayer()
 {
@@ -56,7 +57,10 @@ void FOpaqueShadowRenderLayer::Draw(float DeltaTime)
 {
 	DirectXPiepelineState->isTemporaryResetPSO((int)EPiepelineStateType::SHADOW, true);
 
-	super::Draw(DeltaTime);
+	//super::Draw(DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, DeltaTime);
 
 	//每次渲染完当前层级后，需要还原pso的状态
 	RestorePSO();

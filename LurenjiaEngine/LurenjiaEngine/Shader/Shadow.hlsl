@@ -27,7 +27,7 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     return MV_out;
 }
 
-float4 PixelShaderMain(MeshVertexOut mvOut)
+float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
     return float4(1.0f, 1.0f, 1.0f, 1.0f);
 

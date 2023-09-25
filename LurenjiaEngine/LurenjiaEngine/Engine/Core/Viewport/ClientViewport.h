@@ -14,13 +14,13 @@ class AClientViewport : public AActor, public FViewport
 
 public:
 	virtual void BulidViewMatrix(float DeltaTime);
+	virtual void BuildOrthMatrix(float InRadius, const XMFLOAT3& InTargetPoint);
 	virtual void Tick(float DeltaTime) override; 
 public:
 	AClientViewport();
 	// …Ë÷√ ”◊∂
 	void SetFrustum(float InYFOV, float InAspect, float InZNear, float InZFar);
 	void FaceTarget(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPosition, const XMFLOAT3& InUpDirection = XMFLOAT3(0.f, 0.f, 1.f));
-
 
 	FORCEINLINE float GetFOV() const { return YFOV; }
 	FORCEINLINE float GetAspect() const { return Aspect; }

@@ -32,5 +32,4 @@ protected:
 
 	FDynamicCubeMap DynamicCubeMap;							//∂ØÃ¨∑¥…‰
 
-						//“ı”∞
 };

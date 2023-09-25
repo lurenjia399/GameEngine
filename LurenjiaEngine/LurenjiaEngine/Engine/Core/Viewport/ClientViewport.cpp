@@ -38,6 +38,27 @@ void AClientViewport::BulidViewMatrix(float DeltaTime)
 	XMStoreFloat4x4(&ViewMatrix, rotateMatrix * TranslateMatrix);
 }
 
+void AClientViewport::BuildOrthMatrix(float InRadius, const XMFLOAT3& InTargetPoint)
+{
+	XMVECTOR TargetPosition = XMLoadFloat3(&InTargetPoint);
+	XMMATRIX ViewMatrix_xm = XMLoadFloat4x4(&ViewMatrix);
+
+	XMFLOAT3 ViewCenter;
+	XMStoreFloat3(&ViewCenter, XMVector3TransformCoord(TargetPosition, ViewMatrix_xm));
+
+	float ViewLeft = ViewCenter.y - InRadius;
+	float ViewRight = ViewCenter.y + InRadius;
+	float ViewBottom = ViewCenter.z - InRadius;
+	float ViewTop = ViewCenter.z + InRadius;
+	float NearZ = ViewCenter.x - InRadius;
+
+
+	float FarZ = ViewCenter.x + InRadius;
+	XMMATRIX orthoMatrix_xm = XMMatrixOrthographicOffCenterLH(ViewLeft, ViewRight, ViewBottom, ViewTop, NearZ, FarZ);
+	XMFLOAT4X4 OrthoMatrix;
+	XMStoreFloat4x4(&OrthoMatrix, orthoMatrix_xm);
+}
+
 void AClientViewport::Tick(float DeltaTime)
 {
 	BulidViewMatrix(DeltaTime);

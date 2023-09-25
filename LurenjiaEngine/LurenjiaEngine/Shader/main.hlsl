@@ -45,6 +45,9 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
     MaterialConstantBuffer currMaterial = AMaterials[MaterialIndex]; //当前模型的材质
+    
+    //return float4(SimpleShadowMap.Sample(TextureSampler, mvOut.TexCoord).rrr, 1.0f);
+    
     int MaterialType = currMaterial.MaterialType;
     if(MaterialType == 99)//默认，使用材质本身的颜色
     {
