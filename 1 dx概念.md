@@ -1,4 +1,4 @@
-# 1 DX12的一些小概念
+# DX的一些概念
 
 ##  CommandAllocator  GraphicsCommandList  CommandQueue
 
