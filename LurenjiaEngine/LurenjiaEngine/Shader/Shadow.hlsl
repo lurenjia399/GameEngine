@@ -21,14 +21,12 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     MV_out.Position = mul(mvp, float4(mv.Position, 1.0f)); //经过mvp变换到齐次剪裁空间
     
     float4 worldTexTransformation = mul(ObjectTextureTransformation, float4(mv.TexCoord, 0.f, 1.f));
-    MV_out.TexCoord = mul(AMaterials[MaterialIndex].TransformInformation, worldTexTransformation).xy;
+    MV_out.TexCoord = mul(material.TransformInformation, worldTexTransformation).xy;
     
     
     return MV_out;
 }
 
-float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
+void PixelShaderMain(MeshVertexOut mvOut)
 {
-    return float4(1.0f, 1.0f, 1.0f, 1.0f);
-
 }

@@ -10,6 +10,7 @@
 #include "../../../../Test/Material/MaterialTest.h"
 #include "../../../../Test/RenderLayer/TransparentTest.h"
 #include "../../../../Test/Reflect/ReflectTest.h"
+#include "../../../../Test/ShadowMap/ShadowMapTest.h"
 #include "../../../../Mesh/BoxMesh.h"
 #include "../../../../Actor/Sky/Fog.h"
 
@@ -68,27 +69,27 @@ int CDirectXRenderingEngine::PostInit()
 	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
 	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
 	
-	//cubeMap
-	if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
-	{
-		CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
-		CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
-		CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
-		if (CMaterial* CubeMaterial = new CMaterial())
-		{
-			CubeMaterial->ResetGuid("CubeMaterial");//给创建的材质设置Guid
-			CubeMaterial->SetMaterialTextureMapKey("x1_CubeMap");
-			CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
-			CubeMesh->SetSubMaterials(0, CubeMaterial);
-		}
-	}
-	//平行光
-	if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
-	{
-		ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
-		ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
-		ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
-	}
+	//cubeMap,在阴影测试的时候不用打开,之后需要将这些都调整到测试项里面
+	//if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
+	//{
+	//	CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
+	//	CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
+	//	CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
+	//	if (CMaterial* CubeMaterial = new CMaterial())
+	//	{
+	//		CubeMaterial->ResetGuid("CubeMaterial");//给创建的材质设置Guid
+	//		CubeMaterial->SetMaterialTextureMapKey("x1_CubeMap");
+	//		CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
+	//		CubeMesh->SetSubMaterials(0, CubeMaterial);
+	//	}
+	//}
+	//平行光,在阴影测试的时候不用打开,之后需要将这些都调整到测试项里面
+	//if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+	//{
+	//	ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
+	//	ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
+	//	ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
+	//}
 	//if (AParallelLight* ParallelLight2 = World->CreateActor<AParallelLight>("AParallelLight2"))
 	//{
 	//	ParallelLight2->SetLightIntensity(XMFLOAT3(1.f, 1.f, 1.f));
@@ -116,7 +117,7 @@ int CDirectXRenderingEngine::PostInit()
 	//	SpotLight->SetConicalOuterCorner(70.f);
 	//}
 	
-	//雾
+	//雾,这玩意还必须有，要不然有个报错，之后必须把这改掉
 	if (AFog* Fog = World->CreateActor<AFog>("AFog"))
 	{
 		Fog->SetFogColor(fvector_color(0.7f));
@@ -129,7 +130,8 @@ int CDirectXRenderingEngine::PostInit()
 
 	//MaterialTest::BuildMaterialTestData();
 	//TextureTest::BuildTextureTestData();
-	ReflectTest::BuildReflectTestData();
+	//ReflectTest::BuildReflectTestData();
+	ShadowMapTest::BuildShadowMapTestData();
 	//TransparentTest::BuildTransparentTestData();
 	
 	

@@ -55,15 +55,17 @@ void FOpaqueShadowRenderLayer::BuildPSO()
 
 void FOpaqueShadowRenderLayer::Draw(float DeltaTime)
 {
+	// 阴影在渲染的时候，首先设置自己的pso
+	// 然后开始渲染mesh，
+	// 还原pso
 	DirectXPiepelineState->isTemporaryResetPSO((int)EPiepelineStateType::SHADOW, true);
 
-	//super::Draw(DeltaTime);
-	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
-	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
-	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->DrawAllObjectsByLayer(DeltaTime, (int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
+	FRenderLayerManage::GetRenderLayerManage()->DrawAllObjectsByLayer(DeltaTime, (int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT);
+	FRenderLayerManage::GetRenderLayerManage()->DrawAllObjectsByLayer(DeltaTime, (int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT);
 
 	//每次渲染完当前层级后，需要还原pso的状态
-	RestorePSO();
+	//RestorePSO();
 
 }
 

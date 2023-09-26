@@ -13,6 +13,7 @@ FDynamicShadowMap::FDynamicShadowMap()
 
 void FDynamicShadowMap::UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo)
 {
+	Super::UpdateViewportConstantBufferView(DeltaTime, ViewportInfo);
 	//更新视口
 	if (Viewport)
 	{
@@ -72,15 +73,12 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 
 	DrawShadowMapTexture(DeltaTime);
 
-	// 设置当前渲染的pso
+	// 渲染阴影层级
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUESHADOW, DeltaTime);
-	//FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
-	//FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
-	//FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT, DeltaTime);
 
-	ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(
+	D3D12_RESOURCE_BARRIER ResourceBarrier2 = CD3DX12_RESOURCE_BARRIER::Transition(
 		ShadowMapRenderTarget->GetRenderTarget(), D3D12_RESOURCE_STATE_DEPTH_WRITE, D3D12_RESOURCE_STATE_GENERIC_READ);
-	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier);
+	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
 }
 
 void FDynamicShadowMap::BuildViewport(const XMFLOAT3& InCenterPoint)
@@ -113,7 +111,7 @@ void FDynamicShadowMap::BuildViewMatrix(float DeltaTime)
 void FDynamicShadowMap::BuildParallelLightMatrix(const XMFLOAT3& InTargetPoint, const XMFLOAT3& InDirection, float InRadius)
 {
 	// 摄像机位置
-	XMFLOAT3 ViewportPosition = XMFLOAT3(-InDirection.x * InRadius, -InDirection.y * InRadius, -InDirection.z * InRadius);
+	XMFLOAT3 ViewportPosition = XMFLOAT3(0.0f, -30.0f, 10.f);
 	Viewport->SetPosition(ViewportPosition);
 	
 	// 目标点

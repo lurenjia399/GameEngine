@@ -101,8 +101,8 @@ void FRenderingPipeline::BuildPipeline()
 
 	{
 		// 初始化阴影
-		//GeometryMap.InitDynamicShadowMap(&GeometryMap, &DirectXPiepelineState);
-		//GeometryMap.BuildShadowMap();
+		GeometryMap.InitDynamicShadowMap(&GeometryMap, &DirectXPiepelineState);
+		GeometryMap.BuildShadowMap();
 	}
 
 	//构建pso
@@ -123,9 +123,8 @@ void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo
 	GeometryMap.UpdateViewportConstantBufferView(DeltaTime, ViewportInfo, 0);
 	//更新雾气的常量缓冲区
 	GeometryMap.UpdateFogConstantBufferView(DeltaTime);
-
 	//更新阴影的常量缓冲区
-	//GeometryMap.UpdateShadowMapShaderResourceView(DeltaTime, ViewportInfo);
+	GeometryMap.UpdateShadowMapShaderResourceView(DeltaTime, ViewportInfo);
 }
 
 void FRenderingPipeline::PreDraw(float DeltaTime)
@@ -138,11 +137,13 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	// 向命令列表中添加 根签名
 	DirectXRootSignature.PreDraw(DeltaTime);
 
+	// 清掉rtv上面的东西
+	ClearMainSwapChain();
+
 	// 这个方法就是绑定跟签名，感觉需要改下名字更好
 	GeometryMap.Draw(DeltaTime);
 
-	// 清掉rtv上面的东西
-	ClearMainSwapChain();
+	
 
 
 	// 渲染动态反射

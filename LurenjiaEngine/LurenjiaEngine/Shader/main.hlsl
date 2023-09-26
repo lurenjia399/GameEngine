@@ -266,10 +266,10 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     
     switch (currMaterial.MaterialType)
     {
-        case 2:
-        case 3:
-        case 9:
-        case 15:
+        case 2:  //Phone
+        case 3:  //BlinnPhone
+        case 9:  //Back
+        case 15: //Transparency
 		{
 			//º∆À„∑¥…‰
             float3 ReflectColor = GetReflectionColor(currMaterial, N, V, 5, (float3x3) WorldMatrix);

@@ -55,8 +55,7 @@ void AClientViewport::BuildOrthMatrix(float InRadius, const XMFLOAT3& InTargetPo
 
 	float FarZ = ViewCenter.x + InRadius;
 	XMMATRIX orthoMatrix_xm = XMMatrixOrthographicOffCenterLH(ViewLeft, ViewRight, ViewBottom, ViewTop, NearZ, FarZ);
-	XMFLOAT4X4 OrthoMatrix;
-	XMStoreFloat4x4(&OrthoMatrix, orthoMatrix_xm);
+	XMStoreFloat4x4(&ProjectMatrix, orthoMatrix_xm);
 }
 
 void AClientViewport::Tick(float DeltaTime)

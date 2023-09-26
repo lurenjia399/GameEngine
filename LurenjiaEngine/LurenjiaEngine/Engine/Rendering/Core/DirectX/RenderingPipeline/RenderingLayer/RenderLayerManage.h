@@ -31,7 +31,7 @@ public:
 	void PostDraw(float DeltaTime);
 	// 找到层级中某个object
 	void DrawObjectByLayer(float DeltaTime, int InLayer, const CMeshComponent* InKey);
-	// draw某个层级中的所有Object，这个和draw有区别么，目前看上去没区别
+	// draw某个层级中的所有Object，这个和draw有区别么，区别是Draw必须要使用layer对应的pso，而这个不用
 	void DrawAllObjectsByLayer(float DeltaTime, int InLayer); 
 	// reset某个层级的pso
 	void ResetPSO(int InLayer);
