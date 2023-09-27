@@ -232,9 +232,8 @@ void FGeometryMap::InitDynamicShadowMap(FGeometryMap* InGeometryMap, FDirectXPie
 
 void FGeometryMap::BuildShadowMap()
 {
-	DynamicShadowMap.BuildViewport(XMFLOAT3(0.0f, 0.0f, 0.f));
-
-	//DynamicShadowMap.BuildDepthStencilDescriptorHandle();
+	// 首先创建出阴影需要的摄像机
+	DynamicShadowMap.BuildViewport();
 
 	DynamicShadowMap.BuildRenderTargetDescriptor();
 }
@@ -259,7 +258,7 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 					lightTransformation.SceneLight[i].LightType = (int)ELightType::ParallelLight;
 
 
-					DynamicShadowMap.BuildParallelLightMatrix(XMFLOAT3(0.0f, 0.0f, 0.f), ParallelLightComponent->GetForward(), 170.0f);
+					DynamicShadowMap.BuildViewport(LightComponent->GetPosition(), XMFLOAT3(0.0f, 0.0f, 0.f), 100.0f);
 
 					XMFLOAT4X4 ProjectMatrixfloat = {}, ViewMatrixfloat = {};
 					DynamicShadowMap.GetViewportMatrix(ViewMatrixfloat, ProjectMatrixfloat);
@@ -382,7 +381,7 @@ void FGeometryMap::Draw(float DeltaTime)
 	DrawCubeMapTexture(DeltaTime);
 	DrawMaterial(DeltaTime);
 
-	//DynamicShadowMap.Draw(DeltaTime);
+	DynamicShadowMap.Draw(DeltaTime);
 }
 
 void FGeometryMap::PostDraw(float DeltaTime)

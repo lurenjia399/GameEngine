@@ -46,7 +46,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
     MaterialConstantBuffer currMaterial = AMaterials[MaterialIndex]; //当前模型的材质
     
-    //return float4(SimpleShadowMap.Sample(TextureSampler, mvOut.TexCoord).rrr, 1.0f);
+    
     
     int MaterialType = currMaterial.MaterialType;
     if(MaterialType == 99)//默认，使用材质本身的颜色
@@ -59,6 +59,9 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     }else if(MaterialType == 97)
     {
         return float4(mvOut.Normal, 1.0f);
+    }else if(MaterialType == 16)
+    {
+        return float4(SimpleShadowMap.Sample(TextureSampler, mvOut.TexCoord).rrr, 1.0f);
     }
     
     float4 AmbientLight = { 0.35f, 0.35f, 0.35f, 1.0f };//环境光

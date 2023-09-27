@@ -51,9 +51,8 @@ void AClientViewport::BuildOrthMatrix(float InRadius, const XMFLOAT3& InTargetPo
 	float ViewBottom = ViewCenter.z - InRadius;
 	float ViewTop = ViewCenter.z + InRadius;
 	float NearZ = ViewCenter.x - InRadius;
-
-
 	float FarZ = ViewCenter.x + InRadius;
+
 	XMMATRIX orthoMatrix_xm = XMMatrixOrthographicOffCenterLH(ViewLeft, ViewRight, ViewBottom, ViewTop, NearZ, FarZ);
 	XMStoreFloat4x4(&ProjectMatrix, orthoMatrix_xm);
 }

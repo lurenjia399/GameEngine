@@ -20,6 +20,8 @@ enum class EMaterialType
 	OrenNayar,				//模拟粗糙表面,比如沙漠
 
 	Transparency = 15,		//透明
+	ShadowMap = 16,			//用来接受shadowmap的材质
+	//NOShowMaterial = 17,	//不显示材质
 
 	Normal = 97,			//局部法线
 	WorldNormal = 98,		//世界法线

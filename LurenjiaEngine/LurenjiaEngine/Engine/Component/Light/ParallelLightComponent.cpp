@@ -4,6 +4,7 @@
 CParallelLightComponent::CParallelLightComponent()
 	:LightMeshComponent(nullptr)
 {
+
 	//´´½¨ParallelLightµÄMesh
 	string ParalLelLightPath = "../LurenjiaEngine/Asset/SunMesh.obj";
 	LightMeshComponent = GetMeshManage()->CreateCustomMeshComponent("ParallelLightMeshComponent", ParalLelLightPath);
@@ -23,6 +24,9 @@ CParallelLightComponent::CParallelLightComponent()
 			material->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.f));
 		}
 	}
+#if SHOWLIGHTMESH
+#endif
+	
 
 	SetLightType(ELightType::ParallelLight);
 }

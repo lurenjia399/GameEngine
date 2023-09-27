@@ -170,6 +170,8 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_ALPHATEST, DeltaTime);
+
 
 	// 切换pso用的，放在这合适么?
 	DirectXPiepelineState.Draw(DeltaTime);//用做捕获keyboard 4 5

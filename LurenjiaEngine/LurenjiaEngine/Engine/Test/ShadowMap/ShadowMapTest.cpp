@@ -8,6 +8,8 @@
 #include "../../Actor/Light/ParallelLight.h"
 #include "../../Mesh/BoxMesh.h"
 
+#define SHOWLIGHTMESH 1
+
 namespace ShadowMapTest
 {
 	void ShadowMapTest::BuildShadowMapTestData()
@@ -30,6 +32,7 @@ namespace ShadowMapTest
 			}
 		}
 
+
 		//平行光
 		if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 		{
@@ -38,7 +41,7 @@ namespace ShadowMapTest
 			//ParallelLight->SetRotation(fvector_3d(0.f, 0.f, -90.0f));
 		}
 
-
+		// 平面
 		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("ShadowMapTest::PlaneMesh"))
 		{
 			PlaneMesh->SetMeshComponent("ShadowMapTest::PlaneMeshComponent", 4.f, 3.f, 20, 20, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
@@ -52,6 +55,7 @@ namespace ShadowMapTest
 				PlaneMesh->SetSubMaterials(0, PlaneMaterial);
 			}
 		}
+		// 球阵
 		for (int height = 0; height < 2; ++height)
 		{
 			for (int row = 0; row < 3; ++row)
@@ -79,6 +83,7 @@ namespace ShadowMapTest
 			}
 		}
 		
+		// 球旁边的一个立方体
 		if (ABoxMesh* BoxMesh = World->CreateActor<ABoxMesh>("ShadowMapTest::BoxMesh"))
 		{
 			BoxMesh->SetMeshComponent("ShadowMapTest::BoxMeshComponent", 3, 3, 3);
@@ -88,6 +93,22 @@ namespace ShadowMapTest
 				BoxMeshMaterial->ResetGuid("ShadowMapTest::BoxMeshMaterial");//给创建的材质设置Guid
 				BoxMeshMaterial->SetMaterialType(EMaterialType::Lambert);
 				BoxMesh->SetSubMaterials(0, BoxMeshMaterial);
+			}
+		}
+
+		// 接受shadowmap的平面
+		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("ShadowMapTest::PlaneMesh_shadowmap"))
+		{
+			PlaneMesh->SetMeshComponent("ShadowMapTest::PlaneMeshComponent_shadowmap", 4.f, 3.f, 20, 20, EMeshComponentRenderLayerType::RENDERLAYER_ALPHATEST);
+			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, -20.f, 7.f));
+			PlaneMesh->SetComponentScale(XMFLOAT3(4.f, 4.f, 4.f));
+			PlaneMesh->SetComponentRotation(fvector_3d(0.f, -90.f, 0.f));
+			if (CMaterial* PlaneMaterial = new CMaterial())
+			{
+				PlaneMaterial->ResetGuid("ShadowMapTest::PlaneMateria_shadowmap");
+				PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+				PlaneMaterial->SetMaterialType(EMaterialType::ShadowMap);
+				PlaneMesh->SetSubMaterials(0, PlaneMaterial);
 			}
 		}
 	}

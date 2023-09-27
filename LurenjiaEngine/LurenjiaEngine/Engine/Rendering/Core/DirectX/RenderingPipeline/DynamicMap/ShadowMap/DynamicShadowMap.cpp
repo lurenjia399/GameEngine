@@ -81,14 +81,9 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 	GetGraphicsCommandList()->ResourceBarrier(1, &ResourceBarrier2);
 }
 
-void FDynamicShadowMap::BuildViewport(const XMFLOAT3& InCenterPoint)
+void FDynamicShadowMap::BuildViewport()
 {
 	Viewport = LurenjiaEngine::CreateObject<AClientViewport>("ShadowMapViewport");
-
-	Viewport->SetPosition(InCenterPoint);
-	Viewport->FaceTarget(InCenterPoint, InCenterPoint, InCenterPoint);// 这个朝向没啥用，随便给的值
-	Viewport->SetFrustum(0.5f * XM_PI, 1.f, 0.1f, 10000.f);
-	BuildViewMatrix(30.f);
 }
 
 void FDynamicShadowMap::SetViewportPosition(const XMFLOAT3& InCenterPoint)
@@ -108,13 +103,13 @@ void FDynamicShadowMap::BuildViewMatrix(float DeltaTime)
 	Viewport->BulidViewMatrix(DeltaTime);
 }
 
-void FDynamicShadowMap::BuildParallelLightMatrix(const XMFLOAT3& InTargetPoint, const XMFLOAT3& InDirection, float InRadius)
+void FDynamicShadowMap::BuildViewport(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPoint, float InRadius)
 {
 	// 摄像机位置
-	XMFLOAT3 ViewportPosition = XMFLOAT3(0.0f, -30.0f, 10.f);
+	XMFLOAT3 ViewportPosition = InPosition;
 	Viewport->SetPosition(ViewportPosition);
 	
-	// 目标点
+	// 目标点，这里是确定摄像机的那三个轴
 	Viewport->FaceTarget(ViewportPosition, InTargetPoint);
 
 	// 构建viewMatrix

@@ -21,11 +21,14 @@ public:
 	virtual void Draw(float DeltaTime) override;
 
 
-	void BuildViewport(const XMFLOAT3& InCenterPoint);//构建摄像机
+	// 创建出viewport
+	void BuildViewport();
+	// 创建出viewport的各项参数
+	void BuildViewport(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPoint, float InRadius);
 	void SetViewportPosition(const XMFLOAT3& InCenterPoint);
 	void SetViewportRotation(const fvector_3d& InCenterPoint);
 	void BuildViewMatrix(float DeltaTime);
-	void BuildParallelLightMatrix(const XMFLOAT3& InTargetPoint, const XMFLOAT3& InDirection, float InRadius);
+	
 	void GetViewportMatrix(XMFLOAT4X4& OutViewMatrix, XMFLOAT4X4& OutProjectMatrix);
 
 	void DrawShadowMapTexture(float DeltatTime);

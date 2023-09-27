@@ -21,7 +21,7 @@ FRenderLayerManage::FRenderLayerManage()
 
 	//在初始化renderlayer的时候，首先默认添加一些层级
 	CreateRenderLayer<FBackgroundRenderLayer>();
-	//CreateRenderLayer<FAlphaTestRenderLayer>();
+	CreateRenderLayer<FAlphaTestRenderLayer>();
 	CreateRenderLayer<FOpaqueRenderLayer>();
 	CreateRenderLayer<FTransparentRenderLayer>();
 	CreateRenderLayer<FOpaqueReflectorRenderLayer>();
