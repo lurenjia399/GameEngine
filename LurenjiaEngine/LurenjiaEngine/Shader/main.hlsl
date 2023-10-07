@@ -1,5 +1,6 @@
 #include "Material.hlsl"
 #include "SkyFunction.hlsl"
+#include "ShadowFunction.hlsl"
 
 struct MeshVertexIn
 {
@@ -60,7 +61,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     {
         return float4(mvOut.Normal, 1.0f);
     }else if(MaterialType == 16)
-    {
+    {   // 阴影的深度图
         return float4(SimpleShadowMap.Sample(TextureSampler, mvOut.TexCoord).rrr, 1.0f);
     }
     
@@ -260,6 +261,11 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         //把属性值限制到0 - 1
         LightStrengths = saturate(LightStrengths);
         specular = saturate(specular);
+        
+        // 使用shadowmap的方法计算阴影
+        float ShadowFactor = UseShadowMap(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
+        //return float4(ShadowFactor , ShadowFactor , ShadowFactor , 1.0f);
+        
         Material.FinalColor = saturate(Material.FinalColor);
         
     }

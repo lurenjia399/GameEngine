@@ -5,6 +5,7 @@
 
 SamplerState TextureSampler : register(s0); //静态采样器             rootsignature中StaticSampler 0参数
 SamplerState AnisotropicSampler : register(s1); //各向异性采样器       rootsignature中StaticSampler 1参数
+SamplerComparisonState ShadowSampler : register(s2); // 阴影采样器
 
 cbuffer ObjectConstBuffer : register(b0) //模型CBV    rootsignature中0参数
 {

@@ -264,6 +264,7 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 					DynamicShadowMap.GetViewportMatrix(ViewMatrixfloat, ProjectMatrixfloat);
 					XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ProjectMatrixfloat);
 					XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewMatrixfloat);
+
 					XMMATRIX Transform = {
 						0.5f,0.0f,0.0f,0.0f,
 						0.0f,-0.5f,0.0f,0.0f,
@@ -273,7 +274,7 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 					// dx的uv坐标在屏幕左上角u朝向右，v朝向下
 					//切记需要转置，，，主列的矩阵无法乘主行的矩阵,,,这里得到的因为在片元着色器里面的值，所以也是ndc空间下[-1, 1],需要转成[0, 1]
 					// 我看这里应该不对，明天必须解决这个
-					XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix * Transform;
+					XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix;
 					
 					XMStoreFloat4x4(&lightTransformation.SceneLight[i].ViewProjectionMatrix, ViewProjection);
 				}
