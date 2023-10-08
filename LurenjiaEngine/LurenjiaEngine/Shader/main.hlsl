@@ -263,10 +263,10 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         specular = saturate(specular);
         
         // 使用shadowmap的方法计算阴影
-        float ShadowFactor = UseShadowMap(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
-        //return float4(ShadowFactor , ShadowFactor , ShadowFactor , 1.0f);
+        float visiable = UseShadowMap(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
+        //return float4(visiable, visiable, visiable, 1.0f);
         
-        Material.FinalColor = saturate(Material.FinalColor);
+        Material.FinalColor = visiable * saturate(Material.FinalColor);
         
     }
         

@@ -82,6 +82,23 @@ namespace ShadowMapTest
 				}
 			}
 		}
+		//int height = 0, col = 0, row = 0;
+		//XMFLOAT3 Position(height * 7.f, col * 7.f - 7.0f, row * (-5.f) + 11.0f);
+
+		//int index = height * 100 + row * 10 + col;
+		//if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("ShadowMapTest::SphereMesh_" + index))
+		//{
+		//	SphereMesh->SetMeshComponent("ShadowMapTest::SphereMeshComponent_" + index, 2.f, 50, 50);
+		//	SphereMesh->SetComponentPosition(Position);
+		//	if (CMaterial* SphereMaterial = new CMaterial())
+		//	{
+		//		SphereMaterial->ResetGuid("ShadowMapTest::SphereMaterial_" + index);
+		//		//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
+		//		SphereMaterial->SetMaterialType(EMaterialType::Lambert);
+		//		SphereMesh->SetSubMaterials(0, SphereMaterial);
+		//	}
+		//}
+
 		
 		// 球旁边的一个立方体
 		if (ABoxMesh* BoxMesh = World->CreateActor<ABoxMesh>("ShadowMapTest::BoxMesh"))

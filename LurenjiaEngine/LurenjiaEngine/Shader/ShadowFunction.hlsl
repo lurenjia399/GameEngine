@@ -11,27 +11,17 @@ float UseShadowMap(float4 InWorldPosition, float4x4 InShadowMatrix)
     position = float4(position.x / position.w, position.y / position.w, position.z / position.w, 1.0f);
     // ndc空间下是[-1， 1]的立方体，而采样点坐标是[0, 1]，所以还需要转化
     // dx的uv空间是屏幕的左上角，所以y轴需要在乘上负号
+    // 注意这里和gams202作业的不同，在ndc空间下opengl的z轴范围是[-1,1]而dx的z轴范围是[0,1]
     float position_x = position.x * 0.5f + 0.5f;
-    float position_y = position.y * 0.5f + 0.5f;
-    float position_z = position.z * -0.5f +  0.5f;
+    float position_y = position.y * -0.5f + 0.5f;
+    float position_z = position.z;
     position = float4(position_x, position_y, position_z, position.w);
     
     // 采样器的比较状态
     // 采样的uv坐标
     // 比较的深度
     // 就是一个比较方法，将贴图中的值取出来和第三个参数进行比较
-    return SimpleShadowMap.SampleCmpLevelZero(ShadowSampler, position.yz, position.x);
-    
-    //float res = 0.0f;
-    
-    //if (SimpleShadowMap.Sample(TextureSampler, position.xz).r > position.y)
-    //    res = 1.0f;
-    //else
-    //    res = 0.0f;
-    
-   // res = position.y;
-    
-    //return res;
+    return SimpleShadowMap.SampleCmpLevelZero(ShadowSampler, position.xy, position.z);
 
 }
 
