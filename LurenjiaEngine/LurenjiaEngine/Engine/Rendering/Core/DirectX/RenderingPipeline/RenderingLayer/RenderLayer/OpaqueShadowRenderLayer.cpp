@@ -65,7 +65,7 @@ void FOpaqueShadowRenderLayer::Draw(float DeltaTime)
 	FRenderLayerManage::GetRenderLayerManage()->DrawAllObjectsByLayer(DeltaTime, (int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUEREFLECT);
 
 	//每次渲染完当前层级后，需要还原pso的状态
-	//RestorePSO();
+	RestorePSO();
 
 }
 

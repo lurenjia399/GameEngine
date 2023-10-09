@@ -37,7 +37,7 @@ namespace ShadowMapTest
 		if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 		{
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
-			ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 70.f));
+			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
 			//ParallelLight->SetRotation(fvector_3d(0.f, 0.f, -90.0f));
 		}
 
@@ -56,9 +56,9 @@ namespace ShadowMapTest
 			}
 		}
 		// 球阵
-		for (int height = 0; height < 2; ++height)
+		for (int height = 0; height < 1; ++height)
 		{
-			for (int row = 0; row < 3; ++row)
+			for (int row = 0; row < 2; ++row)
 			{
 				for (int col = 0; col < 3; ++col)
 				{
@@ -82,36 +82,19 @@ namespace ShadowMapTest
 				}
 			}
 		}
-		//int height = 0, col = 0, row = 0;
-		//XMFLOAT3 Position(height * 7.f, col * 7.f - 7.0f, row * (-5.f) + 11.0f);
 
-		//int index = height * 100 + row * 10 + col;
-		//if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("ShadowMapTest::SphereMesh_" + index))
+		// 球旁边的一个立方体
+		//if (ABoxMesh* BoxMesh = World->CreateActor<ABoxMesh>("ShadowMapTest::BoxMesh"))
 		//{
-		//	SphereMesh->SetMeshComponent("ShadowMapTest::SphereMeshComponent_" + index, 2.f, 50, 50);
-		//	SphereMesh->SetComponentPosition(Position);
-		//	if (CMaterial* SphereMaterial = new CMaterial())
+		//	BoxMesh->SetMeshComponent("ShadowMapTest::BoxMeshComponent", 3, 3, 3);
+		//	BoxMesh->SetComponentPosition(XMFLOAT3(0.f, 12.f, 1.f));
+		//	if (CMaterial* BoxMeshMaterial = new CMaterial())
 		//	{
-		//		SphereMaterial->ResetGuid("ShadowMapTest::SphereMaterial_" + index);
-		//		//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
-		//		SphereMaterial->SetMaterialType(EMaterialType::Lambert);
-		//		SphereMesh->SetSubMaterials(0, SphereMaterial);
+		//		BoxMeshMaterial->ResetGuid("ShadowMapTest::BoxMeshMaterial");//给创建的材质设置Guid
+		//		BoxMeshMaterial->SetMaterialType(EMaterialType::Lambert);
+		//		BoxMesh->SetSubMaterials(0, BoxMeshMaterial);
 		//	}
 		//}
-
-		
-		// 球旁边的一个立方体
-		if (ABoxMesh* BoxMesh = World->CreateActor<ABoxMesh>("ShadowMapTest::BoxMesh"))
-		{
-			BoxMesh->SetMeshComponent("ShadowMapTest::BoxMeshComponent", 3, 3, 3);
-			BoxMesh->SetComponentPosition(XMFLOAT3(0.f, 12.f, 1.f));
-			if (CMaterial* BoxMeshMaterial = new CMaterial())
-			{
-				BoxMeshMaterial->ResetGuid("ShadowMapTest::BoxMeshMaterial");//给创建的材质设置Guid
-				BoxMeshMaterial->SetMaterialType(EMaterialType::Lambert);
-				BoxMesh->SetSubMaterials(0, BoxMeshMaterial);
-			}
-		}
 
 		// 接受shadowmap的平面
 		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("ShadowMapTest::PlaneMesh_shadowmap"))

@@ -17,6 +17,8 @@ float UseShadowMap(float4 InWorldPosition, float4x4 InShadowMatrix)
     float position_z = position.z;
     position = float4(position_x, position_y, position_z, position.w);
     
+    
+    
     // 采样器的比较状态
     // 采样的uv坐标
     // 比较的深度

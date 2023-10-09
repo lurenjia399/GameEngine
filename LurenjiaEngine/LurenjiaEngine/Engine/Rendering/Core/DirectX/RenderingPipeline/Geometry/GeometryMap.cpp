@@ -258,7 +258,8 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 					lightTransformation.SceneLight[i].LightType = (int)ELightType::ParallelLight;
 
 
-					DynamicShadowMap.BuildViewport(LightComponent->GetPosition(), XMFLOAT3(0.0f, 0.0f, 0.f), 100.0f);
+					
+					DynamicShadowMap.BuildViewport(LightComponent->GetForward(), XMFLOAT3(0.0f, 0.0f, 0.f), 100.0f);
 
 					XMFLOAT4X4 ProjectMatrixfloat = {}, ViewMatrixfloat = {};
 					DynamicShadowMap.GetViewportMatrix(ViewMatrixfloat, ProjectMatrixfloat);

@@ -103,10 +103,10 @@ void FDynamicShadowMap::BuildViewMatrix(float DeltaTime)
 	Viewport->BulidViewMatrix(DeltaTime);
 }
 
-void FDynamicShadowMap::BuildViewport(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPoint, float InRadius)
+void FDynamicShadowMap::BuildViewport(const XMFLOAT3& InDirection, const XMFLOAT3& InTargetPoint, float InRadius)
 {
 	// 摄像机位置
-	XMFLOAT3 ViewportPosition = InPosition;
+	XMFLOAT3 ViewportPosition = XMFLOAT3(InDirection.x * InRadius * 0.1, InDirection.y * InRadius * 0.1, InDirection.z * InRadius * 0.1);
 	Viewport->SetPosition(ViewportPosition);
 	
 	// 目标点，这里是确定摄像机的那三个轴

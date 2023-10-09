@@ -12,8 +12,11 @@ AParallelLight::AParallelLight()
 void AParallelLight::Tick(float DeltaTime)
 {
 	fvector_3d rotation = fvector_3d(0.f, DeltaTime * 40, 0.f);
-	rotation = fvector_3d(DeltaTime * 80, DeltaTime * 40, 0.f);
-	//SetRotation(rotation);
+	int angle = 30;
+	rotation = fvector_3d(0.f, std::sin(angle), std::cos(angle));
+	angle += 10;
+	angle = angle % 360;
+	SetRotation(rotation);
 }
 
 void AParallelLight::SetPosition(const XMFLOAT3& InPosition)
