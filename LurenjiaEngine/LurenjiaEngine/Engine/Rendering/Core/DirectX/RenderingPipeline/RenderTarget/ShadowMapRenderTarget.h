@@ -26,7 +26,9 @@ public:
 
 	virtual void ResetRenderTarget(UINT InWidth, UINT InHeight) override;
 public:
-	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE& GetDepthStencilDescriptor() { return DSVDescriptorHandle; }
+	FORCEINLINE CD3DX12_CPU_DESCRIPTOR_HANDLE& GetDepthStencilDescriptor
+	
+	() { return DSVDescriptorHandle; }
 
 protected:
 	CD3DX12_CPU_DESCRIPTOR_HANDLE DSVDescriptorHandle;
