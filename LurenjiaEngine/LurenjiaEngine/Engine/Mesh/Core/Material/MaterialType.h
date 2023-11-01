@@ -13,7 +13,7 @@ enum class EMaterialType
 	WrapLight,				//模拟皮肤
 	MinnaertLight,			//天鹅绒，丝袜
 	BandedLight,			//卡通光照模型
-	GradualBanded,			//封层光照模型
+	GradualBanded,			//分层光照模型
 	FinalBanded,			//融合多种效果的卡通光照模型
 	Back,					//次表面散射，模拟玉					能添加反射
 	AnisotropyKajiyaKay,	//各向异性

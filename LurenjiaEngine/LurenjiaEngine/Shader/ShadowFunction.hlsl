@@ -23,6 +23,14 @@ float UseShadowMap(float4 InWorldPosition, float4x4 InShadowMatrix)
     // 采样的uv坐标
     // 比较的深度
     // 就是一个比较方法，将贴图中的值取出来和第三个参数进行比较
+    float textureDepth = SimpleShadowMap.Sample(TextureSampler, position.xy).r;
+    if (textureDepth < position.z)
+    {
+        // 在阴影中
+        //return 0.f;
+    }
+    //return 1.f;
+    // 这种采样方式自动实现了pcf，4x4的
     return SimpleShadowMap.SampleCmpLevelZero(ShadowSampler, position.xy, position.z);
 
 }

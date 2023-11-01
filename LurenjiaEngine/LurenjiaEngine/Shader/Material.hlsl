@@ -6,7 +6,7 @@
 
 struct FMaterial
 {
-    float4 FinalColor; //通用颜色
+    float4 BaseColor; //通用颜色
 };
 
 float3 FresnelSchlickMethod(float3 InF0, float3 InVertexNormal, float3 InCameraDirection, float InPow)
@@ -39,6 +39,7 @@ float3 GetNormal(MaterialConstantBuffer InMaterial, float2 InTexCoord, float3 In
 
 }
 
+// 获取材质高光颜色，贴图或者默认
 float4 GetSpecular(MaterialConstantBuffer InMaterial, float2 InTexCoord)
 {
     float4 res = float4(InMaterial.SpecularColor, 1.0f);
