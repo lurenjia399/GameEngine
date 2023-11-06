@@ -347,21 +347,23 @@ void FGeometryMap::UpdateViewportConstantBufferView(float DeltaTime, const FView
 
 void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime)
 {
-	CFogComponent* FogComponent = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog()->GetComponent();
-	if (FogComponent != nullptr)
+	if (IsStartUpFog())
 	{
-		if (!FogComponent->GetDirtyState()) return;
-		FogComponent->SetDirtyState(false);
+		CFogComponent* FogComponent = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog()->GetComponent();
+		if (FogComponent != nullptr)
+		{
+			if (!FogComponent->GetDirtyState()) return;
+			FogComponent->SetDirtyState(false);
 
-		FFogTransformation FogTransformation = {};
-		FogTransformation.FogColor = FogComponent->GetFogColor();
-		FogTransformation.FogStart = FogComponent->GetFogStart();
-		FogTransformation.FogRange = FogComponent->GetFogRange();
-		FogTransformation.FogHeight = FogComponent->GetFogHeight();
-		FogTransformation.FogTransparentCoefficient = FogComponent->GetFogTransparentCoefficient();
-		FogConstantBufferView.Update(0, &FogTransformation);
+			FFogTransformation FogTransformation = {};
+			FogTransformation.FogColor = FogComponent->GetFogColor();
+			FogTransformation.FogStart = FogComponent->GetFogStart();
+			FogTransformation.FogRange = FogComponent->GetFogRange();
+			FogTransformation.FogHeight = FogComponent->GetFogHeight();
+			FogTransformation.FogTransparentCoefficient = FogComponent->GetFogTransparentCoefficient();
+			FogConstantBufferView.Update(0, &FogTransformation);
+		}
 	}
-
 }
 
 void FGeometryMap::UpdateShadowMapShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo)
@@ -439,8 +441,11 @@ void FGeometryMap::DrawShadowMapTexture(float DeltaTime)
 
 bool FGeometryMap::IsStartUpFog()
 {
-	CFogComponent* FogComponent = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog()->GetComponent();
-	return FogComponent != nullptr;
+	if (AFog * temp = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog())
+	{
+		return temp->GetFogIsValid();
+	}
+	return false;
 }
 
 bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)

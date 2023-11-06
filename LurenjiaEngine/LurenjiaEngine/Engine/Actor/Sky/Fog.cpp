@@ -37,7 +37,21 @@ void AFog::SetDirtyState(const bool& DirtyState)
 	FogComponent->SetDirtyState(DirtyState);
 }
 
+void AFog::SetFogIsValid(const bool& bValid)
+{
+	FogComponent->SetFogValid(bValid);
+}
+
 CFogComponent* AFog::GetComponent() const
 {
 	return FogComponent;
+}
+
+bool AFog::GetFogIsValid() const
+{
+	if (FogComponent != nullptr)
+	{
+		return FogComponent->GetIsValid();
+	}
+	return false;
 }

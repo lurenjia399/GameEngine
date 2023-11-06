@@ -19,6 +19,7 @@ public:
 	void SetDirtyState(const bool& DirtyState);
 	void SetFogHeight(const float& FogHeight);
 	void SetFogTransparentCoefficient(const float& FogTransparentCoefficient);
+	void SetFogValid(const bool& bValid);
 	//外部获取接口
 public:
 	FORCEINLINE XMFLOAT3 GetFogColor() const { return XMFLOAT3(FogColor.r, FogColor.g, FogColor.b); }
@@ -27,6 +28,7 @@ public:
 	FORCEINLINE float GetFogHeight() const { return FogHeight; }
 	FORCEINLINE float GetFogTransparentCoefficient() const { return FogTransparentCoefficient; }
 	FORCEINLINE bool GetDirtyState() const { return bDirty; }
+	FORCEINLINE bool GetIsValid() const { return bValid; }
 
 
 private:
@@ -36,6 +38,7 @@ private:
 	float FogHeight;					//雾的高度
 	float FogTransparentCoefficient;	//雾的透明系数
 	bool bDirty;						//更改标志位
+	bool bValid;						//雾是否有效, 默认无效
 };
 
 

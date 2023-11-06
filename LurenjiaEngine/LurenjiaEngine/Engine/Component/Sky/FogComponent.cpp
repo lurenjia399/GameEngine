@@ -7,6 +7,7 @@ CFogComponent::CFogComponent()
 	, FogHeight(9000.f)
 	, FogTransparentCoefficient(0.f)
 	, bDirty(false)
+	, bValid(false)
 {
 }
 
@@ -43,4 +44,9 @@ void CFogComponent::SetFogTransparentCoefficient(const float& FogTransparentCoef
 {
 	this->FogTransparentCoefficient = FogTransparentCoefficient;
 	SetDirtyState(true);
+}
+
+void CFogComponent::SetFogValid(const bool& bValid)
+{
+	this->bValid = bValid;
 }

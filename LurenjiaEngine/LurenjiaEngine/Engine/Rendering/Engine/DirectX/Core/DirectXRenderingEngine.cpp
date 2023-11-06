@@ -117,18 +117,20 @@ int CDirectXRenderingEngine::PostInit()
 	//	SpotLight->SetConicalOuterCorner(70.f);
 	//}
 	
-	//雾,这玩意还必须有，要不然有个报错，之后必须把这改掉
-	if (AFog* Fog = World->CreateActor<AFog>("AFog"))
-	{
-		Fog->SetFogColor(fvector_color(0.7f));
-		Fog->SetFogStart(10.f);
-		Fog->SetFogRange(200.f);
-		Fog->SetFogHeight(900.f);
-		Fog->SetFogTransparentCoefficient(0.08f);
-	}
+	//雾 , 想要是可以开启
+	//if (AFog* Fog = World->CreateActor<AFog>("AFog"))
+	//{
+	//	Fog->SetFogColor(fvector_color(0.7f));
+	//	Fog->SetFogStart(10.f);
+	//	Fog->SetFogRange(200.f);
+	//	Fog->SetFogHeight(900.f);
+	//	Fog->SetFogTransparentCoefficient(0.08f);
+
+	//	Fog->SetFogIsValid(true);// 记得开启雾
+	//}
 
 
-	MaterialTest::BuildMaterialTestData();
+	MaterialTest::BuildMaterialTestData(); // 调整完成
 	//TextureTest::BuildTextureTestData();
 	//ReflectTest::BuildReflectTestData();
 	//ShadowMapTest::BuildShadowMapTestData();

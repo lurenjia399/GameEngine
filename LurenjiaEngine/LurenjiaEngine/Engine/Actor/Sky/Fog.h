@@ -19,7 +19,9 @@ public:
 	void SetFogHeight(const float& FogHeight);
 	void SetFogTransparentCoefficient(const float& FogTransparentCoefficient);
 	void SetDirtyState(const bool& DirtyState);
+	void SetFogIsValid(const bool& bValid);
 	CFogComponent* GetComponent() const;
+	bool GetFogIsValid() const;
 private:
 	CVARIABLE()
 	CFogComponent* FogComponent;

@@ -99,8 +99,8 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             //计算光照在当前片元位置的光照强度
             float4 LightStrength = CalculateLightStrength(SceneLight[i], N, mvOut.worldPosition.xyz, L);
         
-        
-            float LdotN = dot(L, N); //顶点法向和光照方向点积
+            //顶点法向和光照方向点积
+            float LdotN = dot(L, N); 
         
         
             //兰伯特
@@ -173,72 +173,69 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
                     float UpDotValue = (LdotN + 1.0f) * 0.5f;
                     float layout = 7.0f;
                     DotValue = floor(UpDotValue * layout) / layout;
+                    
+                    float4 color = { 245.f / 255.f, 88.f / 255.f, 0.f, 1.0f };
+                    Material.BaseColor = lerp(color, Material.BaseColor, LdotN);
                 }
-                
-            
-                //float4 color = { 245.f / 255.f, 88.f / 255.f, 0.f, 1.0f };
-                //Material.FinalColor = lerp(Material.FinalColor, color, 1 - LdotN); //Material.BaseColor * (1 - LdotN) + color * LdotN;
             }
-            else if (MaterialType == 9)//混合了多重效果的Banded
+            //混合了多重效果的Banded
+            else if (MaterialType == 9)
             {
-                //环境光
-                Ambient = AmbientLight;
-        
-                //分层Banded
-                float UpDotValue = (LdotN + 1.0f) * 0.5f;
-                float layout = 4.0f;
-                LightStrengths = floor(UpDotValue * layout) / layout;
+                if (i == 0)
+                {
+                    //分层Banded
+                    float UpDotValue = (LdotN + 1.0f) * 0.5f;
+                    float layout = 4.0f;
+                    DotValue = floor(UpDotValue * layout) / layout;
             
-                //Fresnel
-                float3 F0 = { 0.02f, 0.03f, 0.04f }; //反射率
-                float M = 5.0f;
-                float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
-                Fresnel = float4(FresnelSchlickMethod(F0, N, V, M), 1.0f);
+                    //Fresnel
+                    float3 F0 = { 0.02f, 0.03f, 0.04f }; //反射率
+                    float M = 5.0f;
+                    float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
+                    specular = float4(FresnelSchlickMethod(F0, N, V, M), 1.0f);
         
-                //phone
-                float3 reflectDirection = reflect(-L, N);
-                float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
-                M = max(MaterialShininess * 100.f, 1.0f);
-                specular = pow(max(dot(normalize(reflectDirection), V), 0.f), M) / 0.0314;
-            
-                continue;
+                    //phone
+                    float3 reflectDirection = reflect(-L, N);
+                    float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
+                    M = max(MaterialShininess * 100.f, 1.0f);
+                    specular += pow(max(dot(normalize(reflectDirection), V), 0.f), M) / 0.0314;
+                }
             }
-            else if (MaterialType == 10)//sss
+            //sss 模拟玉
+            else if (MaterialType == 10)
             {
-                //环境光
-                Ambient = AmbientLight;
         
                 //漫反射
                 float w = 1.8f; //w为0 是兰伯特材质，w为1 是半兰伯特
-                diffuse = saturate(((LdotN + w) / (1.f + w)));
+                DotValue = saturate(((LdotN + w) / (1.f + w)));
         
                 //高光
-                float3 reflectDirection = reflect(-L, N);
-                float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
-                float M = max(MaterialShininess * 100.f, 1.0f);
-                specular = saturate(pow(max(dot(normalize(reflectDirection), V), 0.f), M));
+                if (DotValue > 0)
+                {
+                    float3 reflectDirection = reflect(-L, N);
+                    float MaterialShininess = 1.f - saturate(currMaterial.Roughness);
+                    float M = max(MaterialShininess * 100.f, 1.0f);
+                    specular = saturate(pow(max(dot(normalize(reflectDirection), V), 0.f), M));
+                }
         
                 //次表面散射
                 float sssValue = 1.3f;
                 float TransmissionIntensity = 2.f;
                 float TransmissionScope = 1.5f;
                 float3 Half = -normalize(L + N * sssValue);
-                LdotN = pow(saturate(dot(V, Half)), TransmissionScope) * TransmissionIntensity;
-                diffuse = diffuse + LdotN;
+                DotValue += pow(saturate(dot(V, Half)), TransmissionScope) * TransmissionIntensity;
         
         
             }
-            else if (MaterialType == 11)//各向异性
+            //各向异性
+            else if (MaterialType == 11)
             {
-
-                Ambient = AmbientLight;
-        
+                // 不会写呢还, 写个兰伯特代替
+                DotValue = pow(max(dot(L, N), 0.0), 2.f);
             }
-            else if (MaterialType == 12)//OrenNayar Lighting
+            //OrenNayar Lighting 粗糙表面，沙漠
+            else if (MaterialType == 12)
             {
-                Ambient = AmbientLight;
-        
-            
                 LdotN = pow(saturate(dot(N, L)), 2.f); //光线与法线夹角
             
                 float VdotN = saturate(dot(N, V)); //视线与法线夹角
@@ -254,15 +251,18 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
                 float A = 1.f - 0.5f * (iRoughness / (iRoughness + 0.33f));
                 float B = 0.45f * (iRoughness / (iRoughness + 0.09f));
         
-                diffuse = LdotN * (A + B * max(0, phi_r) * sin(Alpha) * tan(Beta));
+                DotValue = LdotN * (A + B * max(0, phi_r) * sin(Alpha) * tan(Beta));
         
             }
             else if (MaterialType == 100)//菲涅尔
             {
-                float3 F0 = { 0.2f, 0.3f, 0.4f }; //反射率
-                float M = 1.0f;
-                float3 cameraDirection = cameraPosition.xyz - mvOut.worldPosition.xyz;
-                Fresnel = float4(FresnelSchlickMethod(F0, normalize(mvOut.Normal), normalize(cameraDirection), M), 1.0f);
+                //另一种菲尼尔方法
+                float3 ViewDirection = normalize(cameraPosition.xyz - mvOut.worldPosition.xyz);
+                DotValue = pow(1.f - max(dot(N, ViewDirection), 0.0), 2.f);
+
+				//Schlick 菲尼尔方法
+				//float3 F0 = { 0.3f,0.3f,0.3f };
+				//Specular.xyz += FresnelSchlickMethod(F0, N, ViewDirection, 5).xyz;
             }
             else //默认
             {
@@ -273,10 +273,10 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             
             // 使用shadowmap的方法计算阴影,这边整理代码先把阴影关掉
             float visiable = 1.0f;
-            //float visiable = UseShadowMap(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
+            //visiable = UseShadowMap(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
             //float visiable = pcf(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
         
-            Material.BaseColor = visiable * saturate(Material.BaseColor);
+            //Material.BaseColor = visiable * saturate(Material.BaseColor);
             
             float4 Diffuse = Material.BaseColor;
             FinalColor += visiable * (saturate((Diffuse + Specular) * LightStrength * DotValue));
@@ -301,9 +301,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
         }
     }
     
-    
-    
     // 计算雾
-    //mvOut.Color = GetFogValue(mvOut.Color, mvOut.worldPosition.xyz);
+    mvOut.Color = GetFogValue(mvOut.Color, mvOut.worldPosition.xyz);
     return mvOut.Color;
 }

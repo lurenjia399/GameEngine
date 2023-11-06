@@ -27,7 +27,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
     float4 WorldPosition = mul(WorldMatrix, mvOut.PositionH);
     float4 color = SampleTextureCubeMap.Sample(TextureSampler, mvOut.PositionH.xyz);
-    //color = GetFogValue(color, WorldPosition.xyz);
+    color = GetFogValue(color, WorldPosition.xyz);
     return color;
 
 }
