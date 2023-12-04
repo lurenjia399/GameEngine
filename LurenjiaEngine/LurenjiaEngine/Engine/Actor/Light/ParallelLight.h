@@ -18,6 +18,7 @@ public:
 	void SetRotation(const fvector_3d& InRotation) override;
 	void SetScale(const XMFLOAT3& InScale) override;
 
+	void SetRotateFunction(std::function<XMFLOAT3(float)> RotateFunction);
 	void SetLightIntensity(const XMFLOAT3& InLightIntensity);
 public:
 	//获取组件变换相关

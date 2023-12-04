@@ -49,6 +49,13 @@ namespace MaterialTest
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
 			//ParallelLight->SetRotation(fvector_3d(0.f, 0.f, -90.0f));
+			ParallelLight->SetRotateFunction([](float time) ->XMFLOAT3
+			{
+				float angle = time * PI;
+				XMFLOAT3 ret = XMFLOAT3( 20.f * sin(angle), 20.f * cos(angle), 0);
+				
+				return ret;
+			});
 		}
 		// EMaterialType::Lambert
 		if (ASphereMesh* SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))

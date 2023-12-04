@@ -21,6 +21,8 @@
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 
+#define PI acos(-1)
+
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
