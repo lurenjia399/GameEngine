@@ -18,12 +18,13 @@ void CLightComponent::Tick(float DeltaTime)
 {
 	if(RotateFunction != nullptr)
 	{
-		XMFLOAT3 alias = RotateFunction(DeltaTime);
-		XMFLOAT3 cur_pos = GetPosition();
-		Engine_Log("cur_pos = %f, %f, %f", cur_pos.x, cur_pos.y, cur_pos.z);
-		XMFLOAT3 new_pos = XMFLOAT3(cur_pos.x + alias.x, cur_pos.y + alias.y, cur_pos.z + alias.z);
+		float pre_angle = 0.0f;
+		XMFLOAT3 new_pos = RotateFunction(DeltaTime, pre_angle);
+		//XMFLOAT3 cur_pos = GetPosition();
+		//Engine_Log("cur_pos = %f, %f, %f", cur_pos.x, cur_pos.y, cur_pos.z);
+		//XMFLOAT3 new_pos = XMFLOAT3(cur_pos.x + alias.x, cur_pos.y + alias.y, cur_pos.z + alias.z);
 		Engine_Log("new_pos = %f, %f, %f", new_pos.x, new_pos.y, new_pos.z);
-		SetPosition(alias);
+		SetPosition(new_pos);
 	}
 	
 }

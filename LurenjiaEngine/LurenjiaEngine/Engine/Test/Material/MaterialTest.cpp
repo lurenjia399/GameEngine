@@ -49,10 +49,21 @@ namespace MaterialTest
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
 			//ParallelLight->SetRotation(fvector_3d(0.f, 0.f, -90.0f));
-			ParallelLight->SetRotateFunction([](float time) ->XMFLOAT3
+			ParallelLight->SetRotateFunction([](float time, float pre_angle) ->XMFLOAT3
 			{
-				float angle = time * PI;
-				XMFLOAT3 ret = XMFLOAT3( 20.f * sin(angle), 20.f * cos(angle), 0);
+				float angle_speed = PI;
+				float radius = 20.0f;
+				float angle = (pre_angle + time * speed) / (2 * PI);
+				XMFLOAT3 ret = XMFLOAT3( radius * sin(angle), radius * cos(angle), 0);
+				// µÚ¶þ¸ö
+				{
+					angle = time * PI;
+					float s = sin(angle);
+					float c = cos(angle);
+					XMFLOAT3 cur_pos = XMFLOAT3(0.f);
+					
+					ret = XMFLOAT3( cur_pos.x * c - cur_pos.y * s, cur_pos.x * s + cur_pos.y * c, cur_pos.z);
+				}
 				
 				return ret;
 			});
