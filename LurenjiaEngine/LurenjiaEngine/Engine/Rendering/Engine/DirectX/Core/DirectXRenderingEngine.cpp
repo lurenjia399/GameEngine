@@ -60,14 +60,6 @@ int CDirectXRenderingEngine::PostInit()
 {
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr)); 
 	//构建mesh
-	//AMesh* BoxMesh = MeshManage->CreateBoxMesh("BoxMesh", 10, 10, 10);		//box 高度，宽度，深度
-	//AMesh* SphereMesh = MeshManage->CreateSphereMesh("SphereMesh", 1, 20, 20);//半径，轴分割度，高度分割度
-	//AMesh* CylinderMesh = MeshManage->CreateCylinderMesh("CylinderMesh", 2, 2, 20, 2, 2);//上半径，下半径，轴分割度，高度，高分割度
-	//APlaneMesh* PlaneMesh = dynamic_cast<APlaneMesh*>(MeshManage->CreatePlaneMesh("PlaneMesh", 2, 2, 10, 10)) ;//高度，宽度，高度细分，宽度细分
-	
-	//BoxMesh->SetScale(XMFLOAT3(0.5, 1, 1));
-	//SphereMesh->SetPosition(XMFLOAT3(0, 20, 0));
-	//PlaneMesh->SetRotation(fvector_3d(0, -90, 0));
 	
 	//cubeMap,在阴影测试的时候不用打开,之后需要将这些都调整到测试项里面
 	//if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))

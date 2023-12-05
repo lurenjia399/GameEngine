@@ -18,13 +18,7 @@ void CLightComponent::Tick(float DeltaTime)
 {
 	if(RotateFunction != nullptr)
 	{
-		float pre_angle = 0.0f;
-		XMFLOAT3 new_pos = RotateFunction(DeltaTime, pre_angle);
-		//XMFLOAT3 cur_pos = GetPosition();
-		//Engine_Log("cur_pos = %f, %f, %f", cur_pos.x, cur_pos.y, cur_pos.z);
-		//XMFLOAT3 new_pos = XMFLOAT3(cur_pos.x + alias.x, cur_pos.y + alias.y, cur_pos.z + alias.z);
-		Engine_Log("new_pos = %f, %f, %f", new_pos.x, new_pos.y, new_pos.z);
-		SetPosition(new_pos);
+		RotateFunction(DeltaTime);
 	}
 	
 }
@@ -39,9 +33,30 @@ void CLightComponent::SetLightType(ELightType InLightType)
 	LightType = InLightType;
 }
 
-void CLightComponent::SetRotateFunction(std::function<XMFLOAT3(float)> InRotateFunction)
+void CLightComponent::SetRotateFunction(std::function<void(float)> InRotateFunction)
 {
 	RotateFunction = InRotateFunction;
+}
+
+void CLightComponent::FaceTarget(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPosition, const XMFLOAT3& InUpDirection)
+{
+	XMVECTOR forward = XMVectorSubtract(XMLoadFloat3(&InTargetPosition), XMLoadFloat3(&InPosition));
+	forward = XMVector3Normalize(forward);
+
+	XMVECTOR up = XMLoadFloat3(&InUpDirection);
+	up = XMVector3Normalize(up);
+
+	XMVECTOR right = XMVector3Cross(up, forward);
+	right = XMVector3Normalize(right);
+
+	// 重新矫正up向量
+	XMVECTOR up_new = XMVector3Cross(forward, right);
+	up_new = XMVector3Normalize(up);
+
+	SetForward(XMFLOAT3(forward.m128_f32[0], forward.m128_f32[1], forward.m128_f32[2]));
+	SetRight(XMFLOAT3(right.m128_f32[0], right.m128_f32[1], right.m128_f32[2]));
+	SetUp(XMFLOAT3(up_new.m128_f32[0], up_new.m128_f32[1], up_new.m128_f32[2]));
+
 }
 
 XMFLOAT3 CLightComponent::GetLightIntensity()

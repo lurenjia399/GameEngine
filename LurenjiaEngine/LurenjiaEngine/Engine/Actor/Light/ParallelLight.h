@@ -18,8 +18,9 @@ public:
 	void SetRotation(const fvector_3d& InRotation) override;
 	void SetScale(const XMFLOAT3& InScale) override;
 
-	void SetRotateFunction(std::function<XMFLOAT3(float)> RotateFunction);
+	void SetRotateFunction(std::function<void(float)> RotateFunction);
 	void SetLightIntensity(const XMFLOAT3& InLightIntensity);
+	void FaceTarget(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPosition, const XMFLOAT3& InUpDirection = XMFLOAT3(0.f, 0.f, 1.f));
 public:
 	//获取组件变换相关
 	XMFLOAT3 GetPosition() const override;

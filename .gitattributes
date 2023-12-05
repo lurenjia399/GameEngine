@@ -1,0 +1,2 @@
+LurenjiaEngine.exe filter=lfs diff=lfs merge=lfs -text
+LurenjiaEngine.pdb filter=lfs diff=lfs merge=lfs -text

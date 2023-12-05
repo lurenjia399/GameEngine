@@ -11,13 +11,6 @@ AParallelLight::AParallelLight()
 
 void AParallelLight::Tick(float DeltaTime)
 {
-	fvector_3d rotation = fvector_3d(0.f, DeltaTime * 40, 0.f);
-	int angle = 30;
-	rotation = fvector_3d(0.f, std::sin(angle), std::cos(angle));
-	angle += 10;
-	angle = angle % 360;
-	//SetRotation(rotation);
-	
 }
 
 void AParallelLight::SetPosition(const XMFLOAT3& InPosition)
@@ -35,7 +28,7 @@ void AParallelLight::SetScale(const XMFLOAT3& InScale)
 	ParallelLightComponent->SetScale(InScale);
 }
 
-void AParallelLight::SetRotateFunction(std::function<XMFLOAT3(float)> RotateFunction)
+void AParallelLight::SetRotateFunction(std::function<void(float)> RotateFunction)
 {
 	ParallelLightComponent->SetRotateFunction(RotateFunction);
 }
@@ -43,6 +36,11 @@ void AParallelLight::SetRotateFunction(std::function<XMFLOAT3(float)> RotateFunc
 void AParallelLight::SetLightIntensity(const XMFLOAT3& InLightIntensity)
 {
 	ParallelLightComponent->SetLightIntensity(InLightIntensity);
+}
+
+void AParallelLight::FaceTarget(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPosition, const XMFLOAT3& InUpDirection)
+{
+	ParallelLightComponent->FaceTarget(InPosition, InTargetPosition, InUpDirection);
 }
 
 XMFLOAT3 AParallelLight::GetPosition() const

@@ -18,7 +18,8 @@ public:
 
 	void SetLightIntensity(XMFLOAT3 InLightIntensity);
 	void SetLightType(ELightType InLightType);
-	void SetRotateFunction(std::function<XMFLOAT3(float)> InRotateFunction);
+	void SetRotateFunction(std::function<void(float)> InRotateFunction);
+	void FaceTarget(const XMFLOAT3& InPosition, const XMFLOAT3& InTargetPosition, const XMFLOAT3& InUpDirection = XMFLOAT3(0.f, 0.f, 1.f));
 
 	XMFLOAT3 GetLightIntensity();
 	ELightType GetLightType();
@@ -30,7 +31,7 @@ private:
 	XMFLOAT3 LightIntensity;
 	ELightType LightType;
 
-	std::function<XMFLOAT3(float)> RotateFunction;
+	std::function<void(float)> RotateFunction;
 	
 
 };

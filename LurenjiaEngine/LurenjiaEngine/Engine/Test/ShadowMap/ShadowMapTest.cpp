@@ -38,7 +38,20 @@ namespace ShadowMapTest
 		{
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
-			//ParallelLight->SetRotation(fvector_3d(0.f, 0.f, -90.0f));
+			ParallelLight->SetRotateFunction([=](float time) ->void
+			{
+				float angle_speed = PI;
+				float angle = time * angle_speed;
+				XMFLOAT3 cur_pos = ParallelLight->GetPosition();
+				XMFLOAT3 ret = cur_pos;
+				float s = sin(angle);
+				float c = cos(angle);
+
+				ret = XMFLOAT3(cur_pos.x * c - cur_pos.y * s, cur_pos.x * s + cur_pos.y * c, cur_pos.z);
+				ParallelLight->SetPosition(ret);
+
+				ParallelLight->FaceTarget(ret, XMFLOAT3(0, 0.f, 40.f), XMFLOAT3(0.f, 0.f, 1.f));
+			});
 		}
 
 		// Æ½Ãæ
