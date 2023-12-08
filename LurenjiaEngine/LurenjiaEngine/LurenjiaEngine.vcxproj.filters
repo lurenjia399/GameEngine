@@ -432,6 +432,12 @@
     <ClCompile Include="Engine\Test\ShadowMap\ShadowMapTest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\ComputePipeline\ComputePipeline.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Test\ComputeShader\ComputeShaderTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -918,6 +924,12 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Test\ShadowMap\ShadowMapTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\ComputePipeline\ComputePipeline.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Test\ComputeShader\ComputeShaderTest.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -74,7 +74,10 @@ void FGeometryMap::BuildDescriptorHeap()
 		GetDrawTextureObjectCount() //texture2d
 		+ GetDrawCubeMapCount() //æ≤Ã¨cubemap
 		+ 1	// ∂ØÃ¨cubemap
-		+ 1); // “ı”∞
+		+ 1 // “ı”∞
+		+ 1 // computeShader SRV
+		+ 1 // computeShader UAV
+	);
 }
 
 void FGeometryMap::LoadTexture()

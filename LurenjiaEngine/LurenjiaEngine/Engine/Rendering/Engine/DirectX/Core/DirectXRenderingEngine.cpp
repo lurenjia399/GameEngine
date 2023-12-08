@@ -6,13 +6,15 @@
 #include "../../../../Actor/Light/ParallelLight.h"
 #include "../../../../Actor/Light/SpotLight.h"
 #include "../../../../Actor/Light/PointLight.h"
+#include "../../../../Mesh/BoxMesh.h"
+#include "../../../../Actor/Sky/Fog.h"
+
 #include "../../../../Test/Texture/TextureTest.h"
 #include "../../../../Test/Material/MaterialTest.h"
 #include "../../../../Test/RenderLayer/TransparentTest.h"
 #include "../../../../Test/Reflect/ReflectTest.h"
 #include "../../../../Test/ShadowMap/ShadowMapTest.h"
-#include "../../../../Mesh/BoxMesh.h"
-#include "../../../../Actor/Sky/Fog.h"
+#include "../../../../Test/ComputeShader/ComputeShaderTest.h"
 
 
 enum class EMaterialType;
@@ -123,10 +125,11 @@ int CDirectXRenderingEngine::PostInit()
 
 
 	//MaterialTest::BuildMaterialTestData(); // 调整完成
-	TextureTest::BuildTextureTestData();
+	//TextureTest::BuildTextureTestData();
 	//ReflectTest::BuildReflectTestData();
 	//ShadowMapTest::BuildShadowMapTestData();
 	//TransparentTest::BuildTransparentTestData();
+	ComputeShaderTest::BuildComputeShaderTestData();
 	
 	
 

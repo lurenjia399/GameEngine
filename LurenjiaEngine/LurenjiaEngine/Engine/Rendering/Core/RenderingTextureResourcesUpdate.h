@@ -38,4 +38,18 @@ private:
 	D3D12_SHADER_RESOURCE_VIEW_DESC ShaderResourceViewDesc;
 };
 
+class FRenderingUAVResourvesUpdate : public enable_shared_from_this<FRenderingUAVResourvesUpdate>, public IDirectXDeviceInterface
+{
+public:
+	FRenderingUAVResourvesUpdate();
+	void BuildResource();
+	void BuildUnorderAccessView(ID3D12DescriptorHeap* InHeap, int Offset = 0);
+	void BuildParam();
+private:
+	D3D12_UNORDERED_ACCESS_VIEW_DESC UAVDesc;//UAV描述
+	ComPtr<ID3D12Resource>	pIBlurMap1;//UAV中的资源
+	int	iWidth = 1024;
+	int	iHeight = 768;
+};
+
 #endif

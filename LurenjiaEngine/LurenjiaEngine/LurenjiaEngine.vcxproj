@@ -85,6 +85,7 @@
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Buffer\ConstructBuffer.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\ComputePipeline\ComputePipeline.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp" />
@@ -117,6 +118,7 @@
     <ClCompile Include="Engine\Shader\Core\Shader.cpp" />
     <ClCompile Include="Engine\Shader\Core\ShaderType.cpp" />
     <ClCompile Include="Engine\Shader\ShaderManage.cpp" />
+    <ClCompile Include="Engine\Test\ComputeShader\ComputeShaderTest.cpp" />
     <ClCompile Include="Engine\Test\Material\MaterialTest.cpp" />
     <ClCompile Include="Engine\Test\Reflect\ReflectTest.cpp" />
     <ClCompile Include="Engine\Test\RenderLayer\TransparentTest.cpp" />
@@ -230,6 +232,7 @@
     <ClInclude Include="Engine\Platform\Windows\WindowsMessageProcessing.h" />
     <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
     <ClInclude Include="Engine\Rendering\Core\Buffer\ConstructBuffer.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\ComputePipeline\ComputePipeline.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />
@@ -266,6 +269,7 @@
     <ClInclude Include="Engine\Shader\Core\Shader.h" />
     <ClInclude Include="Engine\Shader\Core\ShaderType.h" />
     <ClInclude Include="Engine\Shader\ShaderManage.h" />
+    <ClInclude Include="Engine\Test\ComputeShader\ComputeShaderTest.h" />
     <ClInclude Include="Engine\Test\Material\MaterialTest.h" />
     <ClInclude Include="Engine\Test\Reflect\ReflectTest.h" />
     <ClInclude Include="Engine\Test\RenderLayer\TransparentTest.h" />
