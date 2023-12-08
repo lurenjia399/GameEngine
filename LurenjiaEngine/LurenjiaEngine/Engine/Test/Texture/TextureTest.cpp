@@ -5,6 +5,7 @@
 #include "../../Platform/Windows/WindowsEngine.h"
 #include "../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
 #include "../../Mesh/PlaneMesh.h"
+#include "../../Actor/Light/ParallelLight.h"
 
 namespace TextureTest
 {
@@ -25,6 +26,28 @@ namespace TextureTest
 				PlaneMesh->SetSubMaterials(0, PlaneMaterial);
 			}
 		}
+
+		//Æ½ÐÐ¹â
+		if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+		{
+			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
+			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
+			/*ParallelLight->SetRotateFunction([=](float time) ->void
+			{
+				float angle_speed = PI;
+				float angle = time * angle_speed;
+				XMFLOAT3 cur_pos = ParallelLight->GetPosition();
+				XMFLOAT3 ret = cur_pos;
+				float s = sin(angle);
+				float c = cos(angle);
+
+				ret = XMFLOAT3(cur_pos.x * c - cur_pos.y * s, cur_pos.x * s + cur_pos.y * c, cur_pos.z);
+				ParallelLight->SetPosition(ret);
+
+				ParallelLight->FaceTarget(ret, XMFLOAT3(0, 0.f, 40.f), XMFLOAT3(0.f, 0.f, 1.f));
+			});*/
+		}
+
 		if (ASphereMesh* SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
 		{
 			SphereMesh_1->SetMeshComponent("SphereMesh_1Component", 2.f, 50, 50);
@@ -37,7 +60,7 @@ namespace TextureTest
 				SphereMaterial_1->SetMaterialTextureMapKey("Wood2");
 				SphereMaterial_1->SetSpecularColor(XMFLOAT3(1.0f, 1.0f, 1.0f));
 				SphereMaterial_1->SetRoughness(0.2f);
-				SphereMaterial_1->SetMaterialType(EMaterialType::BlinnPhone);
+				SphereMaterial_1->SetMaterialType(EMaterialType::HalfLambert);
 				SphereMaterial_1->SetMaterialFresnelF0(XMFLOAT3(0.05f, 0.05f, 0.05f));
 				SphereMesh_1->SetSubMaterials(0, SphereMaterial_1);
 				
@@ -56,7 +79,7 @@ namespace TextureTest
 				SphereMaterial_2->SetMaterialNormalMapKey("Wood2_Nor");
 				SphereMaterial_2->SetSpecularColor(XMFLOAT3(1.0f, 1.0f, 1.0f));
 				SphereMaterial_2->SetRoughness(0.2f);
-				SphereMaterial_2->SetMaterialType(EMaterialType::BlinnPhone);
+				SphereMaterial_2->SetMaterialType(EMaterialType::HalfLambert);
 				SphereMesh_2->SetSubMaterials(0, SphereMaterial_2);
 
 			}
@@ -72,7 +95,7 @@ namespace TextureTest
 				SphereMaterial_3->SetMaterialNormalMapKey("Wood2_Nor");
 				SphereMaterial_3->SetMaterialSpecularMapKey("Wood2_SPEC");
 				SphereMaterial_3->SetRoughness(0.2f);
-				SphereMaterial_3->SetMaterialType(EMaterialType::BlinnPhone);
+				SphereMaterial_3->SetMaterialType(EMaterialType::HalfLambert);
 				SphereMesh_3->SetSubMaterials(0, SphereMaterial_3);
 
 			}
