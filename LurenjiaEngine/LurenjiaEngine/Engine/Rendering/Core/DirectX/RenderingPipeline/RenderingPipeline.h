@@ -7,6 +7,7 @@
 #include "RootSignature/DirectXRootSignature.h"
 #include "RenderingLayer/RenderLayerManage.h"
 #include "DynamicMap/CubeMap/DynamicCubeMap.h"
+#include "../ComputePipeline/ComputePipeline.h"
 
 
 
@@ -31,5 +32,9 @@ protected:
 	FDirectXPiepelineState DirectXPiepelineState;			//pso
 
 	FDynamicCubeMap DynamicCubeMap;							//动态反射
+
+
+	// 测试用计算着色器
+	FComputePipeline ComputePipeline; //计算着色器管线
 
 };

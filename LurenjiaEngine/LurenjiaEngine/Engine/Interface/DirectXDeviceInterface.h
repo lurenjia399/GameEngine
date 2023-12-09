@@ -5,6 +5,7 @@
 class CWindowsEngine;
 class CMeshManage;
 class CLightManage;
+class CRenderingEngine;
 #else
 class CEngien;
 #endif
@@ -44,6 +45,8 @@ public:
 #else
 	CEngien* GetEngine() const;
 #endif
+	//ªÒ»°‰÷»æ“˝«Ê
+	CRenderingEngine* GetRenderEngine() const;
 	
 };
 

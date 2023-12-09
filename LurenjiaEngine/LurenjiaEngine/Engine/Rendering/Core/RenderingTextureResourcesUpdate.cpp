@@ -136,6 +136,7 @@ void FRenderingTextureResourcesUpdate::Set_SRV_ViewDimension(D3D12_SRV_DIMENSION
 
 FRenderingUAVResourvesUpdate::FRenderingUAVResourvesUpdate()
 {
+	memset(&SRVDesc, 0, sizeof(D3D12_SHADER_RESOURCE_VIEW_DESC));
 	memset(&UAVDesc, 0, sizeof(D3D12_UNORDERED_ACCESS_VIEW_DESC));
 }
 
@@ -146,7 +147,7 @@ void FRenderingUAVResourvesUpdate::BuildResource()
 	texDesc.Dimension = D3D12_RESOURCE_DIMENSION_TEXTURE2D;
 	texDesc.Alignment = 0;
 	texDesc.Width = iWidth;
-	texDesc.Height = iHeight;
+	texDesc.Height =iHeight;
 	texDesc.DepthOrArraySize = 1;
 	texDesc.MipLevels = 1;
 	texDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
@@ -162,7 +163,7 @@ void FRenderingUAVResourvesUpdate::BuildResource()
 		&texDesc,
 		D3D12_RESOURCE_STATE_COMMON,
 		nullptr,
-		IID_PPV_ARGS(&pIBlurMap1)));
+		IID_PPV_ARGS(&Resource)));
 }
 
 void FRenderingUAVResourvesUpdate::BuildUnorderAccessView(ID3D12DescriptorHeap* InHeap, int Offset)
@@ -172,12 +173,36 @@ void FRenderingUAVResourvesUpdate::BuildUnorderAccessView(ID3D12DescriptorHeap* 
 	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle(InHeap->GetCPUDescriptorHandleForHeapStart());
 	Handle.Offset(Offset, HandleSize);
 
-	GetD3dDevice()->CreateUnorderedAccessView(pIBlurMap1.Get(), nullptr, &UAVDesc, Handle);
+	GetD3dDevice()->CreateUnorderedAccessView(Resource.Get(), nullptr, &UAVDesc, Handle);
 }
 
-void FRenderingUAVResourvesUpdate::BuildParam()
+void FRenderingUAVResourvesUpdate::BuildShaderResourceView(ID3D12DescriptorHeap* InHeap, int Offset)
+{
+	UINT HandleSize = GetD3dDevice()->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
+
+	CD3DX12_CPU_DESCRIPTOR_HANDLE Handle(InHeap->GetCPUDescriptorHandleForHeapStart());
+	Handle.Offset(Offset, HandleSize);
+
+	GetD3dDevice()->CreateShaderResourceView(Resource.Get(), &SRVDesc, Handle);
+}
+
+ID3D12Resource* FRenderingUAVResourvesUpdate::GetBuffer()
+{
+	return Resource.Get();
+}
+
+void FRenderingUAVResourvesUpdate::BuildUAVDesc()
 {
 	UAVDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
 	UAVDesc.ViewDimension = D3D12_UAV_DIMENSION_TEXTURE2D;
 	UAVDesc.Texture2D.MipSlice = 0;
+}
+
+void FRenderingUAVResourvesUpdate::BuildSRVDesc()
+{
+	SRVDesc.Shader4ComponentMapping = D3D12_DEFAULT_SHADER_4_COMPONENT_MAPPING;
+	SRVDesc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+	SRVDesc.ViewDimension = D3D12_SRV_DIMENSION_TEXTURE2D;
+	SRVDesc.Texture2D.MostDetailedMip = 0;
+	SRVDesc.Texture2D.MipLevels = 1;
 }

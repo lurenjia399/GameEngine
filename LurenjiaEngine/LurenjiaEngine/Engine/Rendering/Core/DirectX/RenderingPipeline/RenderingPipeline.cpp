@@ -107,6 +107,12 @@ void FRenderingPipeline::BuildPipeline()
 
 	//构建pso
 	FRenderLayerManage::GetRenderLayerManage()->BuildPSO();
+
+	{
+		ComputePipeline.Init(&GeometryMap);
+		ComputePipeline.BuildPipeline();
+	}
+	
 }
 
 void FRenderingPipeline::UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo)
@@ -153,6 +159,7 @@ void FRenderingPipeline::PreDraw(float DeltaTime)
 	}
 	
 
+
 	// 这个里面现在啥都没有
 	FRenderLayerManage::GetRenderLayerManage()->PreDraw(DeltaTime);
 	
@@ -172,6 +179,7 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_ALPHATEST, DeltaTime);
 
+	ComputePipeline.Draw();
 
 	// 切换pso用的，放在这合适么?
 	DirectXPiepelineState.Draw(DeltaTime);//用做捕获keyboard 4 5

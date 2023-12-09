@@ -166,6 +166,16 @@ CEngien* IDirectXDeviceInterface::GetEngine() const
 }
 #endif
 
+CRenderingEngine* IDirectXDeviceInterface::GetRenderEngine() const
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        return WindowsEngine->GetRenderingEngine();
+    }
+    return nullptr;
+}
+
 void IDirectXDeviceInterface_struct::StartSetMainViewportRenderTarget()
 {
     DXDeviceInterface.StartSetMainViewportRenderTarget();

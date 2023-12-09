@@ -42,14 +42,23 @@ class FRenderingUAVResourvesUpdate : public enable_shared_from_this<FRenderingUA
 {
 public:
 	FRenderingUAVResourvesUpdate();
+
 	void BuildResource();
+	void BuildUAVDesc();
+	void BuildSRVDesc();
 	void BuildUnorderAccessView(ID3D12DescriptorHeap* InHeap, int Offset = 0);
-	void BuildParam();
-private:
-	D3D12_UNORDERED_ACCESS_VIEW_DESC UAVDesc;//UAV描述
-	ComPtr<ID3D12Resource>	pIBlurMap1;//UAV中的资源
+	void BuildShaderResourceView(ID3D12DescriptorHeap* InHeap, int Offset = 0);
+
+	ID3D12Resource* GetBuffer();
+	
 	int	iWidth = 1024;
 	int	iHeight = 768;
+private:
+	D3D12_UNORDERED_ACCESS_VIEW_DESC UAVDesc;	// UAV描述
+	D3D12_SHADER_RESOURCE_VIEW_DESC SRVDesc;	// SRV描述
+	ComPtr<ID3D12Resource>	Resource;			// 资源
+
+	
 };
 
 #endif
