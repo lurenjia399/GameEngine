@@ -1,5 +1,7 @@
 #include "DirectXRenderingEngine.h"
 #include "../../../../Config/EngineRenderConfig.h"
+
+#include "../../../../Mesh/Core/MeshManage.h"
 #include "../../../../Mesh/PlaneMesh.h"
 #include "../../../../Mesh/SphereMesh.h"
 #include "../../../../Mesh/Core/Material/Material.h"
@@ -15,7 +17,6 @@
 #include "../../../../Test/Reflect/ReflectTest.h"
 #include "../../../../Test/ShadowMap/ShadowMapTest.h"
 #include "../../../../Test/ComputeShader/ComputeShaderTest.h"
-
 
 enum class EMaterialType;
 CDirectXRenderingEngine::CDirectXRenderingEngine()
@@ -63,33 +64,6 @@ int CDirectXRenderingEngine::PostInit()
 	ANALYSIS_HRESULT(GraphicsCommandList->Reset(CommandAllocator.Get(), nullptr)); 
 	//构建mesh
 	
-	//cubeMap,在阴影测试的时候不用打开,之后需要将这些都调整到测试项里面
-	//if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
-	//{
-	//	CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
-	//	CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
-	//	CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
-	//	if (CMaterial* CubeMaterial = new CMaterial())
-	//	{
-	//		CubeMaterial->ResetGuid("CubeMaterial");//给创建的材质设置Guid
-	//		CubeMaterial->SetMaterialTextureMapKey("x1_CubeMap");
-	//		CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
-	//		CubeMesh->SetSubMaterials(0, CubeMaterial);
-	//	}
-	//}
-	//平行光,在阴影测试的时候不用打开,之后需要将这些都调整到测试项里面
-	//if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
-	//{
-	//	ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
-	//	ParallelLight->SetPosition(XMFLOAT3(-30.f, 0.f, 0.f));
-	//	ParallelLight->SetRotation(fvector_3d(0.f, 0.f, 90.0f));
-	//}
-	//if (AParallelLight* ParallelLight2 = World->CreateActor<AParallelLight>("AParallelLight2"))
-	//{
-	//	ParallelLight2->SetLightIntensity(XMFLOAT3(1.f, 1.f, 1.f));
-	//	ParallelLight2->SetPosition(XMFLOAT3(-20.f, 0.f, 10.f));
-	//	ParallelLight2->SetRotation(fvector_3d(0.f, 90.f, 0.0f));
-	//}
 	//点光源
 	//if (APointLight* PointLight = World->CreateActor<APointLight>("APointLight"))
 	//{
@@ -134,9 +108,6 @@ int CDirectXRenderingEngine::PostInit()
 	
 
 	MeshManage->BuildRenderingPipeline();
-#if OPENCOMPUTEPIPELINE == 1
-	//MeshManage->BuildComputePipeline();
-#endif
 
 	GraphicsCommandList->Close();
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };

@@ -20,7 +20,7 @@ public:
 	virtual void Init() override;
 
 	virtual void BuildRenderingPipeline();
-	virtual void BuildComputePipeline();
+	//virtual void BuildComputePipeline();
 
 	virtual void PreDraw(float DeltaTime) override;
 	virtual void Draw(float DeltaTime) override;
@@ -76,10 +76,10 @@ public:
 	CMeshComponent* CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
 public:
 	FRenderingPipeline& GetRenderingPiepeline();
-	FComputePipeline& GetComputePipeline();
+	//FComputePipeline& GetComputePipeline();
 private:
 	FRenderingPipeline RenderingPipeline;					//渲染管线
-	FComputePipeline ComputePipeline;						//计算着色器管线
+	//FComputePipeline ComputePipeline;						//计算着色器管线
 
 };
 //----------模板实现-----

@@ -109,7 +109,12 @@ void FRenderingPipeline::BuildPipeline()
 	FRenderLayerManage::GetRenderLayerManage()->BuildPSO();
 
 	{
+#if (OPENCOMPUTEPIPELINE == 1)
+		// 计算着色器
 		ComputePipeline.BuildPipeline();
+#else
+		Engine_Log("断不到这里")
+#endif
 	}
 	
 }
@@ -178,7 +183,11 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_ALPHATEST, DeltaTime);
 
+#if (OPENCOMPUTEPIPELINE == 1)
+	// 计算着色器
 	ComputePipeline.Draw();
+#endif
+	
 
 	// 切换pso用的，放在这合适么?
 	DirectXPiepelineState.Draw(DeltaTime);//用做捕获keyboard 4 5

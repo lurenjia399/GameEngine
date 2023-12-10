@@ -8,7 +8,7 @@
 #include "../../Actor/Light/ParallelLight.h"
 #include "../../Mesh/BoxMesh.h"
 
-#define OPENCOMPUTEPIPELINE 0
+// 记得去LurenjiaEngine.h里开启宏
 
 namespace ComputeShaderTest
 {

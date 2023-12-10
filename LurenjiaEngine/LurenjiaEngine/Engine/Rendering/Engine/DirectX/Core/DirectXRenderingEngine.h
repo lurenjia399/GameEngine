@@ -1,9 +1,9 @@
 #pragma
 #include "../../Core/RenderingEngine.h"
-#include "../../../../Mesh/Core/MeshManage.h"
 #include "../../../../Core/World.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
 #include "../../../../Manage/LightManage.h"
+#include "../../../../Rendering/Core/DirectX/RenderingPipeline/DescriptorHeap/DirectXDescriptorHeap.h"
 
 class CDirectXRenderingEngine :public CRenderingEngine
 {

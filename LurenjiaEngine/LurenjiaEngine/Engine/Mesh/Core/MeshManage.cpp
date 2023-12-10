@@ -26,10 +26,10 @@ void CMeshManage::BuildRenderingPipeline()
 	RenderingPipeline.BuildPipeline();
 }
 
-void CMeshManage::BuildComputePipeline()
-{
-	ComputePipeline.BuildPipeline();
-}
+//void CMeshManage::BuildComputePipeline()
+//{
+//	ComputePipeline.BuildPipeline();
+//}
 
 void CMeshManage::PreDraw(float DeltaTime)
 {
@@ -81,7 +81,7 @@ FRenderingPipeline& CMeshManage::GetRenderingPiepeline()
 	return RenderingPipeline;
 }
 
-FComputePipeline& CMeshManage::GetComputePipeline()
-{
-	return ComputePipeline;
-}
+//FComputePipeline& CMeshManage::GetComputePipeline()
+//{
+//	return ComputePipeline;
+//}
