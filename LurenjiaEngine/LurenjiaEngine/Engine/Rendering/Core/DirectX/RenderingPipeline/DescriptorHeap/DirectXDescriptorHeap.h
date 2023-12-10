@@ -6,10 +6,12 @@
 struct FDirectXDescriptorHeap : public IDirectXDeviceInterface_struct
 {
 public:
-	ID3D12DescriptorHeap* GetHeap();
-	void BuildDescriptorHeap(const UINT& InHeapCount);
+	FDirectXDescriptorHeap();
+
+	ID3D12DescriptorHeap* GetRenderingHeap();
+	void BuildRenderingDescriptorHeap(const UINT& InHeapCount);
 
 	void PreDraw(float DeltaTime);
 private:
-	ComPtr<ID3D12DescriptorHeap> CBVHeap;					//³£Á¿ÃèÊö¶Ñ
+	ComPtr<ID3D12DescriptorHeap> RenderingDescriptorHeap;				//äÖÈ¾ÃèÊö·û¶Ñ
 };

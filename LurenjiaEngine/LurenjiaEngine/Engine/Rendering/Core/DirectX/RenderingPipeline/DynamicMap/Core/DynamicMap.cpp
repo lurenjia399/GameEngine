@@ -1,4 +1,5 @@
 #include "DynamicMap.h"
+#include "../../../../../../Config/EngineRenderConfig.h"
 
 FDynamicMap::FDynamicMap(int inWidth, int inHeight, FGeometryMap* inGeometryMap, FDirectXPiepelineState* inPSO)
 	: Width(inWidth)
@@ -10,8 +11,8 @@ FDynamicMap::FDynamicMap(int inWidth, int inHeight, FGeometryMap* inGeometryMap,
 
 void FDynamicMap::Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InPSO)
 {
-	Width = 2048; 
-	Height = 2048;
+	Width = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
+	Height = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
 	GeometryMap = InGeometryMap;
 	PSO = InPSO;
 }

@@ -109,7 +109,6 @@ void FRenderingPipeline::BuildPipeline()
 	FRenderLayerManage::GetRenderLayerManage()->BuildPSO();
 
 	{
-		ComputePipeline.Init(&GeometryMap);
 		ComputePipeline.BuildPipeline();
 	}
 	

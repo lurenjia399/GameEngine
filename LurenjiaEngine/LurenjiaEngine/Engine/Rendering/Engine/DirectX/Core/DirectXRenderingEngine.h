@@ -62,8 +62,9 @@ private:
 	ComPtr<ID3D12CommandAllocator>		CommandAllocator;			// 命令分配器
 	ComPtr<ID3D12GraphicsCommandList>	GraphicsCommandList;		// 命令列表
 	ComPtr<IDXGISwapChain> SwapChain;								// 交换链
-	ComPtr<ID3D12DescriptorHeap> RTVHeap;							// (render target view) 资源描述符堆
-	ComPtr<ID3D12DescriptorHeap> DSVHeap;							// (depth stencil view) 资源描述符堆
+	ComPtr<ID3D12DescriptorHeap> RTVHeap;							// RTV描述符堆
+	ComPtr<ID3D12DescriptorHeap> DSVHeap;							// DSV描述符堆
+	FDirectXDescriptorHeap DescriptorHeap;							// CBV_SRV_UAV这种描述符堆
 
 
 	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;			// 交换链中存放的rtv类型的资源

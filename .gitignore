@@ -2,5 +2,8 @@
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
-/LurenjiaEngine
 /.vs
+/LurenjiaEngine/LurenjiaEngine/Debug
+/LurenjiaEngine/log
+/LurenjiaEngine/Debug
+/LurenjiaEngine/.vs/LurenjiaEngine/v16

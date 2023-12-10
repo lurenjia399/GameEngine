@@ -2,6 +2,7 @@
 #include "RenderingTextureResourcesUpdate.h"
 
 #include "RenderingResourcesUpdate.h"
+#include "../../Config/EngineRenderConfig.h"
 
 
 const wchar_t DDS[] = L".dds";
@@ -135,6 +136,8 @@ void FRenderingTextureResourcesUpdate::Set_SRV_ViewDimension(D3D12_SRV_DIMENSION
 }
 
 FRenderingUAVResourvesUpdate::FRenderingUAVResourvesUpdate()
+	: iWidth(FEngineRenderConfig::GetRenderConfig()->ScreenWidth)
+	, iHeight(FEngineRenderConfig::GetRenderConfig()->ScreenWidth)
 {
 	memset(&SRVDesc, 0, sizeof(D3D12_SHADER_RESOURCE_VIEW_DESC));
 	memset(&UAVDesc, 0, sizeof(D3D12_UNORDERED_ACCESS_VIEW_DESC));

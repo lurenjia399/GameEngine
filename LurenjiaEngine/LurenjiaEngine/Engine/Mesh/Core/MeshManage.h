@@ -7,6 +7,7 @@
 #include "../../Interface/DirectXDeviceInterface.h"
 #include "../../Rendering/Core/Buffer/ConstructBuffer.h"
 #include "../../Rendering/Core/DirectX/RenderingPipeline/RenderingPipeline.h"
+//#include "../../Rendering/Core/DirectX/ComputePipeline/ComputePipeline.h"
 
 
 class CMeshManage
@@ -18,7 +19,8 @@ public:
 	CMeshManage();
 	virtual void Init() override;
 
-	virtual void BuildPipeline();
+	virtual void BuildRenderingPipeline();
+	virtual void BuildComputePipeline();
 
 	virtual void PreDraw(float DeltaTime) override;
 	virtual void Draw(float DeltaTime) override;
@@ -74,8 +76,11 @@ public:
 	CMeshComponent* CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision);
 public:
 	FRenderingPipeline& GetRenderingPiepeline();
+	FComputePipeline& GetComputePipeline();
 private:
-	FRenderingPipeline RenderingPipeline;					//渲染管线对象
+	FRenderingPipeline RenderingPipeline;					//渲染管线
+	FComputePipeline ComputePipeline;						//计算着色器管线
+
 };
 //----------模板实现-----
 template<typename T>

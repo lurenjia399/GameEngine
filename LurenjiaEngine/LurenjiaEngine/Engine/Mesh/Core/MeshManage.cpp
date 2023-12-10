@@ -21,9 +21,14 @@ void CMeshManage::Init()
 	
 }
 
-void CMeshManage::BuildPipeline()
+void CMeshManage::BuildRenderingPipeline()
 {
 	RenderingPipeline.BuildPipeline();
+}
+
+void CMeshManage::BuildComputePipeline()
+{
+	ComputePipeline.BuildPipeline();
 }
 
 void CMeshManage::PreDraw(float DeltaTime)
@@ -74,4 +79,9 @@ CMeshComponent* CMeshManage::CreateSphereMeshComponent(string InName, const floa
 FRenderingPipeline& CMeshManage::GetRenderingPiepeline()
 {
 	return RenderingPipeline;
+}
+
+FComputePipeline& CMeshManage::GetComputePipeline()
+{
+	return ComputePipeline;
 }

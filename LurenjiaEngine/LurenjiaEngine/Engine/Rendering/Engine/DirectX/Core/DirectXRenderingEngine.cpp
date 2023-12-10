@@ -133,7 +133,10 @@ int CDirectXRenderingEngine::PostInit()
 	
 	
 
-	MeshManage->BuildPipeline();
+	MeshManage->BuildRenderingPipeline();
+#if OPENCOMPUTEPIPELINE == 1
+	//MeshManage->BuildComputePipeline();
+#endif
 
 	GraphicsCommandList->Close();
 	ID3D12CommandList* CommandList[] = { GraphicsCommandList.Get() };

@@ -11,13 +11,7 @@ FComputePipeline::FComputePipeline()
 	, mPostProcessRootSignature(ComPtr<ID3D12RootSignature>())
 	, pIBlurMap0(make_shared<FRenderingUAVResourvesUpdate>())
 	, pIBlurMap1(make_shared<FRenderingUAVResourvesUpdate>())
-	, GeometryMap(nullptr)
 {
-}
-
-void FComputePipeline::Init(FGeometryMap* InGeometryMap)
-{
-	GeometryMap = InGeometryMap;
 }
 
 void FComputePipeline::BuildPipeline()
@@ -80,25 +74,21 @@ void FComputePipeline::BuildPipeline()
 		VertBlurPSO.Flags = D3D12_PIPELINE_STATE_FLAG_NONE;
 		ANALYSIS_HRESULT(GetD3dDevice()->CreateComputePipelineState(&VertBlurPSO, IID_PPV_ARGS(&pIVertBlurPSO)));
 	}
-	{
-		// 创建描述符堆，已经有了用项目中的
-		//DescriptorHeap.BuildDescriptorHeap(1); // srv
-	}
 
 	{
 		// 创建srv，uav
 		pIBlurMap0->BuildResource();
 		pIBlurMap0->BuildSRVDesc();
-		pIBlurMap0->BuildShaderResourceView(GeometryMap->GetDescriptorHeap()->GetHeap(), 9);// 序号应该填在堆中的索引，这里必须要改
+		pIBlurMap0->BuildShaderResourceView(GetCBV_SRV_UAVHeap()->GetRenderingHeap(), 9);// 序号应该填在堆中的索引，这里必须要改
 		pIBlurMap0->BuildUAVDesc();
-		pIBlurMap0->BuildUnorderAccessView(GeometryMap->GetDescriptorHeap()->GetHeap(), 10);// 序号应该填在堆中的索引，这里必须要改
+		pIBlurMap0->BuildUnorderAccessView(GetCBV_SRV_UAVHeap()->GetRenderingHeap(), 10);// 序号应该填在堆中的索引，这里必须要改
 
 
 		pIBlurMap1->BuildResource();
 		pIBlurMap1->BuildSRVDesc();
-		pIBlurMap1->BuildShaderResourceView(GeometryMap->GetDescriptorHeap()->GetHeap(), 11);// 序号应该填在堆中的索引，这里必须要改
+		pIBlurMap1->BuildShaderResourceView(GetCBV_SRV_UAVHeap()->GetRenderingHeap(), 11);// 序号应该填在堆中的索引，这里必须要改
 		pIBlurMap1->BuildUAVDesc();
-		pIBlurMap1->BuildUnorderAccessView(GeometryMap->GetDescriptorHeap()->GetHeap(), 12);// 序号应该填在堆中的索引，这里必须要改
+		pIBlurMap1->BuildUnorderAccessView(GetCBV_SRV_UAVHeap()->GetRenderingHeap(), 12);// 序号应该填在堆中的索引，这里必须要改
 
 	}
 }
@@ -175,7 +165,7 @@ void FComputePipeline::Draw()
 		for (UINT i = 0; i < blurTimes; i++)
 		{
 			
-			CD3DX12_GPU_DESCRIPTOR_HANDLE handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GeometryMap->GetDescriptorHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart());
+			CD3DX12_GPU_DESCRIPTOR_HANDLE handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GetCBV_SRV_UAVHeap()->GetRenderingHeap()->GetGPUDescriptorHandleForHeapStart());
 			handle.Offset(9, size);// 序号应该填在堆中的索引，这里必须要改
 			CD3DX12_GPU_DESCRIPTOR_HANDLE mBlur0GpuSrv = handle;
 			handle.Offset(1, size);// 序号应该填在堆中的索引，这里必须要改
@@ -188,11 +178,11 @@ void FComputePipeline::Draw()
 			// 水平模糊
 			GetGraphicsCommandList()->SetPipelineState(pIHorzBlurPSO.Get());
 			GetGraphicsCommandList()->SetComputeRootDescriptorTable(1, mBlur0GpuSrv);
-			GetGraphicsCommandList()->SetComputeRootDescriptorTable(2, mBlur0GpuUav);
+			GetGraphicsCommandList()->SetComputeRootDescriptorTable(2, mBlur1GpuUav);
 
 			//上边一切准备就绪了，这里直接Dispatch即可，完了之后需要把资源状态进行调整便于下面的执行。
 			UINT numGroupsX = (UINT)ceilf(pIBlurMap0->iWidth / 256.0f);
-			GetGraphicsCommandList()->Dispatch(numGroupsX, pIBlurMap0->iHeight, 1);
+			GetGraphicsCommandList()->Dispatch(numGroupsX, pIBlurMap0->iHeight, 1);// (4, 768, 1) 分成多少个线程组
 
 			// pIBlurMap0 从 generic_read -> unordered_access
 			// pIBlurMap1 从 unordered_access -> generic_read
@@ -208,7 +198,7 @@ void FComputePipeline::Draw()
 			// 垂直模糊
 			GetGraphicsCommandList()->SetPipelineState(pIVertBlurPSO.Get());
 			GetGraphicsCommandList()->SetComputeRootDescriptorTable(1, mBlur1GpuSrv);
-			GetGraphicsCommandList()->SetComputeRootDescriptorTable(2, mBlur1GpuUav);
+			GetGraphicsCommandList()->SetComputeRootDescriptorTable(2, mBlur0GpuUav);
 
 			UINT numGroupsY = (UINT)ceilf(pIBlurMap1->iHeight / 256.0f);
 			GetGraphicsCommandList()->Dispatch(pIBlurMap1->iWidth, numGroupsY, 1);

@@ -16,8 +16,6 @@ class FComputePipeline : public IDirectXDeviceInterface
 public:
 	FComputePipeline();
 
-	void Init(FGeometryMap* InGeometryMap);
-
 	void BuildPipeline();
 
 	void Draw();
@@ -42,10 +40,6 @@ protected:
 	 shared_ptr<FRenderingUAVResourvesUpdate> pIBlurMap1;
 
 	 FGeometryMap* GeometryMap;
-
-	 //-----------------------------------------------------------------
-	 
-	 //FDirectXDescriptorHeap DescriptorHeap;// CBV_SRV_UAV这种描述符堆,,这里应该用项目中的，我就借用一下，之后必须改掉
 
 
 };

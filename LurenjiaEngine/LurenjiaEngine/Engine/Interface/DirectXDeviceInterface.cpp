@@ -1,6 +1,7 @@
 #include "DirectXDeviceInterface.h"
 #include "../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
 #include "../Platform/Windows/WindowsEngine.h"
+#include "../Rendering/Core/DirectX/RenderingPipeline/DescriptorHeap/DirectXDescriptorHeap.h"
 
 void IDirectXDeviceInterface::StartSetMainViewportRenderTarget()
 {
@@ -140,6 +141,16 @@ ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetDSVHeap() const
     return nullptr;
 }
 
+FDirectXDescriptorHeap* IDirectXDeviceInterface::GetCBV_SRV_UAVHeap() const
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        return &WindowsEngine->GetRenderingEngine()->DescriptorHeap;
+    }
+    return {};
+}
+
 UINT IDirectXDeviceInterface::GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const
 {
     return GetD3dDevice()->GetDescriptorHandleIncrementSize(InDescriptorHeapType);
@@ -239,6 +250,11 @@ ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface_struct::GetRTVHeap() const
 ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface_struct::GetDSVHeap() const
 {
     return DXDeviceInterface.GetDSVHeap();
+}
+
+FDirectXDescriptorHeap* IDirectXDeviceInterface_struct::GetCBV_SRV_UAVHeap() const
+{
+    return DXDeviceInterface.GetCBV_SRV_UAVHeap();
 }
 
 UINT IDirectXDeviceInterface_struct::GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const

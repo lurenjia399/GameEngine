@@ -95,10 +95,10 @@ public:
 public:
 	bool IsStartUpFog();
 public:
-	FDirectXDescriptorHeap* GetDescriptorHeap();
+	//FDirectXDescriptorHeap* GetDescriptorHeap();
 private:
 	map<int, FGeometry> Geometrys;
-	FDirectXDescriptorHeap DescriptorHeap;// CBV_SRV_UAV这种描述符堆
+	//FDirectXDescriptorHeap DescriptorHeap;// CBV_SRV_UAV这种描述符堆
 
 	FDirectXConstBufferView MeshConstantBufferView;
 	FDirectXConstBufferView ViewportConstantBufferView;

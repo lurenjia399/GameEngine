@@ -137,13 +137,13 @@ void FDynamicShadowMap::BuildRenderTargetDescriptor()
 {
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
 
-	D3D12_CPU_DESCRIPTOR_HANDLE CPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetCPUDescriptorHandleForHeapStart();
+	D3D12_CPU_DESCRIPTOR_HANDLE CPU_SRVHeapStart = GetCBV_SRV_UAVHeap()->GetRenderingHeap()->GetCPUDescriptorHandleForHeapStart();
 	RenderTarget->GetShaderResourceDescriptorCPU() = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 		CPU_SRVHeapStart,
 		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount() + 1,
 		size);
 
-	D3D12_GPU_DESCRIPTOR_HANDLE GPU_SRVHeapStart = GeometryMap->GetDescriptorHeap()->GetHeap()->GetGPUDescriptorHandleForHeapStart();
+	D3D12_GPU_DESCRIPTOR_HANDLE GPU_SRVHeapStart = GetCBV_SRV_UAVHeap()->GetRenderingHeap()->GetGPUDescriptorHandleForHeapStart();
 	RenderTarget->GetShaderResourceDescriptorGPU() = CD3DX12_GPU_DESCRIPTOR_HANDLE(
 		GPU_SRVHeapStart,
 		GeometryMap->GetDrawTextureObjectCount() + GeometryMap->GetDrawCubeMapCount() + 1,

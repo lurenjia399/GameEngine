@@ -6,6 +6,7 @@ class CWindowsEngine;
 class CMeshManage;
 class CLightManage;
 class CRenderingEngine;
+struct FDirectXDescriptorHeap;
 #else
 class CEngien;
 #endif
@@ -37,6 +38,8 @@ public:
 	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
 	//获取DSV描述符堆
 	ComPtr<ID3D12DescriptorHeap> GetDSVHeap() const;
+	//获取CBV_SRV_UAV描述符堆
+	FDirectXDescriptorHeap* GetCBV_SRV_UAVHeap() const;
 	//获取某种描述符大小
 	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 	//获取引擎
@@ -47,6 +50,7 @@ public:
 #endif
 	//获取渲染引擎
 	CRenderingEngine* GetRenderEngine() const;
+	
 	
 };
 
@@ -80,6 +84,8 @@ struct IDirectXDeviceInterface_struct
 	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
 	//获取DSV描述符堆
 	ComPtr<ID3D12DescriptorHeap> GetDSVHeap() const;
+	//获取CBV_SRV_UAV描述符堆
+	FDirectXDescriptorHeap* GetCBV_SRV_UAVHeap() const;
 	//获取某种描述符大小
 	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 #if defined(_WIN32)

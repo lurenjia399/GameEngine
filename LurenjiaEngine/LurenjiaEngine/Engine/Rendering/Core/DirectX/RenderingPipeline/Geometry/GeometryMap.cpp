@@ -70,9 +70,9 @@ void FGeometryMap::BuildDynamicReflectionMesh()
 
 void FGeometryMap::BuildDescriptorHeap()
 {
-	DescriptorHeap.BuildDescriptorHeap(
-		GetDrawTextureObjectCount() //texture2d
-		+ GetDrawCubeMapCount() //静态cubemap
+	GetCBV_SRV_UAVHeap()->BuildRenderingDescriptorHeap(
+		GetDrawTextureObjectCount() //texture2d 6个
+		+ GetDrawCubeMapCount() //静态cubemap 1个
 		+ 1	// 动态cubemap
 		+ 1 // 阴影
 		+ 2 // computeShader pIBlurMap0 的SRV和UAV
@@ -163,9 +163,9 @@ void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 void FGeometryMap::BuildTextureShaderResource()
 {
 	//构建Texture
-	TextureShaderResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), 0);
+	TextureShaderResourceView->BuildTextureShaderResource(GetCBV_SRV_UAVHeap()->GetRenderingHeap(), 0);
 	//构建cubeMap
-	CubeMapResourceView->BuildTextureShaderResource(DescriptorHeap.GetHeap(), GetDrawTextureObjectCount());
+	CubeMapResourceView->BuildTextureShaderResource(GetCBV_SRV_UAVHeap()->GetRenderingHeap(), GetDrawTextureObjectCount());
 }
 
 void FGeometryMap::BuildFogConstantBufferView()
@@ -375,7 +375,7 @@ void FGeometryMap::UpdateShadowMapShaderResourceView(float DeltaTime, const FVie
 
 void FGeometryMap::PreDraw(float DeltaTime)
 {
-	DescriptorHeap.PreDraw(DeltaTime);
+	GetCBV_SRV_UAVHeap()->PreDraw(DeltaTime);
 }
 
 void FGeometryMap::Draw(float DeltaTime)
@@ -394,10 +394,10 @@ void FGeometryMap::PostDraw(float DeltaTime)
 {
 }
 
-FDirectXDescriptorHeap* FGeometryMap::GetDescriptorHeap()
-{
-	return &DescriptorHeap;
-}
+//FDirectXDescriptorHeap* FGeometryMap::GetDescriptorHeap()
+//{
+//	return &GetCBV_SRV_UAVHeap();
+//}
 
 void FGeometryMap::DrawViewport(float DeltaTime)
 {
@@ -423,7 +423,7 @@ void FGeometryMap::DrawMaterial(float DeltaTime)
 void FGeometryMap::Draw2DTexture(float DeltaTime)
 {
 	UINT HandleSize = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GetCBV_SRV_UAVHeap()->GetRenderingHeap()->GetGPUDescriptorHandleForHeapStart());
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(5, Handle);
 }
 
@@ -431,7 +431,7 @@ void FGeometryMap::DrawCubeMapTexture(float DeltaTime)
 {
 	
 	UINT HandleSize = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(DescriptorHeap.GetHeap()->GetGPUDescriptorHandleForHeapStart());
+	CD3DX12_GPU_DESCRIPTOR_HANDLE Handle = CD3DX12_GPU_DESCRIPTOR_HANDLE(GetCBV_SRV_UAVHeap()->GetRenderingHeap()->GetGPUDescriptorHandleForHeapStart());
 	Handle.Offset(GetDrawTextureObjectCount(), HandleSize);
 	GetGraphicsCommandList()->SetGraphicsRootDescriptorTable(6, Handle);
 }

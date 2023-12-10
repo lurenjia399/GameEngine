@@ -6,6 +6,7 @@
 #include "../../../../../../Interface/DirectXDeviceInterface.h"
 #include "../../RenderTarget/Core/RenderTarget.h"
 
+
 struct FGeometryMap;
 struct FDirectXPiepelineState;
 
