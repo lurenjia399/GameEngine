@@ -273,7 +273,7 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
             
             // 使用shadowmap的方法计算阴影,这边整理代码先把阴影关掉
             float visiable = 1.0f;
-            //visiable = UseShadowMap(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
+            visiable = UseShadowMap(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
             //visiable = pcf(mvOut.worldPosition, SceneLight[i].ViewProjectionMatrix);
         
             //Material.BaseColor = visiable * saturate(Material.BaseColor);
@@ -302,6 +302,6 @@ float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
     }
     
     // 计算雾
-    mvOut.Color = GetFogValue(mvOut.Color, mvOut.worldPosition.xyz);
+    //mvOut.Color = GetFogValue(mvOut.Color, mvOut.worldPosition.xyz);
     return mvOut.Color;
 }

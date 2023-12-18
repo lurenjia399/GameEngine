@@ -48,9 +48,9 @@ namespace ShadowMapTest
 				float c = cos(angle);
 
 				ret = XMFLOAT3(cur_pos.x * c - cur_pos.y * s, cur_pos.x * s + cur_pos.y * c, cur_pos.z);
-				ParallelLight->SetPosition(ret);
+				//ParallelLight->SetPosition(ret);
 
-				ParallelLight->FaceTarget(ret, XMFLOAT3(0, 0.f, 40.f), XMFLOAT3(0.f, 0.f, 1.f));
+				//ParallelLight->FaceTarget(ret, XMFLOAT3(0, 0.f, 40.f), XMFLOAT3(0.f, 0.f, 1.f));
 			});
 		}
 

@@ -22,7 +22,7 @@
 #include <DirectXCollision.h>
 
 #define PI acos(-1)
-#define OPENCOMPUTEPIPELINE 1
+//#define OPENCOMPUTEPIPELINE 1 -- 模糊的时候使用，否则注掉
 
 using namespace Microsoft::WRL;
 using namespace DirectX;
