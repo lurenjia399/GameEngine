@@ -1,4 +1,5 @@
 #pragma once
+#include "simple_library/public/simple_library_macro.h"
 
 namespace SimpleImage
 {
@@ -16,7 +17,7 @@ namespace SimpleImage
 		Channel_24Bit = 3,
 	};
 
-	struct FImageInfo
+	struct SIMPLE_LIBRARY_API FImageInfo
 	{
 		FImageInfo()
 			:ImageType(EImageType::Bmp)

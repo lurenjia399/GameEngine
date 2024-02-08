@@ -1,6 +1,6 @@
 #pragma once
 //Copyright (C) RenZhai.2019.All Rights Reserved.
-//作者 人宅
+
 //该c库的详细源码讲解在AboutCG 《手把手入门硬核c语言》视频工程里面：
 //https://www.aboutcg.org/courseDetails/902/introduce
 //希望学习其他方面技术 比如做UE4游戏, 可以访问下列网址：

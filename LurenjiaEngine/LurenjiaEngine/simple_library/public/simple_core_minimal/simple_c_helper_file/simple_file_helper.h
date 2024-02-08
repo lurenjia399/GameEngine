@@ -1,6 +1,6 @@
 #pragma once
 //Copyright (C) RenZhai.2019.All Rights Reserved.
-//作者 人宅
+
 //该c库的详细源码讲解在AboutCG 《手把手入门硬核c语言》视频工程里面：
 //https://www.aboutcg.org/courseDetails/902/introduce
 //希望学习其他方面技术 比如做UE4游戏, 可以访问下列网址：
@@ -17,7 +17,7 @@
 //https://zhuanlan.zhihu.com/p/144558934
 //视频版本：
 //https://www.bilibili.com/video/BV1x5411s7s3
-#include "../simple_c_core/simple_core_minimal.h"
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
 _CRT_BEGIN_C_HEADER
 #define _number_of_successful_conversions(a) a
@@ -41,10 +41,19 @@ void init_def_c_paths_w(def_c_paths_w* c_paths);
 
 int copy_file(char *Src, char *Dest);
 
-void find_files(char const *in_path, def_c_paths *str,bool b_recursion);
+//移除目录下所有文件
+void remove_dir_all_files(const char* file_dir);
+
+//递归移除文件路径 使用该API确保路径下已经没有文件 只有文件夹
+void remove_directory_all(const char* file_dir);
+
+void find_files(char const *in_path, def_c_paths *str,bool b_recursion,bool b_include_folder);
+
+bool is_file_exists(char const* filename);
 
 bool create_file(char const *filename);
  
+//创建路径
 bool create_file_directory(char const *in_path);
 
 //打开地址
@@ -61,6 +70,8 @@ bool open_explore(const char* url);
 
 //使用该接口 一定要初始化buf
 bool get_file_buf(const char *path,char *buf);
+
+bool save_file_buff(const char* path, char* buf);
 
 bool add_file_buf(const char *path, char *buf);
 
@@ -103,6 +114,8 @@ bool save_data_to_disk_w(const wchar_t* path, char* buf,int buf_size);
 //这个是以二进制方式读取 buf的大小要比实际大小+1 因为最后一位留给/0
 bool load_data_from_disk_w(const wchar_t* path, char* buf);
 
+bool is_file_exists_w(const wchar_t *filename);
+
 //打开地址
 bool open_url_w(const wchar_t* url);
 
@@ -114,4 +127,43 @@ bool open_by_operation_w(const wchar_t *in_operation, const wchar_t* url, const 
 bool open_explore_w(const wchar_t* url);
 
 unsigned int get_file_size_by_filename_w(const wchar_t* filename);
+
+//v2版本 路径自适应
+
+typedef struct
+{
+	int index;//表示当前偏移
+	int num;//表示数量
+	char* paths;//MAX_PATH
+}def_c_paths_v2;
+
+typedef struct
+{
+	int index;//表示当前偏移
+	int num;//表示数量
+	wchar_t* paths;//MAX_PATH
+}def_c_paths_w_v2;
+
+void init_def_c_paths_v2(def_c_paths_v2* c_paths);
+void init_def_c_paths_w_v2(def_c_paths_w_v2* c_paths);
+
+void find_files_v2(char const* in_path, def_c_paths_v2* str, bool b_recursion, bool b_include_folder);
+
+int get_def_c_offset(const char* str);
+int get_def_c_offset_w(const wchar_t* str);
+
+void add_def_c_paths(def_c_paths_v2* c_paths,const char *str);
+void add_def_c_paths_w(def_c_paths_w_v2* c_paths, const wchar_t* str);
+
+int get_def_c_paths_offset_by_index(def_c_paths_v2* c_paths, int index);
+int get_def_c_paths_offset_by_index_w(def_c_paths_w_v2* c_paths, int index);
+
+char* get_def_c_paths_by_offset(def_c_paths_v2* c_paths, int in_offset);
+wchar_t* get_def_c_paths_by_offset_w(def_c_paths_w_v2* c_paths, int in_offset);
+
+char* get_def_c_paths_by_index(def_c_paths_v2* c_paths,int index);
+wchar_t *get_def_c_paths_by_index_w(def_c_paths_w_v2* c_paths, int index);
+
+void destroy_def_c_paths_v2(def_c_paths_v2* c_paths);
+void destroy_def_c_paths_w_v2(def_c_paths_w_v2* c_paths);
 _CRT_END_C_HEADER

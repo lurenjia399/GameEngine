@@ -1,4 +1,4 @@
-#include "../../../../public/simple_math/transformation/matrix/matrix_2x2.h"
+#include "simple_library/public/simple_math/transformation/matrix/matrix_2x2.h"
 
 fmatrix_2x2::fmatrix_2x2()
 {

@@ -1,6 +1,6 @@
-#include "../../public/simple_image/simple_image.h"
-#include "../../public/simple_image/Core/simple_image_bmp.h"
-#include "../../public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
+#include "simple_library/public/simple_image/simple_image.h"
+#include "simple_library/public/simple_image/Core/simple_image_bmp.h"
+#include "simple_library/public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
 
 namespace SimpleImage
 {

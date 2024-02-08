@@ -2,7 +2,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "../../../../public/simple_math/transformation/vector/vector_3d.h"
+#include "simple_library/public/simple_math/transformation/vector/vector_3d.h"
+#include "simple_library/public/simple_math/transformation/vector/vector_4d.h"
 #include <stdio.h>
 #include <math.h>
 
@@ -40,9 +41,18 @@ char* fvector_3d::to_string(char* buff)
 	return buff;
 }
 
-float fvector_3d::dot(const fvector_3d& a)const
+fvector_3d& fvector_3d::operator=(const fvector_4d& a) 
 {
-	return a.x * x + a.y * y + z * a.z;
+	x = a.x;
+	y = a.y;
+	z = a.z;
+
+	return *this;
+}
+
+float fvector_3d::dot(const fvector_3d& a, const fvector_3d& b)
+{
+	return a.x * b.x + a.y * b.y + b.z * a.z;
 }
 
 void fvector_3d::normalize()
@@ -50,6 +60,11 @@ void fvector_3d::normalize()
 	float value = sqrtf(x * x + y * y + z * z);
 
 	*this /= value;
+}
+
+float fvector_3d::len()
+{
+	return sqrtf(x * x + y * y + z * z);
 }
 
 fvector_3d fvector_3d::cross_product(const fvector_3d& a, const fvector_3d& b)

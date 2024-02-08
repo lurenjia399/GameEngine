@@ -7,3 +7,6 @@
 /LurenjiaEngine/log
 /LurenjiaEngine/Debug
 /LurenjiaEngine/.vs/LurenjiaEngine/v16
+/LurenjiaEngine/.vs/LurenjiaEngine
+/LurenjiaEngine/LurenjiaEngine/x64/Debug
+/.gitignore

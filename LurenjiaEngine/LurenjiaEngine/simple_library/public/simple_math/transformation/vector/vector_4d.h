@@ -1,8 +1,10 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
 #include "assert.h" 
+#include "simple_library/public/simple_library_macro.h"
 
-struct fvector_4d
+struct fvector_3d;
+struct SIMPLE_LIBRARY_API fvector_4d
 {
 	float x;
 	float y;
@@ -19,8 +21,29 @@ struct fvector_4d
 	}
 
 	fvector_4d(float in_value);
-
+	fvector_4d(const fvector_3d &in_v);
 	fvector_4d(float a, float b, float c, float d);
+
+public:
+	bool operator>(const fvector_4d& a)const
+	{
+		return x > a.x && y > a.y && z > a.z && w > a.w;
+	}
+
+	bool operator<(const fvector_4d& a)const
+	{
+		return x < a.x&& y < a.y&& z < a.z && w < a.w;
+	}
+
+	bool operator>=(const fvector_4d& a)const
+	{
+		return x >= a.x && y >= a.y && z >= a.z && w >= a.w;
+	}
+
+	bool operator<=(const fvector_4d& a)const
+	{
+		return x <= a.x&& y <= a.y&& z <= a.z&& w <= a.w;
+	}
 
 	fvector_4d operator+(const fvector_4d& a) const
 	{

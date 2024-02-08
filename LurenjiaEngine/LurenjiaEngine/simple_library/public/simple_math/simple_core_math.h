@@ -13,10 +13,14 @@
 #include "transformation/vector/vector_4id.h"
 #include "transformation/vector/vector_color.h"
 
+//Å·À­½Ç
+#include "transformation/rotator/rotator.h"
+
 //¾ØÕó
 #include "transformation/matrix/matrix_2x2.h"
 #include "transformation/matrix/matrix_3x3.h"
 #include "transformation/matrix/matrix_4x4.h"
+#include "transformation/matrix/matrix_4x3.h"
 
 //Í¼Ôª
 #include "transformation/primitives/triangle.h"

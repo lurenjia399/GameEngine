@@ -1,5 +1,5 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
-#include "../../../public/simple_core_minimal/simple_c_windows/simple_c_windows_register.h"
+#include "simple_library/public/simple_core_minimal/simple_c_windows/simple_c_windows_register.h"
 
 void init_feg_info(freg_info *info)
 {

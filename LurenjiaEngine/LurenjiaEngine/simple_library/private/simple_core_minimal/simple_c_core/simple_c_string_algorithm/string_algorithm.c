@@ -1,7 +1,7 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
-#include "../../../../public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
-void remove_char_end(char *str, char sub_str)
+bool remove_char_end(char *str, char sub_str)
 {
 	int len = strlen(str);
 
@@ -10,9 +10,109 @@ void remove_char_end(char *str, char sub_str)
 		if (str[i] == sub_str)
 		{
 			strcpy(&str[i], &str[i + 1]);
-			break;
+			return true;
 		}
 	}
+
+	return false;
+}
+
+bool c_str_contain(const char* buff_str, const char* sub_str)
+{
+	return find_string(buff_str, sub_str,0) != -1;
+}
+
+void trim_start_and_end_inline(char* buff)
+{
+	trim_start_inline(buff);
+	trim_end_inline(buff);
+}
+
+bool string_equal(const char* str_1, const char* str_2)
+{
+	int len1 = strlen(str_1);
+	int len2 = strlen(str_2);
+	if (len1 == len2 && (len2 != 0))
+	{
+		for (int i = 0;i < len1;i++)
+		{
+			if (str_1[i] != str_2[i])
+			{
+				return false;
+			}
+		}
+
+		return true;
+	}
+
+	return false;
+}
+
+void trim_start_inline(char* buff)
+{
+	int pos = find_string(buff," ",0);
+	int index = 0;
+	if (pos == 0)
+	{
+		while (pos == index)
+		{
+			index++;
+			pos = find_string(buff, " ", index);
+		}
+
+		int buff_len = strlen(buff);
+		for (int i = index; i < buff_len; i++)
+		{
+			buff[i - index] = buff[i];
+		}
+
+		//填充最后 0
+		for (int i = 1; i <= index; i++)
+		{
+			buff[buff_len - i] = '\0';
+		}
+	}
+}
+
+void trim_end_inline(char* buff)
+{
+	int buff_len = strlen(buff);
+	int pos = find_string_from_end(buff, " ", 0);
+	int index = 1;
+
+	if (buff_len > 0)
+	{
+		if (pos == (buff_len - index))
+		{
+			buff[buff_len - index] = '\0';
+
+			trim_end_inline(buff);
+		}
+	}
+}
+
+bool split(const char* buf,const char* str_split, char* l, char* r, bool bcontain_str_split)
+{
+	int pos = find_string(buf, str_split,0);
+	if (pos !=-1 )
+	{
+		int str_split_len = 0;
+		if (!bcontain_str_split)
+		{
+			str_split_len = strlen(str_split);
+		}
+
+		int buf_len = strlen(buf);
+
+		strncpy(l, buf, pos);
+
+		int nest_pos = pos + str_split_len;
+		strncpy(r, &buf[nest_pos], buf_len - nest_pos);
+
+		return true;
+	}
+
+	return false;
 }
 
 void remove_all_char_end(char *str, char sub_str)
@@ -56,7 +156,7 @@ void replace_string_inline(
 	}
 }
 
-void remove_char_start(char *str, char sub_str)
+bool remove_char_start(char *str, char sub_str)
 {
 	int len = strlen(str) + 1;
 
@@ -72,9 +172,11 @@ void remove_char_start(char *str, char sub_str)
 			} while (str[i + 1] != '\0');
 			str[i] = '\0';
 
-			break;
+			return true;
 		}
 	}
+
+	return false;
 }
 
 // "wearwetryy wrwq asdgddawtdgh"
@@ -112,6 +214,33 @@ void remove_string_start(char *str, char const* sub_str)
 	{
 		strcpy(&str[index], &str[index + strlen(sub_str)]);
 	}
+}
+
+int find_string_from_end(const char* str, char const* sub_str, int start_pos)
+{
+	int str_len = strlen(str);
+	int len = strlen(sub_str);
+	int index = -1;
+	for (int i = (str_len - start_pos); str[i] != str[0]; i--)
+	{
+		if (sub_str[0] == str[i])
+		{
+			int tmp_index = i;
+			int l = 1;//第一个是成功
+			while (sub_str[l] == str[i + l] && sub_str[l] != '\0')
+			{
+				l++;
+			}
+
+			if (len == l)
+			{
+				index = tmp_index;
+				break;
+			}
+		}
+	}
+
+	return index;
 }
 
 void replace_char_inline(char *str, const char sub_char_a, const char sub_char_b)

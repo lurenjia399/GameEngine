@@ -1,7 +1,8 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
 #include <map>
-#include "../simple_core_minimal/simple_c_guid/simple_guid.h"
+#include "simple_library/public/simple_core_minimal/simple_c_guid/simple_guid.h"
+#include <functional>
 
 template< class TReturn, typename ...ParamTypes>
 class FDelegateBase
@@ -51,6 +52,23 @@ private:
 };
 
 template<class TReturn, typename ...ParamTypes>
+class FLambdaDelegate :public FDelegateBase<TReturn, ParamTypes...>
+{
+public:
+	FLambdaDelegate(std::function<TReturn(ParamTypes...)> InLambda)
+		:LambdaFuncation(InLambda)
+	{}
+
+	virtual TReturn Execute(ParamTypes ...Params)
+	{
+		return LambdaFuncation(Params...);
+	}
+
+private:
+	std::function<TReturn(ParamTypes...)> LambdaFuncation;
+};
+
+template<class TReturn, typename ...ParamTypes>
 class FDelegate
 {
 public:
@@ -88,6 +106,13 @@ public:
 		return DelegateInstance;
 	}
 
+	static FDelegate<TReturn, ParamTypes...> Create(std::function<TReturn(ParamTypes...)> InLambda)
+	{
+		FDelegate<TReturn, ParamTypes...>  DelegateInstance;
+		DelegateInstance.BindLambda(InLambda);
+		return DelegateInstance;
+	}
+
 public:
 	template<class TObjectType>
 	void Bind(TObjectType *InObject, TReturn(TObjectType::* InFuncation)(ParamTypes ...))
@@ -95,6 +120,13 @@ public:
 		ReleaseDelegate();
 
 		CurrentDelegatePtr = new FObjectDelegate<TObjectType,TReturn, ParamTypes...>(InObject, InFuncation);
+	}
+
+	void BindLambda(std::function<TReturn(ParamTypes...)> InLambda)
+	{
+		ReleaseDelegate();
+
+		CurrentDelegatePtr = new FLambdaDelegate<TReturn, ParamTypes...>(InLambda);
 	}
 
 	void Bind(TReturn(* InFuncation)(ParamTypes...))

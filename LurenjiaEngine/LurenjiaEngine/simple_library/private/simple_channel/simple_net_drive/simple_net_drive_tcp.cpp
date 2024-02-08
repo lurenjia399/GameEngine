@@ -1,9 +1,9 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
 #include "simple_net_drive_tcp.h"
-#include "../../../public/simple_c_log/simple_c_log.h"
+#include "simple_library/public/simple_c_log/simple_c_log.h"
 #include "../simple_net_connetion/simple_connetion_tcp.h"
-#include "../../../public/simple_channel/simple_protocols_definition.h"
-#include "../../../public/simple_channel/simple_net_protocols.h"
+#include "simple_library/public/simple_channel/simple_protocols_definition.h"
+#include "simple_library/public/simple_channel/simple_net_protocols.h"
 
 HANDLE FSimpleTCPNetDrive::CompletionPortHandle = nullptr;
 

@@ -1,6 +1,13 @@
 #pragma once
+#include "simple_library/public/simple_library_macro.h"
 
-struct fmatrix_4x4
+struct fmatrix_3x3;
+struct fmatrix_4x3;
+struct frotator;
+struct fvector_3d;
+struct fquat;
+
+struct SIMPLE_LIBRARY_API fmatrix_4x4
 {
 	float m11; float m12; float m13; float m14;
 	float m21; float m22; float m23; float m24;
@@ -9,12 +16,18 @@ struct fmatrix_4x4
 
 public:
 	fmatrix_4x4();
+	
+	fmatrix_4x4(const fmatrix_4x3& in_matrix);
+
+	fmatrix_4x4(const fmatrix_3x3& in_matrix);
 
 	fmatrix_4x4(
 		float in_m11, float in_m12, float in_m13, float in_m14,
 		float in_m21, float in_m22, float in_m23, float in_m24,
 		float in_m31, float in_m32, float in_m33, float in_m34,
 		float in_m41, float in_m42, float in_m43, float in_m44);
+
+	fmatrix_4x4& operator=(const fmatrix_3x3& a);
 
 	void operator+=(const fmatrix_4x4& a)
 	{
@@ -73,6 +86,13 @@ public:
 			m41* a.m14 + m42 * a.m24 + m43 * a.m34 + m44 * a.m44);
 	}
 
+public:
+
+	//惯性->物体
+	void inertia_to_object(const frotator& in_rot);
+	//物体->惯性
+	void object_to_inertia(const frotator& in_rot);
+
 	//行列式
 	float determinant()const;
 
@@ -82,4 +102,9 @@ public:
 	void transpose();
 
 	fmatrix_4x4 to_transpose();
+
+public:
+	fvector_3d get_translation();
+
+	fquat get_quat()const;
 };

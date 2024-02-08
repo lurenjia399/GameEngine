@@ -1,14 +1,14 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
 #pragma once
-#include "../../simple_core_minimal/simple_c_core/simple_core_minimal.h"
-#include "../simple_net_type.h"
-#include "../../simple_array/simple_hash_array.h"
-#include "../../simple_cpp_core_minimal/simple_cpp_core_minimal.h"
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
+#include "simple_library/public/simple_channel/simple_net_type.h"
+#include "simple_library/public/simple_array/simple_hash_array.h"
 #include "simple_channel.h"
-#include "../../../public/simple_cpp_core_minimal/simple_cpp_core_minimal.h"
+#include "simple_library/public/simple_cpp_core_minimal/simple_cpp_core_minimal.h"
+#include "simple_library/public/simple_library_macro.h"
 
 //class FSimpleChannel;
-class FSimpleConnetion
+class SIMPLE_LIBRARY_API FSimpleConnetion
 {
 public:
 	FSimpleConnetion();

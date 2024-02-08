@@ -2,7 +2,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif // !_CRT_SECURE_NO_WARNINGS
 
-#include "../../../../public/simple_math/transformation/vector/vector_4d.h"
+#include "simple_library/public/simple_math/transformation/vector/vector_4d.h"
+#include "simple_library/public/simple_math/transformation/vector/vector_3d.h"
 #include <math.h>
 #include <stdio.h>
 
@@ -13,6 +14,14 @@ fvector_4d::fvector_4d(float in_value)
 	, w(in_value)
 {
 
+}
+
+fvector_4d::fvector_4d(const fvector_3d& in_v)
+	:x(in_v.x)
+	,y(in_v.y)
+	,z(in_v.z)
+	,w(1.f)
+{
 }
 
 fvector_4d::fvector_4d(float a, float b, float c, float d)

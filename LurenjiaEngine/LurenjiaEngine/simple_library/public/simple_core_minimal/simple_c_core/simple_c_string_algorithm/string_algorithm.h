@@ -1,6 +1,6 @@
 #pragma once
 //Copyright (C) RenZhai.2019.All Rights Reserved.
-//作者 人宅
+
 //该c库的详细源码讲解在AboutCG 《手把手入门硬核c语言》视频工程里面：
 //https://www.aboutcg.org/courseDetails/902/introduce
 //希望学习其他方面技术 比如做UE4游戏, 可以访问下列网址：
@@ -17,16 +17,36 @@
 //https://zhuanlan.zhihu.com/p/144558934
 //视频版本：
 //https://www.bilibili.com/video/BV1x5411s7s3
-#include "../simple_core_minimal.h"
- 
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
+
 _CRT_BEGIN_C_HEADER
 void remove_string_start(char *str, char const* sub_str);
 
+//从后往前找
+int find_string_from_end(const char* str, char const* sub_str, int start_pos);
+
+//从前往后找
 int find_string(const char *str, char const* sub_str,int start_pos);
 
-void remove_char_start(char *str, char sub_str);
+bool remove_char_start(char *str, char sub_str);
 
-void remove_char_end(char *str, char sub_str);
+bool remove_char_end(char *str, char sub_str);
+
+//判定字符串是否包含
+bool c_str_contain(const char* buff_str,const char *sub_str);
+
+//前后空格都修掉
+void trim_start_and_end_inline(char* buff);
+
+bool string_equal(const char* str_1, const char* str_2);
+
+//去除前面的空格
+void trim_start_inline(char *buff);
+//去除后面的空格
+void trim_end_inline(char *buff);
+
+//拆分
+bool split(const char *buf,const char* str_split,char *l,char *r, bool bcontain_str_split);
 
 void remove_all_char_end(char *str, char sub_str);
 
@@ -50,7 +70,7 @@ void wremove_string_start(wchar_t *str, wchar_t const* sub_str);
 
 int wfind_string(wchar_t *str, wchar_t const* sub_str);
 
-void wremove_wchar_start(wchar_t *str, wchar_t sub_str);
+void  wremove_wchar_start(wchar_t *str, wchar_t sub_str);
 
 void wremove_wchar_end(wchar_t *str, wchar_t sub_str);
 

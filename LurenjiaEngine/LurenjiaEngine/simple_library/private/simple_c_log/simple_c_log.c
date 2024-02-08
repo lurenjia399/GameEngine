@@ -1,7 +1,7 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
-#include "../../public/simple_c_log/simple_c_log.h"
-#include "../../public/simple_core_minimal/simple_c_windows/simple_c_windows_setting.h"
-#include "../../public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
+#include "simple_library/public/simple_c_log/simple_c_log.h"
+#include "simple_library/public/simple_core_minimal/simple_c_windows/simple_c_windows_setting.h"
+#include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
 char log_path[MAX_PATH] = { 0 }; //存储着我们的路径
 char log_filename[MAX_PATH] = { 0 };//具体文件
@@ -79,52 +79,28 @@ void init_log_system(const char *path)
 
 bool log_wirte(enum e_error error, char *format, ...)
 {
-	char error_str[64] = { 0 };
-	switch (error)
-	{
-	case SIMPLE_C_SUCCESS:
-		strcpy(error_str, "SUCCESS");
-		break;
-	case SIMPLE_C_LOG:
-		strcpy(error_str, "LOG");
-		break;
-	case SIMPLE_C_WARNING:
-		strcpy(error_str, "WARNING");
-		break;
-	case SIMPLE_C_ERROR:
-		strcpy(error_str, "ERROR");
-		break;
-	}
-
 	const char *p = get_log_filename();
 
 	if (p != NULL)
 	{
 		FILE* hfile = NULL;
-#if _WIN64
-
-#elif _WIN32
+//#if _WIN64
+//#elif _WIN32
 		if ((hfile = fopen(p, "a+")) != NULL)
 		{
-			char buf[8196 * 1024] = { 0 };
-			ZeroMemory(buf, sizeof(char) * 8196 * 1024);
+			char buf[SIMPLE_C_BUFF_SIZE] = { 0 };
+			ZeroMemory(buf, sizeof(char) * SIMPLE_C_BUFF_SIZE);
 			va_list args;
 			va_start(args, format);
-			_vsnprintf_s(buf, 8196 * 1024 - 1, 8196 * 1024, format, args);
+			_vsnprintf_s(buf, SIMPLE_C_BUFF_SIZE - 1, SIMPLE_C_BUFF_SIZE, format, args);
 			va_end(args);
-			buf[8196 * 1024 - 1] = 0;
+			buf[SIMPLE_C_BUFF_SIZE - 1] = 0;
 
 			//char* time = ctime(__TIME__);// \n
-			char time[256] = { 0 };
-			get_local_time_string(time);
-			if (time)
-			{
-				remove_char_end(time, '\n');
-			}
-	
-			char text_buf[8196 * 1024] = { 0 };
-			get_printf_s(text_buf, "[%s] [%s] %s \r\n", error_str, time, buf);
 
+			char text_buf[SIMPLE_C_BUFF_SIZE] = { 0 };
+			get_log_str(error, text_buf, buf);
+			
 			switch (error)
 			{
 			case SIMPLE_C_SUCCESS:
@@ -145,9 +121,53 @@ bool log_wirte(enum e_error error, char *format, ...)
 			set_console_w_color(SIMPLE_WHITE, SIMPLE_BLACK);
 			fclose(hfile);
 		}
-#endif
+//#endif
 		return true;
 	}
 
 	return false;
+}
+
+char* get_error_str(enum e_error error, char* buff)
+{
+	switch (error)
+	{
+	case SIMPLE_C_SUCCESS:
+		strcpy(buff, "SUCCESS");
+		break;
+	case SIMPLE_C_LOG:
+		strcpy(buff, "LOG");
+		break;
+	case SIMPLE_C_WARNING:
+		strcpy(buff, "WARNING");
+		break;
+	case SIMPLE_C_ERROR:
+		strcpy(buff, "ERROR");
+		break;
+	}
+
+	return buff;
+}
+
+int get_log_str(enum e_error error, char* buff,const char *content_buff)
+{
+	char error_str[64] = { 0 };
+	get_error_str(error, error_str);
+
+	char time[256] = { 0 };
+	get_local_time_string(time);
+	if (time)
+	{
+		remove_char_end(time, '\n');
+	}
+
+	if (content_buff)
+	{
+		return get_printf_s(buff, "[%s] [%s] %s \r\n", error_str, time, content_buff);
+	}
+	else
+	{
+		return get_printf_s(buff, "[%s][%s] \r\n", error_str, time);
+	}
+	
 }
