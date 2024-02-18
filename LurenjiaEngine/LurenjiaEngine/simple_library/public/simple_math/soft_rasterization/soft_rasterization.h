@@ -1,6 +1,6 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
-#include "simple_library/public/simple_library.h"
-#include "simple_library/public/simple_library_macro.h"
+#include "../../simple_library/public/simple_library.h"
+#include "../../simple_library/public/simple_library_macro.h"
 
 #define VARIABLE(...)
 
@@ -209,7 +209,7 @@ namespace soft_rasterization
 }
 
 /*
-#include "simple_library/public/simple_math/soft_rasterization/soft_rasterization.h"
+#include "../../simple_library/public/simple_math/soft_rasterization/soft_rasterization.h"
 
 using namespace soft_rasterization;
 

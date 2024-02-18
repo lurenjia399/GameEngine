@@ -1,5 +1,5 @@
 #pragma once
-#include "simple_library/public/simple_library_macro.h"
+#include "../../../../simple_library/public/simple_library_macro.h"
 
 namespace SimpleImage
 {

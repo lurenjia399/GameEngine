@@ -85,7 +85,7 @@ void FGeometryMap::LoadTexture()
 	def_c_paths Paths;
 	init_def_c_paths(&Paths);
 	char RootPath[] = "../LurenjiaEngine/Asset";
-	find_files(RootPath, &Paths, true);
+	find_files(RootPath, &Paths, true, true);
 
 	for (int i = 0; i < Paths.index; ++i)
 	{

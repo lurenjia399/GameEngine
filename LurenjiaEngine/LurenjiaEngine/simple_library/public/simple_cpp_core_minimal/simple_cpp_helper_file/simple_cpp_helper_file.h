@@ -2,7 +2,7 @@
 #pragma once
 #include <vector>
 #include <string>
-#include "simple_library/public/simple_library_macro.h"
+#include "../../../../simple_library/public/simple_library_macro.h"
 
 namespace simple_cpp_helper_file
 {

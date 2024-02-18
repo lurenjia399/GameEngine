@@ -1,7 +1,7 @@
 #pragma once
 #include "../vector/vector_2d.h"
 #include "../vector/vector_4d.h"
-#include "simple_library/public/simple_library_macro.h"
+#include "../../simple_library/public/simple_library_macro.h"
 
 namespace primitives
 {

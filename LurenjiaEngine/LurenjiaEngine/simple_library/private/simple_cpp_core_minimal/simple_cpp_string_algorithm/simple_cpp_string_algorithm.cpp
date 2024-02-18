@@ -2,8 +2,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif // !_CRT_SECURE_NO_WARNINGS
 
-#include "simple_library/public/simple_cpp_core_minimal/simple_cpp_string_algorithm/simple_cpp_string_algorithm.h"
-#include "simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
+#include "../../../../simple_library/public/simple_cpp_core_minimal/simple_cpp_string_algorithm/simple_cpp_string_algorithm.h"
+#include "../../../../simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
 namespace simple_cpp_string_algorithm
 {

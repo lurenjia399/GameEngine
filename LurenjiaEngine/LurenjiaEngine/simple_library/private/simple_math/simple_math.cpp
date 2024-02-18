@@ -1,4 +1,4 @@
-#include "simple_library/public/simple_math/simple_math.h"
+#include "../../simple_library/public/simple_math/simple_math.h"
 
 unsigned int get_uint32_random(unsigned int in_max)
 {

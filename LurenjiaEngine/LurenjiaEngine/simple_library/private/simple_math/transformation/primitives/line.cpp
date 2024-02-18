@@ -1,5 +1,5 @@
-#include "simple_library/public/simple_math/transformation/primitives/line.h"
-#include "simple_library/public/simple_math/math_utils.h"
+#include "../../simple_library/public/simple_math/transformation/primitives/line.h"
+#include "../../simple_library/public/simple_math/math_utils.h"
 
 namespace primitives
 {

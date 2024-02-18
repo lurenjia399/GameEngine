@@ -1,4 +1,4 @@
-#include "simple_library/public/simple_math/soft_rasterization/soft_rasterization.h"
+#include "../../simple_library/public/simple_math/soft_rasterization/soft_rasterization.h"
 
 namespace soft_rasterization
 {

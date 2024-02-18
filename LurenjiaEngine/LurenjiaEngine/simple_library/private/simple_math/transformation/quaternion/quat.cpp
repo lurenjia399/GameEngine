@@ -1,8 +1,8 @@
-#include "simple_library/public/simple_math/transformation/quaternion/quat.h"
-#include "simple_library/public/simple_math/transformation/vector/vector_3d.h"
-#include "simple_library/public/simple_math/transformation/rotator/rotator.h"
-#include "simple_library/public/simple_math/math_libray.hpp"
-#include "simple_library/public/simple_math/math_utils.h"
+#include "../../simple_library/public/simple_math/transformation/quaternion/quat.h"
+#include "../../simple_library/public/simple_math/transformation/vector/vector_3d.h"
+#include "../../simple_library/public/simple_math/transformation/rotator/rotator.h"
+#include "../../simple_library/public/simple_math/math_libray.hpp"
+#include "../../simple_library/public/simple_math/math_utils.h"
 #include <cmath>
 #include <assert.h> 
 

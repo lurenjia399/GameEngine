@@ -1,8 +1,8 @@
-#include "simple_library/public/simple_math/transformation/rotator/rotator.h"
-#include "simple_library/public/simple_math/transformation/matrix/matrix_3x3.h"
-#include "simple_library/public/simple_math/transformation/quaternion/quat.h"
+#include "../../simple_library/public/simple_math/transformation/rotator/rotator.h"
+#include "../../simple_library/public/simple_math/transformation/matrix/matrix_3x3.h"
+#include "../../simple_library/public/simple_math/transformation/quaternion/quat.h"
 #include <math.h>
-#include "simple_library/public/simple_math/math_utils.h"
+#include "../../simple_library/public/simple_math/math_utils.h"
 
 void frotator::object_to_inertia(const fmatrix_3x3& in_rot_matrix)
 {

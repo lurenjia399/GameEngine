@@ -2,10 +2,10 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif // !_CRT_SECURE_NO_WARNINGS
 
-#include "simple_library/public/simple_cpp_core_minimal/simple_cpp_helper_file/simple_cpp_helper_file.h"
-#include "simple_library/public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
-#include "simple_library/public/simple_core_minimal/simple_c_path/simple_path.h"
-#include "simple_library/public/simple_cpp_core_minimal/simple_cpp_string_algorithm/simple_cpp_string_algorithm.h"
+#include "../../../../simple_library/public/simple_cpp_core_minimal/simple_cpp_helper_file/simple_cpp_helper_file.h"
+#include "../../../../simple_library/public/simple_core_minimal/simple_c_helper_file/simple_file_helper.h"
+#include "../../../../simple_library/public/simple_core_minimal/simple_c_path/simple_path.h"
+#include "../../../../simple_library/public/simple_cpp_core_minimal/simple_cpp_string_algorithm/simple_cpp_string_algorithm.h"
 #include <string.h>
 
 namespace simple_cpp_helper_file
