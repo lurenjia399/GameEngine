@@ -8,6 +8,7 @@
 #include "RenderingLayer/RenderLayerManage.h"
 #include "DynamicMap/CubeMap/DynamicCubeMap.h"
 #include "../ComputePipeline/ComputePipeline.h"
+#include "../EditorUIPipeline/IMGUIPipeline.h"
 
 
 
@@ -36,5 +37,8 @@ protected:
 
 	// 测试用计算着色器
 	FComputePipeline ComputePipeline; //计算着色器管线
+
+	// Editor UI 
+	FIMGUIPipeline EditorUIPipeline; //编辑器ui管线
 
 };

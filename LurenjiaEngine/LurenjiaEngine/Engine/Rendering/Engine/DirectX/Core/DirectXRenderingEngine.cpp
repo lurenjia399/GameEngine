@@ -101,9 +101,9 @@ int CDirectXRenderingEngine::PostInit()
 	//MaterialTest::BuildMaterialTestData(); // 调整完成
 	//TextureTest::BuildTextureTestData();
 	//ReflectTest::BuildReflectTestData();
-	ShadowMapTest::BuildShadowMapTestData();
+	//ShadowMapTest::BuildShadowMapTestData();
 	//TransparentTest::BuildTransparentTestData();
-	//ComputeShaderTest::BuildComputeShaderTestData();
+	ComputeShaderTest::BuildComputeShaderTestData();
 	
 	
 

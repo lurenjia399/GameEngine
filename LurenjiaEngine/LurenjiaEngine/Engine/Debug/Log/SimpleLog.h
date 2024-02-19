@@ -16,3 +16,6 @@
 #define Engine_Log_Warning(format, ...)
 
 #endif
+
+
+#define _TU_CHECK_VALUE(_m)  (1 == (_m))

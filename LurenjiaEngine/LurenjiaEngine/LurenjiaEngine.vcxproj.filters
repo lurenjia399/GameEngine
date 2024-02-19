@@ -495,6 +495,9 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\EditorUIPipeline\IMGUIPipeline.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -1047,6 +1050,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="imgui\imstb_truetype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\EditorUIPipeline\IMGUIPipeline.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

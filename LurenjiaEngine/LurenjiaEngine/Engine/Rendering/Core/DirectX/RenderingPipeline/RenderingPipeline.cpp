@@ -1,5 +1,6 @@
 #include "RenderingPipeline.h"
 
+#define  A 0  //把A定义为0
 enum class EPiepelineStateType;
 
 FRenderingPipeline::FRenderingPipeline()
@@ -108,13 +109,29 @@ void FRenderingPipeline::BuildPipeline()
 	//构建pso
 	FRenderLayerManage::GetRenderLayerManage()->BuildPSO();
 
+	// 计算着色器管线
 	{
+
 #if (OPENCOMPUTEPIPELINE == 1)
 		// 计算着色器
 		ComputePipeline.BuildPipeline();
 #else
 		Engine_Log("断不到这里")
 #endif
+	}
+
+	// Eidtor UI 管线
+	{
+		EditorUIPipeline.Init(GeometryMap.GetCBV_SRV_UAVHeap()->GetRenderingHeap(), 
+			GeometryMap.GetDrawTextureObjectCount() //texture2d 6个
+			+ GeometryMap.GetDrawCubeMapCount() //静态cubemap 1个
+			+ 1	// 动态cubemap
+			+ 1 // 阴影
+#if (OPENCOMPUTEPIPELINE == 1)
+			+ 2 // computeShader pIBlurMap0 的SRV和UAV
+			+ 2 // computeShader pIBlurMap1 的SRV和UAV
+#endif
+		);
 	}
 	
 }
@@ -187,6 +204,8 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// 计算着色器
 	ComputePipeline.Draw();
 #endif
+
+	EditorUIPipeline.Draw(DeltaTime);
 	
 
 	// 切换pso用的，放在这合适么?

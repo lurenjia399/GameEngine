@@ -64,7 +64,7 @@ private:
 	ComPtr<IDXGISwapChain> SwapChain;								// 交换链
 	ComPtr<ID3D12DescriptorHeap> RTVHeap;							// RTV描述符堆
 	ComPtr<ID3D12DescriptorHeap> DSVHeap;							// DSV描述符堆
-	FDirectXDescriptorHeap DescriptorHeap;							// CBV_SRV_UAV这种描述符堆
+	FDirectXDescriptorHeap DescriptorHeap;							// CBV_SRV_UAV这种描述符堆，程序所有的cbv srv uav资源都应该放在这个堆里面
 
 
 	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;			// 交换链中存放的rtv类型的资源

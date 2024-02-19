@@ -75,8 +75,11 @@ void FGeometryMap::BuildDescriptorHeap()
 		+ GetDrawCubeMapCount() //静态cubemap 1个
 		+ 1	// 动态cubemap
 		+ 1 // 阴影
+#if (OPENCOMPUTEPIPELINE == 1)
 		+ 2 // computeShader pIBlurMap0 的SRV和UAV
 		+ 2 // computeShader pIBlurMap1 的SRV和UAV
+#endif
+		+ 1 // editor ui
 	);
 }
 

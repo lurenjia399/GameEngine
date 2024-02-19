@@ -86,6 +86,7 @@
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Buffer\ConstructBuffer.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\ComputePipeline\ComputePipeline.cpp" />
+    <ClCompile Include="Engine\Rendering\Core\DirectX\EditorUIPipeline\IMGUIPipeline.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.cpp" />
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DynamicMap\Core\DynamicMap.cpp" />
@@ -252,6 +253,7 @@
     <ClInclude Include="Engine\Platform\Windows\WindowsPlatform.h" />
     <ClInclude Include="Engine\Rendering\Core\Buffer\ConstructBuffer.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\ComputePipeline\ComputePipeline.h" />
+    <ClInclude Include="Engine\Rendering\Core\DirectX\EditorUIPipeline\IMGUIPipeline.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\ConstantBuffer\DirectXConstBufferView.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\CubeMap\DynamicCubeMap.h" />
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\DescriptorHeap\DirectXDescriptorHeap.h" />

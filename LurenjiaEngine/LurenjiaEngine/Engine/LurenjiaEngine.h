@@ -5,6 +5,13 @@
 #include "Debug/EngineDebug.h"
 
 
+#include "../imgui/imgui.h"
+#include "../imgui/backends/imgui_impl_dx12.h"
+#include "../imgui/backends/imgui_impl_win32.h"
+
+#include <d3d12.h>
+#include <tchar.h>
+
 #include <vector>
 #include <sstream>
 
@@ -23,7 +30,7 @@
 #include <DirectXCollision.h>
 
 #define PI acos(-1)
-//#define OPENCOMPUTEPIPELINE 1 -- 模糊的时候使用，否则注掉
+#define OPENCOMPUTEPIPELINE 0 // 开启模糊测试的时候，改成1
 
 using namespace Microsoft::WRL;
 using namespace DirectX;
