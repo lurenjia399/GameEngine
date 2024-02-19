@@ -1,7 +1,7 @@
 #pragma once
 //Copyright (C) RenZhai.2019.All Rights Reserved.
 
-#include "../../simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
+#include "../../../../public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
 _CRT_BEGIN_C_HEADER
 void remove_string_start(char *str, char const* sub_str);

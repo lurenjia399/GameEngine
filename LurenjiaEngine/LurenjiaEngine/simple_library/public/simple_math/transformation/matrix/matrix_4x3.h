@@ -1,5 +1,6 @@
 #pragma once
-#include "../../simple_library/public/simple_library_macro.h"
+#include "../../../../public/simple_library_macro.h"
+#include "../../../../public/simple_math/transformation/matrix/matrix_4x4.h"
 
 struct frotator;
 struct fmatrix_4x4;

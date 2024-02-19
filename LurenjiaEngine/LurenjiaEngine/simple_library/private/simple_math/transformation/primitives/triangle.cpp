@@ -1,4 +1,4 @@
-#include "../../simple_library/public/simple_math/transformation/primitives/triangle.h"
+#include "../../../../public/simple_math/transformation/primitives/triangle.h"
 
 namespace primitives
 {

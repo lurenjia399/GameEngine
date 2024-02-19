@@ -1,5 +1,5 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
-#include "../../simple_library/public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
+#include "../../../../public/simple_core_minimal/simple_c_core/simple_c_string_algorithm/string_algorithm.h"
 
 bool remove_char_end(char *str, char sub_str)
 {

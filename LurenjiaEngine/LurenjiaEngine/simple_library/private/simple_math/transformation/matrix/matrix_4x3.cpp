@@ -1,5 +1,5 @@
-#include "../../simple_library/public/simple_math/transformation/matrix/matrix_4x3.h"
-#include "../../simple_library/public/simple_math/transformation/matrix/matrix_4x4.h"
+#include "../../../../public/simple_math/transformation/matrix/matrix_4x3.h"
+
 #include <math.h>
 #include <assert.h>
 

@@ -2,8 +2,8 @@
 #define _CRT_SECURE_NO_WARNINGS
 #endif
 
-#include "../../simple_library/public/simple_math/transformation/vector/vector_3d.h"
-#include "../../simple_library/public/simple_math/transformation/vector/vector_4d.h"
+#include "../../../../public/simple_math/transformation/vector/vector_3d.h"
+#include "../../../../public/simple_math/transformation/vector/vector_4d.h"
 #include <stdio.h>
 #include <math.h>
 

@@ -7,16 +7,17 @@ _CRT_BEGIN_C_HEADER
 #define _out_pram(a) a
 #define _in_pram(a) a
 
+// 这里改小点，x64运行不了，不知道为啥
 typedef struct
 {
 	int index;
-	char paths[2048][512];//MAX_PATH
+	char paths[2048][256];//MAX_PATH
 }def_c_paths;
 
 typedef struct
 {
 	int index;
-	wchar_t paths[2048][512];//MAX_PATH
+	wchar_t paths[2048][256];//MAX_PATH
 }def_c_paths_w;
 
 void init_def_c_paths(def_c_paths *c_paths);

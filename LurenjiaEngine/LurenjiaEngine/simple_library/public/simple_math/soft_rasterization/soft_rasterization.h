@@ -1,6 +1,6 @@
 // Copyright (C) RenZhai.2022.All Rights Reserved.
-#include "../../simple_library/public/simple_library.h"
-#include "../../simple_library/public/simple_library_macro.h"
+#include "../../../public/simple_library.h"
+#include "../../../public/simple_library_macro.h"
 
 #define VARIABLE(...)
 

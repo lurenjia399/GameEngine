@@ -1,7 +1,7 @@
 #pragma once
 // Copyright (C) RenZhai.2022.All Rights Reserved.
 
-#include "../../simple_library/public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
+#include "../../../public/simple_core_minimal/simple_c_core/simple_core_minimal.h"
 
 _CRT_BEGIN_C_HEADER
 void get_path_directory_inline(char *path_buf);

@@ -1,4 +1,4 @@
-#include "../../simple_library/public/simple_math/math_utils.h"
+#include "../../public/simple_math/math_utils.h"
 
 namespace math_utils
 {
