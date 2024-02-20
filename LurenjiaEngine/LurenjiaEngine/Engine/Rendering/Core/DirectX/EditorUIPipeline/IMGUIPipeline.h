@@ -9,6 +9,10 @@ public:
 	void Init(ID3D12DescriptorHeap* InHeap, UINT InOffset);
 
 	void Draw(float DeltaTime);
+	void Tick(float DeltaTime);
 
 	void Exit();
+
+private:
+		bool bClicked = false;
 };
