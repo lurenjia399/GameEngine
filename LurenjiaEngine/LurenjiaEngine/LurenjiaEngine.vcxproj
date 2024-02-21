@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Editor\Core\EditorBase.cpp" />
     <ClCompile Include="Editor\EditorEngine.cpp" />
+    <ClCompile Include="Editor\LogEditor\Core\LogSystem.cpp" />
     <ClCompile Include="Editor\LogEditor\LogEditor.cpp" />
     <ClCompile Include="Editor\ToolbarEditor\ToolbarEditor.cpp" />
     <ClCompile Include="Engine\Actor\Core\Actor.cpp" />
@@ -188,6 +189,7 @@
   <ItemGroup>
     <ClInclude Include="Editor\Core\EditorBase.h" />
     <ClInclude Include="Editor\EditorEngine.h" />
+    <ClInclude Include="Editor\LogEditor\Core\LogSystem.h" />
     <ClInclude Include="Editor\LogEditor\LogEditor.h" />
     <ClInclude Include="Editor\ToolbarEditor\ToolbarEditor.h" />
     <ClInclude Include="Engine\Actor\Core\Actor.h" />
@@ -442,7 +444,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(Platform)\$(Configuration)\</IntDir>
-    <IncludePath>D:\GitHub\GameEngine\LurenjiaEngine\LurenjiaEngine\imgui;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)LurenjiaEngine\imgui;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>

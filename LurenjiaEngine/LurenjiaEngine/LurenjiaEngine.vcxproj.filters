@@ -510,6 +510,9 @@
     <ClCompile Include="Editor\EditorEngine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Editor\LogEditor\Core\LogSystem.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -1077,6 +1080,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Editor\EditorEngine.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\LogEditor\Core\LogSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

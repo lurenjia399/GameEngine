@@ -20,6 +20,16 @@ public:
 		}
 		return RenderLayerManage;
 	}
+	static void Destory()
+	{
+		if (RenderLayerManage != nullptr)
+		{
+			delete RenderLayerManage;
+		}
+
+		RenderLayerManage = nullptr;
+		RenderingLayers.clear();
+	}
 	static std::shared_ptr<FRenderingLayer> FindRenderingLayerByInt(int InRenderLayer);
 	void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	void BuildShader();
@@ -40,7 +50,8 @@ public:
 	void BuildPSO();
 private:
 	FRenderLayerManage();
-	~FRenderLayerManage();
+
+	~FRenderLayerManage();// 注意这个析构函数有问题，这里就不改了，以示提醒
 	
 	static FRenderLayerManage* RenderLayerManage;
 	static std::vector<std::shared_ptr<FRenderingLayer>> RenderingLayers;

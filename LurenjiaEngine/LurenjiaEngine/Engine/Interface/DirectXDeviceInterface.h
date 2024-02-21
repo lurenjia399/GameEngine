@@ -11,6 +11,10 @@ struct FDirectXDescriptorHeap;
 class CEngien;
 #endif
 
+#if (EDITOR_ENGINE == 1)
+class CEditorEngine;
+#endif
+
 class IDirectXDeviceInterface
 {
 public:
@@ -51,6 +55,10 @@ public:
 	//获取渲染引擎
 	CRenderingEngine* GetRenderEngine() const;
 	
+	//获取编辑器引擎
+#if (EDITOR_ENGINE == 1)
+	CEditorEngine* GetEditorEngine() const;
+#endif
 	
 };
 
@@ -92,6 +100,13 @@ struct IDirectXDeviceInterface_struct
 	CWindowsEngine* GetEngine() const;
 #else
 	Engien* GetEngine() const;
+#endif
+	//获取渲染引擎
+	CRenderingEngine* GetRenderEngine() const;
+
+	//获取编辑器引擎
+#if (EDITOR_ENGINE == 1)
+	CEditorEngine* GetEditorEngine() const;
 #endif
 	
 private:

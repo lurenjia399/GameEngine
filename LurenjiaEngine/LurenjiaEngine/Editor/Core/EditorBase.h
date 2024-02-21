@@ -5,7 +5,7 @@
 
 #include "../../Engine/LurenjiaEngine.h"
 
-class FEditorBase : public CCoreMinimalObject
+class FEditorBase
 {
 public:
 	virtual void BuildEditor() = 0;

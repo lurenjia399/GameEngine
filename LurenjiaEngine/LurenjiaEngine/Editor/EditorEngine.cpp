@@ -6,8 +6,10 @@ CEditorEngine::CEditorEngine()
     : ToolbarEditor(new FToolbarEditor())
     , LogEditor(new FLogEditor())
 {
-    ToolbarEditor->ResetGuid("ToolbarEditor");
-    LogEditor->ResetGuid("LogEditor");
+    // 注意这个地方，new了两个变量，没地方把他销毁
+    
+    //ToolbarEditor->ResetGuid("Editor::ToolbarEditor");
+    //LogEditor->ResetGuid("Editor::LogEditor");
 }
 
 int CEditorEngine::PreInit(FWinMainCommandParameters& InParameters)
@@ -52,6 +54,7 @@ void CEditorEngine::BuildEditor()
 
 void CEditorEngine::DrawEditor(float DeltaTime)
 {
+
     ToolbarEditor->DrawEditor(DeltaTime);
     LogEditor->DrawEditor(DeltaTime);
 }

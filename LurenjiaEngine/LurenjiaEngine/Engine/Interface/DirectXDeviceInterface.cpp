@@ -187,6 +187,18 @@ CRenderingEngine* IDirectXDeviceInterface::GetRenderEngine() const
     return nullptr;
 }
 
+#if (EDITOR_ENGINE == 1)
+CEditorEngine* IDirectXDeviceInterface::GetEditorEngine() const
+{
+    CWindowsEngine* WindowsEngine = GetEngine();
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    {
+        return WindowsEngine->GetEditorEngine();
+    }
+    return nullptr;
+}
+#endif
+
 void IDirectXDeviceInterface_struct::StartSetMainViewportRenderTarget()
 {
     DXDeviceInterface.StartSetMainViewportRenderTarget();
@@ -268,9 +280,22 @@ CWindowsEngine* IDirectXDeviceInterface_struct::GetEngine() const
     return DXDeviceInterface.GetEngine();
 }
 
+
 #else
 CEngien* IDirectXDeviceInterface_struct::GetEngine() const
 {
     return DXDeviceInterface.GetEngine();
+}
+#endif
+
+CRenderingEngine* IDirectXDeviceInterface_struct::GetRenderEngine() const
+{
+    return DXDeviceInterface.GetRenderEngine();
+}
+
+#if (EDITOR_ENGINE == 1)
+CEditorEngine* IDirectXDeviceInterface_struct::GetEditorEngine() const
+{
+    return DXDeviceInterface.GetEditorEngine();
 }
 #endif

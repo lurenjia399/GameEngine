@@ -205,6 +205,7 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	ComputePipeline.Draw();
 #endif
 
+	// ±à¼­Æ÷ui
 	EditorUIPipeline.Draw(DeltaTime);
 	
 

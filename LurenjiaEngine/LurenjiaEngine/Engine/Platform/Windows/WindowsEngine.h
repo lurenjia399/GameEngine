@@ -5,6 +5,7 @@
 
 class CWorld;
 class CDirectXRenderingEngine;
+class CEditorEngine;
 class CWindowsEngine : public CEngine
 {
 public:
@@ -26,6 +27,7 @@ public:
 	
 //----------interface-----
 	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
+	CEditorEngine* GetEditorEngine() { return EditorEngine; }
 public:
 	
 
@@ -36,6 +38,10 @@ private:
 	bool InitWindows(FWinMainCommandParameters InParameters);
 protected:
 	HWND MyWindowsHandle;		//Ö÷´°¿Ú¾ä±ú
-	CDirectXRenderingEngine* RenderingEngine;
+	CDirectXRenderingEngine* RenderingEngine; // äÖÈ¾ÒýÇæ
+
+#if (EDITOR_ENGINE == 1) 
+	CEditorEngine* EditorEngine; // ±à¼­Æ÷ÒýÇæ
+#endif
 };
 #endif

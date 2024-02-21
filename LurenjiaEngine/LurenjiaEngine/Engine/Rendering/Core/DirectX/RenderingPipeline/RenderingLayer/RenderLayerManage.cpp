@@ -11,6 +11,14 @@ std::vector<std::shared_ptr<FRenderingLayer>> FRenderLayerManage::RenderingLayer
 
 FRenderLayerManage::~FRenderLayerManage()
 {
+	// 这里删掉静态变量卸载析构函数里是不对的，静态成员函数有自己的内存位置和生命周期，删除不应该写在析构函数中
+	// 析构函数是在类的对象被销毁的时候会调用到,这里要注意，就不改了以示提醒
+	// https://blog.csdn.net/weixin_51965272/article/details/123944686
+	if (RenderLayerManage != nullptr)
+	{
+		delete RenderLayerManage;
+	}
+
 	RenderLayerManage = nullptr;
 	RenderingLayers.clear();
 }

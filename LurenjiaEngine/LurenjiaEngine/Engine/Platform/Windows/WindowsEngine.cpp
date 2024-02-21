@@ -4,14 +4,22 @@
 #include "../../Core/World.h"
 #include "../../Core/Camera.h"
 #include "../../Core/Viewport/Viewport.h"
+#include "../Editor/EditorEngine.h"
 
 #if defined(_WIN32)
 #include "WindowsMessageProcessing.h"
 CWindowsEngine::CWindowsEngine()
 	: MyWindowsHandle(nullptr)
 	, RenderingEngine(new CDirectXRenderingEngine())
+#if (EDITOR_ENGINE == 1) 
+	, EditorEngine(new CEditorEngine())
+#endif
+	
 {
 	RenderingEngine->ResetGuid("RenderingEngine");
+#if (EDITOR_ENGINE == 1) 
+	EditorEngine->ResetGuid("EditorEngine");
+#endif
 }
 
 CWindowsEngine::~CWindowsEngine()

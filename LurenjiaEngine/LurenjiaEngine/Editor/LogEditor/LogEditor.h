@@ -1,7 +1,7 @@
 #pragma once
 
 #ifndef LOGEDITOR_H
-#define TOOLBAREDITOR_H
+#define LOGEDITOR_H
 
 #include "../../Engine/Core/Engine.h"
 #include "../Core/EditorBase.h"
