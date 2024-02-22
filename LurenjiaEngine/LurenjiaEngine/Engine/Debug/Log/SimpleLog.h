@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../Engine/EngineMacro.h"
+
 #if (EDITOR_ENGINE == 1)
 #include "../../../Editor/LogEditor/Core/LogSystem.h"
 #endif

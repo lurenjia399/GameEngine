@@ -2,7 +2,6 @@
 
 
 #include "../simple_library/public/simple_library.h"
-#include "Debug/Log/SimpleLog.h" // 这个头文件需要在 EDITOR_ENGINE 这个宏的下边
 #include "Debug/EngineDebug.h"
 
 #include "../imgui/imgui.h"
@@ -29,10 +28,8 @@
 #include <DirectXColors.h>
 #include <DirectXCollision.h>
 
-#define PI acos(-1)
-#define OPENCOMPUTEPIPELINE 0 // 开启模糊测试的时候，改成1
+#include "Debug/Log/SimpleLog.h" // 这个头文件需要在 imgui.h 下边
 
-#define EDITOR_ENGINE 1 // 开启编辑器ui的宏
 
 using namespace Microsoft::WRL;
 using namespace DirectX;

@@ -25,6 +25,6 @@ void FDirectXDescriptorHeap::PreDraw(float DeltaTime)
 {
 	ID3D12DescriptorHeap* DescriptorHeap[] = { RenderingDescriptorHeap.Get() };
 	GetGraphicsCommandList()->SetDescriptorHeaps(_countof(DescriptorHeap), DescriptorHeap);
-	Engine_Log("ComputeDescriptorHeap and RenderingDescriptorHeap create")
+	//Engine_Log("ComputeDescriptorHeap and RenderingDescriptorHeap create")
 	
 }

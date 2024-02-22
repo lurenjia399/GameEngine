@@ -1085,6 +1085,9 @@
     <ClInclude Include="Editor\LogEditor\Core\LogSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\EngineMacro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="cpp.hint" />

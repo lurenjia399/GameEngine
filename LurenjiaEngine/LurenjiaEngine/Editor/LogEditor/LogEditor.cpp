@@ -12,10 +12,12 @@ void FLogEditor::DrawEditor(float DeltaTime)
 	bool bOpenLog = true;
 	ImGui::Begin("Log", &bOpenLog);
 	//ImGui::Text("gaozhanpeng test");
-	ImGui::End();
+	
 
 
 	FEditorLogSystem::GetEditorLogSystem()->Draw(DeltaTime);
+
+	ImGui::End();
 }
 
 void FLogEditor::ExitEditor()

@@ -4,13 +4,10 @@
 #define LOGSYSTEM_H
 
 #include "../../../Engine/LurenjiaEngine.h"
-#include "../LogEditor.h"
-
-class FLogEditor;
 
 class FEditorLogSystem
 {
-	friend void FLogEditor::DrawEditor(float DeltaTime);
+	friend class FLogEditor;
 public:
 	static FEditorLogSystem* GetEditorLogSystem()
 	{

@@ -241,6 +241,7 @@
     <ClInclude Include="Engine\Debug\EngineDebug.h" />
     <ClInclude Include="Engine\Debug\Log\SimpleLog.h" />
     <ClInclude Include="Engine\EngineFactory.h" />
+    <ClInclude Include="Engine\EngineMacro.h" />
     <ClInclude Include="Engine\Interface\DirectXDeviceInterface.h" />
     <ClInclude Include="Engine\Interface\OpenGLDeviceInterface.h" />
     <ClInclude Include="Engine\LurenjiaEngine.h" />
