@@ -29,7 +29,7 @@ void IDirectXDeviceInterface::ClearMainSwapChain()
     if (WindowsEngine && WindowsEngine->GetRenderingEngine())
     {
         WindowsEngine->GetRenderingEngine()->ClearMainSwapChain();
-        Engine_Log_Success("excute  ClearMainSwapChain success")
+        //Engine_Log_Success("excute  ClearMainSwapChain success")
     }
 }
 

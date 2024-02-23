@@ -39,9 +39,13 @@ public:
 	virtual void DrawEditor(float DeltaTime)  override;	// 重写FEditorBase的
 	virtual void ExitEditor()  override;				// 重写FEditorBase的
 
+
+	void DrawLayer(float DeltaTime);
+
 private:
 	FToolbarEditor* ToolbarEditor;
 	FLogEditor* LogEditor;
+
 
 };
 

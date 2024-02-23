@@ -5,6 +5,15 @@
 
 #include "../../../Engine/LurenjiaEngine.h"
 
+enum LogType
+{
+	Log,
+	Success,
+	Warning,
+	Error,
+};
+
+
 class FEditorLogSystem
 {
 	friend class FLogEditor;
@@ -39,10 +48,12 @@ public:
 protected:
 	void Draw(float DeltaTime); // 绘制
 protected:
-	ImGuiTextBuffer TextBuffer;	// 一个长的内存，通过\n来分割字符串
-	ImGuiTextFilter TextFilter;	// log界面里的那红过滤
-	ImVector<int> LineOffset;	// 决定\n的位置，可以调整下
-	bool bAutoScroll;			// 是否自动滚动log
+	ImGuiTextBuffer TextBuffer;		// 一个长的内存，通过\n来分割字符串
+	ImGuiTextFilter TextFilter;		// log界面里的那红过滤
+	ImVector<int> LineOffset;		// 每句话的偏移
+	ImVector<LogType> LogColorVector;	// log的颜色数组
+	bool bAutoScroll;				// 是否自动滚动log
+
 private:
 	FEditorLogSystem();
 

@@ -115,8 +115,9 @@ void FRenderingPipeline::BuildPipeline()
 #if (OPENCOMPUTEPIPELINE == 1)
 		// 计算着色器
 		ComputePipeline.BuildPipeline();
+		Engine_Log("cur open compute pipeline ? Yes")
 #else
-		Engine_Log("断不到这里")
+		Engine_Log_Warning("cur open compute pipeline ? No")
 #endif
 	}
 

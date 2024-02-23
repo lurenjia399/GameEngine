@@ -97,7 +97,7 @@ int FRenderingTextureResourcesUpdate::GetTextureIndex(string InKey)
 			}
 		}
 	}
-	Engine_Log_Warning("No Find Texture Resourse [%s] !!! ", InKey);
+	Engine_Log_Warning("No Find Texture Resourse [%s] !!! ", InKey.c_str());
 	return -1;
 }
 

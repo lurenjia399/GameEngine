@@ -72,7 +72,6 @@ void FIMGUIPipeline::Tick(float DeltaTime)
 {
 	{// 全是测试用例
 		//bool show_demo_window = true;
-
 		//ImGui::ShowDemoWindow(&show_demo_window); // 官方提供的学习案例
 
 		//ImGui::Begin("Log System");
