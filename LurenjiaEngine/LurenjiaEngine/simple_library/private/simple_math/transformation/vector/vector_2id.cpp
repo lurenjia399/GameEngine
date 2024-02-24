@@ -14,8 +14,8 @@ fvector_2id::fvector_2id(int in_x, int in_y)
 }
 
 fvector_2id::fvector_2id(float in_x, float in_y)
-	: x(in_x)
-	, y(in_y)
+	: x((int)in_x)
+	, y((int)in_y)
 {
 
 }
@@ -28,7 +28,7 @@ fvector_2id::fvector_2id(int in_value)
 
 float fvector_2id::len()
 {
-	return sqrt(x * x + y * y);
+	return (float)sqrt((float)x * x + y * y);
 }
 
 void fvector_2id::normalize()

@@ -53,10 +53,10 @@ protected:
 	ESimpleConnetionType ConnetionType;
 	ESimpleDriveType DriveType;
 	FSimpleIOData IOData;
-	std::list<FSimpleChannel> Channels;
+	std::list<FSimpleChannel>* Channels;
 
 	bool bHeartBeat;
 	double HeartTime;
 
-	std::chrono::steady_clock::time_point LastTime;
+	std::chrono::steady_clock::time_point* LastTime;
 };

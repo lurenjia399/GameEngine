@@ -24,8 +24,8 @@ bool FSimpleConnetion::Init()
 	//先分配10个通道
 	for (int i = 0; i < 10; i++)
 	{
-		Channels.emplace_back(FSimpleChannel());
-		FSimpleChannel& Inst = Channels.back();
+		(*Channels).emplace_back(FSimpleChannel());
+		FSimpleChannel& Inst = (*Channels).back();
 		Inst.SetConnetion(this);
 	}
 
@@ -92,7 +92,7 @@ void FSimpleConnetion::Analysis()
 
 void FSimpleConnetion::Tick(float InTimeInterval)
 {
-	for (auto &Tmp : Channels)
+	for (auto &Tmp : (*Channels))
 	{
 		
 	}
@@ -214,7 +214,7 @@ void FSimpleConnetion::StartSendHeartBeat()
 void FSimpleConnetion::CheckTimeout()
 {
 	auto CurrentTime = std::chrono::steady_clock::now();
-	auto Duration = std::chrono::duration_cast<std::chrono::seconds>(CurrentTime - LastTime);
+	auto Duration = std::chrono::duration_cast<std::chrono::seconds>(CurrentTime - *LastTime);
 	double TimeInterval = double(Duration.count());
 	if (TimeInterval > 60)
 	{
@@ -224,7 +224,7 @@ void FSimpleConnetion::CheckTimeout()
 
 void FSimpleConnetion::ResetHeartBeat()
 {
-	LastTime = std::chrono::steady_clock::now();
+	*LastTime = std::chrono::steady_clock::now();
 }
 
 void FSimpleConnetion::SendHeartBeat()
@@ -252,12 +252,13 @@ void FSimpleConnetion::SetConnetionType(const ESimpleConnetionType& InSimpleConn
 
 FSimpleChannel* FSimpleConnetion::GetMainChannel()
 {
-	return &(*Channels.begin());
+	return &(*Channels->begin());
+	
 }
 
 FSimpleChannel* FSimpleConnetion::GetChannel(int InID)
 {
-	for (auto &Tmp : Channels)
+	for (auto &Tmp : (*Channels))
 	{
 		if (Tmp.GetGuid() == InID)
 		{
@@ -270,7 +271,7 @@ FSimpleChannel* FSimpleConnetion::GetChannel(int InID)
 
 void FSimpleConnetion::GetChannelActiveID(std::vector<int>& InIDs)
 {
-	for (auto &Tmp : Channels)
+	for (auto &Tmp : (*Channels))
 	{
 		InIDs.push_back(Tmp.GetGuid());
 	}
@@ -289,5 +290,5 @@ std::string FSimpleConnetion::GetAddrString()
 
 std::list<FSimpleChannel>* FSimpleConnetion::GetChannels()
 {
-	return &Channels;
+	return Channels;
 }

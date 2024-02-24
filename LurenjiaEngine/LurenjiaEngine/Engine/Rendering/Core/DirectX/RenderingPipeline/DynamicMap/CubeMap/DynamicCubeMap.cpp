@@ -25,7 +25,7 @@ void FDynamicCubeMap::UpdateViewportConstantBufferView(float DeltaTime, const FV
 			XMFLOAT3 F3 = Tmp->GetPosition();
 			SetViewportPosition(F3);
 
-			for (size_t j = 0; j < 6; j++)
+			for (UINT j = 0; j < 6; j++)
 			{
 				FViewportInfo MyViewportInfo = {};
 				MyViewportInfo.cameraPosition = XMFLOAT4(Viewport[j]->GetPosition().x, Viewport[j]->GetPosition().y, Viewport[j]->GetPosition().z, 1.0f);

@@ -72,7 +72,7 @@ void FShadowMapRenderTarget::BuildShaderResourceView()
 	SRVDesc.Texture2D.MostDetailedMip = 0;
 	SRVDesc.Texture2D.MipLevels = 1;
 	SRVDesc.Texture2D.ResourceMinLODClamp = 0.f;
-	SRVDesc.Texture2D.PlaneSlice = 0.f;
+	SRVDesc.Texture2D.PlaneSlice = 0;
 
 	D3dDevice->CreateShaderResourceView(
 		Resource.Get(),

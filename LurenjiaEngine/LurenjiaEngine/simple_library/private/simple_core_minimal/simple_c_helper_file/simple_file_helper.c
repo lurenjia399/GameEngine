@@ -16,60 +16,61 @@ char wildcard[] = "*";
 #endif 
 
 //用于检测ShellExecute的返回值信息
-bool check_ShellExecute_ret(int ret)
+bool check_ShellExecute_ret(HINSTANCE ret)
 {
-	if (ret == 0)
+	DWORDLONG result = (DWORDLONG)ret;
+	if (result == 0)
 	{
 		// 内存不足
-		assert(0, "open_url_w=>insufficient memory.");
+		assert("open_url_w=>insufficient memory.");
 	}
-	else if (ret == 2)
+	else if (result == 2)
 	{
 		// 文件名错误
-		assert(0, "open_url_w=>File name error.");
+		assert("open_url_w=>File name error.");
 	}
-	else if (ret == 3)
+	else if (result == 3)
 	{
 		// 路径名错误
-		assert(0, "open_url_w=>Path name error.");
+		assert("open_url_w=>Path name error.");
 	}
-	else if (ret == 11)
+	else if (result == 11)
 	{
 		// EXE 文件无效
-		assert(0, "open_url_w=>Invalid .exe file.");
+		assert("open_url_w=>Invalid .exe file.");
 	}
-	else if (ret == 26)
+	else if (result == 26)
 	{
 		// 发生共享错误
-		assert(0, "open_url_w=>A sharing error occurred.");
+		assert("open_url_w=>A sharing error occurred.");
 	}
-	else if (ret == 27)
+	else if (result == 27)
 	{
 		// 文件名不完全或无效
-		assert(0, "open_url_w=>incomplete or invalid file name.");
+		assert("open_url_w=>incomplete or invalid file name.");
 	}
-	else if (ret == 28)
+	else if (result == 28)
 	{
 		// 超时
-		assert(0, "open_url_w=>timeout.");
+		assert("open_url_w=>timeout.");
 	}
-	else if (ret == 29)
+	else if (result == 29)
 	{
 		// DDE 事务失败
-		assert(0, "open_url_w=> DDE transaction failed.");
+		assert("open_url_w=> DDE transaction failed.");
 	}
-	else if (ret == 30)
+	else if (result == 30)
 	{
 		// 正在处理其他 DDE 事务而不能完成该 DDE 事务
-		assert(0, "open_url_w=> is processing another DDE transaction and cannot complete the DDE transaction.");
+		assert("open_url_w=> is processing another DDE transaction and cannot complete the DDE transaction.");
 	}
-	else if (ret == 31)
+	else if (result == 31)
 	{
 		// 没有相关联的应用程序
-		assert(0, "open_url_w=>no associated application.");
+		assert("open_url_w=>no associated application.");
 	}
 
-	return ret <= 32;
+	return result <= 32;
 }
 
 void init_def_c_paths(def_c_paths *c_paths)
@@ -96,7 +97,7 @@ int copy_file(char *Src, char *Dest)
 	{
 		if ((FpDest = fopen(Dest, "wb")) != NULL)
 		{
-			while ((FileSize = fread(Buf, 1, 512, FpSrc)) > 0)
+			while ((FileSize = (int)fread(Buf, 1, 512, FpSrc)) > 0)
 			{
 				fwrite(Buf, FileSize, sizeof(char), FpDest);
 				memset(Buf, 0, sizeof(Buf));
@@ -135,7 +136,7 @@ void find_files_v2(char const* in_path, def_c_paths_v2* str, bool b_recursion, b
 	char in_path_buff[512] = { 0 };
 
 	strcpy(in_path_buff, in_path);
-	int my_len = strlen(in_path) - 1;
+	int my_len = (int)strlen(in_path) - 1;
 
 	if (my_len > 0)
 	{
@@ -224,7 +225,7 @@ void find_files_v2(char const* in_path, def_c_paths_v2* str, bool b_recursion, b
 int get_def_c_offset(const char* str)
 {
 	return 
-		strlen(str) + 
+		(int)strlen(str) + 
 		sizeof(char) + //我们提供的\0结尾
 		sizeof(char);//拷贝中自带的\0结尾
 }
@@ -232,19 +233,19 @@ int get_def_c_offset(const char* str)
 int get_def_c_offset_w(const wchar_t* str)
 {
 	return
-		wcslen(str) +
+		(int)wcslen(str) +
 		sizeof(wchar_t) + //我们提供的\0结尾
 		sizeof(wchar_t);//拷贝中自带的\0结尾
 }
 
-char* get_max_len_path(const def_c_paths *Paths,int *max_len)
+const char* get_max_len_path(const def_c_paths *Paths,int *max_len)
 {
 	if (Paths)
 	{
-		char* max_path = NULL;
+		const char* max_path = NULL;
 		for (int i = 0; i < Paths->index; i++)
 		{
-			int paht_len = strlen(Paths->paths[i]);
+			int paht_len = (int)strlen(Paths->paths[i]);
 			if (paht_len > *max_len)
 			{
 				*max_len = paht_len;
@@ -271,16 +272,17 @@ void remove_directory_all(const char* file_dir)
 	//从长到短排列
 	for (int i = 0; i < Paths.index; i++)
 	{
-		int max_len = 0;
-		char* max_path = get_max_len_path(&Paths,&max_len);
+		// 注掉，等用到了在看吧
+		//int max_len = 0;
+		//char* max_path = get_max_len_path(&Paths,&max_len);
 
-		if (max_path && max_path[0]!= '\0')
-		{
-			//添加路径
-			add_def_c_paths(&tmp_paths, max_path);
+		//if (max_path && max_path[0]!= '\0')
+		//{
+		//	//添加路径
+		//	add_def_c_paths(&tmp_paths, max_path);
 
-			memset(max_path, 0, strlen(max_path));
-		}
+		//	memset(max_path, 0, strlen(max_path));
+		//}
 	}
 
 	int offset = 0;
@@ -293,7 +295,7 @@ void remove_directory_all(const char* file_dir)
 		{
 			wchar_t pathw[128] = { 0 };
 			char_to_wchar_t(pathw, 128, in_tmp_path);
-			RemoveDirectory(pathw);
+			RemoveDirectory((LPCSTR)pathw);
 		}
 	}
 
@@ -305,7 +307,7 @@ void find_files(char const *in_path, def_c_paths *str, bool b_recursion,bool b_i
 	char in_path_buff[512] = { 0 };
 
 	strcpy(in_path_buff, in_path);
-	int my_len = strlen(in_path)-1;
+	int my_len = (int)strlen(in_path)-1;
 
 	if (my_len > 0)
 	{
@@ -490,7 +492,7 @@ bool get_file_buf(const char *path, char *buf)
 	{
 		char buf_tmp[2048] = { 0 };
 		int file_size = 0;
-		while ((file_size = fread(buf_tmp, 1,1024, f)) > 0)
+		while ((file_size = (int)fread(buf_tmp, 1,1024, f)) > 0)
 		{
 			strcat(buf, buf_tmp);
 			memset(buf_tmp, 0, sizeof(buf_tmp));
@@ -567,7 +569,7 @@ bool get_file_buf_w(const wchar_t* path, char* buf)
 	{
 		char buf_tmp[2048] = { 0 };
 		int file_size = 0;
-		while ((file_size = fread(buf_tmp, 1, 1024, f)) > 0)
+		while ((file_size = (int)fread(buf_tmp, 1, 1024, f)) > 0)
 		{
 			strcat(buf, buf_tmp);
 			memset(buf_tmp, 0, sizeof(buf_tmp));
@@ -647,9 +649,9 @@ bool open_url_by_param_w(const wchar_t* url, const wchar_t* param)
 bool open_by_operation_w(const wchar_t* in_operation, const wchar_t* url, const wchar_t* param)
 {
 	return check_ShellExecute_ret(ShellExecute(NULL,
-		in_operation,
-		url,
-		param,
+		(LPCSTR)in_operation,
+		(LPCSTR)url,
+		(LPCSTR)param,
 		NULL,
 		SW_SHOWNORMAL));
 }
@@ -690,7 +692,7 @@ void init_def_c_paths_w_v2(def_c_paths_w_v2* c_paths)
 
 void add_def_c_paths(def_c_paths_v2* c_paths, const char* str)
 {
-	int str_len = strlen(str);
+	int str_len = (int)strlen(str);
 	str_len += sizeof(char);//最后一个 /0结尾
 
 	if (!c_paths->paths)
@@ -699,10 +701,10 @@ void add_def_c_paths(def_c_paths_v2* c_paths, const char* str)
 	}
 	else
 	{
-		c_paths->paths = (char*)realloc(c_paths->paths, c_paths->index + str_len);
+		c_paths->paths = (char*)realloc((void*)c_paths->paths, c_paths->index + str_len);
 	}
 
-	memset(&c_paths->paths[c_paths->index], 0, str_len);
+	memset((void*)&c_paths->paths[c_paths->index], 0, str_len);
 
 	memcpy(&c_paths->paths[c_paths->index++],str, str_len -sizeof(char));
 
@@ -712,7 +714,7 @@ void add_def_c_paths(def_c_paths_v2* c_paths, const char* str)
 
 void add_def_c_paths_w(def_c_paths_w_v2* c_paths, const wchar_t* str)
 {
-	int str_len = wcslen(str);
+	int str_len = (int)wcslen(str);
 	str_len += sizeof(wchar_t);//最后一个 /0结尾
 
 	if (!c_paths->paths)
@@ -742,7 +744,7 @@ int get_def_c_paths_offset_by_index(def_c_paths_v2* c_paths, int index)
 			return offset;
 		}
 
-		int len = strlen(c_paths->paths[offset]);
+		int len = (int)strlen(c_paths->paths); // (int)strlen(c_paths->paths[offset] 之前是这句话，改下，有问题再看
 		offset += len + sizeof(char);
 	}
 
@@ -759,7 +761,7 @@ int get_def_c_paths_offset_by_index_w(def_c_paths_w_v2* c_paths, int index)
 			return offset;
 		}
 
-		int len = wcslen(c_paths->paths[offset]);
+		int len = (int)wcslen(c_paths->paths);// (int)wcslen(c_paths->paths[offset]) 之前是这句话，改下，有问题再看
 		offset += len + sizeof(wchar_t);
 	}
 
@@ -870,7 +872,7 @@ unsigned int get_file_size(FILE *file_handle)
 bool save_data_to_disk(const char* path, char* buf, int buf_size)
 {
 	FILE* f = NULL;
-	if ((f = fopen(path, L"wb")) != NULL)
+	if ((f = fopen(path, "wb")) != NULL)
 	{
 		fwrite(buf, buf_size, 1, f);
 		fclose(f);
@@ -885,7 +887,7 @@ size_t wchar_t_to_char(
 	size_t char_size,
 	_in_pram(wchar_t const*) _Src)
 {
-	size_t wchar_t_size = wcslen(_Src);
+	size_t wchar_t_size = (int)wcslen(_Src);
 
 	size_t wchar_t_to_char_count = 0;
 	printf("\nwchar_t to char:[%s];\n", strerror(wcstombs_s(
@@ -902,7 +904,7 @@ size_t char_to_wchar_t(
 	size_t wchar_t_size, 
 	_in_pram(char const*) _Src)
 {
-	size_t char_size = strlen(_Src);
+	size_t char_size = (int)strlen(_Src);
 	
 	size_t char_to_wchar_t_count = 0;
 	printf("\nchar to wchar_t:[%s];\n", strerror(mbstowcs_s(

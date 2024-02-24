@@ -87,7 +87,8 @@ void CCylinderMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderin
 	for (uint32_t i = 1; i <= InAxialSubdivision; i++)
 	{
 		uint32_t left_up = i + InHeightSubdivision * InAxialSubdivision;uint32_t right_up = (i == InAxialSubdivision) ? left_up - InAxialSubdivision + 1 : left_up + 1;
-		InRenderingData.IndexData.emplace_back(InRenderingData.VertexData.size() - 1);InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);
+		uint32_t left_down = static_cast<uint32_t>(InRenderingData.VertexData.size()) - 1;
+		InRenderingData.IndexData.emplace_back(left_down);InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);
 	}
 }
 

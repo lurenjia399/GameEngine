@@ -39,7 +39,7 @@ namespace SimpleImage
 		}
 
 		//存储我们的数据
-		return save_data_to_disk_w(InPath,Data.data(), Data.size());
+		return save_data_to_disk_w(InPath,Data.data(), (int)Data.size());
 	}
 
 	bool GetRGBImageDataExcludeHeaderInfor(int InWidth, int InHeight, std::vector<unsigned char>& InData)
@@ -82,10 +82,10 @@ namespace SimpleImage
 					//填充颜色表
 					for (size_t i = 0; i < 256; i++)
 					{
-						BmpImageInfo.BmpColors[i].rgbBlue = i;
-						BmpImageInfo.BmpColors[i].rgbGreen = i;
-						BmpImageInfo.BmpColors[i].rgbRed = i;
-						BmpImageInfo.BmpColors[i].rgbReserved = 0;
+						BmpImageInfo.BmpColors[i].rgbBlue = (BYTE)i;
+						BmpImageInfo.BmpColors[i].rgbGreen = (BYTE)i;
+						BmpImageInfo.BmpColors[i].rgbRed = (BYTE)i;
+						BmpImageInfo.BmpColors[i].rgbReserved = (BYTE)0;
 					}
 				}
 				else if (InImageInfo.Channel == EImageChannel::Channel_24Bit)

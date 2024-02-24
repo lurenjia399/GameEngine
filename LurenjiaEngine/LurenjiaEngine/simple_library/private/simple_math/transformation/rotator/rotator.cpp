@@ -13,13 +13,13 @@ void frotator::object_to_inertia(const fmatrix_3x3& in_rot_matrix)
 	if (fabs(euler.pitch) > 0.99999f)
 	{
 		euler.pitch *= (3.1415926f / 2.f);
-		euler.heading = atan2(-in_rot_matrix.m23, in_rot_matrix.m11);
+		euler.heading = atan2f(-in_rot_matrix.m23, in_rot_matrix.m11);
 	}
 	else
 	{
-		euler.heading = atan2(in_rot_matrix.m31, in_rot_matrix.m33);
-		euler.pitch = asin(euler.pitch);
-		euler.bank = atan2(in_rot_matrix.m12, in_rot_matrix.m22);
+		euler.heading = atan2f(in_rot_matrix.m31, in_rot_matrix.m33);
+		euler.pitch = asinf(euler.pitch);
+		euler.bank = atan2f(in_rot_matrix.m12, in_rot_matrix.m22);
 	}
 
 	euler_to_rotator(euler);
@@ -33,16 +33,16 @@ void frotator::object_to_inertia(const fquat& in_quat)
 	if (fabsf(euler.pitch)>0.99999f)
 	{
 		euler.pitch *= (3.1415926f * 0.5f);
-		euler.heading = atan2(-in_quat.x * in_quat.z + in_quat.w * in_quat.y,
+		euler.heading = atan2f(-in_quat.x * in_quat.z + in_quat.w * in_quat.y,
 			0.5f - in_quat.y * in_quat.y - in_quat.z * in_quat.z);
 	}
 	else
 	{
-		euler.pitch = asin(euler.pitch);
-		euler.heading = atan2(in_quat.x * in_quat.z + in_quat.w * in_quat.y,
+		euler.pitch = asinf(euler.pitch);
+		euler.heading = atan2f(in_quat.x * in_quat.z + in_quat.w * in_quat.y,
 			0.5f - in_quat.x * in_quat.x - in_quat.y * in_quat.y);
 
-		euler.bank = atan2(in_quat.x * in_quat.y + in_quat.w * in_quat.z,
+		euler.bank = atan2f(in_quat.x * in_quat.y + in_quat.w * in_quat.z,
 			0.5f - in_quat.x * in_quat.x - in_quat.z * in_quat.z);
 	}
 
@@ -80,16 +80,16 @@ void frotator::inertia_to_object(const fquat& in_quat)
 	if (fabsf(euler.pitch) > 0.99999f)
 	{
 		euler.pitch *= (3.1415926f * 0.5f);
-		euler.heading = atan2(-in_quat.x * in_quat.z - in_quat.w * in_quat.y,
+		euler.heading = atan2f(-in_quat.x * in_quat.z - in_quat.w * in_quat.y,
 			0.5f - in_quat.y * in_quat.y - in_quat.z * in_quat.z);
 	}
 	else
 	{
-		euler.pitch = asin(euler.pitch);
-		euler.heading = atan2(in_quat.x * in_quat.z - in_quat.w * in_quat.y,
+		euler.pitch = asinf(euler.pitch);
+		euler.heading = atan2f(in_quat.x * in_quat.z - in_quat.w * in_quat.y,
 			0.5f - in_quat.x * in_quat.x - in_quat.y * in_quat.y);
 
-		euler.bank = atan2(in_quat.x * in_quat.y - in_quat.w * in_quat.z,
+		euler.bank = atan2f(in_quat.x * in_quat.y - in_quat.w * in_quat.z,
 			0.5f - in_quat.x * in_quat.x - in_quat.z * in_quat.z);
 	}
 
@@ -119,14 +119,14 @@ void frotator::inertia_to_object(const fmatrix_3x3& in_rot_matrix)
 	if (fabs(euler.pitch) > 9.99999f)
 	{
 		euler.pitch *= (3.1415926f / 2.f);
-		euler.heading = atan2(-in_rot_matrix.m31, in_rot_matrix.m11);
+		euler.heading = atan2f(-in_rot_matrix.m31, in_rot_matrix.m11);
 		euler.bank = 0.f;
 	}
 	else
 	{
-		euler.heading = atan2(in_rot_matrix.m13, in_rot_matrix.m33);
-		euler.pitch = asin(euler.pitch);
-		euler.bank = atan2(in_rot_matrix.m21, in_rot_matrix.m22);
+		euler.heading = atan2f(in_rot_matrix.m13, in_rot_matrix.m33);
+		euler.pitch = asinf(euler.pitch);
+		euler.bank = atan2f(in_rot_matrix.m21, in_rot_matrix.m22);
 	}
 
 	euler_to_rotator(euler);

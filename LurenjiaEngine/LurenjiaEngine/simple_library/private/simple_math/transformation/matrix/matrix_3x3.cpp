@@ -30,17 +30,17 @@ void fmatrix_3x3::inertia_to_object(const frotator& in_rot)
 	float p = math_utils::angle_to_radian(in_rot.roll);//x
 	float b = math_utils::angle_to_radian(in_rot.yaw);//z
 
-	m11 = cos(h) * cos(b) + sin(h) * sin(p) * sin(b);
-	m12 = -cos(h) * sin(b) + sin(h) * sin(p) * cos(b);
-	m13 = sin(h) * cos(p);
-
-	m21 = sin(b) * cos(p);
-	m22 = cos(b) * cos(p);
-	m23 = sin(p);
-
-	m31 = -sin(h) * cos(b) + cos(h) * sin(p) * sin(b);
-	m32 = sin(b) * sin(h) + cos(h) * sin(p) * cos(b);
-	m33 = cos(h) * cos(p);
+	m11 = cosf(h) * cosf(b) + sinf(h) * sinf(p) * sinf(b);
+	m12 = -cosf(h) * sinf(b) + sinf(h) * sinf(p) * cosf(b);
+	m13 = sinf(h) * cosf(p);
+					   
+	m21 = sinf(b) * cosf(p);
+	m22 = cosf(b) * cosf(p);
+	m23 = sinf(p);	   
+					   
+	m31 = -sinf(h) * cosf(b) + cosf(h) * sinf(p) * sinf(b);
+	m32 = sinf(b) * sinf(h) + cosf(h) * sinf(p) * cosf(b);
+	m33 = cosf(h) * cosf(p);
 }
 
 void fmatrix_3x3::object_to_inertia(const frotator& in_rot)

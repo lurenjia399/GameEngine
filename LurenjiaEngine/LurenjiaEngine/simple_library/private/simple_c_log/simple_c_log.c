@@ -6,6 +6,7 @@
 char log_path[MAX_PATH] = { 0 }; //存储着我们的路径
 char log_filename[MAX_PATH] = { 0 };//具体文件
 
+void get_local_time_string(char* t_buffer);
 const char *get_log_filename()
 {
 	if (log_filename[0] == '\0')

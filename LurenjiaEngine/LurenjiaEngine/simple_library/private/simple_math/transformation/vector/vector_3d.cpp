@@ -22,9 +22,9 @@ fvector_3d::fvector_3d(float in_value)
 }
 
 fvector_3d::fvector_3d(int in_a, int in_b, int in_c)
-	:x(in_a)
-	,y(in_b)
-	,z(in_c)
+	:x((float)in_a)
+	,y((float)in_b)
+	,z((float)in_c)
 {
 }
 

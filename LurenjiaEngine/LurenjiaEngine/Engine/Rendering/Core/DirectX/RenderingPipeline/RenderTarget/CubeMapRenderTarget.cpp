@@ -63,7 +63,7 @@ void FCubeMapRenderTarget::BuildRenderTargetDescriptorHandle()
 {
 	UINT size = GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_RTV);
 	D3D12_CPU_DESCRIPTOR_HANDLE RTVDewcriptorStart = GetRTVHeap()->GetCPUDescriptorHandleForHeapStart();
-	for (size_t i = 0; i < 6; i++)
+	for (int i = 0; i < 6; i++)
 	{
 		RenderTargetDescriptor[i] = CD3DX12_CPU_DESCRIPTOR_HANDLE(
 			RTVDewcriptorStart,
@@ -146,7 +146,7 @@ void FCubeMapRenderTarget::BuildRenderTargetView()
 		return;
 	}
 
-	for (size_t i = 0; i < 6; ++i)
+	for (UINT i = 0; i < 6; ++i)
 	{
 		D3D12_RENDER_TARGET_VIEW_DESC RTVDesc = {};
 		RTVDesc.ViewDimension = D3D12_RTV_DIMENSION_TEXTURE2DARRAY;

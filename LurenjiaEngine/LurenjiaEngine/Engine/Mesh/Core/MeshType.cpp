@@ -11,10 +11,10 @@ FVertex::FVertex(const XMFLOAT3& InPos, const XMFLOAT4& InColor, const XMFLOAT3&
 
 UINT FMeshRenderingData::GetVertexSizeInBytes() const
 {
-	return VertexData.size() * sizeof(FVertex);
+	return static_cast<UINT>(VertexData.size()) * sizeof(FVertex);
 }
 
 UINT FMeshRenderingData::GetIndexSizeInBytes() const
 {
-	return IndexData.size() * sizeof(uint16_t);
+	return static_cast<UINT>(IndexData.size()) * sizeof(uint16_t);
 }

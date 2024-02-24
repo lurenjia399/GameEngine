@@ -35,7 +35,7 @@ namespace primitives
 		float y2 = in_line.end_point.y;
 		float y1 = in_line.start_point.y;
 
-		int new_y = x * in_line.k + in_line.b;
+		int new_y = (int)x * (int)in_line.k + (int)in_line.b;
 		if (math_utils::scalar_neare_qual_int(new_y, y,2))
 		{
 			if (y2 < y1)

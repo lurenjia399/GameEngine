@@ -38,7 +38,7 @@ void FSimpleNetDrive::Tick(double InTimeInterval)
 FSimpleConnetion* FSimpleNetDrive::GetFreeConnetion()
 {
 	FSimpleConnetion *FreeConnetion = NULL;
-	for (auto &Tmp : Connetions)
+	for (auto &Tmp : (*Connetions))
 	{
 		if (Tmp.second->GetConnetionState() == ESimpleConnetionState::FREE)
 		{

@@ -3,7 +3,7 @@
 
 bool remove_char_end(char *str, char sub_str)
 {
-	int len = strlen(str);
+	int len = (int)strlen(str);
 
 	for (int i = len; i >= 0; i--)
 	{
@@ -30,8 +30,8 @@ void trim_start_and_end_inline(char* buff)
 
 bool string_equal(const char* str_1, const char* str_2)
 {
-	int len1 = strlen(str_1);
-	int len2 = strlen(str_2);
+	int len1 = (int)strlen(str_1);
+	int len2 = (int)strlen(str_2);
 	if (len1 == len2 && (len2 != 0))
 	{
 		for (int i = 0;i < len1;i++)
@@ -60,7 +60,7 @@ void trim_start_inline(char* buff)
 			pos = find_string(buff, " ", index);
 		}
 
-		int buff_len = strlen(buff);
+		int buff_len = (int)strlen(buff);
 		for (int i = index; i < buff_len; i++)
 		{
 			buff[i - index] = buff[i];
@@ -76,7 +76,7 @@ void trim_start_inline(char* buff)
 
 void trim_end_inline(char* buff)
 {
-	int buff_len = strlen(buff);
+	int buff_len = (int)strlen(buff);
 	int pos = find_string_from_end(buff, " ", 0);
 	int index = 1;
 
@@ -99,10 +99,10 @@ bool split(const char* buf,const char* str_split, char* l, char* r, bool bcontai
 		int str_split_len = 0;
 		if (!bcontain_str_split)
 		{
-			str_split_len = strlen(str_split);
+			str_split_len = (int)strlen(str_split);
 		}
 
-		int buf_len = strlen(buf);
+		int buf_len = (int)strlen(buf);
 
 		strncpy(l, buf, pos);
 
@@ -117,7 +117,7 @@ bool split(const char* buf,const char* str_split, char* l, char* r, bool bcontai
 
 void remove_all_char_end(char *str, char sub_str)
 {
-	int len = strlen(str);
+	int len = (int)strlen(str);
 
 	for (int i = len; i >= 0; i--)
 	{
@@ -133,9 +133,9 @@ void replace_string_inline(
 	const char* sub_char_a,
 	const char* sub_char_b)
 {
-	int str_size = strlen(str);
-	int sub_char_a_size = strlen(sub_char_a);
-	int sub_char_b_size = strlen(sub_char_b);
+	int str_size = (int)strlen(str);
+	int sub_char_a_size = (int)strlen(sub_char_a);
+	int sub_char_b_size = (int)strlen(sub_char_b);
 
 	int index = find_string(str, sub_char_a, 0);
 	if (index != -1)
@@ -158,7 +158,7 @@ void replace_string_inline(
 
 bool remove_char_start(char *str, char sub_str)
 {
-	int len = strlen(str) + 1;
+	int len = (int)strlen(str) + 1;
 
 	//从头开始检查 然后删除对象
 	for (int i = 0; i < len; i++)
@@ -183,7 +183,7 @@ bool remove_char_start(char *str, char sub_str)
 // "as"
 int find_string(const char *str, char const* sub_str,int start_pos)
 {
-	int len = strlen(sub_str);
+	int len = (int)strlen(sub_str);
 	int index = -1;
 	for (int i = start_pos; str[i] != '\0'; i++)
 	{
@@ -212,14 +212,14 @@ void remove_string_start(char *str, char const* sub_str)
 	int index = find_string(str, sub_str,0);
 	if (index != -1)
 	{
-		strcpy(&str[index], &str[index + strlen(sub_str)]);
+		strcpy(&str[index], &str[index + (int)strlen(sub_str)]);
 	}
 }
 
 int find_string_from_end(const char* str, char const* sub_str, int start_pos)
 {
-	int str_len = strlen(str);
-	int len = strlen(sub_str);
+	int str_len = (int)strlen(str);
+	int len = (int)strlen(sub_str);
 	int index = -1;
 	for (int i = (str_len - start_pos); str[i] != str[0]; i--)
 	{
@@ -261,7 +261,7 @@ int get_printf(char *buf, const char *format, ...)
 
 	for (int i = 0; param_char != '\0'; i++)
 	{
-		if (param_char != '\%' && *(format - 1) != '\%')
+		if (param_char != '\\%' && *(format - 1) != '\\%')
 		{
 			buf[i] = param_char;
 		}
@@ -280,7 +280,7 @@ int get_printf(char *buf, const char *format, ...)
 			case 'S':
 			{
 				char *p = va_arg(param_list, char*);
-				int len = strlen(p);
+				int len = (int)strlen(p);
 				for (int j = 0; j < len;)
 				{
 					buf[i++] = p[j++];
@@ -297,7 +297,7 @@ int get_printf(char *buf, const char *format, ...)
 				int new_int = va_arg(param_list, int);
 				char buf_int[8] = { 0 };
 				char *p = _itoa(new_int, buf_int, 10);
-				int len = strlen(p);
+				int len = (int)strlen(p);
 				for (int j = 0; j < len;)
 				{
 					buf[i++] = p[j++];
@@ -311,7 +311,7 @@ int get_printf(char *buf, const char *format, ...)
 		param_char = *format++;
 	}
 
-	return strlen(buf) + 1;
+	return (int)strlen(buf) + 1;
 }
 
 int get_printf_s(char *out_buf, const char *format, ...)
@@ -325,7 +325,7 @@ int get_printf_s(char *out_buf, const char *format, ...)
 	buf[SIMPLE_C_BUFF_SIZE - 1] = 0;
 
 	strcat(out_buf, buf);
-	return strlen(out_buf) + 1;
+	return (int)strlen(out_buf) + 1;
 }
 
 int get_printf_s_s(int buffer_size, char *out_buf, const char *format, ...)
@@ -340,12 +340,12 @@ int get_printf_s_s(int buffer_size, char *out_buf, const char *format, ...)
 
 	strcat(out_buf, buf);
 	free(buf);
-	return strlen(out_buf) + 1;
+	return (int)strlen(out_buf) + 1;
 }
 
 char *string_mid(const char *int_buf, char *out_buf, int start, int count)
 {
-	char *p = &int_buf[start];
+	const char *p = &int_buf[start];
 	memcpy_s(out_buf,count,p, count);
 
 	return out_buf;
@@ -353,12 +353,12 @@ char *string_mid(const char *int_buf, char *out_buf, int start, int count)
 
 int char_to_tchar(const char *str, wchar_t *tc)
 {
-	return MultiByteToWideChar(CP_UTF7, 0, str, strlen(str), tc, strlen(str));;
+	return MultiByteToWideChar(CP_UTF7, 0, str, (int)strlen(str), tc, (int)strlen(str));;
 }
 
 int tchar_to_char(const wchar_t *tc, char *str)
 {
-	return WideCharToMultiByte(CP_ACP, 0, tc, -1, str, wcslen(tc), NULL, NULL);
+	return WideCharToMultiByte(CP_ACP, 0, tc, -1, str, (int)wcslen(tc), NULL, NULL);
 }
 
 void wremove_string_start(wchar_t *str, wchar_t const* sub_str)
@@ -366,13 +366,13 @@ void wremove_string_start(wchar_t *str, wchar_t const* sub_str)
 	int index = wfind_string(str, sub_str);
 	if (index != -1)
 	{
-		wcscpy(&str[index], &str[index + wcslen(sub_str)]);
+		wcscpy(&str[index], &str[index + (int)wcslen(sub_str)]);
 	}
 }
 
 int wfind_string(wchar_t *str, wchar_t const* sub_str)
 {
-	int len = wcslen(sub_str);
+	int len = (int)wcslen(sub_str);
 	int index = -1;
 	for (int i = 0; str[i] != L'\0'; i++)
 	{
@@ -398,7 +398,7 @@ int wfind_string(wchar_t *str, wchar_t const* sub_str)
 
 void wremove_wchar_start(wchar_t *str, wchar_t sub_str)
 {
-	int len = wcslen(str) + 1;
+	int len = (int)wcslen(str) + 1;
 
 	//从头开始检查 然后删除对象
 	for (int i = 0; i < len; i++)
@@ -419,7 +419,7 @@ void wremove_wchar_start(wchar_t *str, wchar_t sub_str)
 
 void wremove_wchar_end(wchar_t *str, wchar_t sub_str)
 {
-	int len = wcslen(str);
+	int len = (int)wcslen(str);
 
 	for (int i = len; i >= 0; i--)
 	{
@@ -433,7 +433,7 @@ void wremove_wchar_end(wchar_t *str, wchar_t sub_str)
 
 void wremove_all_wchar_end(wchar_t *str, wchar_t sub_str)
 {
-	int len = wcslen(str);
+	int len = (int)wcslen(str);
 
 	for (int i = len; i >= 0; i--)
 	{
@@ -459,11 +459,11 @@ void wreplace_string_inline(
 	const wchar_t* sub_char_a,
 	const wchar_t* sub_char_b)
 {
-	int str_size = wcslen(str);
-	int sub_char_a_size = wcslen(sub_char_a);
-	int sub_char_b_size = wcslen(sub_char_b);
+	int str_size = (int)wcslen(str);
+	int sub_char_a_size = (int)wcslen(sub_char_a);
+	int sub_char_b_size = (int)wcslen(sub_char_b);
 
-	int index = wfind_string(str, sub_char_a, 0);
+	int index = wfind_string(str, sub_char_a);
 	if (index != -1)
 	{
 		wchar_t buff1[8196] = { 0 };
@@ -490,7 +490,7 @@ int wget_printf(wchar_t *buf, const wchar_t *format, ...)
 
 	for (int i = 0; param_char != L'\0'; i++)
 	{
-		if (param_char != L'\%' && *(format - 1) != L'\%')
+		if (param_char != '\\%' && *(format - 1) != '\\%')
 		{
 			buf[i] = param_char;
 		}
@@ -509,7 +509,7 @@ int wget_printf(wchar_t *buf, const wchar_t *format, ...)
 			case L'S':
 			{
 				wchar_t *p = va_arg(param_list, wchar_t*);
-				int len = wcslen(p);
+				int len = (int)wcslen(p);
 				for (int j = 0; j < len;)
 				{
 					buf[i++] = p[j++];
@@ -530,7 +530,7 @@ int wget_printf(wchar_t *buf, const wchar_t *format, ...)
 				wchar_t wbuf_int[8] = { 0 };
 				char_to_tchar(p,wbuf_int);
 
-				int len = wcslen(wbuf_int);
+				int len = (int)wcslen(wbuf_int);
 				for (int j = 0; j < len;)
 				{
 					buf[i++] = wbuf_int[j++];
@@ -544,21 +544,22 @@ int wget_printf(wchar_t *buf, const wchar_t *format, ...)
 		param_char = *format++;
 	}
 
-	return wcslen(buf) + 1;
+	return (int)wcslen(buf) + 1;
 }
 
 int wget_printf_s(wchar_t *out_buf,const wchar_t *format, ...)
 {
-	wchar_t *buf[SIMPLE_C_BUFF_SIZE] = { 0 };
-	wmemset(buf, 0, sizeof(wchar_t) * SIMPLE_C_BUFF_SIZE);
-	va_list args;
-	va_start(args, format);
-	_vsnwprintf_s(buf, SIMPLE_C_BUFF_SIZE - 1, SIMPLE_C_BUFF_SIZE, format, args);
-	va_end(args);
-	buf[SIMPLE_C_BUFF_SIZE - 1] = 0;
+	//有个警告，注掉得了，用到的时候在看吧
+	//wchar_t *buf[SIMPLE_C_BUFF_SIZE] = { 0 };
+	//wmemset(buf, 0, sizeof(wchar_t) * SIMPLE_C_BUFF_SIZE);
+	//va_list args;
+	//va_start(args, format);
+	//_vsnwprintf_s(buf, SIMPLE_C_BUFF_SIZE - 1, SIMPLE_C_BUFF_SIZE, format, args);
+	//va_end(args);
+	//buf[SIMPLE_C_BUFF_SIZE - 1] = 0;
 
-	wcscat(out_buf, buf);
-	return wcslen(out_buf) + 1;
+	//wcscat(out_buf, buf);
+	return (int)wcslen(out_buf) + 1;
 }
 
 int wget_printf_s_s(int buffer_size, wchar_t *out_buf, const wchar_t *format, ...)
@@ -574,12 +575,12 @@ int wget_printf_s_s(int buffer_size, wchar_t *out_buf, const wchar_t *format, ..
 
 	wcscat(out_buf, buf);
 	free(buf);
-	return wcslen(out_buf) + 1;
+	return (int)wcslen(out_buf) + 1;
 }
 
 wchar_t *wstring_mid(const wchar_t *int_buf, wchar_t *out_buf, int start, int count)
 {
-	wchar_t *p = &int_buf[start];
+	const wchar_t *p = &int_buf[start];
 	wmemcpy_s(out_buf, count, p, count);
 
 	return out_buf;

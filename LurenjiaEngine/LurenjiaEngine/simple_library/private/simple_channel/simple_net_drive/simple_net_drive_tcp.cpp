@@ -256,7 +256,7 @@ bool FSimpleTCPNetDrive::Init()
 		//服务端设置地址
 		MainConnetion->GetConnetionAddr().sin_family = AF_INET;//IPV4互联网协议族
 		MainConnetion->GetConnetionAddr().sin_addr.S_un.S_addr = htonl(INADDR_ANY);//0.0.0.0 所以地址、
-		MainConnetion->GetConnetionAddr().sin_port = htons(98592);
+		MainConnetion->GetConnetionAddr().sin_port = htons((u_short)98592);
 
 		if (bind(MainConnetion->GetSocket(), (SOCKADDR*)&MainConnetion->GetConnetionAddr(), sizeof(MainConnetion->GetConnetionAddr())) == SOCKET_ERROR)
 		{
@@ -277,9 +277,9 @@ bool FSimpleTCPNetDrive::Init()
 		//初始化我们通道
 		for (int i = 0 ;i < 2000;i++)
 		{
-			Connetions.insert(std::make_pair(i, new FSimpleTCPConnetion()));
-			Connetions[i]->Init();
-			Connetions[i]->SetDriveType(DriveType);
+			(*Connetions).insert(std::make_pair(i, new FSimpleTCPConnetion()));
+			(*Connetions)[i]->Init();
+			(*Connetions)[i]->SetDriveType(DriveType);
 		}
 	}
 	else
@@ -295,7 +295,7 @@ bool FSimpleTCPNetDrive::Init()
 		//客户端设置地址
 		MainConnetion->GetConnetionAddr().sin_family = AF_INET;//IPV4互联网协议族
 		MainConnetion->GetConnetionAddr().sin_addr.S_un.S_addr = inet_addr("127.0.0.1");//0.0.0.0 所以地址、
-		MainConnetion->GetConnetionAddr().sin_port = htons(98592);
+		MainConnetion->GetConnetionAddr().sin_port = htons((u_short)98592);
 
 		if (connect(
 			MainConnetion->GetSocket(),
@@ -331,10 +331,10 @@ void FSimpleTCPNetDrive::Tick(double InTimeInterval)
 	if (DriveType == ESimpleDriveType::DRIVETYPE_LISTEN)
 	{	
 		//主通道tick
-		MainConnetion->Tick(InTimeInterval);
+		MainConnetion->Tick((float)InTimeInterval);
 
 		//做接受检测
-		for (auto &Tmp :Connetions)
+		for (auto &Tmp : (*Connetions))
 		{
 			if (Tmp.second->GetConnetionState() != ESimpleConnetionState::FREE)
 			{
@@ -342,7 +342,7 @@ void FSimpleTCPNetDrive::Tick(double InTimeInterval)
 			}
 			else if (Tmp.second->GetConnetionState() != ESimpleConnetionState::JOIN)
 			{
-				Tmp.second->Tick(InTimeInterval);
+				Tmp.second->Tick((float)InTimeInterval);
 			}
 		}
 
@@ -369,7 +369,7 @@ void FSimpleTCPNetDrive::Tick(double InTimeInterval)
 			if (CreateIoCompletionPort(
 				(HANDLE)ClientAccept,
 				CompletionPortHandle,
-				(DWORD)FreeConnetion, 0) == NULL)
+				(ULONG_PTR)FreeConnetion, 0) == NULL)
 			{
 				log_error("客户端绑定端口失败");
 				return;
@@ -403,7 +403,7 @@ void FSimpleTCPNetDrive::Tick(double InTimeInterval)
 		}
 		else
 		{
-			MainConnetion->Tick(InTimeInterval);
+			MainConnetion->Tick((float)InTimeInterval);
 
 			//做上层业务的解析
 			MainConnetion->Analysis();

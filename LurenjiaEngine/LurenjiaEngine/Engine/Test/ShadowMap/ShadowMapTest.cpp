@@ -40,7 +40,7 @@ namespace ShadowMapTest
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
 			ParallelLight->SetRotateFunction([=](float time) ->void
 			{
-				float angle_speed = PI;
+				float angle_speed = (float)PI;
 				float angle = time * angle_speed;
 				XMFLOAT3 cur_pos = ParallelLight->GetPosition();
 				XMFLOAT3 ret = cur_pos;

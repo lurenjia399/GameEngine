@@ -22,7 +22,7 @@ void CMeshComponent::SetSubMaterials(const int& index, CMaterial* InMaterial)
 
 UINT CMeshComponent::GetMaterialsCount() const
 {
-	return Materials.size();
+	return static_cast<UINT>(Materials.size());
 }
 
 const vector<CMaterial*>* CMeshComponent::GetMaterials() const

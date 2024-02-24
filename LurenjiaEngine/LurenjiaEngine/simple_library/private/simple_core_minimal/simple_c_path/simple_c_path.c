@@ -2,6 +2,7 @@
 #include "../../../../simple_library/public/simple_core_minimal/simple_c_path/simple_path.h"
 #include "../../../../simple_library/public/simple_core_minimal/simple_c_core/simple_c_array/simple_c_array_string.h"
 
+void remove_string_start(char* str, char const* sub_str);
 void get_path_directory_inline(char *path_buf)
 {
 	normalization_path(path_buf);// \\ /
@@ -40,7 +41,7 @@ void normalization_path(char *path_buf)
 	//这种替换似乎有点问题 
 	//replace_char_inline(path_buf,'\\','/');
 	
-	int len = strlen(path_buf);
+	int len = (int)strlen(path_buf);
 	for (int i = 0; path_buf[i] != 0 && i < len; i++)
 	{
 		if (path_buf[i] == 92) 

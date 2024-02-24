@@ -22,5 +22,5 @@ protected:
 	virtual void SetNonblocking();
 protected:
 	FSimpleConnetion* MainConnetion;
-	std::map<int, FSimpleConnetion*> Connetions;
+	std::map<int, FSimpleConnetion*>* Connetions;
 };

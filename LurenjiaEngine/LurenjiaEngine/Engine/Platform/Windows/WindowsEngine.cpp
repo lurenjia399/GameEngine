@@ -134,7 +134,7 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	WindowsClass.hIcon = nullptr;						//应用程序放在磁盘上显示的图标
 	WindowsClass.hIconSm = nullptr;						//应用程序显示在左上角的图标
 	WindowsClass.hInstance = InParameters.HInstance;	//传递自己的窗口实例
-	WindowsClass.lpszClassName = L"LurenjiaEngine";		//窗口名称
+	WindowsClass.lpszClassName = (LPCSTR)_T("LurenjiaEngine");		//窗口名称
 	WindowsClass.lpszMenuName = nullptr;				//设置菜单的名称
 	WindowsClass.style = CS_GLOBALCLASS;				//怎么绘制窗口，垂直或者水平
 	WindowsClass.lpfnWndProc = EngineWindowProc;		//绑定消息处理函数
@@ -145,7 +145,7 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	{
 		// 如果注册失败
 		Engine_Log_Error("Register windows class failed.");
-		MessageBox(NULL, L"Register windows class fail,", L"Error", MB_OK);
+		MessageBox(NULL, (LPCSTR)_T("Register windows class fail,"), (LPCSTR)_T("Error"), MB_OK);
 	}
 
 	/*
@@ -164,8 +164,8 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 
 	MyWindowsHandle = CreateWindowEx(
 		NULL,						//窗口额外风格
-		L"LurenjiaEngine",			//窗口名称
-		L"Lurenjia Engine",			//窗口名称(显示在窗口的标题栏上)
+		"LurenjiaEngine",			//窗口名称
+		"Lurenjia Engine",			//窗口名称(显示在窗口的标题栏上)
 		WS_OVERLAPPEDWINDOW,		//窗口风格
 		100, 100,					//窗口左上角起始位置
 		WindowWidth, WindowHeight,	//窗口长宽
@@ -177,7 +177,7 @@ bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)
 	if (!MyWindowsHandle)
 	{
 		Engine_Log_Error("CreateWindow failed.");
-		MessageBox(0, L"CreateWindow Failed.", 0, 0);
+		MessageBox(0, (LPCSTR)_T("CreateWindow Failed."), 0, 0);
 		return false;
 	}
 	

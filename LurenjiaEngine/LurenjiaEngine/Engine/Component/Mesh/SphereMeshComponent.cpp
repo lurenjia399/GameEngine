@@ -23,7 +23,7 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 			float z = InRadius * sinf(vertical) * sinf(horizontal);
 			InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(x, y, z), XMFLOAT4(Colors::White)));
 
-			uint32_t currIndex = InRenderingData.VertexData.size() - 1;
+			uint32_t currIndex = static_cast<uint32_t>(InRenderingData.VertexData.size()) - 1;
 
 			//∂•µ„«–œﬂ
 			XMVECTOR normal = XMLoadFloat3(&InRenderingData.VertexData[currIndex].Pos);
@@ -60,7 +60,8 @@ void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingD
 	for (uint32_t i = 1; i <= InAxialSubdivision;i++)
 	{
 		uint32_t left_up = i + (InHeightSubdivision - 2) * (InAxialSubdivision + 1);uint32_t right_up = left_up + 1;
-		InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);InRenderingData.IndexData.emplace_back(InRenderingData.VertexData.size() - 1);
+		uint32_t left_down = static_cast<uint32_t>(InRenderingData.VertexData.size()) - 1;
+		InRenderingData.IndexData.emplace_back(left_up);InRenderingData.IndexData.emplace_back(right_up);InRenderingData.IndexData.emplace_back(left_down);
 	}
 }
 

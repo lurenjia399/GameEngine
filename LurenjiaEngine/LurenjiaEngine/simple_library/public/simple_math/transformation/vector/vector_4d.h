@@ -45,6 +45,19 @@ public:
 		return x <= a.x&& y <= a.y&& z <= a.z&& w <= a.w;
 	}
 
+	fvector_4d& operator=(const fvector_4d& a)
+	{
+		if (this != &a)
+		{
+			this->x = a.x;
+			this->y = a.y;
+			this->z = a.z;
+			this->w = a.w;
+		}
+
+		return *this;
+	}
+
 	fvector_4d operator+(const fvector_4d& a) const
 	{
 		return fvector_4d(a.x + x, a.y + y, a.z + z, a.w + w);
@@ -69,9 +82,13 @@ public:
 		return fvector_4d(a.x / x, a.y / y, a.z / z, a.w / w);
 	}
 
-	fvector_4d operator*(const float& a)const
+	fvector_4d& operator*(const float& a)
 	{
-		return fvector_4d(a * x, a * y, a * z, a * w);
+		this->x = this->x * a;
+		this->y = this->y * a;
+		this->z = this->z * a;
+		this->w = this->w * a;
+		return *this;
 	}
 
 	fvector_4d operator/(const float& a)const
@@ -88,12 +105,12 @@ public:
 		return *this;
 	}
 
-	fvector_4d& operator*(const float& a)
-	{
-		*this = *this * a;
+	//fvector_4d& operator*(const float& a)
+	//{
+	//	*this = *this * a;
 
-		return *this;
-	}
+	//	return *this;
+	//}
 
 	fvector_4d& operator/=(const fvector_4d& a)
 	{

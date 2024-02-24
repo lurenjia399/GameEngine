@@ -20,7 +20,7 @@ void get_local_time_string(char *t_buffer);
 
 struct tm * get_g_m_time_tm();
 
-struct tm * time_t_to_tm(etime_type type,time_t *const t_a);
+struct tm * time_t_to_tm(etime_type type,const time_t *const t_a);
 
 time_t tm_to_time_t(struct tm *const t_b);
 

@@ -18,14 +18,14 @@ void FSimpleIOStream::Wirte(const void* InData, int InLength)
 FSimpleIOStream& FSimpleIOStream::operator>> (std::string& InValue)
 {
 	InValue = (char *)Ptr;
-	Seek(InValue.size() + 1);
+	Seek(static_cast<int>(InValue.size()) + 1);
 
 	return *this;
 }
 
 FSimpleIOStream& FSimpleIOStream::FSimpleIOStream::operator<<(const std::string& InValue)
 {
-	Wirte(InValue.c_str(), InValue.size());
+	Wirte(InValue.c_str(), static_cast<int>(InValue.size()));
 	Wirte("\0", 1);
 
 	return *this;

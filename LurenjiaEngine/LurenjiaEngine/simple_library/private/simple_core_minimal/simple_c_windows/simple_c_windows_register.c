@@ -85,14 +85,14 @@ bool register_info(const freg_info *info)
 	{
 		for (int i = 0; i < info->size_value; i++)
 		{
-			char *value_name = info->value[i].name[0] == '\0' ? NULL : info->value[i].name;
+			const char *value_name = info->value[i].name[0] == '\0' ? NULL : info->value[i].name;
 			if ((value = RegSetValueEx(hresult, value_name, 0, info->value[i].type, info->value[i].buf, sizeof(info->value[i].buf))) != ERROR_SUCCESS)
 			{
 				printf("\n error code RegSetValueEx = %i \n", value);
 			}
 		}
 
-		RegCloseKey(&hresult);
+		RegCloseKey(hresult);
 		return true;
 	}
 	else

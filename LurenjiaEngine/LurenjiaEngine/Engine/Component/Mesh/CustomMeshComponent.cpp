@@ -61,7 +61,7 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 					}
 					else {						//顶点
 						InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(), XMFLOAT4(Colors::DeepSkyBlue)));
-						int topIndex = InRenderingData.VertexData.size() - 1;
+						int topIndex = static_cast<int>(InRenderingData.VertexData.size()) - 1;
 						XMFLOAT3& currVertexPos = InRenderingData.VertexData[topIndex].Pos;
 
 						//解析顶点位置
@@ -109,7 +109,7 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 						//法线索引
 						memset(TempBuffer, 0, 257);
 						pivotIndex = TextureIndex + 1;
-						char* vNormalIndex = string_mid(SaveLineString, TempBuffer, pivotIndex, strlen(SaveLineString) - pivotIndex);
+						char* vNormalIndex = string_mid(SaveLineString, TempBuffer, pivotIndex, static_cast<int>(strlen(SaveLineString)) - pivotIndex);
 					}
 				}
 			}

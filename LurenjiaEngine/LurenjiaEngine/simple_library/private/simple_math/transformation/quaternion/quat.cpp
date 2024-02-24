@@ -163,7 +163,7 @@ float fquat::get_angle_radian() const
 
 float fquat::get_angle() const
 {
-	return get_angle_radian() * (180.f / 3.1415926);
+	return get_angle_radian() * (180.f / 3.1415926f);
 }
 
 void fquat::normalize(float in_tolerance)

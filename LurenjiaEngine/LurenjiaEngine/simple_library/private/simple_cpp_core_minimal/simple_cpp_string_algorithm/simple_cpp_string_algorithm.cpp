@@ -28,8 +28,8 @@ namespace simple_cpp_string_algorithm
 		std::vector<std::string>& in_array,
 		const char* parse_string)
 	{
-		int string_content_len = strlen(string_content);
-		int parse_string_len = strlen(parse_string);
+		int string_content_len = (int)strlen(string_content);
+		int parse_string_len = (int)strlen(parse_string);
 
 		fframe_buffer_index frame_buffer;
 		int pos = find_string(string_content, parse_string, frame_buffer.strat_pos);

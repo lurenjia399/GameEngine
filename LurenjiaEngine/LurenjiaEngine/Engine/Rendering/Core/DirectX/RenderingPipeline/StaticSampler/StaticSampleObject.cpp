@@ -18,7 +18,7 @@ void FStaticSampleObject::BuildStaticSampler()
 		D3D12_TEXTURE_ADDRESS_MODE_BORDER,
 		D3D12_TEXTURE_ADDRESS_MODE_BORDER,
 		D3D12_TEXTURE_ADDRESS_MODE_BORDER,
-		0.f, 16.0f,
+		0.f, 16,
 		D3D12_COMPARISON_FUNC_LESS_EQUAL,
 		D3D12_STATIC_BORDER_COLOR_OPAQUE_BLACK));
 }																									
@@ -30,5 +30,5 @@ D3D12_STATIC_SAMPLER_DESC* FStaticSampleObject::GetData()
 
 int FStaticSampleObject::GetSize()
 {
-	return SamplerDesc.size();
+	return (int)SamplerDesc.size();
 }

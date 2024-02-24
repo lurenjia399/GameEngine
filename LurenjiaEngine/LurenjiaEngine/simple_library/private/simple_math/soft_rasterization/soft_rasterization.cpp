@@ -2,7 +2,7 @@
 
 namespace soft_rasterization
 {
-	std::vector<fobject*> fobject::gobject_array;
+	std::vector<fobject*>* fobject::gobject_array;
 
 	factor::factor()
 	{
@@ -25,7 +25,7 @@ namespace soft_rasterization
 
 		//注册子父级关系
 		mesh_component->parent = get_transform();
-		get_transform()->children.push_back(mesh_component);
+		get_transform()->children->push_back(mesh_component);
 	}
 
 	fmesh_actor::~fmesh_actor()
@@ -59,12 +59,12 @@ namespace soft_rasterization
 
 	void frender_engine::build_input_path(const std::wstring& in_path)
 	{
-		wpath = in_path;
+		*wpath = in_path;
 	}
 
 	void frender_engine::build_draw_object(const std::vector<fmesh_actor*>& in_objs)
 	{
-		draw_obj = in_objs;
+		*draw_obj = in_objs;
 	}
 
 	void frender_engine::build_camera(const fvector_3d& in_position, const fviewport_config& in_config)
@@ -96,18 +96,18 @@ namespace soft_rasterization
 
 	void frender_engine::strat_update(float in_time, bool breset_bone)
 	{
-		frame_render_data3.clear();
+		frame_render_data3->clear();
 		
 		//注册帧缓存数据
-		for (auto& tmp : draw_obj)
+		for (auto& tmp : (*draw_obj))
 		{
 			if (breset_bone)
 			{
-				frame_render_data3.push_back(frender_data_3d());
-				frender_data_3d& data_3d = frame_render_data3[frame_render_data3.size() - 1];
+				frame_render_data3->push_back(frender_data_3d());
+				frender_data_3d& data_3d = (*frame_render_data3)[frame_render_data3->size() - 1];
 
 				//I拿到模型数据
-				data_3d.vertex_data = tmp->get_mesh()->vertex_data;
+				(*data_3d.vertex_data) = (*tmp->get_mesh()->vertex_data);
 
 				//II world matrix
 				//构建旋转
@@ -137,8 +137,8 @@ namespace soft_rasterization
 			}
 			else
 			{
-				frame_render_data3.push_back(frender_data_3d());
-				frender_data_3d& data_3d = frame_render_data3[frame_render_data3.size() - 1];
+				frame_render_data3->push_back(frender_data_3d());
+				frender_data_3d& data_3d = (*frame_render_data3)[frame_render_data3->size() - 1];
 				data_3d.matrix = tmp->get_transform()->matrix;
 			}
 		}
@@ -166,26 +166,26 @@ namespace soft_rasterization
 	{
 		//相对坐标转世界
 		vector<fvector_4d> world_pos;
-		for (auto& tmp : frame_render_data3)
+		for (auto& tmp : (*frame_render_data3))
 		{
-			for (size_t i = 0; i < tmp.vertex_data.size(); i += 3)
+			for (size_t i = 0; i < tmp.vertex_data->size(); i += 3)
 			{
 				{
-					fvector_3d v = tmp.vertex_data[i];
+					fvector_3d v = tmp.vertex_data->at(i);
 					fvector_4d mesh_pos_world = math_utils::mul(fvector_4d(v.x, v.y, v.z, 1.f), tmp.matrix);
 					mesh_pos_world.w = 1.f;
 					world_pos.push_back(mesh_pos_world);
 				}
 
 				{
-					fvector_3d v = tmp.vertex_data[i + 1];
+					fvector_3d v = tmp.vertex_data->at(i + 1);
 					fvector_4d mesh_pos_world = math_utils::mul(fvector_4d(v.x, v.y, v.z, 1.f), tmp.matrix);
 					mesh_pos_world.w = 1.f;
 					world_pos.push_back(mesh_pos_world);
 				}
 
 				{
-					fvector_3d v = tmp.vertex_data[i + 2];
+					fvector_3d v = tmp.vertex_data->at(i + 2);
 					fvector_4d mesh_pos_world = math_utils::mul(fvector_4d(v.x, v.y, v.z, 1.f), tmp.matrix);
 					mesh_pos_world.w = 1.f;
 					world_pos.push_back(mesh_pos_world);
@@ -251,19 +251,19 @@ namespace soft_rasterization
 			}
 		}
 
-		frender_data_2d render_data2;
+		frender_data_2d render_data2 = {};
 		//NDC映射到实际像素
 		for (size_t i = 0; i < ndc_space.size(); i += 3)
 		{
-			render_data2.vertex_data.push_back(fvector_2d(
+			render_data2.vertex_data->push_back(fvector_2d(
 				(ndc_space[i].x * 0.5f + 0.5f) * viewport_config.viewport_size.x,//映射到实际屏幕空间
 				(ndc_space[i].y * 0.5f + 0.5f) * viewport_config.viewport_size.y));//映射到实际屏幕空间
 
-			render_data2.vertex_data.push_back(fvector_2d(
+			render_data2.vertex_data->push_back(fvector_2d(
 				(ndc_space[i + 1].x * 0.5f + 0.5f) * viewport_config.viewport_size.x,//映射到实际屏幕空间
 				(ndc_space[i + 1].y * 0.5f + 0.5f) * viewport_config.viewport_size.y));//映射到实际屏幕空间
 
-			render_data2.vertex_data.push_back(fvector_2d(
+			render_data2.vertex_data->push_back(fvector_2d(
 				(ndc_space[i + 2].x * 0.5f + 0.5f) * viewport_config.viewport_size.x,//映射到实际屏幕空间
 				(ndc_space[i + 2].y * 0.5f + 0.5f) * viewport_config.viewport_size.y));//映射到实际屏幕空间
 		}
@@ -279,14 +279,14 @@ namespace soft_rasterization
 
 		//3.准备三角形	
 		std::vector<primitives::ftriangle> triangles;
-		for (int i = 0; i < (int)render_data2.vertex_data.size(); i += 3)
+		for (int i = 0; i < (int)render_data2.vertex_data->size(); i += 3)
 		{
 			triangles.push_back(primitives::ftriangle());
 			primitives::ftriangle& in_triangle = triangles[triangles.size() - 1];
 
-			in_triangle.point_1 = render_data2.vertex_data[i];
-			in_triangle.point_2 = render_data2.vertex_data[i + 1];
-			in_triangle.point_3 = render_data2.vertex_data[i + 2];
+			in_triangle.point_1 = (*render_data2.vertex_data)[i];
+			in_triangle.point_2 = (*render_data2.vertex_data)[i + 1];
+			in_triangle.point_3 = (*render_data2.vertex_data)[i + 2];
 			in_triangle.Color.x = 32;
 			in_triangle.Color.y = 100;
 			in_triangle.Color.z = 255;
@@ -308,25 +308,25 @@ namespace soft_rasterization
 				if (is_inside_triangles(triangles, x, y, my_color))
 				{
 					//BGR bmp
-					data[number_rows + j] = my_color.x;			//B
-					data[number_rows + j + 1] = my_color.y;		//G
-					data[number_rows + j + 2] = my_color.z;		//R
+					data[number_rows + j] = (unsigned char)my_color.x;			//B
+					data[number_rows + j + 1] = (unsigned char)my_color.y;		//G
+					data[number_rows + j + 2] = (unsigned char)my_color.z;		//R
 				}
 				else
 				{
 					//BGR bmp
-					data[number_rows + j] = 0;		//B
-					data[number_rows + j + 1] = 0;		//G
-					data[number_rows + j + 2] = 0;		//R
+					data[number_rows + j] = (unsigned char)0;		//B
+					data[number_rows + j + 1] = (unsigned char)0;		//G
+					data[number_rows + j + 2] = (unsigned char)0;		//R
 				}
 			}
 		}
 
 		//输出阶段
 		wchar_t path[1024] = { 0 };
-		if (!wpath.empty())
+		if (!wpath->empty())
 		{
-			wget_printf(path, wpath.c_str(), index++);
+			wget_printf(path, wpath->c_str(), index++);
 		}
 		else
 		{
@@ -345,17 +345,17 @@ namespace soft_rasterization
 	void frender_engine::end_update(float in_time)
 	{
 		//清除帧缓存数据
-		frame_render_data3.clear();
+		frame_render_data3->clear();
 	}
 
 	fobject::fobject()
 	{
-		gobject_array.push_back(this);
+		gobject_array->push_back(this);
 	}
 
 	void fobject::gobject_array_init(float in_time)
 	{
-		for (auto &tmp : gobject_array)
+		for (auto &tmp : (*gobject_array))
 		{
 			tmp->build(in_time);
 		}
@@ -363,7 +363,7 @@ namespace soft_rasterization
 
 	void fobject::gobject_array_tick(float in_time)
 	{
-		for (auto& tmp : gobject_array)
+		for (auto& tmp : (*gobject_array))
 		{
 			tmp->tick(in_time);
 		}
@@ -372,20 +372,20 @@ namespace soft_rasterization
 	void fobject::gobject_array_clear()
 	{
 		//通知上层逻辑 我要清除了
-		for (auto& tmp : gobject_array)
+		for (auto& tmp : (*gobject_array))
 		{
 			tmp->clear();
 		}
 
 		//真正清除
-		for (auto& tmp : gobject_array)
+		for (auto& tmp : (*gobject_array))
 		{
 			delete tmp;
 			tmp = nullptr;
 		}
 
 		//再清除容器
-		gobject_array.clear();
+		(*gobject_array).clear();
 	}
 
 	void fengine::init(float in_time)
@@ -414,7 +414,7 @@ namespace soft_rasterization
 
 	void ftransform_component::tick(float in_time)
 	{
-		for (auto &tmp : children)
+		for (auto &tmp : (*children))
 		{
 			if (ftransform_component *in_component = dynamic_cast<ftransform_component*>(tmp))
 			{

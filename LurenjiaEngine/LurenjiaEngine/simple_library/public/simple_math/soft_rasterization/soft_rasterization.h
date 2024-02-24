@@ -23,9 +23,9 @@ namespace soft_rasterization
 		template<class t>
 		t *create_object()
 		{
-			gobject_array.push_back(new t());
+			gobject_array->push_back(new t());
 
-			return dynamic_cast<t*>(gobject_array[gobject_array.size() - 1]);
+			return dynamic_cast<t*>((*gobject_array)[gobject_array->size() - 1]);
 		}
 
 	private:
@@ -34,7 +34,7 @@ namespace soft_rasterization
 		static void gobject_array_clear();
 
 	private:
-		static std::vector<fobject*> gobject_array;
+		static std::vector<fobject*>* gobject_array;
 	};
 
 	//组件基类
@@ -42,7 +42,7 @@ namespace soft_rasterization
 	{
 	public:
 		fcomponent* parent;
-		std::vector<fcomponent*> children;
+		std::vector<fcomponent*>* children;
 	};
 
 	//位移组件
@@ -83,7 +83,7 @@ namespace soft_rasterization
 	class SIMPLE_LIBRARY_API fmesh_component :public ftransform_component
 	{
 	public:
-		std::vector<fvector_3d> vertex_data;
+		std::vector<fvector_3d>* vertex_data;
 	};
 
 	//能看到的基类
@@ -143,16 +143,16 @@ namespace soft_rasterization
 	////////////////////////////要渲染的数据
 	struct SIMPLE_LIBRARY_API frender_data_3d
 	{
-		std::vector<fvector_3d> vertex_data;
-		std::vector<uint16_t> index_data;
+		std::vector<fvector_3d>* vertex_data;
+		std::vector<uint16_t>* index_data;
 
 		fmatrix_4x4 matrix;
 	};
 
 	struct SIMPLE_LIBRARY_API frender_data_2d
 	{
-		std::vector<fvector_2d> vertex_data;
-		std::vector<uint16_t> index_data;
+		std::vector<fvector_2d>* vertex_data;
+		std::vector<uint16_t>* index_data;
 	};
 
 	////////////////////////////引擎
@@ -187,11 +187,11 @@ namespace soft_rasterization
 		fcamera camera;
 		fviewport_config viewport_config;
 
-		std::vector<fmesh_actor*> draw_obj;
+		std::vector<fmesh_actor*>* draw_obj;
 
 		//每一帧要绘制的数据
-		std::vector<frender_data_3d> frame_render_data3;
-		std::wstring wpath;
+		std::vector<frender_data_3d>* frame_render_data3;
+		std::wstring* wpath;
 
 		//帧数
 		int index;//

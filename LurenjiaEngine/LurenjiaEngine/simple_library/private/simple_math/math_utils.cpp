@@ -55,10 +55,10 @@ namespace math_utils
         fmatrix_3x3 rot_matrix_3x3;
 
         //公式
-        rot_matrix_3x3.m11 = cos(in_radian);
-        rot_matrix_3x3.m12 = -sin(in_radian);
-        rot_matrix_3x3.m21 = sin(in_radian);
-        rot_matrix_3x3.m22 = cos(in_radian);
+        rot_matrix_3x3.m11 = cosf(in_radian);
+        rot_matrix_3x3.m12 = -sinf(in_radian);
+        rot_matrix_3x3.m21 = sinf(in_radian);
+        rot_matrix_3x3.m22 = cosf(in_radian);
 
         //矩阵乘法
         in_world_matrix_3x3 = rot_matrix_3x3 * in_world_matrix_3x3;
@@ -66,7 +66,7 @@ namespace math_utils
 
     void rot_angle(float in_angle, fmatrix_3x3& in_world_matrix_3x3)
     {
-        float in_radian = in_angle * (3.1415926 / 180.0);
+        float in_radian =(float) in_angle * (3.1415926f / 180.0f);
 
         rot_radian(in_radian, in_world_matrix_3x3);
     }
@@ -108,7 +108,7 @@ namespace math_utils
         //构建透视矩阵
         fmatrix_4x4 matrix_4x4;
         {
-            float t = tan(in_fov_radian * 0.5f) * near_z;
+            float t = (float)tan(in_fov_radian * 0.5f) * near_z;
             float b = -t;
             float r = aspect_ratio * t;
             float l = -r;
@@ -165,9 +165,9 @@ namespace math_utils
         float radian = angle_to_radian(angle);
 
         return fmatrix_4x4(
-            cos(radian), 0.f, sin(radian), 0.f,
+            cosf(radian), 0.f, sinf(radian), 0.f,
             0.f, 1.f, 0.f, 0.f,
-            -sin(radian), 0.f, cos(radian), 0.f,
+            -sinf(radian), 0.f, cosf(radian), 0.f,
             0.f, 0.f, 0.f, 1.f);
     }
     fmatrix_4x4 matrix_rotation_x(const float angle)
@@ -176,8 +176,8 @@ namespace math_utils
 
         return fmatrix_4x4(
             1.f, 0.f, 0.f, 0.f,
-            0.f, cos(radian), -sin(radian), 0.f,
-            0.f, sin(radian), cos(radian), 0.f,
+            0.f, cosf(radian), -sinf(radian), 0.f,
+            0.f, sinf(radian), cosf(radian), 0.f,
             0.f, 0.f, 0.f, 1.f);
     }
     fmatrix_4x4 matrix_rotation_z(const float angle)
@@ -185,8 +185,8 @@ namespace math_utils
         float radian = angle_to_radian(angle);
 
         return fmatrix_4x4(
-            cos(radian), -sin(radian), 0.f, 0.f,
-            sin(radian), cos(radian), 0.f, 0.f,
+            cosf(radian), -sinf(radian), 0.f, 0.f,
+            sinf(radian), cosf(radian), 0.f, 0.f,
             0.f, 0.f, 1.f, 0.f,
             0.f, 0.f, 0.f, 1.f);
     }
@@ -199,9 +199,9 @@ namespace math_utils
         float radian = angle_to_radian(angle);
 
         return fmatrix_4x4(
-            n.x * n.x * (1.f - cos(radian)) + cos(radian), n.x * n.y * (1.f - cos(radian)) - n.z * sin(radian), n.x * n.z * (1.f - cos(radian)) + n.y * sin(radian), 0.f,
-            n.x * n.y * (1.f - cos(radian)) + n.z * sin(radian), n.y * n.y * (1.f - cos(radian)) + cos(radian), n.y * n.z * (1.f - cos(radian)) - n.x * sin(radian), 0.f,
-            n.x * n.z * (1.f - cos(radian)) - n.y * sin(radian), n.z * n.y * (1.f - cos(radian)) + n.x * sin(radian), n.z * n.z * (1.f - cos(radian)) + cos(radian), 0.f,
+            n.x * n.x * (1.f - cosf(radian)) + cosf(radian), n.x * n.y * (1.f - cosf(radian)) - n.z * sinf(radian), n.x * n.z * (1.f - cosf(radian)) + n.y * sinf(radian), 0.f,
+            n.x * n.y * (1.f - cosf(radian)) + n.z * sinf(radian), n.y * n.y * (1.f - cosf(radian)) + cosf(radian), n.y * n.z * (1.f - cosf(radian)) - n.x * sinf(radian), 0.f,
+            n.x * n.z * (1.f - cosf(radian)) - n.y * sinf(radian), n.z * n.y * (1.f - cosf(radian)) + n.x * sinf(radian), n.z * n.z * (1.f - cosf(radian)) + cosf(radian), 0.f,
             0.f, 0.f, 0.f, 1.f);
     }
 
@@ -262,7 +262,7 @@ namespace math_utils
 
         if (tmp_value != 0.f)
         {
-            float value_sqrt = sqrt(tmp_value + 1.f) * 0.5f;
+            float value_sqrt = sqrtf(tmp_value + 1.f) * 0.5f;
             float mult = 0.25f / value_sqrt;
 
             switch (index)
@@ -320,13 +320,13 @@ namespace math_utils
             return in_q;
         }
 
-        float angle = acos(in_q.w);
+        float angle = acosf(in_q.w);
 
         float new_angle = angle * in_exponent;
 
-        r.w = cos(new_angle);
+        r.w = cosf(new_angle);
 
-        float in_value = sin(new_angle) / sin(angle);
+        float in_value = sinf(new_angle) / sinf(angle);
 
         r.x = in_q.x * in_value;
         r.y = in_q.y * in_value;

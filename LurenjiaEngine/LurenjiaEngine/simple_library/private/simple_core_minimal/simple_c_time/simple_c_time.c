@@ -45,7 +45,7 @@ struct tm * get_g_m_time_tm()
 	return gmtime(&t_time);
 }
 
-struct tm * time_t_to_tm(etime_type type, time_t *const t_a)
+struct tm * time_t_to_tm(etime_type type, const time_t *const t_a)
 {
 	switch (type)
 	{

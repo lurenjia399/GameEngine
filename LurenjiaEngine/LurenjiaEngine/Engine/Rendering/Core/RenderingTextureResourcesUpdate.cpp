@@ -38,7 +38,7 @@ void FRenderingTextureResourcesUpdate::LoadTexture(const wstring& InTexturePath)
 		Texture->Data,
 		Texture->UploadBuffer));
 
-	Texture->RenderingTextureID = TextureMapping.size();
+	Texture->RenderingTextureID = static_cast<UINT>(TextureMapping.size());
 	//注意这里使用std::move
 	//unique_ptr智能指针所指的值，无法被拷贝
 	TextureMapping.emplace(TextureName, std::move(Texture));
@@ -61,7 +61,7 @@ void FRenderingTextureResourcesUpdate::BuildTextureShaderResource(ID3D12Descript
 
 int FRenderingTextureResourcesUpdate::GetTextureCount() const
 {
-	return TextureMapping.size();
+	return (int)TextureMapping.size();
 }
 
 int FRenderingTextureResourcesUpdate::GetTextureIndex(string InKey)

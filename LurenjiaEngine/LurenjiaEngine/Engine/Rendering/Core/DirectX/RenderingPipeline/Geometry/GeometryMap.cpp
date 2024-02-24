@@ -208,7 +208,7 @@ UINT FGeometryMap::GetDrawCubeMapCount()
 
 UINT FGeometryMap::GetDynamicReflectionViewportNum()
 {
-	return DynamicReflectionMeshComponents.size() * 6;
+	return static_cast<UINT>(DynamicReflectionMeshComponents.size()) * 6;
 }
 
 bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
@@ -248,7 +248,7 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 {
 	//更新shader中的灯光 常量缓冲区
 	FLightConstantBuffer lightTransformation;
-	int lightCount = GetLightManage()->Lights.size();
+	int lightCount = static_cast<int>(GetLightManage()->Lights.size());
 	for (int i = 0; i < lightCount; ++i)
 	{
 		if (CLightComponent* LightComponent = GetLightManage()->Lights[i])
@@ -483,10 +483,10 @@ void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingDa
 		GeometryDescData.MeshHash = HashKey;
 		GeometryDescData.MeshObjectOffset = MeshObjectCount++;
 		GeometryDescData.GeometryKey = key;
-		GeometryDescData.IndexSize = MeshRenderData.IndexData.size();
-		GeometryDescData.IndexoffsetPosition = MeshRenderingData.IndexData.size();
-		GeometryDescData.VertexSize = MeshRenderData.VertexData.size();
-		GeometryDescData.VertexoffsetPostion = MeshRenderingData.VertexData.size();
+		GeometryDescData.IndexSize = static_cast<UINT>(MeshRenderData.IndexData.size());
+		GeometryDescData.IndexoffsetPosition = static_cast<UINT>(MeshRenderingData.IndexData.size());
+		GeometryDescData.VertexSize = static_cast<UINT>(MeshRenderData.VertexData.size());
+		GeometryDescData.VertexoffsetPostion = static_cast<UINT>(MeshRenderingData.VertexData.size());
 
 		MeshRenderingData.IndexData.insert(MeshRenderingData.IndexData.end(), MeshRenderData.IndexData.begin(), MeshRenderData.IndexData.end());
 		MeshRenderingData.VertexData.insert(MeshRenderingData.VertexData.end(), MeshRenderData.VertexData.begin(), MeshRenderData.VertexData.end());
