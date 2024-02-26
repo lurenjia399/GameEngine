@@ -69,7 +69,7 @@ void AClientViewport::SetFrustum(float InYFOV, float InAspect, float InZNear, fl
 	ZNear = InZNear;
 	ZFar = InZFar;
 
-	// 创建新的透视矩阵
+	// 创建新的透视投影矩阵
 	XMMATRIX Project = XMMatrixPerspectiveFovLH(InYFOV, InAspect, InZNear, InZFar);
 	XMStoreFloat4x4(&ProjectMatrix, Project);
 

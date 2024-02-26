@@ -20,6 +20,9 @@ public:
 	virtual void BeginInit() override;
 	virtual void Tick(float DeltaTime) override;
 
+public:
+	// Êó±êµã»÷
+	void OnClickedScreen(int X, int Y);
 	
 public:
 	FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
