@@ -3,6 +3,7 @@
 #include "CoreObject/CoreMinimalObject.h"
 #include "../Actor/Core/Actor.h"
 #include "../Actor/Sky/Fog.h"
+#include "../EngineType.h"
 
 class ACamera;
 class AFog;
@@ -16,6 +17,9 @@ public:
 
 	template<typename T>
 	T* CreateActor(const string& name);
+
+public:
+	bool LineTraceSingleByChannel(FHitResult& OutHitResult, const XMFLOAT3& Start, const XMFLOAT3& End) const;
 private:
 	CVARIABLE()
 	ACamera* camera;

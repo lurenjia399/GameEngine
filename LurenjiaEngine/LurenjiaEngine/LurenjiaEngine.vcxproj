@@ -31,6 +31,7 @@
     <ClCompile Include="Engine\Actor\Light\PointLight.cpp" />
     <ClCompile Include="Engine\Actor\Light\SpotLight.cpp" />
     <ClCompile Include="Engine\Actor\Sky\Fog.cpp" />
+    <ClCompile Include="Engine\Collision\CollisionSceneQuery.cpp" />
     <ClCompile Include="Engine\Component\Core\Component.cpp" />
     <ClCompile Include="Engine\Component\InputComponent.cpp" />
     <ClCompile Include="Engine\Component\Input\Input.cpp" />
@@ -70,8 +71,10 @@
     <ClCompile Include="Engine\Core\World.cpp" />
     <ClCompile Include="Engine\Debug\EngineDebug.cpp" />
     <ClCompile Include="Engine\EngineFactory.cpp" />
+    <ClCompile Include="Engine\EngineType.cpp" />
     <ClCompile Include="Engine\Interface\DirectXDeviceInterface.cpp" />
     <ClCompile Include="Engine\Interface\OpenGLDeviceInterface.cpp" />
+    <ClCompile Include="Engine\Library\RaycastSystemLibrary.cpp" />
     <ClCompile Include="Engine\LurenjiaEngine.cpp" />
     <ClCompile Include="Engine\Manage\LightManage.cpp" />
     <ClCompile Include="Engine\Math\EngineMath.cpp" />
@@ -200,6 +203,7 @@
     <ClInclude Include="Engine\Actor\Light\SpotLight.h" />
     <ClInclude Include="Engine\Actor\Sky\Fog.h" />
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
+    <ClInclude Include="Engine\Collision\CollisionSceneQuery.h" />
     <ClInclude Include="Engine\Component\Core\Component.h" />
     <ClInclude Include="Engine\Component\InputComponent.h" />
     <ClInclude Include="Engine\Component\Input\Input.h" />
@@ -242,8 +246,10 @@
     <ClInclude Include="Engine\Debug\Log\SimpleLog.h" />
     <ClInclude Include="Engine\EngineFactory.h" />
     <ClInclude Include="Engine\EngineMacro.h" />
+    <ClInclude Include="Engine\EngineType.h" />
     <ClInclude Include="Engine\Interface\DirectXDeviceInterface.h" />
     <ClInclude Include="Engine\Interface\OpenGLDeviceInterface.h" />
+    <ClInclude Include="Engine\Library\RaycastSystemLibrary.h" />
     <ClInclude Include="Engine\LurenjiaEngine.h" />
     <ClInclude Include="Engine\Manage\LightManage.h" />
     <ClInclude Include="Engine\Math\EngineMath.h" />

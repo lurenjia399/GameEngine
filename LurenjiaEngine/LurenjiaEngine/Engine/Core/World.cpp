@@ -13,3 +13,8 @@ AFog* CWorld::GetFog() const
 {
 	return fog;
 }
+
+bool CWorld::LineTraceSingleByChannel(FHitResult& OutHitResult, const XMFLOAT3& Start, const XMFLOAT3& End) const
+{
+	return false;
+}

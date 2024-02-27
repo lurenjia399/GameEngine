@@ -513,6 +513,15 @@
     <ClCompile Include="Editor\LogEditor\Core\LogSystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\EngineType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Collision\CollisionSceneQuery.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Library\RaycastSystemLibrary.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -1086,6 +1095,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\EngineMacro.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\EngineType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Collision\CollisionSceneQuery.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Library\RaycastSystemLibrary.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
