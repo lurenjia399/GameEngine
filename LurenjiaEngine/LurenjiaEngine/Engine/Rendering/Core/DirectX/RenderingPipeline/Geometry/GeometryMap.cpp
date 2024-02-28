@@ -22,6 +22,10 @@
 
 static UINT MeshObjectCount = 0;
 
+map<size_t, std::shared_ptr<FGeometryDescData>> FGeometry::NoRepeatMeshRenderingDataPool;
+
+vector<std::shared_ptr<FGeometryDescData>> FGeometry::MeshRenderingDataPool;
+
 FGeometryMap::FGeometryMap()
 {
 	Geometrys.emplace(0, FGeometry());
@@ -134,9 +138,17 @@ void FGeometryMap::BuildMaterialShaderResourseView()
 	
 	for (auto& RenderingLayer : FRenderLayerManage::GetRenderLayerManage()->RenderingLayers)
 	{
-		for (auto& FGeometryDescData : *RenderingLayer->GetGeometryDescData())
+		for (auto& FGeometryDescData_weak : *RenderingLayer->GetGeometryDescData())
 		{
-			for (CMaterial* material : *FGeometryDescData.MeshComponet->GetMaterials())
+			if (FGeometryDescData_weak.expired())
+			{
+				Engine_Log_Error("FGeometryMap::BuildMaterialShaderResourseView FGeometryDescData_weak is nillptr");
+				continue;
+			}
+
+			std::shared_ptr<FGeometryDescData> FGeometryDescData = FGeometryDescData_weak.lock();
+
+			for (CMaterial* material : *FGeometryDescData->MeshComponet->GetMaterials())
 			{
 				material->SetMaterialTextureMapIndex(ShaderIndex++);
 				Materials.emplace_back(material);
@@ -211,7 +223,7 @@ UINT FGeometryMap::GetDynamicReflectionViewportNum()
 	return static_cast<UINT>(DynamicReflectionMeshComponents.size()) * 6;
 }
 
-bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
+bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_ptr<FGeometryDescData>& OutGeometryDescData, int InRenderingLayer)
 {
 	for (pair<int, FGeometry> Geometry : Geometrys)
 	{
@@ -223,7 +235,7 @@ bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometr
 	return false;
 }
 
-void FGeometryMap::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData)
+void FGeometryMap::DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData)
 {
 	for (auto& tem : Geometrys)
 	{
@@ -457,11 +469,19 @@ bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)
 {
 	//根据meshcomponent所处的层级，添加geometryDescdata
 	std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InKey->GetMeshComponentLayerType());
-	vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+	std::vector<std::weak_ptr<FGeometryDescData>> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
 
-	for (FGeometryDescData& data : DescribeMeshRenderingData)
+	for (std::weak_ptr<FGeometryDescData>& data_weak : DescribeMeshRenderingData)
 	{
-		if (data.MeshComponet == InKey)
+		if (data_weak.expired())
+		{
+			Engine_Log_Error("FGeometry::isExitDescribeMeshRenderingData data_weak is nullptr");
+			continue;
+		}
+
+		auto data = data_weak.lock();
+
+		if (data->MeshComponet == InKey)
 		{
 			return true;
 		}
@@ -469,27 +489,52 @@ bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)
 	return false;
 }
 
+// 向RenderingLayer里面添加渲染数据
+// 将mesh渲染数据保存到MeshRenderingData里面
 void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingData& MeshRenderData, const size_t& HashKey, const int& key)
 {
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{
-		//根据meshcomponent所处的层级，添加geometryDescdata
-		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
-		vector<FGeometryDescData>& DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+		
+		{
+			// 渲染用的数据存储
+			// 将渲染数据添加到重复池子里
+			MeshRenderingDataPool.emplace_back(std::make_shared<FGeometryDescData>());
+			auto& PoolRenderData = MeshRenderingDataPool.back();
+			PoolRenderData->MeshComponet = InMesh;
+			PoolRenderData->MeshHash = HashKey;
+			PoolRenderData->MeshObjectOffset = MeshObjectCount++;
+			PoolRenderData->GeometryKey = key;
+			PoolRenderData->IndexSize = static_cast<UINT>(MeshRenderData.IndexData.size());
+			PoolRenderData->IndexoffsetPosition = static_cast<UINT>(MeshRenderingData.IndexData.size());
+			PoolRenderData->VertexSize = static_cast<UINT>(MeshRenderData.VertexData.size());
+			PoolRenderData->VertexoffsetPostion = static_cast<UINT>(MeshRenderingData.VertexData.size());
+			PoolRenderData->MeshRenderingData = &MeshRenderingData;
 
-		DescribeMeshRenderingData.emplace_back(FGeometryDescData());
-		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData.back();
-		GeometryDescData.MeshComponet = InMesh;
-		GeometryDescData.MeshHash = HashKey;
-		GeometryDescData.MeshObjectOffset = MeshObjectCount++;
-		GeometryDescData.GeometryKey = key;
-		GeometryDescData.IndexSize = static_cast<UINT>(MeshRenderData.IndexData.size());
-		GeometryDescData.IndexoffsetPosition = static_cast<UINT>(MeshRenderingData.IndexData.size());
-		GeometryDescData.VertexSize = static_cast<UINT>(MeshRenderData.VertexData.size());
-		GeometryDescData.VertexoffsetPostion = static_cast<UINT>(MeshRenderingData.VertexData.size());
+			// 将渲染数据添加到层级里面
+			std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
+			vector<std::weak_ptr<FGeometryDescData>>& DescribeMeshRenderingDatas = *RenderLayer->GetGeometryDescData();
+			DescribeMeshRenderingDatas.emplace_back(PoolRenderData);
+		}
 
-		MeshRenderingData.IndexData.insert(MeshRenderingData.IndexData.end(), MeshRenderData.IndexData.begin(), MeshRenderData.IndexData.end());
-		MeshRenderingData.VertexData.insert(MeshRenderingData.VertexData.end(), MeshRenderData.VertexData.begin(), MeshRenderData.VertexData.end());
+		{
+			// 唯一数据存储
+			NoRepeatMeshRenderingDataPool.insert(std::make_pair(HashKey, std::make_shared<FGeometryDescData>()));
+			NoRepeatMeshRenderingDataPool[HashKey]->MeshComponet = InMesh;
+			NoRepeatMeshRenderingDataPool[HashKey]->MeshHash = HashKey;
+			NoRepeatMeshRenderingDataPool[HashKey]->MeshObjectOffset = MeshObjectCount;//这里看上去不应该++了吧
+			NoRepeatMeshRenderingDataPool[HashKey]->GeometryKey = key;
+			NoRepeatMeshRenderingDataPool[HashKey]->IndexSize = static_cast<UINT>(MeshRenderData.IndexData.size());
+			NoRepeatMeshRenderingDataPool[HashKey]->IndexoffsetPosition = static_cast<UINT>(MeshRenderingData.IndexData.size());
+			NoRepeatMeshRenderingDataPool[HashKey]->VertexSize = static_cast<UINT>(MeshRenderData.VertexData.size());
+			NoRepeatMeshRenderingDataPool[HashKey]->VertexoffsetPostion = static_cast<UINT>(MeshRenderingData.VertexData.size());
+			NoRepeatMeshRenderingDataPool[HashKey]->MeshRenderingData = &MeshRenderingData;
+		}
+
+		{
+			MeshRenderingData.IndexData.insert(MeshRenderingData.IndexData.end(), MeshRenderData.IndexData.begin(), MeshRenderData.IndexData.end());
+			MeshRenderingData.VertexData.insert(MeshRenderingData.VertexData.end(), MeshRenderData.VertexData.begin(), MeshRenderData.VertexData.end());
+		}
 
 	}
 }
@@ -523,62 +568,67 @@ UINT FGeometry::GetDrawMaterialObjectCount() const
 	UINT res = 0;
 	for (auto& RenderLayer : FRenderLayerManage::RenderingLayers)
 	{
-		vector<FGeometryDescData> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
-		for (FGeometryDescData GeometryDesc : DescribeMeshRenderingData)
+		vector<std::weak_ptr<FGeometryDescData>> DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+		for (auto& GeometryDesc_weak : DescribeMeshRenderingData)
 		{
-			res += GeometryDesc.MeshComponet->GetMaterialsCount();
+			if (GeometryDesc_weak.expired())
+			{
+				Engine_Log_Error("FGeometry::GetDrawMaterialObjectCount GeometryDesc_weak is nullptr");
+				continue;
+			}
+
+			auto GeometryDesc = GeometryDesc_weak.lock();
+			res += GeometryDesc->MeshComponet->GetMaterialsCount();
 		}
 	}
 	
 	return res;
 }
 
-bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
+bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_ptr<FGeometryDescData>& OutGeometryDescData, int InRenderingLayer)
 {
-	auto FindMeshRenderingDataByHashSub = [&](const shared_ptr<FRenderingLayer>& InRenderintLayers) -> bool
-	{
-		vector<FGeometryDescData> DescribeMeshRenderingData = *InRenderintLayers->GetGeometryDescData();
-		for (FGeometryDescData& tem : DescribeMeshRenderingData)
-		{
-			if (tem.MeshHash == InHashKey)
-			{
-				OutGeometryDescData = tem;
-				return true;
-			}
-		}
-		return false;
-	};
 
-	if (InRenderingLayer == -1)
+	if (NoRepeatMeshRenderingDataPool.size() <= 0)
 	{
-		for (auto& RenderLayer : FRenderLayerManage::RenderingLayers)
-		{
-			if (FindMeshRenderingDataByHashSub(RenderLayer))
-			{
-				return true;
-			}
-		}
 		return false;
 	}
-	else {
-		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt(InRenderingLayer);
-		return FindMeshRenderingDataByHashSub(RenderLayer);
+
+	map<size_t, std::shared_ptr<FGeometryDescData>>::iterator data = NoRepeatMeshRenderingDataPool.find(InHashKey);
+	if (data != NoRepeatMeshRenderingDataPool.end())
+	{
+		OutGeometryDescData = data->second;
+		return true;
 	}
+
+	return false;
 }
 
-void FGeometry::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData, const int& key)
+void FGeometry::DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData_weak, const int& key)
 {
-	if (!isExitDescribeMeshRenderingData(InMesh))
+	if (InGeometryDescData_weak.expired())
 	{
-		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
-		vector<FGeometryDescData>& DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
-
-		DescribeMeshRenderingData.emplace_back(InGeometryDescData);//这里应该不对，有待考证
-		FGeometryDescData& GeometryDescData = DescribeMeshRenderingData.back();
-		GeometryDescData.MeshComponet = InMesh;
-		GeometryDescData.MeshObjectOffset = MeshObjectCount++;
-		GeometryDescData.GeometryKey = key;
+		Engine_Log_Error("FGeometry::DuplicateMeshRenderingData InGeometryDescData_weak is nullptr");
+		return;
 	}
+	std::shared_ptr<FGeometryDescData> InGeometryDescData = InGeometryDescData_weak.lock();
+
+	MeshRenderingDataPool.emplace_back(std::make_shared<FGeometryDescData>());
+	std::shared_ptr<FGeometryDescData>& PoolRenderData = MeshRenderingDataPool.back();
+	PoolRenderData->MeshComponet = InMesh;
+	PoolRenderData->MeshHash = InGeometryDescData->MeshHash;
+	PoolRenderData->MeshObjectOffset = MeshObjectCount++;
+	PoolRenderData->GeometryKey = key;
+	PoolRenderData->IndexSize = InGeometryDescData->IndexSize;
+	PoolRenderData->IndexoffsetPosition = InGeometryDescData->IndexoffsetPosition;
+	PoolRenderData->VertexSize = InGeometryDescData->VertexSize;
+	PoolRenderData->VertexoffsetPostion = InGeometryDescData->VertexoffsetPostion;
+	PoolRenderData->MeshRenderingData = &MeshRenderingData;
+
+
+	std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
+	vector<std::weak_ptr<FGeometryDescData>>& DescribeMeshRenderingData = *RenderLayer->GetGeometryDescData();
+	DescribeMeshRenderingData.emplace_back(PoolRenderData);
+
 }
 
 D3D12_VERTEX_BUFFER_VIEW FGeometry::GetVertexBufferView()

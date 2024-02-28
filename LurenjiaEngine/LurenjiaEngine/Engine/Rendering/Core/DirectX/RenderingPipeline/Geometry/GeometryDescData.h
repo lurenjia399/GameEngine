@@ -32,4 +32,6 @@ public:
 
 	int GeometryKey;										//this是属于哪一个Geometry的
 	int MeshObjectOffset;									//当前数据在常量堆中的偏移
+
+	FMeshRenderingData* MeshRenderingData;					//所有的mesh渲染数据,保存一下应该是方便读取
 };

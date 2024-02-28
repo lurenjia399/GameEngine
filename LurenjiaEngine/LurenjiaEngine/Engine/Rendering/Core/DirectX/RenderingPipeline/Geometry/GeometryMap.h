@@ -10,7 +10,7 @@
 #include "../DynamicMap/ShadowMap/DynamicShadowMap.h"
 
 
-struct FGeometry : public IDirectXDeviceInterface_struct
+struct FGeometry : public IDirectXDeviceInterface_struct, public std::enable_shared_from_this<FGeometry>
 {
 	friend struct FGeometryMap;
 public:
@@ -19,8 +19,8 @@ public:
 	void BuildMeshBuffer(const int& InIndex);
 	UINT GetDrawMeshObjectCount() const;
 	UINT GetDrawMaterialObjectCount() const;
-	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer = -1);
-	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData, const int& key);
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_ptr<FGeometryDescData>& OutGeometryDescData, int InRenderingLayer = -1);
+	void DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData_weak, const int& key);
 	D3D12_VERTEX_BUFFER_VIEW GetVertexBufferView();
 	D3D12_INDEX_BUFFER_VIEW GetIndexBufferView();
 private:
@@ -33,7 +33,13 @@ private:
 	ComPtr<ID3D12Resource> VertexBufferTempPtr;				//临时mesh的顶点缓冲区
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
 
-	FMeshRenderingData MeshRenderingData;					//渲染模型存放的顶点数据
+	FMeshRenderingData MeshRenderingData;					//存放了渲染所有mesh的渲染数据
+
+	// 唯一渲染池，里面存放一份mesh的引用，不包含重复的
+	static map<size_t, std::shared_ptr<FGeometryDescData>> NoRepeatMeshRenderingDataPool;
+public:
+	// 场景中所有mesh渲染数据的池子，里面可以有重复的
+	static vector<std::shared_ptr<FGeometryDescData>> MeshRenderingDataPool;
 };
 
 
@@ -75,8 +81,8 @@ public:
 	void UpdateFogConstantBufferView(float DeltaTime);
 	void UpdateShadowMapShaderResourceView(float DeltaTime, const FViewportInfo& ViewportInfo);
 
-	bool FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutMeshRenderingData, int InRenderingLayer = -1);
-	void DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InMeshRenderingData);
+	bool FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_ptr<FGeometryDescData>& OutMeshRenderingData, int InRenderingLayer = -1);
+	void DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InMeshRenderingData);
 
 	void InitDynamicShadowMap(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	void BuildShadowMap();

@@ -7,12 +7,12 @@ FRenderingPipeline::FRenderingPipeline()
 {
 }
 
-bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHashKey, FGeometryDescData& OutGeometryDescData, int InRenderingLayer)
+bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_ptr<FGeometryDescData>& OutGeometryDescData, int InRenderingLayer)
 {
 	return GeometryMap.FindMeshRenderingDataByHash(InHashKey, OutGeometryDescData, InRenderingLayer);
 }
 
-void FRenderingPipeline::DuplicateMeshRenderingData(CMeshComponent* InMesh, FGeometryDescData& InGeometryDescData)
+void FRenderingPipeline::DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData)
 {
 	GeometryMap.DuplicateMeshRenderingData(InMesh, InGeometryDescData);
 }

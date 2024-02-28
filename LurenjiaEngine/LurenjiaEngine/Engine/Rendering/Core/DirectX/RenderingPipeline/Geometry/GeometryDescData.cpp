@@ -14,6 +14,7 @@ FGeometryDescData::FGeometryDescData()
 	, ObjectConstants(make_shared<FRenderingResourcesUpdate>())
 	, GeometryKey(0)
 	, MeshObjectOffset(0)
+	, MeshRenderingData(nullptr)
 {
 }
 

@@ -15,10 +15,10 @@ namespace LurenjiaEngine
 		size_t HashKey = 0;
 		InMeshComponent->BuildKey(HashKey, std::forward<ParamTypes>(Params)...);
 
-		FGeometryDescData GeometryDescData;
-		if (InMeshManage->GetRenderingPiepeline().FindMeshRenderingDataByHash(HashKey, GeometryDescData, (int)InMeshComponent->GetMeshComponentLayerType()))
+		std::weak_ptr<FGeometryDescData> OutGeometryDescData;
+		if (InMeshManage->GetRenderingPiepeline().FindMeshRenderingDataByHash(HashKey, OutGeometryDescData, (int)InMeshComponent->GetMeshComponentLayerType()))
 		{
-			InMeshManage->GetRenderingPiepeline().DuplicateMeshRenderingData(InMeshComponent, GeometryDescData);
+			InMeshManage->GetRenderingPiepeline().DuplicateMeshRenderingData(InMeshComponent, OutGeometryDescData);
 		}
 		else {
 			FMeshRenderingData MeshRenderingData;

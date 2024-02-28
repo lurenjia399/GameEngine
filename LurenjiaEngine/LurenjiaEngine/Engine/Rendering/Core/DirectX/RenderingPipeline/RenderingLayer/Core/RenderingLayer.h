@@ -17,7 +17,7 @@ public:
 	void Init(FGeometryMap* InGeometryMap, FDirectXPiepelineState* InDirectXPiepelineState);
 	void RegisterRenderLayer();
 	UINT GetPriority();
-	std::vector<FGeometryDescData>* GetGeometryDescData();
+	std::vector<std::weak_ptr<FGeometryDescData>>* GetGeometryDescData();
 	void RestorePSO();
 	virtual void BuildShaderMacro(std::vector<ShaderType::FShaderMacro>& OutShaderMacro);
 	virtual void UpdateObjectConstantBuffer();
@@ -25,7 +25,7 @@ public:
 	virtual void Draw(float DeltaTime);
 	virtual void PostDraw(float DeltaTime);
 	virtual void BuildPSO();
-	virtual void DrawObject(float DeltaTime, const FGeometryDescData& InRenderingData);
+	virtual void DrawObject(float DeltaTime, const std::weak_ptr<FGeometryDescData>& weak_data);
 	virtual void DrawObjectByLayer(float DeltaTime, const CMeshComponent* InKey);
 	virtual void DrawAllObjectsByLayer(float DeltaTime);
 	virtual void ResetPSO();
@@ -38,7 +38,7 @@ protected:
 	FShader VertexShader;
 	FShader PixelShader;
 	std::vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;		//着色器输入布局
-	std::vector<FGeometryDescData> GeometryDescDatas;			//描述Getometry的数据
+	std::vector<std::weak_ptr<FGeometryDescData>> GeometryDescDatas;			//描述Getometry的数据
 
 	FGeometryMap* GeometryMap;
 	FDirectXPiepelineState* DirectXPiepelineState;

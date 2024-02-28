@@ -1,6 +1,7 @@
 #include "RaycastSystemLibrary.h"
 #include "../Config/EngineRenderConfig.h"
 #include "../Core/Camera.h"
+#include "../Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
 
 bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int ScreenY, FHitResult& OutHitResult)
 {
@@ -25,6 +26,11 @@ bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int 
 		XMVECTOR OriginPoint = XMVectorSet(0.f, 0.f, 0.f, 1.0f); // 摄像机空间下的远点，也就是摄像机所在的位置
 		XMVECTOR Direction = XMVectorSet(view.x, view.y, 1.f, 0.f);// 射线方向
 
+
+		for (std::weak_ptr<FGeometryDescData> data : FGeometry::MeshRenderingDataPool)
+		{
+
+		}
 	}
 	
     //InWorld->LineTraceSingleByChannel(OutHitResult);
