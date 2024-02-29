@@ -496,6 +496,32 @@ void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingDa
 	if (!isExitDescribeMeshRenderingData(InMesh))
 	{
 		
+		XMVECTOR center_v = {}, extents_v = {};
+		{
+			// 求AABB包围盒
+			XMFLOAT3 MaxPoint = XMFLOAT3(-FLT_MAX, -FLT_MAX, -FLT_MAX);
+			XMFLOAT3 MinPoint = XMFLOAT3(FLT_MAX, FLT_MAX, FLT_MAX);
+			for (const FVertex& vertex : MeshRenderData.VertexData)
+			{
+				MinPoint.x = min(vertex.Pos.x, MinPoint.x);
+				MinPoint.y = min(vertex.Pos.y, MinPoint.y);
+				MinPoint.z = min(vertex.Pos.z, MinPoint.z);
+
+				MaxPoint.x = max(vertex.Pos.x, MaxPoint.x);
+				MaxPoint.y = max(vertex.Pos.y, MaxPoint.y);
+				MaxPoint.z = max(vertex.Pos.z, MaxPoint.z);
+			}
+			XMFLOAT3 center = {}, extents = {};
+			extents.x = (MaxPoint.x - MinPoint.x) * 0.5f;
+			extents.y = (MaxPoint.y - MinPoint.y) * 0.5f;
+			extents.z = (MaxPoint.z - MinPoint.z) * 0.5f;
+			center.x = extents.x + MinPoint.x;
+			center.y = extents.y + MinPoint.y;
+			center.z = extents.z + MinPoint.z;
+			center_v = XMLoadFloat3(&center);
+			extents_v = XMLoadFloat3(&extents);
+		}
+		
 		{
 			// 渲染用的数据存储
 			// 将渲染数据添加到重复池子里
@@ -510,6 +536,8 @@ void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingDa
 			PoolRenderData->VertexSize = static_cast<UINT>(MeshRenderData.VertexData.size());
 			PoolRenderData->VertexoffsetPostion = static_cast<UINT>(MeshRenderingData.VertexData.size());
 			PoolRenderData->MeshRenderingData = &MeshRenderingData;
+			XMStoreFloat3(&PoolRenderData->AABB_box.Center, center_v);
+			XMStoreFloat3(&PoolRenderData->AABB_box.Extents, extents_v);
 
 			// 将渲染数据添加到层级里面
 			std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
@@ -529,6 +557,8 @@ void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FMeshRenderingDa
 			NoRepeatMeshRenderingDataPool[HashKey]->VertexSize = static_cast<UINT>(MeshRenderData.VertexData.size());
 			NoRepeatMeshRenderingDataPool[HashKey]->VertexoffsetPostion = static_cast<UINT>(MeshRenderingData.VertexData.size());
 			NoRepeatMeshRenderingDataPool[HashKey]->MeshRenderingData = &MeshRenderingData;
+			XMStoreFloat3(&NoRepeatMeshRenderingDataPool[HashKey]->AABB_box.Center, center_v);
+			XMStoreFloat3(&NoRepeatMeshRenderingDataPool[HashKey]->AABB_box.Extents, extents_v);
 		}
 
 		{
@@ -585,6 +615,7 @@ UINT FGeometry::GetDrawMaterialObjectCount() const
 	return res;
 }
 
+
 bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_ptr<FGeometryDescData>& OutGeometryDescData, int InRenderingLayer)
 {
 
@@ -623,6 +654,8 @@ void FGeometry::DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr
 	PoolRenderData->VertexSize = InGeometryDescData->VertexSize;
 	PoolRenderData->VertexoffsetPostion = InGeometryDescData->VertexoffsetPostion;
 	PoolRenderData->MeshRenderingData = &MeshRenderingData;
+	PoolRenderData->AABB_box.Center = InGeometryDescData->AABB_box.Center;
+	PoolRenderData->AABB_box.Extents = InGeometryDescData->AABB_box.Extents;
 
 
 	std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());

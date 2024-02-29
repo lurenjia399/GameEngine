@@ -28,10 +28,12 @@ public:
 
 	XMFLOAT4X4 WorldMatrix;									//m变换矩阵
 	XMFLOAT4X4 TextureTransform;							//贴图的矩阵
-	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;	//需要更新的资源
+	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;	//需要更新的资源 
 
 	int GeometryKey;										//this是属于哪一个Geometry的
 	int MeshObjectOffset;									//当前数据在常量堆中的偏移
 
 	FMeshRenderingData* MeshRenderingData;					//所有的mesh渲染数据,保存一下应该是方便读取
+
+	BoundingBox AABB_box;									//模型的AABB包围盒
 };

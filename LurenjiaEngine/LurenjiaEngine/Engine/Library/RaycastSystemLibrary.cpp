@@ -1,7 +1,7 @@
 #include "RaycastSystemLibrary.h"
 #include "../Config/EngineRenderConfig.h"
 #include "../Core/Camera.h"
-#include "../Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
+#include "../Collision/CollisionSceneQuery.h"
 
 bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int ScreenY, FHitResult& OutHitResult)
 {
@@ -27,10 +27,12 @@ bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int 
 		XMVECTOR Direction = XMVectorSet(view.x, view.y, 1.f, 0.f);// 射线方向
 
 
-		for (std::weak_ptr<FGeometryDescData> data : FGeometry::MeshRenderingDataPool)
-		{
+		XMMATRIX ViewMatrix = XMLoadFloat4x4(&camera->ViewMatrix);
+		XMVECTOR ViewMatrixDeterminant = DirectX::XMMatrixDeterminant(ViewMatrix);
+		XMMATRIX ViewInverseMatrix = DirectX::XMMatrixInverse(&ViewMatrixDeterminant, ViewMatrix); // 求出摄像机矩阵的逆
 
-		}
+		FHitResult HitResult = {};
+		FCollisionSceneQuery::RaycastSingle(InWorld, OriginPoint, Direction, ViewInverseMatrix, HitResult);
 	}
 	
     //InWorld->LineTraceSingleByChannel(OutHitResult);
