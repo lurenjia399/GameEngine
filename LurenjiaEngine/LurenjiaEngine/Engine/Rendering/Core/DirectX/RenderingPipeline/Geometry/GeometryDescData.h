@@ -26,7 +26,7 @@ public:
 	UINT VertexTypeSize;									//顶点类型size
 
 
-	XMFLOAT4X4 WorldMatrix;									//m变换矩阵
+	XMFLOAT4X4 WorldMatrix;									//世界变换矩阵
 	XMFLOAT4X4 TextureTransform;							//贴图的矩阵
 	shared_ptr<FRenderingResourcesUpdate> ObjectConstants;	//需要更新的资源 
 

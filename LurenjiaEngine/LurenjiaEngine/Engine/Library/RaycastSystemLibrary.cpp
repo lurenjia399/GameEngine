@@ -23,16 +23,16 @@ bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int 
 		view.x = (2.0f * ScreenX / width - 1.0f) * z / ProjectX;
 		view.y = (2.0f * ScreenY / height - 1.0f) * z / ProjectY;
 
-		XMVECTOR OriginPoint = XMVectorSet(0.f, 0.f, 0.f, 1.0f); // 摄像机空间下的远点，也就是摄像机所在的位置
-		XMVECTOR Direction = XMVectorSet(view.x, view.y, 1.f, 0.f);// 射线方向
+		XMVECTOR ViewOriginPoint = XMVectorSet(0.f, 0.f, 0.f, 1.0f); // 摄像机空间下的远点，也就是摄像机所在的位置
+		XMVECTOR ViewDirection = XMVectorSet(view.x, view.y, 1.f, 0.f);// 射线方向
 
 
-		XMMATRIX ViewMatrix = XMLoadFloat4x4(&camera->ViewMatrix);
-		XMVECTOR ViewMatrixDeterminant = DirectX::XMMatrixDeterminant(ViewMatrix);
-		XMMATRIX ViewInverseMatrix = DirectX::XMMatrixInverse(&ViewMatrixDeterminant, ViewMatrix); // 求出摄像机矩阵的逆
+		XMMATRIX World2ViewMatrix = XMLoadFloat4x4(&camera->ViewMatrix);
+		XMVECTOR World2ViewMatrixDeterminant = DirectX::XMMatrixDeterminant(World2ViewMatrix);
+		XMMATRIX World2ViewMatrixInverse = DirectX::XMMatrixInverse(&World2ViewMatrixDeterminant, World2ViewMatrix); // 求出摄像机矩阵的逆
 
 		FHitResult HitResult = {};
-		FCollisionSceneQuery::RaycastSingle(InWorld, OriginPoint, Direction, ViewInverseMatrix, HitResult);
+		FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, HitResult);
 	}
 	
     //InWorld->LineTraceSingleByChannel(OutHitResult);
