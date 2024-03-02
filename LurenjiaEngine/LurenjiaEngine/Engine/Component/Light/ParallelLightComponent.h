@@ -17,7 +17,7 @@ public:
 	void SetRotation(const fvector_3d& InRotation) override;
 	void SetScale(const XMFLOAT3& InScale) override;
 private:
-	CMeshComponent* LightMeshComponent;
+	std::shared_ptr<CMeshComponent> LightMeshComponent;
 };
 
 #endif

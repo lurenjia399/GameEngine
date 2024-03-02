@@ -11,13 +11,13 @@ namespace TransparentTest
 	void BuildTransparentTestData()
 	{
 		CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
-		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
-		if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("SphereMesh"))
+		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		if (auto SphereMesh = World->CreateActor<ASphereMesh>("SphereMesh"))
 		{
 			
 			SphereMesh->SetMeshComponent("SphereMeshComponent", 2.f, 50, 50, EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT);
 			SphereMesh->SetComponentPosition(XMFLOAT3(0.f, -5.f, 7.f));
-			if (CMaterial* SphereMaterial = new CMaterial())
+			if (auto SphereMaterial = make_shared<CMaterial>())
 			{
 				SphereMaterial->ResetGuid("SphereMaterial");//给创建的材质设置Guid
 				SphereMaterial->SetMaterialTextureMapKey("TransparentContent");

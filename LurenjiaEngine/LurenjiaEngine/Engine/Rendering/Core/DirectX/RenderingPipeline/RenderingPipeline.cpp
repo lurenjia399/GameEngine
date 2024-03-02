@@ -12,12 +12,12 @@ bool FRenderingPipeline::FindMeshRenderingDataByHash(const size_t& InHashKey, st
 	return GeometryMap.FindMeshRenderingDataByHash(InHashKey, OutGeometryDescData, InRenderingLayer);
 }
 
-void FRenderingPipeline::DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData)
+void FRenderingPipeline::DuplicateMeshRenderingData(std::shared_ptr<CMeshComponent> InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData)
 {
 	GeometryMap.DuplicateMeshRenderingData(InMesh, InGeometryDescData);
 }
 
-void FRenderingPipeline::BuildMeshComponent(CMeshComponent* InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey)
+void FRenderingPipeline::BuildMeshComponent(std::shared_ptr<CMeshComponent> InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey)
 {
 	GeometryMap.BuildMeshDescData(InMesh, InRenderingData, HashKey);
 }

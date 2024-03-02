@@ -12,13 +12,13 @@ namespace TextureTest
 	void TextureTest::BuildTextureTestData()
 	{
 		CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
-		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
-		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
+		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		if (auto PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
 		{
 			PlaneMesh->SetMeshComponent("PlaneMeshComponent", 4.f, 3.f, 20, 20);
 			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
 			PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 30.f, 1.f));
-			if (CMaterial* PlaneMaterial = new CMaterial())
+			if (auto PlaneMaterial = make_shared<CMaterial>())
 			{
 				PlaneMaterial->ResetGuid("PlaneMateria");//给创建的材质设置Guid
 				PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -28,7 +28,7 @@ namespace TextureTest
 		}
 
 		//平行光
-		if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+		if (auto ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 		{
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
@@ -48,12 +48,12 @@ namespace TextureTest
 			});*/
 		}
 
-		if (ASphereMesh* SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
+		if (auto SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
 		{
 			SphereMesh_1->SetMeshComponent("SphereMesh_1Component", 2.f, 50, 50);
 			SphereMesh_1->SetComponentPosition(XMFLOAT3(0.f, -5.f, 2.f));
 			//SphereMesh_1->SetComponentScale(XMFLOAT3(0.5f, 1.f, 1.f));
-			if (CMaterial* SphereMaterial_1 = new CMaterial())
+			if (auto SphereMaterial_1 = make_shared<CMaterial>())
 			{
 				SphereMaterial_1->ResetGuid("SphereMaterial_1");//给创建的材质设置Guid
 
@@ -67,12 +67,12 @@ namespace TextureTest
 
 			}
 		}
-		if (ASphereMesh* SphereMesh_2 = World->CreateActor<ASphereMesh>("SphereMesh_2"))
+		if (auto SphereMesh_2 = World->CreateActor<ASphereMesh>("SphereMesh_2"))
 		{
 			SphereMesh_2->SetMeshComponent("SphereMesh_2Component", 2.f, 50, 50);
 			SphereMesh_2->SetComponentPosition(XMFLOAT3(0.f, 0.f, 2.f));
 			
-			if (CMaterial* SphereMaterial_2 = new CMaterial())
+			if (auto SphereMaterial_2 = make_shared<CMaterial>())
 			{
 				SphereMaterial_2->ResetGuid("SphereMaterial_2");//给创建的材质设置Guid
 				SphereMaterial_2->SetMaterialTextureMapKey("Wood2");
@@ -84,11 +84,11 @@ namespace TextureTest
 
 			}
 		}
-		if (ASphereMesh* SphereMesh_3 = World->CreateActor<ASphereMesh>("SphereMesh_3"))
+		if (auto SphereMesh_3 = World->CreateActor<ASphereMesh>("SphereMesh_3"))
 		{
 			SphereMesh_3->SetMeshComponent("SphereMesh_32Component", 2.f, 50, 50);
 			SphereMesh_3->SetComponentPosition(XMFLOAT3(0.f, 5.f, 2.f));
-			if (CMaterial* SphereMaterial_3 = new CMaterial())
+			if (auto SphereMaterial_3 = make_shared<CMaterial>())
 			{
 				SphereMaterial_3->ResetGuid("SphereMaterial_3");//给创建的材质设置Guid
 				SphereMaterial_3->SetMaterialTextureMapKey("Wood2");

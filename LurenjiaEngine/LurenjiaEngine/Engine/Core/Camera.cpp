@@ -9,7 +9,7 @@
 
 ACamera::ACamera()
 {
-	InputComponent = LurenjiaEngine::CreateObject<CInputComponent>("CameraInputComponent");
+	InputComponent = LurenjiaEngine::CreateObject<CInputComponent>(shared_from_this(), "CameraInputComponent");
 
 	Radius = 20.0f;
 	verticalAngle = XM_PI/2;
@@ -35,8 +35,7 @@ void ACamera::Tick(float DeltaTime)
 
 void ACamera::OnClickedScreen(int X, int Y)
 {
-
-	CDirectXRenderingEngine* DXRenderingEngine = dynamic_cast<CDirectXRenderingEngine*>(GetRenderEngine());
+	shared_ptr<CDirectXRenderingEngine> DXRenderingEngine = static_pointer_cast<CDirectXRenderingEngine>(GetRenderEngine());
 	if (DXRenderingEngine != nullptr)
 	{
 		FHitResult HitResult = {};

@@ -34,8 +34,9 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	{
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
 	}
-	MeshManage =  LurenjiaEngine::CreateObject<CMeshManage>("MeshManage");
-	LightManage = LurenjiaEngine::CreateObject<CLightManage>("LightManage");
+	// 这个地方运行的时候会崩掉，原因是shared_from_this里面的弱指针还没赋值，赋值的时机可能是在初始化之后，所以不写在构造函数里就可以了？还不确定
+	MeshManage =  LurenjiaEngine::CreateObject<CMeshManage>(shared_from_this(), "MeshManage");
+	LightManage = LurenjiaEngine::CreateObject<CLightManage>(shared_from_this(), "LightManage");
 
 	World = nullptr;
 
@@ -253,12 +254,12 @@ UINT CDirectXRenderingEngine::GetDXGISampleQuality() const
 	return bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
 }
 
-void CDirectXRenderingEngine::SetWorld(CWorld* InWorld)
+void CDirectXRenderingEngine::SetWorld(shared_ptr<CWorld> InWorld)
 {
 	World = InWorld;
 }
 
-CWorld* CDirectXRenderingEngine::GetWorld() const
+shared_ptr<CWorld> CDirectXRenderingEngine::GetWorld() const
 {
 	return World;
 }

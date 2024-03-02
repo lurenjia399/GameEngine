@@ -44,5 +44,5 @@ public:
 
 protected:
 
-	std::vector<AClientViewport*> Viewport;//我们的视口，也就是6个摄像机
+	std::vector<shared_ptr<AClientViewport>> Viewport;//我们的视口，也就是6个摄像机
 };

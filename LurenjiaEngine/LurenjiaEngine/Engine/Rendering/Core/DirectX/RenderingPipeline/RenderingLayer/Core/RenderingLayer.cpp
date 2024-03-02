@@ -101,7 +101,8 @@ void FRenderingLayer::UpdateObjectConstantBuffer()
 		FObjectTransformation ObjectTransformation;
 		XMStoreFloat4x4(&ObjectTransformation.World, MatrixWorld);
 		XMStoreFloat4x4(&ObjectTransformation.TextureTransformation, XMMatrixTranspose(MatrixTextureTransform));
-		ObjectTransformation.MaterialIndex = data->MeshComponet->GetMaterials()->at(0)->GetMaterialTextureMapIndex();
+		const shared_ptr<CMaterial> material = data->MeshComponet->GetMaterials()[0];
+		ObjectTransformation.MaterialIndex = material->GetMaterialTextureMapIndex();
 		GeometryMap->MeshConstantBufferView.Update(data->MeshObjectOffset, &ObjectTransformation);
 	}
 }
@@ -165,7 +166,8 @@ void FRenderingLayer::DrawObject(float DeltaTime, const std::weak_ptr<FGeometryD
 	//向命令列表中 添加索引缓冲区描述(描述geometry的索引信息)
 	GetGraphicsCommandList()->IASetIndexBuffer(&IBV);
 	//向命令列表中 添加图元拓扑 命令(决定geometry的拓扑方式)
-	EMaterialDisplayStatusType TopologyType = (*data->MeshComponet->GetMaterials())[0]->GetMaterialDisplayStatusType();
+	const shared_ptr<CMaterial> material = data->MeshComponet->GetMaterials()[0];
+	EMaterialDisplayStatusType TopologyType = material->GetMaterialDisplayStatusType();
 	GetGraphicsCommandList()->IASetPrimitiveTopology((D3D_PRIMITIVE_TOPOLOGY)TopologyType);
 	//设置当前meshobject的gpu地址
 	D3D12_GPU_VIRTUAL_ADDRESS Address = virtualAddressBegin + data->MeshObjectOffset * MeshObjectConstantViewSize;
@@ -191,7 +193,7 @@ void FRenderingLayer::DrawObjectByLayer(float DeltaTime, const CMeshComponent* I
 			continue;
 		}
 		std::shared_ptr<FGeometryDescData> GeometryDescData = GeometryDescData_weak.lock();
-		if (GeometryDescData->MeshComponet == InKey)
+		if (GeometryDescData->MeshComponet->GetGuid() == InKey->GetGuid())
 		{
 			DrawObject(DeltaTime, GeometryDescData);
 			break;

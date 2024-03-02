@@ -6,7 +6,7 @@ IGuidInterface::IGuidInterface()
 	ResetGuid("");
 }
 
-void IGuidInterface::ResetGuid(string inName)
+void IGuidInterface::ResetGuid(const string& inName)
 {
 	name = inName;
 	char tem[33] = { '\0' };

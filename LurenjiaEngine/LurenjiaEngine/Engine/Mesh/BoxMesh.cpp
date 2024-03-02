@@ -18,8 +18,8 @@ void ABoxMesh::SetMeshComponent(string InName, const float& Inheight, const floa
 {
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
-	if (MeshComponent) delete MeshComponent;
-	MeshComponent = LurenjiaEngine::CreateObject<CBoxMeshComponent>(InName);
+	if (MeshComponent.get()) MeshComponent.reset();
+	MeshComponent = LurenjiaEngine::CreateObject<CBoxMeshComponent>(shared_from_this(), InName);
 	MeshComponent->SetMeshComponentLayerType(InType);
 
 	INJECT_DATA_INTO_MESHCOMPONENT(CBoxMeshComponent, Inheight, Inwidth, Indepth);

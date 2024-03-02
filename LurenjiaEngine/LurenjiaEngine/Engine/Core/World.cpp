@@ -3,13 +3,13 @@
 
 CWorld::CWorld()
 {
-	camera = LurenjiaEngine::CreateObject<ACamera>("camera");
+	camera = LurenjiaEngine::CreateObject<ACamera>(shared_from_this(), "camera");
 	camera->SetPosition(XMFLOAT3(-24.f, 0.f, 2.f));
 
 	fog = nullptr;
 }
 
-AFog* CWorld::GetFog() const
+std::shared_ptr<AFog> CWorld::GetFog() const
 {
 	return fog;
 }

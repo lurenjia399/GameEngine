@@ -31,7 +31,7 @@ public:
 	XMFLOAT3 GetLightIntensity();
 	
 private:
-	CParallelLightComponent* ParallelLightComponent;
+	shared_ptr<CParallelLightComponent> ParallelLightComponent;
 	
 };
 

@@ -46,9 +46,9 @@ public:
 	//获取当前采样质量
 	UINT GetDXGISampleQuality() const;
 	//设置世界
-	void SetWorld(CWorld* InWorld);
+	void SetWorld(shared_ptr<CWorld> InWorld);
 	//获取世界
-	CWorld* GetWorld() const;
+	shared_ptr<CWorld> GetWorld() const;
 private:
 	//等待gpu处理完名列队列中的数据
 	void WaitGPUCommandQueueComplete();
@@ -80,7 +80,7 @@ private:
 	DXGI_FORMAT DepthStencilFormat;									// 深度模板资源格式
 	UINT RTVDescriptorSize;											// rtv描述符大小
 private:
-	CMeshManage* MeshManage;										//mesh管理器
-	CLightManage* LightManage;										//灯光管理器
-	CWorld* World;													//世界
+	shared_ptr<CMeshManage> MeshManage;										//mesh管理器
+	shared_ptr<CLightManage> LightManage;										//灯光管理器
+	shared_ptr<CWorld> World;													//世界
 };

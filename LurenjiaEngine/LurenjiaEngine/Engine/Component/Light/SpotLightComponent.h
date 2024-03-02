@@ -25,7 +25,7 @@ public:
 	float GetConicalOuterCorner() const;
 	
 private:
-	CMeshComponent* LightMeshComponent;
+	std::shared_ptr<CMeshComponent> LightMeshComponent;
 	float		ConicalInnerCorner;     //聚光灯锥形内角，角度
 	float		ConicalOuterCorner;     //聚光灯锥形外角，角度
 };

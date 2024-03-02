@@ -10,9 +10,9 @@ public:
 		return name == other->name && guid_equal(&this->Guid, &other->Guid);
 	}
 
-	string GetGuid() { return RealityGuid; }
-	string GetName() { return name; }
-	void ResetGuid(string inName);
+	string GetGuid() const { return RealityGuid; }
+	string GetName() const { return name; }
+	void ResetGuid(const string& inName);
 private:
 
 	simple_c_guid Guid;			//Éú³ÉµÄguid

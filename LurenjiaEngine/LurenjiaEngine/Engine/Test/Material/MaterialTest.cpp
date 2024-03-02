@@ -13,15 +13,15 @@ namespace MaterialTest
 	void MaterialTest::BuildMaterialTestData()
 	{
 		CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
-		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
 		// 注意这个天空盒，我们渲染流程开始的LoadTexture方法中就将天空盒的贴图资源传递到了SRV中
 		// 也就是静态反射就会生效，和这里创建出天空盒Actor无关，这里只是能看到天空盒的贴图样子
-		if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
+		if (auto CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
 		{
 			CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
 			CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
 			CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
-			if (CMaterial* CubeMaterial = new CMaterial())
+			if (auto CubeMaterial = make_shared<CMaterial>())
 			{
 				CubeMaterial->ResetGuid("CubeMaterial");//给创建的材质设置Guid
 				CubeMaterial->SetMaterialTextureMapKey("x1_CubeMap");
@@ -30,12 +30,12 @@ namespace MaterialTest
 			}
 		}
 
-		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
+		if (auto PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
 		{
 			PlaneMesh->SetMeshComponent("PlaneMeshComponent", 4.f, 3.f, 20, 20);
 			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
 			PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 30.f, 1.f));
-			if (CMaterial* PlaneMaterial = new CMaterial())
+			if (auto PlaneMaterial = make_shared<CMaterial>())
 			{
 				PlaneMaterial->ResetGuid("PlaneMateria");//给创建的材质设置Guid
 				PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -44,7 +44,7 @@ namespace MaterialTest
 			}
 		}
 		//平行光
-		if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+		if (auto ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 		{
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
@@ -64,11 +64,11 @@ namespace MaterialTest
 			});
 		}
 		// EMaterialType::Lambert
-		if (ASphereMesh* SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
+		if (auto SphereMesh_1 = World->CreateActor<ASphereMesh>("SphereMesh_1"))
 		{
 			SphereMesh_1->SetMeshComponent("SphereMesh_1", 2.f, 20, 20);
 			SphereMesh_1->SetComponentPosition(XMFLOAT3(0.f, -7.f, 2.f));
-			if (CMaterial* SphereMaterial_1 = new CMaterial())
+			if (auto SphereMaterial_1 = make_shared<CMaterial>())
 			{
 				SphereMaterial_1->ResetGuid("SphereMaterial_1");//给创建的材质设置Guid
 				SphereMaterial_1->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -78,11 +78,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::HalfLambert
-		if (ASphereMesh* SphereMesh_2 = World->CreateActor<ASphereMesh>("SphereMesh_2"))
+		if (auto SphereMesh_2 = World->CreateActor<ASphereMesh>("SphereMesh_2"))
 		{
 			SphereMesh_2->SetMeshComponent("SphereMesh_2Component", 2.f, 20, 20);
 			SphereMesh_2->SetComponentPosition(XMFLOAT3(0.f, -2.f, 2.f));
-			if (CMaterial* SphereMaterial_2 = new CMaterial())
+			if (auto SphereMaterial_2 = make_shared<CMaterial>())
 			{
 				SphereMaterial_2->ResetGuid("SphereMaterial_2");//给创建的材质设置Guid
 				SphereMaterial_2->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f)); //112 / 255.f, 20 / 255.f, 102 / 255.f, 1.0f));
@@ -92,11 +92,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::Phone
-		if (ASphereMesh* SphereMesh_3 = World->CreateActor<ASphereMesh>("SphereMesh_3"))
+		if (auto SphereMesh_3 = World->CreateActor<ASphereMesh>("SphereMesh_3"))
 		{
 			SphereMesh_3->SetMeshComponent("SphereMesh_3Component", 2.f, 20, 20);
 			SphereMesh_3->SetComponentPosition(XMFLOAT3(0.f, 3.f, 2.f));
-			if (CMaterial* SphereMaterial_3 = new CMaterial())
+			if (auto SphereMaterial_3 = make_shared<CMaterial>())
 			{
 				SphereMaterial_3->ResetGuid("SphereMaterial_3");//给创建的材质设置Guid
 				SphereMaterial_3->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f)); //191.f / 255.f, 173.f / 255.f, 111.f / 255.f, 1.0f));
@@ -107,11 +107,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::BlinnPhone
-		if (ASphereMesh* SphereMesh_4 = World->CreateActor<ASphereMesh>("SphereMesh_4"))
+		if (auto SphereMesh_4 = World->CreateActor<ASphereMesh>("SphereMesh_4"))
 		{
 			SphereMesh_4->SetMeshComponent("SphereMesh_4Component", 2.f, 20, 20);
 			SphereMesh_4->SetComponentPosition(XMFLOAT3(0.f, 8.f, 2.f));
-			if (CMaterial* SphereMaterial_4 = new CMaterial())
+			if (auto SphereMaterial_4 = make_shared<CMaterial>())
 			{
 				SphereMaterial_4->ResetGuid("SphereMaterial_4");//给创建的材质设置Guid
 				SphereMaterial_4->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f)); //220.f / 255.f, 223.f / 255.f, 227.f / 255.f, 1.f));
@@ -122,11 +122,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::WrapLight
-		if (ASphereMesh* SphereMesh_5 = World->CreateActor<ASphereMesh>("SphereMesh_5"))
+		if (auto SphereMesh_5 = World->CreateActor<ASphereMesh>("SphereMesh_5"))
 		{
 			SphereMesh_5->SetMeshComponent("SphereMesh_5Component", 2.f, 20, 20);
 			SphereMesh_5->SetComponentPosition(XMFLOAT3(0.f, -7.f, 7.f));
-			if (CMaterial* SphereMaterial_5 = new CMaterial())
+			if (auto SphereMaterial_5 = make_shared<CMaterial>())
 			{
 				SphereMaterial_5->ResetGuid("SphereMaterial_5");//给创建的材质设置Guid
 				SphereMaterial_5->SetBaseColor(XMFLOAT4(221.f / 255.f, 154.f / 255.f, 127.f / 255.f, 1.0f));
@@ -136,11 +136,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::MinnaertLight
-		if (ASphereMesh* SphereMesh_6 = World->CreateActor<ASphereMesh>("SphereMesh_6"))
+		if (auto SphereMesh_6 = World->CreateActor<ASphereMesh>("SphereMesh_6"))
 		{
 			SphereMesh_6->SetMeshComponent("SphereMesh_6Component", 2.f, 20, 20);
 			SphereMesh_6->SetComponentPosition(XMFLOAT3(0.f, -2.f, 7.f));
-			if (CMaterial* SphereMaterial_6 = new CMaterial())
+			if (auto SphereMaterial_6 = make_shared<CMaterial>())
 			{
 				SphereMaterial_6->ResetGuid("SphereMaterial_6");//给创建的材质设置Guid
 				SphereMaterial_6->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -151,11 +151,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::BandedLight
-		if (ASphereMesh* SphereMesh_7 = World->CreateActor<ASphereMesh>("SphereMesh_7"))
+		if (auto SphereMesh_7 = World->CreateActor<ASphereMesh>("SphereMesh_7"))
 		{
 			SphereMesh_7->SetMeshComponent("SphereMesh_7Component", 2.f, 20, 20);
 			SphereMesh_7->SetComponentPosition(XMFLOAT3(0.f, -2.f, 12.f));
-			if (CMaterial* SphereMaterial_7 = new CMaterial())
+			if (auto SphereMaterial_7 = make_shared<CMaterial>())
 			{
 				SphereMaterial_7->ResetGuid("SphereMaterial_7");//给创建的材质设置Guid
 				SphereMaterial_7->SetBaseColor(XMFLOAT4(247.f / 255.f, 150.f / 255.f, 85.f / 255.f, 1.0f));
@@ -164,11 +164,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::GradualBanded
-		if (ASphereMesh* SphereMesh_8 = World->CreateActor<ASphereMesh>("SphereMesh_8"))
+		if (auto SphereMesh_8 = World->CreateActor<ASphereMesh>("SphereMesh_8"))
 		{
 			SphereMesh_8->SetMeshComponent("SphereMesh_8Component", 2.f, 20, 20);
 			SphereMesh_8->SetComponentPosition(XMFLOAT3(0.f, 3.f, 12.f));
-			if (CMaterial* SphereMaterial_8 = new CMaterial())
+			if (auto SphereMaterial_8 = make_shared<CMaterial>())
 			{
 				SphereMaterial_8->ResetGuid("SphereMaterial_8");//给创建的材质设置Guid
 				SphereMaterial_8->SetBaseColor(XMFLOAT4(247.f / 255.f, 150.f / 255.f, 85.f / 255.f, 1.0f));
@@ -177,11 +177,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::FinalBanded
-		if (ASphereMesh* SphereMesh_9 = World->CreateActor<ASphereMesh>("SphereMesh_9"))
+		if (auto SphereMesh_9 = World->CreateActor<ASphereMesh>("SphereMesh_9"))
 		{
 			SphereMesh_9->SetMeshComponent("SphereMesh_9Component", 2.f, 20, 20);
 			SphereMesh_9->SetComponentPosition(XMFLOAT3(0.f, 8.f, 12.f));
-			if (CMaterial* SphereMaterial_9 = new CMaterial())
+			if (auto SphereMaterial_9 = make_shared<CMaterial>())
 			{
 				SphereMaterial_9->ResetGuid("SphereMaterial_9");//给创建的材质设置Guid
 				SphereMaterial_9->SetBaseColor(XMFLOAT4(247.f / 255.f, 150.f / 255.f, 85.f / 255.f, 1.0f));
@@ -190,11 +190,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::Back
-		if (ASphereMesh* SphereMesh_10 = World->CreateActor<ASphereMesh>("SphereMesh_10"))
+		if (auto SphereMesh_10 = World->CreateActor<ASphereMesh>("SphereMesh_10"))
 		{
 			SphereMesh_10->SetMeshComponent("SphereMesh_10Component", 2.f, 20, 20);
 			SphereMesh_10->SetComponentPosition(XMFLOAT3(0.f, -7.f, 17.f));
-			if (CMaterial* SphereMaterial_10 = new CMaterial())
+			if (auto SphereMaterial_10 = make_shared<CMaterial>())
 			{
 				SphereMaterial_10->ResetGuid("SphereMaterial_10");//给创建的材质设置Guid
 				SphereMaterial_10->SetBaseColor(XMFLOAT4(2.f / 255.f, 214.f / 255.f, 17.f / 255.f, 1.0f));
@@ -205,11 +205,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::AnisotropyKajiyaKay
-		if (ASphereMesh* SphereMesh_12 = World->CreateActor<ASphereMesh>("SphereMesh_12"))
+		if (auto SphereMesh_12 = World->CreateActor<ASphereMesh>("SphereMesh_12"))
 		{
 			SphereMesh_12->SetMeshComponent("SphereMesh_12Component", 2.f, 20, 20);
 			SphereMesh_12->SetComponentPosition(XMFLOAT3(0.f, -2.f, 17.f));
-			if (CMaterial* SphereMaterial_12 = new CMaterial())
+			if (auto SphereMaterial_12 = make_shared<CMaterial>())
 			{
 				SphereMaterial_12->ResetGuid("SphereMaterial_12");//给创建的材质设置Guid
 				SphereMaterial_12->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -218,11 +218,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::OrenNayar
-		if (ASphereMesh* SphereMesh_13 = World->CreateActor<ASphereMesh>("SphereMesh_13"))
+		if (auto SphereMesh_13 = World->CreateActor<ASphereMesh>("SphereMesh_13"))
 		{
 			SphereMesh_13->SetMeshComponent("SphereMesh_13Component", 2.f, 20, 20);
 			SphereMesh_13->SetComponentPosition(XMFLOAT3(0.f, 3.f, 17.f));
-			if (CMaterial* SphereMaterial_13 = new CMaterial())
+			if (auto SphereMaterial_13 = make_shared<CMaterial>())
 			{
 				SphereMaterial_13->ResetGuid("SphereMaterial_13");//给创建的材质设置Guid
 
@@ -233,11 +233,11 @@ namespace MaterialTest
 			}
 		}
 		// EMaterialType::Fresnel
-		if (ASphereMesh* SphereMesh_14 = World->CreateActor<ASphereMesh>("SphereMesh_14"))
+		if (auto SphereMesh_14 = World->CreateActor<ASphereMesh>("SphereMesh_14"))
 		{
 			SphereMesh_14->SetMeshComponent("SphereMesh_14Component", 2.f, 20, 20);
 			SphereMesh_14->SetComponentPosition(XMFLOAT3(0.f, -7.f, 22.f));
-			if (CMaterial* SphereMaterial_14 = new CMaterial())
+			if (auto SphereMaterial_14 = make_shared<CMaterial>())
 			{
 				SphereMaterial_14->ResetGuid("SphereMaterial_5");//给创建的材质设置Guid
 				SphereMaterial_14->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -247,11 +247,11 @@ namespace MaterialTest
 			}
 		}
 		// 线框渲染
-		if (ASphereMesh* SphereMesh_15 = World->CreateActor<ASphereMesh>("SphereMesh_15"))
+		if (auto SphereMesh_15 = World->CreateActor<ASphereMesh>("SphereMesh_15"))
 		{
 			SphereMesh_15->SetMeshComponent("SphereMesh_15Component", 2.f, 20, 20);
 			SphereMesh_15->SetComponentPosition(XMFLOAT3(0.f, -2.f, 22.f));
-			if (CMaterial* SphereMaterial_15 = new CMaterial())
+			if (auto SphereMaterial_15 = make_shared<CMaterial>())
 			{
 				SphereMaterial_15->ResetGuid("SphereMaterial_15");//给创建的材质设置Guid
 				SphereMaterial_15->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
@@ -261,11 +261,11 @@ namespace MaterialTest
 			}
 		}
 
-		if (ASphereMesh* SphereMesh_16 = World->CreateActor<ASphereMesh>("SphereMesh_16"))
+		if (auto SphereMesh_16 = World->CreateActor<ASphereMesh>("SphereMesh_16"))
 		{
 			SphereMesh_16->SetMeshComponent("SphereMesh_16Component", 2.f, 20, 20);
 			SphereMesh_16->SetComponentPosition(XMFLOAT3(0.f, 3, 22.f));
-			if (CMaterial* SphereMaterial_16 = new CMaterial())
+			if (auto SphereMaterial_16 = make_shared<CMaterial>())
 			{
 				SphereMaterial_16->ResetGuid("SphereMaterial_16");//给创建的材质设置Guid
 				SphereMaterial_16->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));
@@ -273,11 +273,11 @@ namespace MaterialTest
 				SphereMesh_16->SetSubMaterials(0, SphereMaterial_16);
 			}
 		}
-		if (ASphereMesh* SphereMesh_17 = World->CreateActor<ASphereMesh>("SphereMesh_17"))
+		if (auto SphereMesh_17 = World->CreateActor<ASphereMesh>("SphereMesh_17"))
 		{
 			SphereMesh_17->SetMeshComponent("SphereMesh_17Component", 2.f, 20, 20);
 			SphereMesh_17->SetComponentPosition(XMFLOAT3(0.f, 8, 22.f));
-			if (CMaterial* SphereMaterial_17 = new CMaterial())
+			if (auto SphereMaterial_17 = make_shared<CMaterial>())
 			{
 				SphereMaterial_17->ResetGuid("SphereMaterial_17");//给创建的材质设置Guid
 				SphereMaterial_17->SetBaseColor(XMFLOAT4(0.1f, 0.7f, 0.5f, 1.0f));

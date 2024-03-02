@@ -3,9 +3,9 @@
 #include "../Core/Camera.h"
 #include "../Collision/CollisionSceneQuery.h"
 
-bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int ScreenY, FHitResult& OutHitResult)
+bool FRaycastSystemLibrary::HitResultByScreen(shared_ptr<CWorld> InWorld, int ScreenX, int ScreenY, FHitResult& OutHitResult)
 {
-	if (ACamera* camera = InWorld->GetCamera())
+	if (shared_ptr<ACamera> camera = InWorld->GetCamera())
 	{
 		// 这个方法需要做的就是:
 		// 从视口空间 变换到 摄像机空间
@@ -32,7 +32,7 @@ bool FRaycastSystemLibrary::HitResultByScreen(CWorld* InWorld, int ScreenX, int 
 		XMMATRIX World2ViewMatrixInverse = DirectX::XMMatrixInverse(&World2ViewMatrixDeterminant, World2ViewMatrix); // 求出摄像机矩阵的逆
 
 		FHitResult HitResult = {};
-		FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, HitResult);
+		//FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, HitResult);
 	}
 	
     //InWorld->LineTraceSingleByChannel(OutHitResult);

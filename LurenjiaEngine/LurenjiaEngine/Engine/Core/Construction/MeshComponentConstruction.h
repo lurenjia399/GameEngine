@@ -15,7 +15,7 @@ namespace LurenjiaEngine
 	/// <param name="...Params">²ÎÊı</param>
 	/// <returns></returns>
 	template<typename T, typename ...ParamTypes>
-	T* CreateMeshComponet(CMeshManage* InMeshManage, AMesh* InMesh, ParamTypes&&... Params)
+	std::shared_ptr<T> CreateMeshComponet(shared_ptr<CMeshManage> InMeshManage, AMesh* InMesh, ParamTypes&&... Params)
 	{
 		return CreateMeshComponet_Inner<T>(InMeshManage, InMesh->GetMeshComponet<T>(), Params...);
 	}

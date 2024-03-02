@@ -26,10 +26,10 @@ public:
 	virtual XMFLOAT3 GetRight() const;
 	virtual XMFLOAT3 GetUp() const;
 
-	virtual FORCEINLINE CTransformationComponent* GetTransformationComponent() { return TransformationComponent; }
+	virtual FORCEINLINE shared_ptr<CTransformationComponent> GetTransformationComponent() { return TransformationComponent; }
 protected:
 	CVARIABLE()
-	CTransformationComponent* TransformationComponent;
+	shared_ptr<CTransformationComponent> TransformationComponent;
 };
 
 #endif

@@ -14,7 +14,7 @@ struct FCollisionSceneQuery
 		const XMVECTOR& ViewOriginPoint,		//射线起点
 		const XMVECTOR& ViewDirection,			//射线方向
 		const XMMATRIX& World2ViewMatrixInverse,	//摄像机矩阵的逆
-		FHitResult& HitResult);				//返回击中结果
+		FHitResult& OutHitResult);				//返回击中结果
 };
 
 

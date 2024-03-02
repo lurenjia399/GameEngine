@@ -3,9 +3,9 @@
 
 
 AMesh::AMesh()
-	: MeshComponent(new CMeshComponent())
+	: MeshComponent(nullptr)
 {
-	MeshComponent->ResetGuid("AMesh::MeshComponent");
+	//MeshComponent->ResetGuid("AMesh::MeshComponent");
 }
 
 void AMesh::Init()
@@ -54,7 +54,7 @@ void AMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 	}
 }
 
-void AMesh::SetMeshComponent(CMeshComponent* InMeshComponent)
+void AMesh::SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent)
 {
 	MeshComponent = InMeshComponent;
 }
@@ -79,7 +79,7 @@ void AMesh::SetComponentScale(const XMFLOAT3& InScale)
 	MeshComponent->SetScale(InScale);
 }
 
-void AMesh::SetSubMaterials(const int& index, CMaterial* InMaterial)
+void AMesh::SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial)
 {
 	MeshComponent->SetSubMaterials(index, InMaterial);
 }
@@ -89,7 +89,7 @@ UINT AMesh::GetMaterialsCount() const
 	return MeshComponent->GetMaterialsCount();
 }
 
-const vector<CMaterial*>* AMesh::GetMaterials() const
+const vector<shared_ptr<CMaterial>> AMesh::GetMaterials() const
 {
 	return MeshComponent->GetMaterials();
 }

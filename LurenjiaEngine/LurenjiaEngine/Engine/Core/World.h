@@ -12,36 +12,38 @@ class CWorld : public CCoreMinimalObject
 {
 public:
 	CWorld();
-	ACamera* GetCamera() const { return camera; }
-	AFog* GetFog() const;
+	shared_ptr<ACamera> GetCamera() const { return camera; }
+	shared_ptr<AFog> GetFog() const;
 
 	template<typename T>
-	T* CreateActor(const string& name);
+	shared_ptr<T> CreateActor(const string& name)
+	{
+		shared_ptr<T> actor = LurenjiaEngine::CreateObject<T>(shared_from_this(), name);
+		WorldActors.emplace_back(actor);
+
+		return actor;
+	}
+
+	template<>
+	shared_ptr<AFog> CreateActor(const string& name)
+	{
+		fog = LurenjiaEngine::CreateObject<AFog>(shared_from_this(), name);
+		WorldActors.emplace_back(fog);
+
+		return fog;
+	}
 
 public:
 	bool LineTraceSingleByChannel(FHitResult& OutHitResult, const XMFLOAT3& Start, const XMFLOAT3& End) const;
 private:
 	CVARIABLE()
-	ACamera* camera;
+	std::shared_ptr<ACamera> camera;
 
 	CVARIABLE()
-	AFog* fog;
+	std::shared_ptr<AFog> fog;
 
 	//世界中的actor
 	CVARIABLE()
-	vector<AActor*> WorldActors;
+	vector<shared_ptr<AActor>> WorldActors;
 };
 
-template<typename T>
-T* CWorld::CreateActor(const string& name)
-{
-	T* actor = LurenjiaEngine::CreateObject<T>(name);
-	WorldActors.emplace_back(actor);
-	//临时先这样做，在创建雾的时候，将雾保存到世界中
-	if (typeid(AFog) == typeid(*actor))
-	{
-		fog = (AFog*)actor;
-	}
-
-	return actor;
-}

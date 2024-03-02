@@ -15,15 +15,15 @@ namespace ShadowMapTest
 	void ShadowMapTest::BuildShadowMapTestData()
 	{
 		CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
-		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
 
 		// cubeMap
-		if (ABoxMesh* CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
+		if (auto CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
 		{
 			CubeMesh->SetMeshComponent("ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
 			CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
 			CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
-			if (CMaterial* CubeMaterial = new CMaterial())
+			if (auto CubeMaterial = make_shared<CMaterial>())
 			{
 				CubeMaterial->ResetGuid("CubeMaterial");//给创建的材质设置Guid
 				CubeMaterial->SetMaterialTextureMapKey("x1_CubeMap");
@@ -34,7 +34,7 @@ namespace ShadowMapTest
 
 
 		//平行光
-		if (AParallelLight* ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
+		if (auto ParallelLight = World->CreateActor<AParallelLight>("AParallelLight"))
 		{
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
@@ -55,12 +55,12 @@ namespace ShadowMapTest
 		}
 
 		// 平面
-		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("ShadowMapTest::PlaneMesh"))
+		if (auto PlaneMesh = World->CreateActor<APlaneMesh>("ShadowMapTest::PlaneMesh"))
 		{
 			PlaneMesh->SetMeshComponent("ShadowMapTest::PlaneMeshComponent", 4.f, 3.f, 20, 20, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
 			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
 			PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 30.f, 1.f));
-			if (CMaterial* PlaneMaterial = new CMaterial())
+			if (auto PlaneMaterial = make_shared<CMaterial>())
 			{
 				PlaneMaterial->ResetGuid("ShadowMapTest::PlaneMateria");
 				PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
@@ -79,11 +79,11 @@ namespace ShadowMapTest
 					XMFLOAT3 Position(height * 7.f, col * 7.f - 7.0f, row * (-5.f) + 11.0f);
 
 					int index = height * 100 + row * 10 + col;
-					if (ASphereMesh* SphereMesh = World->CreateActor<ASphereMesh>("ShadowMapTest::SphereMesh_" + index))
+					if (auto SphereMesh = World->CreateActor<ASphereMesh>("ShadowMapTest::SphereMesh_" + index))
 					{
 						SphereMesh->SetMeshComponent("ShadowMapTest::SphereMeshComponent_" + index, 2.f, 50, 50);
 						SphereMesh->SetComponentPosition(Position);
-						if (CMaterial* SphereMaterial = new CMaterial())
+						if (auto SphereMaterial = make_shared<CMaterial>())
 						{
 							SphereMaterial->ResetGuid("ShadowMapTest::SphereMaterial_" + index);
 							//SphereMaterial->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.0f));
@@ -101,7 +101,7 @@ namespace ShadowMapTest
 		//{
 		//	BoxMesh->SetMeshComponent("ShadowMapTest::BoxMeshComponent", 3, 3, 3);
 		//	BoxMesh->SetComponentPosition(XMFLOAT3(0.f, 12.f, 1.f));
-		//	if (CMaterial* BoxMeshMaterial = new CMaterial())
+		//	if (CMaterial* BoxMeshMaterial = make_shared<CMaterial>())
 		//	{
 		//		BoxMeshMaterial->ResetGuid("ShadowMapTest::BoxMeshMaterial");//给创建的材质设置Guid
 		//		BoxMeshMaterial->SetMaterialType(EMaterialType::Lambert);
@@ -110,13 +110,13 @@ namespace ShadowMapTest
 		//}
 
 		// 接受shadowmap的平面
-		if (APlaneMesh* PlaneMesh = World->CreateActor<APlaneMesh>("ShadowMapTest::PlaneMesh_shadowmap"))
+		if (auto PlaneMesh = World->CreateActor<APlaneMesh>("ShadowMapTest::PlaneMesh_shadowmap"))
 		{
 			PlaneMesh->SetMeshComponent("ShadowMapTest::PlaneMeshComponent_shadowmap", 4.f, 3.f, 20, 20, EMeshComponentRenderLayerType::RENDERLAYER_ALPHATEST);
 			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, -20.f, 7.f));
 			PlaneMesh->SetComponentScale(XMFLOAT3(4.f, 4.f, 4.f));
 			PlaneMesh->SetComponentRotation(fvector_3d(0.f, -90.f, 0.f));
-			if (CMaterial* PlaneMaterial = new CMaterial())
+			if (auto PlaneMaterial = make_shared<CMaterial>())
 			{
 				PlaneMaterial->ResetGuid("ShadowMapTest::PlaneMateria_shadowmap");
 				PlaneMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));

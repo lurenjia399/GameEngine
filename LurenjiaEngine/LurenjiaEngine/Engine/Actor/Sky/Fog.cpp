@@ -4,7 +4,7 @@
 AFog::AFog()
 	: FogComponent(nullptr)
 {
-	FogComponent = LurenjiaEngine::CreateObject<CFogComponent>("FogComponent");
+	FogComponent = LurenjiaEngine::CreateObject<CFogComponent>(shared_from_this(), "FogComponent");
 }
 
 void AFog::SetFogColor(const fvector_color& FogColor)
@@ -42,7 +42,7 @@ void AFog::SetFogIsValid(const bool& bValid)
 	FogComponent->SetFogValid(bValid);
 }
 
-CFogComponent* AFog::GetComponent() const
+shared_ptr<CFogComponent> AFog::GetComponent() const
 {
 	return FogComponent;
 }

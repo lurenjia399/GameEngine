@@ -35,9 +35,9 @@ public:
 	//获取windowsHandle
 	HWND GetMainWindowsHandle() const;
 	//获取mesh管理器
-	CMeshManage* GetMeshManage() const;
+	shared_ptr<CMeshManage> GetMeshManage() const;
 	//获取light管理器
-	CLightManage* GetLightManage() const;
+	shared_ptr<CLightManage> GetLightManage() const;
 	//获取RTV描述符堆
 	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
 	//获取DSV描述符堆
@@ -53,11 +53,11 @@ public:
 	CEngien* GetEngine() const;
 #endif
 	//获取渲染引擎
-	CRenderingEngine* GetRenderEngine() const;
+	shared_ptr<CRenderingEngine> GetRenderEngine() const;
 	
 	//获取编辑器引擎
 #if (EDITOR_ENGINE == 1)
-	CEditorEngine* GetEditorEngine() const;
+	shared_ptr<CEditorEngine> GetEditorEngine() const;
 #endif
 	
 };
@@ -85,9 +85,9 @@ struct IDirectXDeviceInterface_struct
 	//获取windowsHandle
 	HWND GetMainWindowsHandle() const;
 	//获取mesh管理器
-	CMeshManage* GetMeshManage() const;
+	shared_ptr<CMeshManage> GetMeshManage() const;
 	//获取light管理器
-	CLightManage* GetLightManage() const;
+	shared_ptr<CLightManage> GetLightManage() const;
 	//获取RTV描述符堆
 	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
 	//获取DSV描述符堆
@@ -102,11 +102,11 @@ struct IDirectXDeviceInterface_struct
 	Engien* GetEngine() const;
 #endif
 	//获取渲染引擎
-	CRenderingEngine* GetRenderEngine() const;
+	shared_ptr<CRenderingEngine> GetRenderEngine() const;
 
 	//获取编辑器引擎
 #if (EDITOR_ENGINE == 1)
-	CEditorEngine* GetEditorEngine() const;
+	shared_ptr<CEditorEngine> GetEditorEngine() const;
 #endif
 	
 private:

@@ -24,10 +24,10 @@ public:
 
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
 public:
-	void SetMeshComponent(CMeshComponent* InMeshComponent);
+	void SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent);
 	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);
 	template<typename T>
-	T* GetMeshComponet();
+	std::shared_ptr<T> GetMeshComponet();
 public:
 	//获取组件变换相关
 	void SetComponentPosition(const XMFLOAT3& InPosition);
@@ -35,15 +35,15 @@ public:
 	void SetComponentScale(const XMFLOAT3& InScale);
 public:
 	//获取组件材质相关
-	void SetSubMaterials(const int& index, CMaterial* InMaterial);
+	void SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial);
 	UINT GetMaterialsCount() const;
-	const vector<CMaterial*>* GetMaterials() const;
+	const vector<shared_ptr<CMaterial>> GetMaterials() const;
 protected:
-	CMeshComponent* MeshComponent;
+	std::shared_ptr<CMeshComponent> MeshComponent;
 };
 
 template<typename T>
-T* AMesh::GetMeshComponet()
+std::shared_ptr<T> AMesh::GetMeshComponet()
 {
-	return dynamic_cast<T*>(MeshComponent);
+	return static_pointer_cast<T>(MeshComponent);
 }

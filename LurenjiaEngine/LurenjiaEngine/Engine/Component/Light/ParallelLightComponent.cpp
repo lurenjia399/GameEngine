@@ -16,13 +16,10 @@ CParallelLightComponent::CParallelLightComponent()
 		// 目前不需要
 		//ParallelLightMeshComponent->SetRotation(fvector_3d(0.f, 0.f, -90.f));
 
-		CMaterial* material = (*LightMeshComponent->GetMaterials())[0];
-		if (material)
-		{
-			material->SetMaterialType(EMaterialType::BaseColor);
-			material->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::WireframeDisplay);
-			material->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.f));
-		}
+		shared_ptr<CMaterial> material = LightMeshComponent->GetMaterials()[0];
+		material->SetMaterialType(EMaterialType::BaseColor);
+		material->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::WireframeDisplay);
+		material->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.f));
 	}
 #if SHOWLIGHTMESH
 #endif

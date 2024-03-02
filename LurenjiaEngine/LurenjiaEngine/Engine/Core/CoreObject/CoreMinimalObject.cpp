@@ -6,6 +6,7 @@ CCoreMinimalObject::CCoreMinimalObject()
 {
 	isCanTick = true;
 	ObjectPool.emplace_back(this);
+	Outer = {};
 }
 
 CCoreMinimalObject::~CCoreMinimalObject()

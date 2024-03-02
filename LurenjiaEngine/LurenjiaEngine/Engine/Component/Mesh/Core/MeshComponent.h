@@ -18,9 +18,9 @@ public:
 	void Init();
 	void BuildMesh(const FMeshRenderingData* InRenderingData);
 
-	void SetSubMaterials(const int& index, CMaterial* InMaterial);
+	void SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial);
 	UINT GetMaterialsCount() const;
-	const vector<CMaterial*>* GetMaterials() const;
+	const vector<shared_ptr<CMaterial>> GetMaterials() const;
 
 	bool GetbIsDynamicReflection() const;
 
@@ -28,7 +28,7 @@ public:
 	EMeshComponentRenderLayerType GetMeshComponentLayerType();
 private:
 	CVARIABLE()
-	vector<CMaterial*> Materials;
+	vector<shared_ptr<CMaterial>> Materials;
 
 	EMeshComponentRenderLayerType MeshCompLayerType;
 };

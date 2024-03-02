@@ -93,7 +93,7 @@ HWND IDirectXDeviceInterface::GetMainWindowsHandle() const
     return nullptr;
 }
 
-CMeshManage* IDirectXDeviceInterface::GetMeshManage() const
+shared_ptr<CMeshManage> IDirectXDeviceInterface::GetMeshManage() const
 {
     if (Engine != nullptr)
     {
@@ -107,7 +107,7 @@ CMeshManage* IDirectXDeviceInterface::GetMeshManage() const
     return nullptr;
 }
 
-CLightManage* IDirectXDeviceInterface::GetLightManage() const
+shared_ptr<CLightManage> IDirectXDeviceInterface::GetLightManage() const
 {
     if (Engine != nullptr)
     {
@@ -177,7 +177,7 @@ CEngien* IDirectXDeviceInterface::GetEngine() const
 }
 #endif
 
-CRenderingEngine* IDirectXDeviceInterface::GetRenderEngine() const
+shared_ptr<CRenderingEngine> IDirectXDeviceInterface::GetRenderEngine() const
 {
     CWindowsEngine* WindowsEngine = GetEngine();
     if (WindowsEngine && WindowsEngine->GetRenderingEngine())
@@ -188,7 +188,7 @@ CRenderingEngine* IDirectXDeviceInterface::GetRenderEngine() const
 }
 
 #if (EDITOR_ENGINE == 1)
-CEditorEngine* IDirectXDeviceInterface::GetEditorEngine() const
+shared_ptr<CEditorEngine> IDirectXDeviceInterface::GetEditorEngine() const
 {
     CWindowsEngine* WindowsEngine = GetEngine();
     if (WindowsEngine && WindowsEngine->GetRenderingEngine())
@@ -244,12 +244,12 @@ HWND IDirectXDeviceInterface_struct::GetMainWindowsHandle() const
     return DXDeviceInterface.GetMainWindowsHandle();
 }
 
-CMeshManage* IDirectXDeviceInterface_struct::GetMeshManage() const
+shared_ptr<CMeshManage> IDirectXDeviceInterface_struct::GetMeshManage() const
 {
     return DXDeviceInterface.GetMeshManage();
 }
 
-CLightManage* IDirectXDeviceInterface_struct::GetLightManage() const
+shared_ptr<CLightManage> IDirectXDeviceInterface_struct::GetLightManage() const
 {
     return DXDeviceInterface.GetLightManage();
 }
@@ -288,13 +288,13 @@ CEngien* IDirectXDeviceInterface_struct::GetEngine() const
 }
 #endif
 
-CRenderingEngine* IDirectXDeviceInterface_struct::GetRenderEngine() const
+shared_ptr<CRenderingEngine> IDirectXDeviceInterface_struct::GetRenderEngine() const
 {
     return DXDeviceInterface.GetRenderEngine();
 }
 
 #if (EDITOR_ENGINE == 1)
-CEditorEngine* IDirectXDeviceInterface_struct::GetEditorEngine() const
+shared_ptr<CEditorEngine> IDirectXDeviceInterface_struct::GetEditorEngine() const
 {
     return DXDeviceInterface.GetEditorEngine();
 }

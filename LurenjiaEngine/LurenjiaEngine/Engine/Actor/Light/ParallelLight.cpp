@@ -6,7 +6,7 @@ AParallelLight::AParallelLight()
 	: ParallelLightComponent(nullptr)
 {
 	//灯光的基类CLightComponent会自动将component添加到LightManage中
-	ParallelLightComponent = LurenjiaEngine::CreateObject<CParallelLightComponent>("ParallelLightComponent");
+	ParallelLightComponent = LurenjiaEngine::CreateObject<CParallelLightComponent>(shared_from_this(), "ParallelLightComponent");
 }
 
 void AParallelLight::Tick(float DeltaTime)

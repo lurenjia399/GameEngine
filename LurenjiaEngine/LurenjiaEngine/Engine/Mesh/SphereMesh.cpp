@@ -18,8 +18,8 @@ void ASphereMesh::SetMeshComponent(string InName, const float& InRadius, const u
 {
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
-	if (MeshComponent) delete MeshComponent;
-	MeshComponent = LurenjiaEngine::CreateObject<CSphereMeshComponent>(InName);
+	if (MeshComponent.get()) MeshComponent.reset();
+	MeshComponent = LurenjiaEngine::CreateObject<CSphereMeshComponent>(shared_from_this(), InName);
 	MeshComponent->SetMeshComponentLayerType(InType);
 
 	//给MeshComponet注入数据，使用前必须保证MeshComponet已经创建完毕

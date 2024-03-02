@@ -4,7 +4,7 @@
 APointLight::APointLight()
 	: time(0)
 {
-	RangeLightComponent = LurenjiaEngine::CreateObject<CPointLightComponent>("PointLightComponent");
+	RangeLightComponent = LurenjiaEngine::CreateObject<CPointLightComponent>(shared_from_this(), "PointLightComponent");
 }
 
 void APointLight::Tick(float DeltaTime)

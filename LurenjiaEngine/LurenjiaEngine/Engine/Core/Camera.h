@@ -25,7 +25,7 @@ public:
 	void OnClickedScreen(int X, int Y);
 	
 public:
-	FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
+	FORCEINLINE shared_ptr<CInputComponent> GetInputComponent() { return InputComponent; }
 private:
 	//代理的执行函数
 	void ExecuteKeyboard(const FInputKey& InputKey);
@@ -46,7 +46,7 @@ private:
 	void FocusMeshUpdateCameraInfo(float InValue);
 private:
 	CVARIABLE()
-	CInputComponent* InputComponent;
+	shared_ptr<CInputComponent> InputComponent;
 private:
 	POINT LastMousePosition = {};
 	bool bRightMouseDown = false;

@@ -6,18 +6,21 @@ namespace LurenjiaEngine
 {
 	//----------模板实现-----
 	template<typename T>
-	T* CreateObject(string objName)
+	shared_ptr<T> CreateObject(std::weak_ptr<CCoreMinimalObject> InOuter, string objName)
 	{
-		CCoreMinimalObject* NewObject = new T();	//创建对象
+		//CCoreMinimalObject* NewObject = new T();	//创建对象
+		std::shared_ptr<CCoreMinimalObject> NewObject = std::make_shared<T>();
+		NewObject->SetOuter(InOuter);
 		NewObject->ResetGuid(objName);				//重新设置对象的guid
 
-		return dynamic_cast<T*>(NewObject);
+		return static_pointer_cast<T>(NewObject);
 	}
 
 	template<typename T, typename ...ParamTypes>
-	T* ConstructionObject(ParamTypes&&... Params)
+	T* ConstructionObject(CCoreMinimalObject* InOuter, ParamTypes&&... Params)
 	{
 		CCoreMinimalObject* NewObject = new T(Params...);
+		//还需要设置Outer
 		//还需要设置guid
 
 		return dynamic_cast<T*>(NewObject);

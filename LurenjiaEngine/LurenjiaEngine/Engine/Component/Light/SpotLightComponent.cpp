@@ -10,14 +10,10 @@ CSpotLightComponent::CSpotLightComponent()
 	LightMeshComponent = GetMeshManage()->CreateCustomMeshComponent("SpotLightMeshComponent", path);
 	if (LightMeshComponent)
 	{
-		LightMeshComponent->SetRotation(fvector_3d(0.f, 180.f, 0.f));
-		CMaterial* Material = (*LightMeshComponent->GetMaterials())[0];
-		if (Material)
-		{
-			Material->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.f));
-			Material->SetMaterialType(EMaterialType::BaseColor);
-			Material->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::WireframeDisplay);
-		}
+		shared_ptr<CMaterial> Material = LightMeshComponent->GetMaterials()[0];
+		Material->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.f));
+		Material->SetMaterialType(EMaterialType::BaseColor);
+		Material->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::WireframeDisplay);
 	}
 	
 	SetLightType(ELightType::SpotLight);

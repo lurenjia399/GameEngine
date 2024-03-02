@@ -26,8 +26,8 @@ public:
 	
 	
 //----------interface-----
-	CDirectXRenderingEngine* GetRenderingEngine() { return RenderingEngine; }
-	CEditorEngine* GetEditorEngine() { return EditorEngine; }
+	shared_ptr<CDirectXRenderingEngine> GetRenderingEngine() { return RenderingEngine; }
+	shared_ptr<CEditorEngine> GetEditorEngine() { return EditorEngine; }
 public:
 	
 
@@ -38,10 +38,10 @@ private:
 	bool InitWindows(FWinMainCommandParameters InParameters);
 protected:
 	HWND MyWindowsHandle;		//Ö÷´°¿Ú¾ä±ú
-	CDirectXRenderingEngine* RenderingEngine; // äÖÈ¾ÒýÇæ
+	shared_ptr<CDirectXRenderingEngine> RenderingEngine; // äÖÈ¾ÒýÇæ
 
 #if (EDITOR_ENGINE == 1) 
-	CEditorEngine* EditorEngine; // ±à¼­Æ÷ÒýÇæ
+	shared_ptr<CEditorEngine> EditorEngine; // ±à¼­Æ÷ÒýÇæ
 #endif
 };
 #endif

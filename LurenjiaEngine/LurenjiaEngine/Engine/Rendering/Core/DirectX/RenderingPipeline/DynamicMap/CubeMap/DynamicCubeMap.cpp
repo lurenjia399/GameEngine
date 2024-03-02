@@ -128,8 +128,9 @@ void FDynamicCubeMap::BuildViewport(const XMFLOAT3& InCenterPoint)
 
 	for (size_t i = 0; i < 6; i++)
 	{
-		Viewport.emplace_back(LurenjiaEngine::CreateObject<AClientViewport>("CubeMapViewport_" + std::to_string(i)));
-		AClientViewport* ClientViewport = Viewport[Viewport.size() - 1];
+		// 注意这个地方的outer传了个nullptr
+		Viewport.emplace_back(LurenjiaEngine::CreateObject<AClientViewport>({}, "CubeMapViewport_" + std::to_string(i)));
+		shared_ptr<AClientViewport> ClientViewport = Viewport[Viewport.size() - 1];
 		
 		ClientViewport->SetPosition(InCenterPoint);
 		ClientViewport->FaceTarget(InCenterPoint, Capture.TargetPosition[i], Capture.UpDirection[i]);

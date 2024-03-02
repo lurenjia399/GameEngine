@@ -3,7 +3,7 @@
 CMeshComponent::CMeshComponent()
 	: MeshCompLayerType(EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE)
 {
-	Materials.emplace_back(LurenjiaEngine::CreateObject<CMaterial>("CMeshComponent::Material"));
+	Materials.emplace_back(LurenjiaEngine::CreateObject<CMaterial>(shared_from_this(), "CMeshComponent::Material"));
 }
 
 void CMeshComponent::Init()
@@ -14,7 +14,7 @@ void CMeshComponent::BuildMesh(const FMeshRenderingData* InRenderingData)
 {
 }
 
-void CMeshComponent::SetSubMaterials(const int& index, CMaterial* InMaterial)
+void CMeshComponent::SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial)
 {
 	Materials[index] = InMaterial;
 
@@ -25,9 +25,9 @@ UINT CMeshComponent::GetMaterialsCount() const
 	return static_cast<UINT>(Materials.size());
 }
 
-const vector<CMaterial*>* CMeshComponent::GetMaterials() const
+const vector<shared_ptr<CMaterial>> CMeshComponent::GetMaterials() const
 {
-	return &Materials;
+	return Materials;
 }
 
 bool CMeshComponent::GetbIsDynamicReflection() const
@@ -35,7 +35,7 @@ bool CMeshComponent::GetbIsDynamicReflection() const
 	
 	if (Materials.size() > 0)
 	{
-		for (CMaterial* Material : Materials)
+		for (std::shared_ptr<CMaterial> Material : Materials)
 		{
 			return Material->GetbIsDynamicReflection();
 		}

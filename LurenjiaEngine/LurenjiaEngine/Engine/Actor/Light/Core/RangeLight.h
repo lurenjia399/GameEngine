@@ -31,7 +31,7 @@ public:
 	float GetLightStartAttenuation();
 	float GetLightEndAttenuation();
 protected:
-	CRangeLightComponent* RangeLightComponent;
+	shared_ptr<CRangeLightComponent> RangeLightComponent;
 };
 
 #endif // !Light_H

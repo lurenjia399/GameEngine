@@ -15,7 +15,7 @@ public:
 	UINT GetIndexSizeInBytes() const;						//获取索引数据大小
 
 public:
-	CMeshComponent* MeshComponet;							//代表的模型组件
+	shared_ptr<CMeshComponent> MeshComponet;							//代表的模型组件
 	size_t MeshHash;										//代表的模型的哈希值
 
 	UINT IndexSize;											//索引的数量
@@ -33,7 +33,7 @@ public:
 	int GeometryKey;										//this是属于哪一个Geometry的
 	int MeshObjectOffset;									//当前数据在常量堆中的偏移
 
-	FMeshRenderingData* MeshRenderingData;					//所有的mesh渲染数据,保存一下应该是方便读取
+	FMeshRenderingData* MeshRenderingData;					//所有的mesh的顶点和索引渲染数据,保存一下应该是方便读取
 
 	BoundingBox AABB_box;									//模型的AABB包围盒
 };
