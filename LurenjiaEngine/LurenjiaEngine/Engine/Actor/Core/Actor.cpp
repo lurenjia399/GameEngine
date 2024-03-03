@@ -3,6 +3,10 @@
 
 AActor::AActor()
 {
+}
+
+void AActor::BeginInit()
+{
 	TransformationComponent = LurenjiaEngine::CreateObject<CTransformationComponent>(shared_from_this(), "AActor::TransformationComponent");
 }
 

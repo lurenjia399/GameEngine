@@ -1,7 +1,7 @@
 #include "CollisionSceneQuery.h"
 #include "../Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
 
-bool FCollisionSceneQuery::RaycastSingle(CWorld* InWorld, const XMVECTOR& ViewOriginPoint, const XMVECTOR& ViewDirection, const XMMATRIX& World2ViewMatrixInverse, FHitResult& OutHitResult)
+bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVECTOR& ViewOriginPoint, const XMVECTOR& ViewDirection, const XMMATRIX& World2ViewMatrixInverse, FHitResult& OutHitResult)
 {
 	float FinalTime = FLT_MAX;
 	// 遍历池子中的所有模型
@@ -13,11 +13,13 @@ bool FCollisionSceneQuery::RaycastSingle(CWorld* InWorld, const XMVECTOR& ViewOr
 		XMVECTOR Local2WorldMatrixDeterminant = DirectX::XMMatrixDeterminant(Local2WorldMatrix);
 		XMMATRIX Local2WorldMatrixInverse = DirectX::XMMatrixInverse(&Local2WorldMatrixDeterminant, Local2WorldMatrix); // 求出世界变矩阵的逆
 
+		
 		// 注意这个顺序，这个顺序对么？ 摄像机矩阵的逆 * 世界矩阵的逆 ,,,存储的矩阵长相是一样的，但是代码这是主行，shader是主列
 		XMMATRIX View2LocalMatrix = XMMatrixMultiply(World2ViewMatrixInverse, Local2WorldMatrix);
 
 		XMVECTOR LocalOriginPoint = DirectX::XMVector3TransformCoord(ViewOriginPoint, View2LocalMatrix);
 		XMVECTOR LocalDirection = DirectX::XMVector3TransformNormal(ViewDirection, View2LocalMatrix);
+		LocalDirection = XMVector3Normalize(LocalDirection);
 
 		float BoundTime = 0.f; //碰撞到AABB的时间
 		float TriangleTime = FLT_MAX;
@@ -55,7 +57,16 @@ bool FCollisionSceneQuery::RaycastSingle(CWorld* InWorld, const XMVECTOR& ViewOr
 								OutHitResult.bHit = true;
 								OutHitResult.Component_ = GeometryDescData->MeshComponet;
 								OutHitResult.Time = TriangleTestTime;
-								//OutHitResult.Actor_ = GeometryDescData->MeshComponet->GetOuter();
+								auto meshComp = GeometryDescData->MeshComponet->GetOuter();
+								if (!meshComp.expired())
+								{
+									OutHitResult.Actor_ = static_pointer_cast<AActor>(meshComp.lock());
+								}
+								else
+								{
+									Engine_Log_Error("FCollisionSceneQuery::RaycastSingle meshComp is nullptr");
+								}
+								
 							}
 						}
 					}

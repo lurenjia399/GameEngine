@@ -9,9 +9,10 @@
 
 class ASpotLight : public ARangeLight, public IDirectXDeviceInterface
 {
-	typedef ARangeLight super;
+	typedef ARangeLight Super;
 public:
 	ASpotLight();
+	virtual void BeginInit() override;
 
 	void Tick(float DeltaTime) override;
 public:

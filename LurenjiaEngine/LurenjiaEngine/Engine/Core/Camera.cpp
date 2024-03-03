@@ -9,18 +9,20 @@
 
 ACamera::ACamera()
 {
-	InputComponent = LurenjiaEngine::CreateObject<CInputComponent>(shared_from_this(), "CameraInputComponent");
-
-	Radius = 20.0f;
-	verticalAngle = XM_PI/2;
-	horizontalAngle = XM_PI/2;
-	CameraType = ECameraType::CameraRoaming;
+	
 }
 
 void ACamera::BeginInit()
 {
-	ViewportInit();	//初始化p矩阵
+	Super::BeginInit();
+	InputComponent = LurenjiaEngine::CreateObject<CInputComponent>(shared_from_this(), "CameraInputComponent");
 
+	Radius = 20.0f;
+	verticalAngle = XM_PI / 2;
+	horizontalAngle = XM_PI / 2;
+	CameraType = ECameraType::CameraRoaming;
+
+	ViewportInit();	//初始化p矩阵
 	InputComponent->CaptureKeyboardInforDelegate.Bind(this, &ACamera::ExecuteKeyboard);
 	InputComponent->OnMouseButtonDownDelegate.Bind(this, &ACamera::OnMouseButtonDown);
 	InputComponent->OnMouseButtonUpDelegate.Bind(this, &ACamera::OnMouseButtonUp);

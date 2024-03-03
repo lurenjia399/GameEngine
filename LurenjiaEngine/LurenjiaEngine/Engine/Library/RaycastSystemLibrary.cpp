@@ -25,17 +25,23 @@ bool FRaycastSystemLibrary::HitResultByScreen(shared_ptr<CWorld> InWorld, int Sc
 
 		XMVECTOR ViewOriginPoint = XMVectorSet(0.f, 0.f, 0.f, 1.0f); // 摄像机空间下的远点，也就是摄像机所在的位置
 		XMVECTOR ViewDirection = XMVectorSet(view.x, view.y, 1.f, 0.f);// 射线方向
-
+		ViewDirection = XMVector3Normalize(ViewDirection);
 
 		XMMATRIX World2ViewMatrix = XMLoadFloat4x4(&camera->ViewMatrix);
 		XMVECTOR World2ViewMatrixDeterminant = DirectX::XMMatrixDeterminant(World2ViewMatrix);
 		XMMATRIX World2ViewMatrixInverse = DirectX::XMMatrixInverse(&World2ViewMatrixDeterminant, World2ViewMatrix); // 求出摄像机矩阵的逆
 
 		FHitResult HitResult = {};
-		//FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, HitResult);
+		FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, HitResult);
+
+		if (!HitResult.Component_.expired())
+		{
+			auto component = HitResult.Component_.lock();
+			Engine_Log_Error("HitResult name[%s]", component->GetName().c_str());
+		}
+		
 	}
-	
-    //InWorld->LineTraceSingleByChannel(OutHitResult);
+
 
     return false;
 }

@@ -5,5 +5,5 @@ class FEngineFactory
 {
 public:
 	FEngineFactory();
-	static CEngine* CreateEngine();
+	static shared_ptr<CEngine> CreateEngine();
 };

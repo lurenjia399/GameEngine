@@ -12,8 +12,10 @@
 
 class CMeshComponent : public CTransformationComponent
 {
+	typedef CTransformationComponent Super;
 public:
 	CMeshComponent();
+	virtual void BeginInit() override;
 public:
 	void Init();
 	void BuildMesh(const FMeshRenderingData* InRenderingData);

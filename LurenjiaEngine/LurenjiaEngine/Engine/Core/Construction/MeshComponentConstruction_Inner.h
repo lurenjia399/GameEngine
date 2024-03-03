@@ -46,6 +46,7 @@ namespace LurenjiaEngine
 
 		//T* meshComponent = new T();
 		std::shared_ptr<T> meshComponent = std::make_shared<T>();
+		meshComponent->BeginInit();
 		meshComponent->ResetGuid(name);
 
 		return CreateMeshComponet_Inner<T>(InMeshManage, meshComponent, Params...);

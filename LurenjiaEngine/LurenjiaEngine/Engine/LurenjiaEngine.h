@@ -34,4 +34,4 @@
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-extern class CEngine* Engine;
+extern shared_ptr<class CEngine> Engine;

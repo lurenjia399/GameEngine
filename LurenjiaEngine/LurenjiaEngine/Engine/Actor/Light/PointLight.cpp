@@ -4,6 +4,12 @@
 APointLight::APointLight()
 	: time(0)
 {
+}
+
+void APointLight::BeginInit()
+{
+	Super::BeginInit();
+
 	RangeLightComponent = LurenjiaEngine::CreateObject<CPointLightComponent>(shared_from_this(), "PointLightComponent");
 }
 

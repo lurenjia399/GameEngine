@@ -10,7 +10,7 @@ namespace TransparentTest
 {
 	void BuildTransparentTestData()
 	{
-		CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
+		shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
 		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
 		if (auto SphereMesh = World->CreateActor<ASphereMesh>("SphereMesh"))
 		{

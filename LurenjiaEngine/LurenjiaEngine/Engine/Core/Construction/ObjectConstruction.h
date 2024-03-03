@@ -10,6 +10,7 @@ namespace LurenjiaEngine
 	{
 		//CCoreMinimalObject* NewObject = new T();	//创建对象
 		std::shared_ptr<CCoreMinimalObject> NewObject = std::make_shared<T>();
+		NewObject->BeginInit();
 		NewObject->SetOuter(InOuter);
 		NewObject->ResetGuid(objName);				//重新设置对象的guid
 
@@ -20,6 +21,7 @@ namespace LurenjiaEngine
 	T* ConstructionObject(CCoreMinimalObject* InOuter, ParamTypes&&... Params)
 	{
 		CCoreMinimalObject* NewObject = new T(Params...);
+		//还需要BeginInit
 		//还需要设置Outer
 		//还需要设置guid
 

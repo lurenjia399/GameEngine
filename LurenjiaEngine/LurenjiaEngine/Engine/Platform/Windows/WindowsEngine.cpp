@@ -55,7 +55,6 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 
 	shared_ptr<CWorld> world = LurenjiaEngine::CreateObject<CWorld>(shared_from_this(), "World");
 	RenderingEngine->SetWorld(world);
-	shared_ptr<CWorld> temWorld = RenderingEngine->GetWorld();
 	Engine_Log("Engine initialization complete.");
 
 	PostInit();
@@ -67,11 +66,6 @@ int CWindowsEngine::PostInit()
 	Engine_Log("Engine post initialization complete.");
 
 	RenderingEngine->PostInit();
-
-	for (CCoreMinimalObject* Tmp : ObjectPool)
-	{
-		Tmp->BeginInit();
-	}
 
 	return 0;
 }

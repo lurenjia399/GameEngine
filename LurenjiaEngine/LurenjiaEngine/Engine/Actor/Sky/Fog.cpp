@@ -4,6 +4,12 @@
 AFog::AFog()
 	: FogComponent(nullptr)
 {
+	
+}
+
+void AFog::BeginInit()
+{
+	Super::BeginInit();
 	FogComponent = LurenjiaEngine::CreateObject<CFogComponent>(shared_from_this(), "FogComponent");
 }
 

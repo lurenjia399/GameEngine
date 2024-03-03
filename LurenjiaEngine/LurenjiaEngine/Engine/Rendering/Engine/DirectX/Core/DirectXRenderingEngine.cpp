@@ -29,22 +29,25 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	, BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM)
 	, DepthStencilFormat(DXGI_FORMAT_D24_UNORM_S8_UINT)//24位深度缓冲区，映射到 0 - 1 之间。8位模板缓冲区，映射到0 - 255 之间。
 	, RTVDescriptorSize(0)
+	, MeshManage({})
+	, LightManage({})
+	, World({})
+{
+}
+
+int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters& InParameters)
 {
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
 	}
-	// 这个地方运行的时候会崩掉，原因是shared_from_this里面的弱指针还没赋值，赋值的时机可能是在初始化之后，所以不写在构造函数里就可以了？还不确定
-	MeshManage =  LurenjiaEngine::CreateObject<CMeshManage>(shared_from_this(), "MeshManage");
+	// 使用 shared_from_this 需要在初始化之后，源码里的weak_ptr是在初始化赋值的
+	MeshManage = LurenjiaEngine::CreateObject<CMeshManage>(shared_from_this(), "MeshManage");
 	LightManage = LurenjiaEngine::CreateObject<CLightManage>(shared_from_this(), "LightManage");
 
-	World = nullptr;
+	World = {};
 
 	FRenderLayerManage::GetRenderLayerManage();//创建层级必须在渲染模型之前
-}
-
-int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters& InParameters)
-{
 	Engine_Log("DirectXRenderingEngine pre initialization complete.");
 	return 1;
 }

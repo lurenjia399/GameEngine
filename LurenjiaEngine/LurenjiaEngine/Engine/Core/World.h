@@ -11,6 +11,8 @@ class AFog;
 class CWorld : public CCoreMinimalObject
 {
 public:
+	virtual void BeginInit() override;
+
 	CWorld();
 	shared_ptr<ACamera> GetCamera() const { return camera; }
 	shared_ptr<AFog> GetFog() const;
@@ -32,6 +34,8 @@ public:
 
 		return fog;
 	}
+
+	
 
 public:
 	bool LineTraceSingleByChannel(FHitResult& OutHitResult, const XMFLOAT3& Start, const XMFLOAT3& End) const;

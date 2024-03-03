@@ -2,6 +2,12 @@
 
 ASpotLight::ASpotLight()
 {
+	
+}
+
+void ASpotLight::BeginInit()
+{
+	Super::BeginInit();
 	RangeLightComponent = LurenjiaEngine::CreateObject<CSpotLightComponent>(shared_from_this(), "PointLightComponent");
 }
 

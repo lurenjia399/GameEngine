@@ -5,8 +5,8 @@
 
 void IDirectXDeviceInterface::StartSetMainViewportRenderTarget()
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         WindowsEngine->GetRenderingEngine()->StartSetMainViewportRenderTarget();
         Engine_Log_Success("excute  StartSetMainViewportRenderTarget success")
@@ -15,8 +15,8 @@ void IDirectXDeviceInterface::StartSetMainViewportRenderTarget()
 
 void IDirectXDeviceInterface::EndSetMainViewportRenderTarget()
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         WindowsEngine->GetRenderingEngine()->EndSetMainViewportRenderTarget();
         Engine_Log_Success("excute  EndSetMainViewportRenderTarget success")
@@ -25,8 +25,8 @@ void IDirectXDeviceInterface::EndSetMainViewportRenderTarget()
 
 void IDirectXDeviceInterface::ClearMainSwapChain()
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         WindowsEngine->GetRenderingEngine()->ClearMainSwapChain();
         //Engine_Log_Success("excute  ClearMainSwapChain success")
@@ -35,8 +35,8 @@ void IDirectXDeviceInterface::ClearMainSwapChain()
 
 ComPtr<ID3D12Fence> IDirectXDeviceInterface::GetFence() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->Fence;
     }
@@ -45,8 +45,8 @@ ComPtr<ID3D12Fence> IDirectXDeviceInterface::GetFence() const
 
 ComPtr<ID3D12Device> IDirectXDeviceInterface::GetD3dDevice() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->D3dDevice;
     }
@@ -55,8 +55,8 @@ ComPtr<ID3D12Device> IDirectXDeviceInterface::GetD3dDevice() const
 
 ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface::GetGraphicsCommandList() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->GraphicsCommandList;
     }
@@ -65,8 +65,8 @@ ComPtr<ID3D12GraphicsCommandList> IDirectXDeviceInterface::GetGraphicsCommandLis
 
 ComPtr<ID3D12CommandAllocator> IDirectXDeviceInterface::GetCommandAllocator() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->CommandAllocator;
     }
@@ -75,8 +75,8 @@ ComPtr<ID3D12CommandAllocator> IDirectXDeviceInterface::GetCommandAllocator() co
 
 ComPtr<ID3D12CommandQueue> IDirectXDeviceInterface::GetCommandQueue() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->CommandQueue;
     }
@@ -85,8 +85,8 @@ ComPtr<ID3D12CommandQueue> IDirectXDeviceInterface::GetCommandQueue() const
 
 HWND IDirectXDeviceInterface::GetMainWindowsHandle() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->MainWindowsHandle;
     }
@@ -97,8 +97,8 @@ shared_ptr<CMeshManage> IDirectXDeviceInterface::GetMeshManage() const
 {
     if (Engine != nullptr)
     {
-        CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
-        if (WindowsEngine != nullptr)
+        shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
+        if (WindowsEngine.use_count() != 0)
         {
             return WindowsEngine->GetRenderingEngine()->MeshManage;//这里定义了友元，所以能访问到
         }
@@ -111,8 +111,8 @@ shared_ptr<CLightManage> IDirectXDeviceInterface::GetLightManage() const
 {
     if (Engine != nullptr)
     {
-        CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
-        if (WindowsEngine != nullptr)
+        shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
+        if (WindowsEngine.use_count() != 0)
         {
             return WindowsEngine->GetRenderingEngine()->LightManage;//这里定义了友元，所以能访问到
         }
@@ -123,8 +123,8 @@ shared_ptr<CLightManage> IDirectXDeviceInterface::GetLightManage() const
 
 ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetRTVHeap() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->RTVHeap;
     }
@@ -133,8 +133,8 @@ ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetRTVHeap() const
 
 ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetDSVHeap() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->DSVHeap;
     }
@@ -143,8 +143,8 @@ ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetDSVHeap() const
 
 FDirectXDescriptorHeap* IDirectXDeviceInterface::GetCBV_SRV_UAVHeap() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
-    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
+    shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
+    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
     {
         return &WindowsEngine->GetRenderingEngine()->DescriptorHeap;
     }
@@ -157,12 +157,12 @@ UINT IDirectXDeviceInterface::GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_
 }
 
 #if defined(_WIN32)
-CWindowsEngine* IDirectXDeviceInterface::GetEngine() const
+shared_ptr<CWindowsEngine> IDirectXDeviceInterface::GetEngine() const
 {
     if (Engine != nullptr)
     {
-        CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
-        if (WindowsEngine != nullptr)
+        shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
+        if (WindowsEngine.use_count() != 0)
         {
             return WindowsEngine;
         }
@@ -179,7 +179,7 @@ CEngien* IDirectXDeviceInterface::GetEngine() const
 
 shared_ptr<CRenderingEngine> IDirectXDeviceInterface::GetRenderEngine() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
     if (WindowsEngine && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine();
@@ -190,7 +190,7 @@ shared_ptr<CRenderingEngine> IDirectXDeviceInterface::GetRenderEngine() const
 #if (EDITOR_ENGINE == 1)
 shared_ptr<CEditorEngine> IDirectXDeviceInterface::GetEditorEngine() const
 {
-    CWindowsEngine* WindowsEngine = GetEngine();
+    shared_ptr<CWindowsEngine> WindowsEngine = GetEngine();
     if (WindowsEngine && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetEditorEngine();
@@ -275,7 +275,7 @@ UINT IDirectXDeviceInterface_struct::GetDescriptorHandleIncrementSize(D3D12_DESC
 }
 
 #if defined(_WIN32)
-CWindowsEngine* IDirectXDeviceInterface_struct::GetEngine() const
+shared_ptr<CWindowsEngine> IDirectXDeviceInterface_struct::GetEngine() const
 {
     return DXDeviceInterface.GetEngine();
 }

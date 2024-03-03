@@ -5,6 +5,12 @@
 AParallelLight::AParallelLight()
 	: ParallelLightComponent(nullptr)
 {
+}
+
+void AParallelLight::BeginInit()
+{
+	Super::BeginInit();
+
 	//灯光的基类CLightComponent会自动将component添加到LightManage中
 	ParallelLightComponent = LurenjiaEngine::CreateObject<CParallelLightComponent>(shared_from_this(), "ParallelLightComponent");
 }

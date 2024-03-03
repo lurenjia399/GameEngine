@@ -48,7 +48,7 @@ public:
 	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 	//获取引擎
 #if defined(_WIN32)
-	CWindowsEngine* GetEngine() const;
+	shared_ptr<CWindowsEngine> GetEngine() const;
 #else
 	CEngien* GetEngine() const;
 #endif
@@ -97,7 +97,7 @@ struct IDirectXDeviceInterface_struct
 	//获取某种描述符大小
 	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 #if defined(_WIN32)
-	CWindowsEngine* GetEngine() const;
+	shared_ptr<CWindowsEngine> GetEngine() const;
 #else
 	Engien* GetEngine() const;
 #endif

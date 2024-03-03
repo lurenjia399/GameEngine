@@ -15,13 +15,13 @@ namespace ComputeShaderTest
 {
 	void ComputeShaderTest::BuildComputeShaderTestData()
 	{
-		CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
+		shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
 		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
 
 		// cubeMap
-		if (auto CubeMesh = World->CreateActor<ABoxMesh>("ComputeShaderTest::ABoxMesh"))
+		if (auto CubeMesh = World->CreateActor<ABoxMesh>("ComputeShaderTest::cubeMap"))
 		{
-			CubeMesh->SetMeshComponent("ComputeShaderTest::ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
+			CubeMesh->SetMeshComponent("ComputeShaderTest::cubeMapComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
 			CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
 			CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
 			if (auto CubeMaterial = make_shared<CMaterial>())
