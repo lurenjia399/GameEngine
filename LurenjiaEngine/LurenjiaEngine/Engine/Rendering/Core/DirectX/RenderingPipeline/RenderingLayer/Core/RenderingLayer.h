@@ -29,6 +29,11 @@ public:
 	virtual void DrawObjectByLayer(float DeltaTime, const CMeshComponent* InKey);
 	virtual void DrawAllObjectsByLayer(float DeltaTime);
 	virtual void ResetPSO();
+
+public:
+	void AddGeometryDescData(std::weak_ptr<FGeometryDescData> InGeometryDescData);
+	void RemoveGeometryDescData(std::weak_ptr<FGeometryDescData> InGeometryDescData);
+	void ClearGeometryDescData();
 	
 public:
 	virtual void BuildShader() = 0;	//纯虚函数，必须实现方法
@@ -38,7 +43,7 @@ protected:
 	FShader VertexShader;
 	FShader PixelShader;
 	std::vector<D3D12_INPUT_ELEMENT_DESC> InputElementDesc;		//着色器输入布局
-	std::vector<std::weak_ptr<FGeometryDescData>> GeometryDescDatas;			//描述Getometry的数据
+	std::vector<std::weak_ptr<FGeometryDescData>> GeometryDescDatas;			//这个层级所包含的所有mesh渲染数据
 
 	FGeometryMap* GeometryMap;
 	FDirectXPiepelineState* DirectXPiepelineState;

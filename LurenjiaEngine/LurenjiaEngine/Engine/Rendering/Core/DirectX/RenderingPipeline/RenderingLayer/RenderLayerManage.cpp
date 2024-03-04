@@ -5,6 +5,7 @@
 #include "RenderLayer/BackgroundRenderLayer.h"
 #include "RenderLayer/OpaqueReflectorRenderLayer.h"
 #include "RenderLayer/OpaqueShadowRenderLayer.h"
+#include "RenderLayer/SelectRenderLayer.h"
 
 FRenderLayerManage* FRenderLayerManage::RenderLayerManage = nullptr;
 std::vector<std::shared_ptr<FRenderingLayer>> FRenderLayerManage::RenderingLayers;
@@ -34,6 +35,7 @@ FRenderLayerManage::FRenderLayerManage()
 	CreateRenderLayer<FTransparentRenderLayer>();
 	CreateRenderLayer<FOpaqueReflectorRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();
+	CreateRenderLayer<FSelectRenderLayer>();
 }
 
 std::shared_ptr<FRenderingLayer> FRenderLayerManage::FindRenderingLayerByInt(int InRenderLayer)
@@ -160,6 +162,42 @@ void FRenderLayerManage::BuildPSO()
 	for (auto& tem : RenderingLayers)
 	{
 		tem->BuildPSO();
+	}
+}
+
+void FRenderLayerManage::AddGeometryDescData(int InLayer, std::weak_ptr<FGeometryDescData> InGeometryDescData)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		if (tem->GetRenderLayerType() == InLayer)
+		{
+			tem->AddGeometryDescData(InGeometryDescData);
+			break;
+		}
+	}
+}
+
+void FRenderLayerManage::RemoveGeometryDescData(int InLayer, std::weak_ptr<FGeometryDescData> InGeometryDescData)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		if (tem->GetRenderLayerType() == InLayer)
+		{
+			tem->RemoveGeometryDescData(InGeometryDescData);
+			break;
+		}
+	}
+}
+
+void FRenderLayerManage::ClearGeometryDescData(int InLayer)
+{
+	for (auto& tem : RenderingLayers)
+	{
+		if (tem->GetRenderLayerType() == InLayer)
+		{
+			tem->ClearGeometryDescData();
+			break;
+		}
 	}
 }
 

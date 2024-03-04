@@ -2,6 +2,7 @@
 #include "LurenjiaEngine.h"
 #include "Component/Mesh/Core/MeshComponent.h"
 #include "Actor/Core/Actor.h"
+#include "Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryDescData.h"
 
 struct FHitResult
 {
@@ -17,6 +18,8 @@ struct FHitResult
 
 	weak_ptr<CMeshComponent> Component_; // 击中的Component是哪个
 	weak_ptr<AActor> Actor_;//击中的actor是哪个
+
+	weak_ptr<FGeometryDescData> GeometryDescData; // 击中mesh的渲染数据
 
 	FHitResult();
 };

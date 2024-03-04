@@ -6,6 +6,7 @@
 #include "../Library/RaycastSystemLibrary.h"
 #include "../EngineType.h"
 #include "../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
+#include "../Rendering/Core/DirectX/RenderingPipeline/RenderingLayer/RenderLayerManage.h"
 
 ACamera::ACamera()
 {
@@ -41,7 +42,21 @@ void ACamera::OnClickedScreen(int X, int Y)
 	if (DXRenderingEngine != nullptr)
 	{
 		FHitResult HitResult = {};
-		FRaycastSystemLibrary::HitResultByScreen(DXRenderingEngine->GetWorld(), X, Y, HitResult);
+		bool bHit = FRaycastSystemLibrary::HitResultByScreen(DXRenderingEngine->GetWorld(), X, Y, HitResult);
+		if (bHit)
+		{
+			if (!HitResult.Component_.expired())
+			{
+				std::shared_ptr<CMeshComponent> component = HitResult.Component_.lock();
+				Engine_Log_Error("HitResult name[%s]", component->GetName().c_str());
+
+				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, HitResult.GeometryDescData);
+			}
+		}
+		else
+		{
+			Engine_Log("No Hit Actor");
+		}
 	}
 	
 }

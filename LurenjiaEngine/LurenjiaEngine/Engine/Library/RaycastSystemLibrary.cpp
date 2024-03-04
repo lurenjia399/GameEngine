@@ -31,13 +31,17 @@ bool FRaycastSystemLibrary::HitResultByScreen(shared_ptr<CWorld> InWorld, int Sc
 		XMVECTOR World2ViewMatrixDeterminant = DirectX::XMMatrixDeterminant(World2ViewMatrix);
 		XMMATRIX World2ViewMatrixInverse = DirectX::XMMatrixInverse(&World2ViewMatrixDeterminant, World2ViewMatrix); // 求出摄像机矩阵的逆
 
-		FHitResult HitResult = {};
-		FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, HitResult);
+		bool bHit = FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, OutHitResult);
 
-		if (!HitResult.Component_.expired())
+		//if (!HitResult.Component_.expired())
+		//{
+		//	auto component = HitResult.Component_.lock();
+		//	Engine_Log_Error("HitResult name[%s]", component->GetName().c_str());
+		//}
+
+		if (bHit)
 		{
-			auto component = HitResult.Component_.lock();
-			Engine_Log_Error("HitResult name[%s]", component->GetName().c_str());
+			return true;
 		}
 		
 	}

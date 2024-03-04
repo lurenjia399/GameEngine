@@ -48,6 +48,10 @@ public:
 	
 	void UpdateObjectConstantBuffer();
 	void BuildPSO();
+
+	void AddGeometryDescData(int InLayer, std::weak_ptr<FGeometryDescData> InGeometryDescData);
+	void RemoveGeometryDescData(int InLayer, std::weak_ptr<FGeometryDescData> InGeometryDescData);
+	void ClearGeometryDescData(int InLayer);
 private:
 	FRenderLayerManage();
 

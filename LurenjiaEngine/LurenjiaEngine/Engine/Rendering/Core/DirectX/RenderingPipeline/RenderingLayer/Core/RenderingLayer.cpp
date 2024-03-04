@@ -207,6 +207,36 @@ void FRenderingLayer::ResetPSO()
 	// 父类这里先是空的
 }
 
+void FRenderingLayer::AddGeometryDescData(std::weak_ptr<FGeometryDescData> InGeometryDescData)
+{
+	GeometryDescDatas.emplace_back(InGeometryDescData);
+}
+
+void FRenderingLayer::RemoveGeometryDescData(std::weak_ptr<FGeometryDescData> InGeometryDescData)
+{
+	if (InGeometryDescData.expired())
+	{
+		Engine_Log_Error("FRenderingLayer::RemoveGeometryDescData InGeometryDescData is nullptr");
+		return ;
+	}
+
+	auto DescData = InGeometryDescData.lock();
+
+	for (std::vector<std::weak_ptr<FGeometryDescData>>::iterator Iter = GeometryDescDatas.begin(); Iter != GeometryDescDatas.end(); ++Iter)
+	{
+		if (Iter->lock() == DescData)
+		{
+			GeometryDescDatas.erase(Iter);
+			break;
+		}
+	}
+}
+
+void FRenderingLayer::ClearGeometryDescData()
+{
+	GeometryDescDatas.clear();
+}
+
 void FRenderingLayer::DrawAllObjectsByLayer(float DeltaTime)
 {
 	for (auto& data_weak : GeometryDescDatas)

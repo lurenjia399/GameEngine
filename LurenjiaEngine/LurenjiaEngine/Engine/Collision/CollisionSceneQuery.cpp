@@ -57,6 +57,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 								OutHitResult.bHit = true;
 								OutHitResult.Component_ = GeometryDescData->MeshComponet;
 								OutHitResult.Time = TriangleTestTime;
+								OutHitResult.GeometryDescData = GeometryDescData;
 								auto meshComp = GeometryDescData->MeshComponet->GetOuter();
 								if (!meshComp.expired())
 								{
@@ -66,7 +67,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 								{
 									Engine_Log_Error("FCollisionSceneQuery::RaycastSingle meshComp is nullptr");
 								}
-								
+								return true;
 							}
 						}
 					}
