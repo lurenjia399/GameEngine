@@ -2,13 +2,7 @@
 
 ASpotLight::ASpotLight()
 {
-	
-}
-
-void ASpotLight::BeginInit()
-{
-	Super::BeginInit();
-	RangeLightComponent = LurenjiaEngine::CreateObject<CSpotLightComponent>(shared_from_this(), "PointLightComponent");
+	RangeLightComponent = LurenjiaEngine::CreateObject<CSpotLightComponent>(this, "PointLightComponent");
 }
 
 void ASpotLight::Tick(float DeltaTime)

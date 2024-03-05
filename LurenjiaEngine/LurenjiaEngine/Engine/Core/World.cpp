@@ -1,16 +1,12 @@
 #include "World.h"
 #include "Camera.h"
 
-void CWorld::BeginInit()
+CWorld::CWorld()
 {
-	camera = LurenjiaEngine::CreateObject<ACamera>(shared_from_this(), "camera");
+	camera = LurenjiaEngine::CreateObject<ACamera>(this, "camera");
 	camera->SetPosition(XMFLOAT3(-24.f, 0.f, 2.f));
 
 	fog = nullptr;
-}
-
-CWorld::CWorld()
-{
 }
 
 std::shared_ptr<AFog> CWorld::GetFog() const

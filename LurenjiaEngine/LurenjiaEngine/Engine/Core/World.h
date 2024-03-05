@@ -11,7 +11,6 @@ class AFog;
 class CWorld : public CCoreMinimalObject
 {
 public:
-	virtual void BeginInit() override;
 
 	CWorld();
 	shared_ptr<ACamera> GetCamera() const { return camera; }
@@ -20,7 +19,7 @@ public:
 	template<typename T>
 	shared_ptr<T> CreateActor(const string& name)
 	{
-		shared_ptr<T> actor = LurenjiaEngine::CreateObject<T>(shared_from_this(), name);
+		shared_ptr<T> actor = LurenjiaEngine::CreateObject<T>(this, name);
 		WorldActors.emplace_back(actor);
 
 		return actor;
@@ -29,7 +28,7 @@ public:
 	template<>
 	shared_ptr<AFog> CreateActor(const string& name)
 	{
-		fog = LurenjiaEngine::CreateObject<AFog>(shared_from_this(), name);
+		fog = LurenjiaEngine::CreateObject<AFog>(this, name);
 		WorldActors.emplace_back(fog);
 
 		return fog;

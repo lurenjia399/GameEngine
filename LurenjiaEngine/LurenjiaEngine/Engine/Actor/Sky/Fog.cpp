@@ -4,13 +4,7 @@
 AFog::AFog()
 	: FogComponent(nullptr)
 {
-	
-}
-
-void AFog::BeginInit()
-{
-	Super::BeginInit();
-	FogComponent = LurenjiaEngine::CreateObject<CFogComponent>(shared_from_this(), "FogComponent");
+	FogComponent = LurenjiaEngine::CreateObject<CFogComponent>(this, "FogComponent");
 }
 
 void AFog::SetFogColor(const fvector_color& FogColor)

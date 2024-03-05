@@ -35,20 +35,13 @@ namespace LurenjiaEngine
 	/// CMeshManage.cpp里会走这些
 	/// </summary>
 	template<typename T, typename S, typename ...ParamTypes>
-	std::shared_ptr<T> CreateMeshComponet_Inner(weak_ptr<CCoreMinimalObject> InCoreMinimalObject, const S& name, ParamTypes&&... Params)
+	std::shared_ptr<T> CreateMeshComponet_Inner(CMeshManage* InMeshManage, const S& name, ParamTypes&&... Params)
 	{
-		if (InCoreMinimalObject.expired())
-		{
-			Engine_Log_Error("std::shared_ptr<T> CreateMeshComponet_Inner InMeshManage is nullptr");
-			assert(0);
-		}
-		shared_ptr<CMeshManage> InMeshManage = static_pointer_cast<CMeshManage>(InCoreMinimalObject.lock());
-
-		//T* meshComponent = new T();
 		std::shared_ptr<T> meshComponent = std::make_shared<T>();
-		meshComponent->BeginInit();
 		meshComponent->ResetGuid(name);
 
-		return CreateMeshComponet_Inner<T>(InMeshManage, meshComponent, Params...);
+		auto InMeshManage_shared = static_pointer_cast<CMeshManage>(InMeshManage->shared_from_this());
+
+		return CreateMeshComponet_Inner<T>(InMeshManage_shared, meshComponent, Params...);
 	}
 }

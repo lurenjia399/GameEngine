@@ -58,15 +58,8 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 								OutHitResult.Component_ = GeometryDescData->MeshComponet;
 								OutHitResult.Time = TriangleTestTime;
 								OutHitResult.GeometryDescData = GeometryDescData;
-								auto meshComp = GeometryDescData->MeshComponet->GetOuter();
-								if (!meshComp.expired())
-								{
-									OutHitResult.Actor_ = static_pointer_cast<AActor>(meshComp.lock());
-								}
-								else
-								{
-									Engine_Log_Error("FCollisionSceneQuery::RaycastSingle meshComp is nullptr");
-								}
+								OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
+								
 								return true;
 							}
 						}

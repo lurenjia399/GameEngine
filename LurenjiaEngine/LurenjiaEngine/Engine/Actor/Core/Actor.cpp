@@ -3,12 +3,9 @@
 
 AActor::AActor()
 {
+	TransformationComponent = LurenjiaEngine::CreateObject<CTransformationComponent>(this, "AActor::TransformationComponent");
 }
 
-void AActor::BeginInit()
-{
-	TransformationComponent = LurenjiaEngine::CreateObject<CTransformationComponent>(shared_from_this(), "AActor::TransformationComponent");
-}
 
 void AActor::SetPosition(const XMFLOAT3& InPosition)
 {

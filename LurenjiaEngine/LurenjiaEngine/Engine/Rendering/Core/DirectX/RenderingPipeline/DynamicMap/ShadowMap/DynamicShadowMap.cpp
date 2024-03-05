@@ -84,7 +84,7 @@ void FDynamicShadowMap::Draw(float DeltaTime)
 void FDynamicShadowMap::BuildViewport()
 {
 	// 注意这个地方的outer传了个nullptr
-	Viewport = LurenjiaEngine::CreateObject<AClientViewport>({}, "ShadowMapViewport");
+	Viewport = LurenjiaEngine::CreateObject<AClientViewport>(nullptr, "ShadowMapViewport");
 }
 
 void FDynamicShadowMap::SetViewportPosition(const XMFLOAT3& InCenterPoint)

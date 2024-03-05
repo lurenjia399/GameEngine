@@ -8,10 +8,9 @@
 class CFogComponent;
 class AFog : public AActor
 {
-	typedef AFog Super;
+	typedef AActor Super;
 public:
 	AFog();
-	virtual void BeginInit() override;
 
 	//外部设置接口
 public:

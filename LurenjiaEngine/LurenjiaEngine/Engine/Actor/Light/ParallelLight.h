@@ -13,7 +13,6 @@ class AParallelLight : public AActor, public IDirectXDeviceInterface
 	typedef AActor Super;
 public:
 	AParallelLight();
-	virtual void BeginInit() override;
 
 	void Tick(float DeltaTime) override;
 	void SetPosition(const XMFLOAT3& InPosition) override;

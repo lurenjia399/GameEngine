@@ -33,21 +33,21 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	, LightManage({})
 	, World({})
 {
-}
-
-int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters& InParameters)
-{
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
 		SwapChainBuffer.emplace_back(ComPtr<ID3D12Resource>());
 	}
 	// 使用 shared_from_this 需要在初始化之后，源码里的weak_ptr是在初始化赋值的
-	MeshManage = LurenjiaEngine::CreateObject<CMeshManage>(shared_from_this(), "MeshManage");
-	LightManage = LurenjiaEngine::CreateObject<CLightManage>(shared_from_this(), "LightManage");
+	MeshManage = LurenjiaEngine::CreateObject<CMeshManage>(this, "MeshManage");
+	LightManage = LurenjiaEngine::CreateObject<CLightManage>(this, "LightManage");
 
 	World = {};
 
 	FRenderLayerManage::GetRenderLayerManage();//创建层级必须在渲染模型之前
+}
+
+int CDirectXRenderingEngine::PreInit(FWinMainCommandParameters& InParameters)
+{
 	Engine_Log("DirectXRenderingEngine pre initialization complete.");
 	return 1;
 }

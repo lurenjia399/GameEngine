@@ -10,7 +10,6 @@ class AActor : public CCoreMinimalObject
 {
 public:
 	AActor();
-	virtual void BeginInit() override;
 
 	virtual void SetPosition(const XMFLOAT3& InPosition);
 	virtual void SetRotation(const fvector_3d& InRotation);
