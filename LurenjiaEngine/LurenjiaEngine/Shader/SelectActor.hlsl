@@ -8,21 +8,19 @@ struct MeshVertexIn
 struct MeshVertexOut
 {
     float4 Position : SV_POSITION;
-    float2 TexCoord : TexCoord;
+    float4 WorldPosition : POSITIONT;
 };
 
 MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 {
-    MeshVertexOut MV_out = (MeshVertexOut) 0;
+    MeshVertexOut MV_out;
     
-    MaterialConstantBuffer material = AMaterials[MaterialIndex]; // 获取当前物体材质
+    float4 WorldPosition = mul(WorldMatrix, float4(mv.Position, 1.0f));
+    float3 ViewDirection = normalize(cameraPosition.xyz - WorldPosition.xyz);
+    WorldPosition.xyz += ViewDirection;
     
     float4x4 mvp = mul(ViewProjectionMatrix, WorldMatrix);
     MV_out.Position = mul(mvp, float4(mv.Position, 1.0f)); //经过mvp变换到齐次剪裁空间
-    
-    float4 worldTexTransformation = mul(ObjectTextureTransformation, float4(mv.TexCoord, 0.f, 1.f));
-    MV_out.TexCoord = mul(material.TransformInformation, worldTexTransformation).xy;
-    
     
     return MV_out;
 }

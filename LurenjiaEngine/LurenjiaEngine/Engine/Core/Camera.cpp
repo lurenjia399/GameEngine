@@ -50,6 +50,8 @@ void ACamera::OnClickedScreen(int X, int Y)
 				std::shared_ptr<CMeshComponent> component = HitResult.Component_.lock();
 				Engine_Log_Error("HitResult name[%s]", component->GetName().c_str());
 
+				FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
+
 				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, HitResult.GeometryDescData);
 			}
 		}

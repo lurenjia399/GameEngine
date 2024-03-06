@@ -15,17 +15,18 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 
 		
 		// 注意这个顺序，这个顺序对么？ 摄像机矩阵的逆 * 世界矩阵的逆 ,,,存储的矩阵长相是一样的，但是代码这是主行，shader是主列
-		XMMATRIX View2LocalMatrix = XMMatrixMultiply(World2ViewMatrixInverse, Local2WorldMatrix);
+		XMMATRIX View2LocalMatrix = XMMatrixMultiply(World2ViewMatrixInverse, Local2WorldMatrixInverse);
 
 		XMVECTOR LocalOriginPoint = DirectX::XMVector3TransformCoord(ViewOriginPoint, View2LocalMatrix);
 		XMVECTOR LocalDirection = DirectX::XMVector3TransformNormal(ViewDirection, View2LocalMatrix);
-		LocalDirection = XMVector3Normalize(LocalDirection);
+		LocalDirection = DirectX::XMVector3Normalize(LocalDirection);
 
 		float BoundTime = 0.f; //碰撞到AABB的时间
 		float TriangleTime = FLT_MAX;
 		// 找到和模型AABB有交点的模型
 		if (GeometryDescData->AABB_box.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
 		{
+			if(BoundTime <= 0 ) return false;
 			if (BoundTime < FinalTime)
 			{
 				if (GeometryDescData->MeshRenderingData)
@@ -49,6 +50,8 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 						float TriangleTestTime = 0.f;//碰撞到AABB中的三角形时间
 						if (DirectX::TriangleTests::Intersects(LocalOriginPoint, LocalDirection, V0, V1, V2, TriangleTestTime))
 						{
+							//if(TriangleTestTime <= 0) continue;
+
 							FinalTime = BoundTime;
 							if (TriangleTestTime < TriangleTime)
 							{
