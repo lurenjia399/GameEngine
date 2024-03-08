@@ -34,7 +34,7 @@ namespace MaterialTest
 		{
 			PlaneMesh->SetMeshComponent("PlaneMeshComponent", 4.f, 3.f, 20, 20);
 			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
-			PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 30.f, 1.f));
+			PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 1.f, 30.f));
 			if (auto PlaneMaterial = make_shared<CMaterial>())
 			{
 				PlaneMaterial->ResetGuid("PlaneMateria");//给创建的材质设置Guid

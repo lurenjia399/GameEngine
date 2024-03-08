@@ -73,9 +73,9 @@ void FRenderingLayer::UpdateObjectConstantBuffer()
 
 		XMMATRIX scaleMatrix =
 		{
-			Scale.y,	0.0f,		0.0f,		0.0f,
-			0.0f,		Scale.z,	0.0f,		0.0f,
-			0.0f,		0.0f,		Scale.x,	0.0f,
+			Scale.x,	0.0f,		0.0f,		0.0f,
+			0.0f,		Scale.y,	0.0f,		0.0f,
+			0.0f,		0.0f,		Scale.z,	0.0f,
 			0.0f,		0.0f,		0.0f,		1.0f
 		};
 
@@ -86,6 +86,13 @@ void FRenderingLayer::UpdateObjectConstantBuffer()
 			RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
 			0,				0,			0,					1.f
 		};
+		//XMMATRIX rotateMatrix =
+		//{
+		//	ForwardVector.x,	RightVector.x, UpVector.x,	0.f,
+		//	ForwardVector.y,	RightVector.y, UpVector.y,	0.f,
+		//	ForwardVector.z,	RightVector.z, UpVector.z,	0.f,
+		//	0,				0,			0,					1.f
+		//};
 		XMMATRIX TranslateMatrix =
 		{
 			1.f, 0.f, 0.f, Position.x,

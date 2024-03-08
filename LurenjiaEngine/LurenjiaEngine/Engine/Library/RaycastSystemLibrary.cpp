@@ -21,11 +21,11 @@ bool FRaycastSystemLibrary::HitResultByScreen(shared_ptr<CWorld> InWorld, int Sc
 
 		XMFLOAT2 view = XMFLOAT2(0.f, 0.f);// 这个就是在z为1的情况下，摄像机空间下的位置
 		view.x = (2.0f * ScreenX / width - 1.0f) * z / ProjectX;
-		view.y = (2.0f * ScreenY / height - 1.0f) * z / ProjectY;
+		view.y = (-2.0f * ScreenY / height + 1.0f) * z / ProjectY; // 注意这里符号，因为dx的视口原点在左上角，opengl的在左下角
 
 		XMVECTOR ViewOriginPoint = XMVectorSet(0.f, 0.f, 0.f, 1.0f); // 摄像机空间下的远点，也就是摄像机所在的位置
-		XMVECTOR ViewDirection = XMVectorSet(view.x, view.y, 1.f, 0.f);// 射线方向
-		ViewDirection = XMVector3Normalize(ViewDirection);
+		XMVECTOR ViewDirection = XMVectorSet(view.x, view.y, 1.0f, 0.f);// 射线方向
+		//ViewDirection = XMVector3Normalize(ViewDirection);
 
 		XMMATRIX World2ViewMatrix = XMLoadFloat4x4(&camera->ViewMatrix);
 		XMVECTOR World2ViewMatrixDeterminant = DirectX::XMMatrixDeterminant(World2ViewMatrix);

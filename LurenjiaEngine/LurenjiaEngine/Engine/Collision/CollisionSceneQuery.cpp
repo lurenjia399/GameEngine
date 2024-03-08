@@ -26,51 +26,54 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 		// 找到和模型AABB有交点的模型
 		if (GeometryDescData->AABB_box.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
 		{
-			if(BoundTime <= 0 ) return false;
-			if (BoundTime < FinalTime)
+			if (BoundTime > 0)
 			{
-				if (GeometryDescData->MeshRenderingData)
+				if (BoundTime < FinalTime)
 				{
-					UINT TriangleNum = GeometryDescData->IndexSize / 3;
-					// 遍历模型上的所有三角形
-					for (UINT i = 0; i < TriangleNum; ++i)
+					if (GeometryDescData->MeshRenderingData)
 					{
-						XMINT3 Indices = {}; // xyz存储了三角形的索引
-						Indices.x = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 0];
-						Indices.y = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 1];
-						Indices.z = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 2];
-
-						XMFLOAT3 Vertex0 = GeometryDescData->MeshRenderingData->VertexData[Indices.x].Pos;
-						XMFLOAT3 Vertex1 = GeometryDescData->MeshRenderingData->VertexData[Indices.y].Pos;
-						XMFLOAT3 Vertex2 = GeometryDescData->MeshRenderingData->VertexData[Indices.z].Pos;
-						XMVECTOR V0 = XMLoadFloat3(&Vertex0);
-						XMVECTOR V1 = XMLoadFloat3(&Vertex1);
-						XMVECTOR V2 = XMLoadFloat3(&Vertex2);
-
-						float TriangleTestTime = 0.f;//碰撞到AABB中的三角形时间
-						if (DirectX::TriangleTests::Intersects(LocalOriginPoint, LocalDirection, V0, V1, V2, TriangleTestTime))
+						UINT TriangleNum = GeometryDescData->IndexSize / 3;
+						// 遍历模型上的所有三角形
+						for (UINT i = 0; i < TriangleNum; ++i)
 						{
-							//if(TriangleTestTime <= 0) continue;
+							XMINT3 Indices = {}; // xyz存储了三角形的索引
+							Indices.x = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 0];
+							Indices.y = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 1];
+							Indices.z = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 2];
 
-							FinalTime = BoundTime;
-							if (TriangleTestTime < TriangleTime)
+							XMFLOAT3 Vertex0 = GeometryDescData->MeshRenderingData->VertexData[Indices.x].Pos;
+							XMFLOAT3 Vertex1 = GeometryDescData->MeshRenderingData->VertexData[Indices.y].Pos;
+							XMFLOAT3 Vertex2 = GeometryDescData->MeshRenderingData->VertexData[Indices.z].Pos;
+							XMVECTOR V0 = XMLoadFloat3(&Vertex0);
+							XMVECTOR V1 = XMLoadFloat3(&Vertex1);
+							XMVECTOR V2 = XMLoadFloat3(&Vertex2);
+
+							float TriangleTestTime = 0.f;//碰撞到AABB中的三角形时间
+							if (DirectX::TriangleTests::Intersects(LocalOriginPoint, LocalDirection, V0, V1, V2, TriangleTestTime))
 							{
-								TriangleTime = TriangleTestTime;
+								//if(TriangleTestTime <= 0) continue;
 
-								OutHitResult.bHit = true;
-								OutHitResult.Component_ = GeometryDescData->MeshComponet;
-								OutHitResult.Time = TriangleTestTime;
-								OutHitResult.GeometryDescData = GeometryDescData;
-								OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
-								
-								return true;
+								FinalTime = BoundTime;
+								if (TriangleTestTime < TriangleTime)
+								{
+									TriangleTime = TriangleTestTime;
+
+									OutHitResult.bHit = true;
+									OutHitResult.Component_ = GeometryDescData->MeshComponet;
+									OutHitResult.Time = TriangleTestTime;
+									OutHitResult.GeometryDescData = GeometryDescData;
+									OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
+									
+									return true;
+								}
 							}
 						}
 					}
 				}
 			}
+			
 		}
 	}
-
+	//return true;
     return false;
 }

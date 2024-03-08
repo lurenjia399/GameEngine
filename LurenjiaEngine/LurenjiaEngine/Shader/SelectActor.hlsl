@@ -3,24 +3,26 @@
 struct MeshVertexIn
 {
     float3 Position : POSITION;
-    float2 TexCoord : TEXCOORD;
 };
 struct MeshVertexOut
 {
     float4 Position : SV_POSITION;
-    float4 WorldPosition : POSITIONT;
+    float4 WorldPosition : POSITION;
 };
 
 MeshVertexOut VertexShaderMain(MeshVertexIn mv)
 {
     MeshVertexOut MV_out;
     
-    float4 WorldPosition = mul(WorldMatrix, float4(mv.Position, 1.0f));
-    float3 ViewDirection = normalize(cameraPosition.xyz - WorldPosition.xyz);
-    WorldPosition.xyz += ViewDirection;
+    MV_out.WorldPosition = mul(WorldMatrix, float4(mv.Position, 1.0f));
+    float3 ViewDirection = normalize(cameraPosition.xyz - MV_out.WorldPosition.xyz);
+    MV_out.WorldPosition.xyz += ViewDirection;
+    
+    
     
     float4x4 mvp = mul(ViewProjectionMatrix, WorldMatrix);
-    MV_out.Position = mul(mvp, float4(mv.Position, 1.0f)); //经过mvp变换到齐次剪裁空间
+    //MV_out.Position = mul(mvp, float4(mv.Position, 1.0f)); //经过mvp变换到齐次剪裁空间
+    MV_out.Position = mul(ViewProjectionMatrix, MV_out.WorldPosition);
     
     return MV_out;
 }

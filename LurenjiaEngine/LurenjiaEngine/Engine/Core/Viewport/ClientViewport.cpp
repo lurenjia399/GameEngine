@@ -27,6 +27,13 @@ void AClientViewport::BulidViewMatrix(float DeltaTime)
 		RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
 		0,				0,			0,					1.f
 	};
+	//XMMATRIX rotateMatrix =
+	//{
+	//	RightVector.x,	UpVector.x, ForwardVector.x,	0.f,
+	//	RightVector.y,	UpVector.y, ForwardVector.y,	0.f,
+	//	RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
+	//	0,				0,			0,					1.f
+	//};
 	rotateMatrix = XMMatrixTranspose(rotateMatrix);
 	XMMATRIX TranslateMatrix =
 	{

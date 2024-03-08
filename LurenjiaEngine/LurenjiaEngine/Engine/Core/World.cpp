@@ -4,8 +4,8 @@
 CWorld::CWorld()
 {
 	camera = LurenjiaEngine::CreateObject<ACamera>(this, "camera");
-	camera->SetPosition(XMFLOAT3(-24.f, 0.f, 2.f));
-
+	//camera->SetPosition(XMFLOAT3(-24.f, 0.f, 2.f));
+	camera->SetPosition(XMFLOAT3(0.f, 0.f, 0.f));
 	fog = nullptr;
 }
 
