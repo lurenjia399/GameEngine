@@ -17,6 +17,7 @@
 #include "../../../../Test/Reflect/ReflectTest.h"
 #include "../../../../Test/ShadowMap/ShadowMapTest.h"
 #include "../../../../Test/ComputeShader/ComputeShaderTest.h"
+#include "../../../../Test/SelectActor/SelectActorTest.h"
 
 enum class EMaterialType;
 CDirectXRenderingEngine::CDirectXRenderingEngine()
@@ -102,12 +103,13 @@ int CDirectXRenderingEngine::PostInit()
 	//}
 
 
-	MaterialTest::BuildMaterialTestData(); // 调整完成
+	//MaterialTest::BuildMaterialTestData(); // 调整完成
 	//TextureTest::BuildTextureTestData();
 	//ReflectTest::BuildReflectTestData();
 	//ShadowMapTest::BuildShadowMapTestData();
 	//TransparentTest::BuildTransparentTestData();
 	//ComputeShaderTest::BuildComputeShaderTestData();
+	SelectActorTest::BuildSelectActorTestData();
 	
 	
 

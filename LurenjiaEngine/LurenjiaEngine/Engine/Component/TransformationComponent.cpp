@@ -8,6 +8,9 @@ CTransformationComponent::CTransformationComponent()
 	, ForwardVector(1.f, 0.f, 0.f)
 	, RightVector(0.f, 1.f, 0.0f)
 	, UpVector(0.f, 0.0f, 1.f)
+	//, ForwardVector(0.f, 0.f, 1.f)
+	//, RightVector(1.f, 0.f, 0.0f)
+	//, UpVector(0.f, 1.0f, 0.f)
 {
 }
 
