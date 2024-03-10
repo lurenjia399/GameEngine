@@ -12,6 +12,7 @@ enum class EPiepelineStateType
 	WIREFRAME = 4,		//线框pso
 	GRAYMODEL = 5,		//模型pso
 	SHADOW = 6,			//阴影pso
+	SELECT = 7,			//选择pso
 };
 
 #endif

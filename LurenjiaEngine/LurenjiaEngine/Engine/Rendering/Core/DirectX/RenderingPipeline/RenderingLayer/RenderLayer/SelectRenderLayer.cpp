@@ -26,6 +26,28 @@ void FSelectRenderLayer::BuildShader()
 void FSelectRenderLayer::BuildPSO()
 {
 	Super::BuildPSO();
+
+	DirectXPiepelineState->Build((int)EPiepelineStateType::SELECT);
+}
+
+void FSelectRenderLayer::PreDraw(float DeltaTime)
+{
+	Super::PreDraw(DeltaTime);
+}
+
+void FSelectRenderLayer::Draw(float DeltaTime)
+{
+	DirectXPiepelineState->isTemporaryResetPSO((int)EPiepelineStateType::SELECT);
+
+	Super::Draw(DeltaTime);
+
+	//每次渲染完当前层级后，需要还原pso的状态
+	RestorePSO();
+}
+
+void FSelectRenderLayer::PostDraw(float DeltaTime)
+{
+	Super::PostDraw(DeltaTime);
 }
 
 int FSelectRenderLayer::GetRenderLayerType() const

@@ -20,6 +20,7 @@ void AClientViewport::BulidViewMatrix(float DeltaTime)
 	XMFLOAT3 ForwardVector = TransformationComponent->GetForward();
 	XMFLOAT3 PositionVector = TransformationComponent->GetPosition();
 
+	// 注意这个旋转矩阵表示的是，在世界空间下，摄像机的旋转
 	XMMATRIX rotateMatrix =
 	{
 		RightVector.x,	UpVector.x, ForwardVector.x,	0.f,
@@ -32,6 +33,13 @@ void AClientViewport::BulidViewMatrix(float DeltaTime)
 	//	RightVector.x,	UpVector.x, ForwardVector.x,	0.f,
 	//	RightVector.y,	UpVector.y, ForwardVector.y,	0.f,
 	//	RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
+	//	0,				0,			0,					1.f
+	//};
+	//XMMATRIX rotateMatrix =
+	//{
+	//	1.f,	0.f, 0.f,	0.f,
+	//	0.f,	1.f, 0.f,	0.f,
+	//	0.f,	0.f, 1.f,	0.f,
 	//	0,				0,			0,					1.f
 	//};
 	rotateMatrix = XMMatrixTranspose(rotateMatrix);

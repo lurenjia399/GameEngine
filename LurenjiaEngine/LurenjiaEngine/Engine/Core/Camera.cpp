@@ -50,14 +50,15 @@ void ACamera::OnClickedScreen(int X, int Y)
 				std::shared_ptr<CMeshComponent> component = HitResult.Component_.lock();
 				Engine_Log_Error("HitResult name[%s]", component->GetName().c_str());
 
-				//FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
 
+				FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
 				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, HitResult.GeometryDescData);
 			}
 		}
 		else
 		{
-			//Engine_Log("No Hit Actor");
+			FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
+			Engine_Log("No Hit Actor");
 		}
 	}
 	
@@ -359,7 +360,9 @@ void ACamera::RotateAroundYawAxis(float InRotateDegrees)
 	XMFLOAT3 pitch = TransformationComponent->GetRight();
 	XMFLOAT3 roll = TransformationComponent->GetForward();
 
-	XMMATRIX RotateYawMatrix = XMMatrixRotationZ(InRotateDegrees);
+	// 这里绕着z轴旋转已经是UE坐标系了
+	//XMMATRIX RotateYawMatrix = XMMatrixRotationZ(InRotateDegrees);
+	XMMATRIX RotateYawMatrix = XMMatrixRotationY(InRotateDegrees);
 
 	XMStoreFloat3(&TransformationComponent->GetRight(), XMVector3TransformNormal(XMLoadFloat3(&pitch), RotateYawMatrix));
 	XMStoreFloat3(&TransformationComponent->GetForward(), XMVector3TransformNormal(XMLoadFloat3(&roll), RotateYawMatrix));

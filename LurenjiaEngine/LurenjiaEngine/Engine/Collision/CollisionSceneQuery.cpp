@@ -62,7 +62,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 									OutHitResult.Component_ = GeometryDescData->MeshComponet;
 									OutHitResult.Time = TriangleTestTime;
 									OutHitResult.GeometryDescData = GeometryDescData;
-									OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
+									//OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
 									
 									return true;
 								}

@@ -79,6 +79,7 @@ void FRenderingLayer::UpdateObjectConstantBuffer()
 			0.0f,		0.0f,		0.0f,		1.0f
 		};
 
+		// 模型变换也是基变换
 		XMMATRIX rotateMatrix =
 		{
 			RightVector.x,	UpVector.x, ForwardVector.x,	0.f,
@@ -88,10 +89,10 @@ void FRenderingLayer::UpdateObjectConstantBuffer()
 		};
 		//XMMATRIX rotateMatrix =
 		//{
-		//	ForwardVector.x,	RightVector.x, UpVector.x,	0.f,
-		//	ForwardVector.y,	RightVector.y, UpVector.y,	0.f,
-		//	ForwardVector.z,	RightVector.z, UpVector.z,	0.f,
-		//	0,				0,			0,					1.f
+		//	1.f,	0.f, 0.f,	0.f,
+		//	0.f,	1.f, 0.f,	0.f,
+		//	0.f,	0.f, 1.f,	0.f,
+		//	0,		0,	 0,		1.f
 		//};
 		XMMATRIX TranslateMatrix =
 		{

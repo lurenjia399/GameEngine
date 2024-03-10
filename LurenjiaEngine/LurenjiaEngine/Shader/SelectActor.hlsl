@@ -24,10 +24,14 @@ MeshVertexOut VertexShaderMain(MeshVertexIn mv)
     //MV_out.Position = mul(mvp, float4(mv.Position, 1.0f)); //经过mvp变换到齐次剪裁空间
     MV_out.Position = mul(ViewProjectionMatrix, MV_out.WorldPosition);
     
+    //法线
+    //Out.Normal = mul(mv.Normal, (float3x3) WorldMatrix);
+    
     return MV_out;
 }
 
 float4 PixelShaderMain(MeshVertexOut mvOut) : SV_Target
 {
-    return float4(1.0f, 0.f, 0.f, 1.0f);
+
+    return float4(1.f, 0.f, 0.f, 1.f);
 }
