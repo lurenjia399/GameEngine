@@ -28,20 +28,6 @@ void AClientViewport::BulidViewMatrix(float DeltaTime)
 		RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
 		0,				0,			0,					1.f
 	};
-	//XMMATRIX rotateMatrix =
-	//{
-	//	RightVector.x,	UpVector.x, ForwardVector.x,	0.f,
-	//	RightVector.y,	UpVector.y, ForwardVector.y,	0.f,
-	//	RightVector.z,	UpVector.z, ForwardVector.z,	0.f,
-	//	0,				0,			0,					1.f
-	//};
-	//XMMATRIX rotateMatrix =
-	//{
-	//	1.f,	0.f, 0.f,	0.f,
-	//	0.f,	1.f, 0.f,	0.f,
-	//	0.f,	0.f, 1.f,	0.f,
-	//	0,				0,			0,					1.f
-	//};
 	rotateMatrix = XMMatrixTranspose(rotateMatrix);
 	XMMATRIX TranslateMatrix =
 	{
@@ -50,6 +36,8 @@ void AClientViewport::BulidViewMatrix(float DeltaTime)
 		0.f, 0.f, 1.f, -PositionVector.z,
 		0.f, 0.f, 0.f, 1.f
 	};
+
+	// 注意这里，通过摄像机获取的摄像机矩阵是主列的，我们在代码中都是主行的，也就是在使用的时候需要转置
 	XMStoreFloat4x4(&ViewMatrix, rotateMatrix * TranslateMatrix);
 }
 

@@ -30,6 +30,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 			{
 				if (BoundTime < FinalTime)
 				{
+					FinalTime = BoundTime;
 					if (GeometryDescData->MeshRenderingData)
 					{
 						UINT TriangleNum = GeometryDescData->IndexSize / 3;
@@ -51,10 +52,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 							float TriangleTestTime = 0.f;//碰撞到AABB中的三角形时间
 							if (DirectX::TriangleTests::Intersects(LocalOriginPoint, LocalDirection, V0, V1, V2, TriangleTestTime))
 							{
-								//if(TriangleTestTime <= 0) continue;
-
-								FinalTime = BoundTime;
-								if (TriangleTestTime < TriangleTime)
+								if (TriangleTestTime > 0 && TriangleTestTime < TriangleTime)
 								{
 									TriangleTime = TriangleTestTime;
 
@@ -62,9 +60,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 									OutHitResult.Component_ = GeometryDescData->MeshComponet;
 									OutHitResult.Time = TriangleTestTime;
 									OutHitResult.GeometryDescData = GeometryDescData;
-									//OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
-									
-									return true;
+									OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
 								}
 							}
 						}
@@ -74,6 +70,6 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 			
 		}
 	}
-	//return true;
-    return false;
+
+    return OutHitResult.bHit;
 }

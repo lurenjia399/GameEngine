@@ -23,27 +23,16 @@ bool FRaycastSystemLibrary::HitResultByScreen(shared_ptr<CWorld> InWorld, int Sc
 		view.x = (2.0f * ScreenX / width - 1.0f) * z / ProjectX;
 		view.y = (-2.0f * ScreenY / height + 1.0f) * z / ProjectY; // 注意这里符号，因为dx的视口原点在左上角，opengl的在左下角
 
-		XMVECTOR ViewOriginPoint = XMVectorSet(0.f, 0.f, 0.f, 1.0f); // 摄像机空间下的远点，也就是摄像机所在的位置
-		//XMVECTOR ViewDirection = XMVectorSet(1.0f, view.x, view.y, 0.f);// 射线方向
+		XMVECTOR ViewOriginPoint = XMVectorSet(0.f, 0.f, 0.f, 1.0f); // 摄像机空间下的原点，也就是摄像机所在的位置
 		XMVECTOR ViewDirection = XMVectorSet(view.x, view.y, 1.0f, 0.f);// 射线方向
 		ViewDirection = XMVector3Normalize(ViewDirection);
 
 		XMMATRIX World2ViewMatrix = XMLoadFloat4x4(&camera->ViewMatrix);
+		World2ViewMatrix = XMMatrixTranspose(World2ViewMatrix);//切记需要转置，，，主列的矩阵需要转换成主行的
 		XMVECTOR World2ViewMatrixDeterminant = DirectX::XMMatrixDeterminant(World2ViewMatrix);
 		XMMATRIX World2ViewMatrixInverse = DirectX::XMMatrixInverse(&World2ViewMatrixDeterminant, World2ViewMatrix); // 求出摄像机矩阵的逆
 
-		bool bHit = FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, OutHitResult);
-
-		//if (!HitResult.Component_.expired())
-		//{
-		//	auto component = HitResult.Component_.lock();
-		//	Engine_Log_Error("HitResult name[%s]", component->GetName().c_str());
-		//}
-
-		if (bHit)
-		{
-			return true;
-		}
+		return FCollisionSceneQuery::RaycastSingle(InWorld, ViewOriginPoint, ViewDirection, World2ViewMatrixInverse, OutHitResult);
 		
 	}
 

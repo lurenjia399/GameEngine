@@ -514,22 +514,11 @@ void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const 
 		extents.x = (MaxPoint.x - MinPoint.x) * 0.5f;
 		extents.y = (MaxPoint.y - MinPoint.y) * 0.5f;
 		extents.z = (MaxPoint.z - MinPoint.z) * 0.5f;
-		center.x = (MaxPoint.x + MinPoint.x) * 0.5f;
-		center.y = (MaxPoint.y + MinPoint.y) * 0.5f;
-		center.z = (MaxPoint.z + MinPoint.z) * 0.5f;
+		center.x = extents.x + MinPoint.x;
+		center.y = extents.y + MinPoint.y;
+		center.z = extents.z + MinPoint.z;
 		center_v = XMLoadFloat3(&center);
 		extents_v = XMLoadFloat3(&extents);
-
-		XMMATRIX rotateMatrix =
-		{
-			0.f,	0.f, 1.f,	0.f,
-			1.f,	0.f, 0.f,	0.f,
-			0.f,	1.f, 0.f,	0.f,
-			0,		0,	 0,		1.f
-		};
-		rotateMatrix = XMMatrixTranspose(rotateMatrix);
-		//center_v = DirectX::XMVector3TransformNormal(center_v, rotateMatrix);
-		//extents_v = DirectX::XMVector3TransformNormal(extents_v, rotateMatrix);
 	}
 		
 	{

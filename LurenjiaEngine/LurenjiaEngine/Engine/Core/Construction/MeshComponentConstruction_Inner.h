@@ -37,10 +37,12 @@ namespace LurenjiaEngine
 	template<typename T, typename S, typename ...ParamTypes>
 	std::shared_ptr<T> CreateMeshComponet_Inner(CMeshManage* InMeshManage, const S& name, ParamTypes&&... Params)
 	{
+		std::shared_ptr<CMeshManage> InMeshManage_shared = static_pointer_cast<CMeshManage>(InMeshManage->shared_from_this());
+
 		std::shared_ptr<T> meshComponent = std::make_shared<T>();
 		meshComponent->ResetGuid(name);
-
-		auto InMeshManage_shared = static_pointer_cast<CMeshManage>(InMeshManage->shared_from_this());
+		meshComponent->SetOuter(InMeshManage);
+		
 
 		return CreateMeshComponet_Inner<T>(InMeshManage_shared, meshComponent, Params...);
 	}
