@@ -28,6 +28,8 @@ public:
 	virtual XMFLOAT3 GetUp() const;
 
 	virtual FORCEINLINE shared_ptr<CTransformationComponent> GetTransformationComponent() { return TransformationComponent; }
+
+	virtual void SetPickup(bool InPickup);
 protected:
 	CVARIABLE()
 	shared_ptr<CTransformationComponent> TransformationComponent;

@@ -10,6 +10,7 @@
 #include "../../../../Actor/Light/PointLight.h"
 #include "../../../../Mesh/BoxMesh.h"
 #include "../../../../Actor/Sky/Fog.h"
+#include "../../../../Core/Camera.h"
 
 #include "../../../../Test/Texture/TextureTest.h"
 #include "../../../../Test/Material/MaterialTest.h"
@@ -21,9 +22,7 @@
 
 enum class EMaterialType;
 CDirectXRenderingEngine::CDirectXRenderingEngine()
-	: ViewPortInfo({})
-	, ViewPortRect({})
-	, CurrentFenceIndex(0)
+	: CurrentFenceIndex(0)
 	, CurrentSwapBufferIndex(0)
 	, M4XQualityLevels(0)
 	, bMSAA4XEnabled(false)
@@ -186,8 +185,9 @@ void CDirectXRenderingEngine::StartSetMainViewportRenderTarget()
 	D3D12_RESOURCE_BARRIER ResourceBarrier = CD3DX12_RESOURCE_BARRIER::Transition(GetCurrentSwapBuffer(), D3D12_RESOURCE_STATE_PRESENT, D3D12_RESOURCE_STATE_RENDER_TARGET);
 	GraphicsCommandList->ResourceBarrier(1, &ResourceBarrier);
 
-	GraphicsCommandList->RSSetViewports(1, &ViewPortInfo);
-	GraphicsCommandList->RSSetScissorRects(1, &ViewPortRect);
+	
+	GraphicsCommandList->RSSetViewports(1, &World->GetCamera()->ViewPortInfo);
+	GraphicsCommandList->RSSetScissorRects(1, &World->GetCamera()->ViewPortRect);
 
 	//给RenderTarget和DepthSencil设置Resource Descriptor handle
 	D3D12_CPU_DESCRIPTOR_HANDLE SwapBufferView = GetCurrentSwapBufferView();
@@ -508,19 +508,9 @@ bool CDirectXRenderingEngine::PostInitDirect3D()
 	//将命令列表里的命令一条一条的添加到命令队列中，，，也就是提交命令列表
 	CommandQueue->ExecuteCommandLists(_countof(CommandList), CommandList);
 
-	//这些会覆盖原先的windows画布
-	ViewPortInfo.TopLeftX = 0;
-	ViewPortInfo.TopLeftY = 0;
-	ViewPortInfo.Width = (float)FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
-	ViewPortInfo.Height = (float)FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
-	ViewPortInfo.MinDepth = 0;
-	ViewPortInfo.MaxDepth = 1;
-
-	//设置视口的大小，原点在左上角
-	ViewPortRect.left = 0;
-	ViewPortRect.top = 0;
-	ViewPortRect.right = FEngineRenderConfig::GetRenderConfig()->ScreenWidth;
-	ViewPortRect.bottom = FEngineRenderConfig::GetRenderConfig()->ScreenHeight;
+	// 就不在这里初始化了，这里还没有world呢
+	//World->GetCamera()->ResetViewport(FEngineRenderConfig::GetRenderConfig()->ScreenWidth, FEngineRenderConfig::GetRenderConfig()->ScreenHeight);
+	//World->GetCamera()->ResetScissorRect(FEngineRenderConfig::GetRenderConfig()->ScreenWidth, FEngineRenderConfig::GetRenderConfig()->ScreenHeight);
 
 	//cpu等待gpu执行
 	WaitGPUCommandQueueComplete();

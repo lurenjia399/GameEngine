@@ -27,6 +27,11 @@ public:
 
 	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);
 	EMeshComponentRenderLayerType GetMeshComponentLayerType();
+
+	void SetPickup(bool bNewPickup);
+	bool GetIsPickup() const;
+protected:
+	bool bPickup;
 private:
 	CVARIABLE()
 	vector<shared_ptr<CMaterial>> Materials;

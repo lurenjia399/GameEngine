@@ -4,6 +4,7 @@ CMeshComponent::CMeshComponent()
 	: MeshCompLayerType(EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE)
 {
 	Materials.emplace_back(LurenjiaEngine::CreateObject<CMaterial>(this, "CMeshComponent::Material"));
+	bPickup = true;
 }
 
 void CMeshComponent::Init()
@@ -51,4 +52,14 @@ void CMeshComponent::SetMeshComponentLayerType(EMeshComponentRenderLayerType InT
 EMeshComponentRenderLayerType CMeshComponent::GetMeshComponentLayerType()
 {
 	return MeshCompLayerType;
+}
+
+void CMeshComponent::SetPickup(bool bNewPickup)
+{
+	bPickup = bNewPickup;
+}
+
+bool CMeshComponent::GetIsPickup() const
+{
+	return bPickup;
 }

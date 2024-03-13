@@ -66,3 +66,7 @@ XMFLOAT3 AActor::GetUp() const
 {
 	return TransformationComponent->GetUp();
 }
+
+void AActor::SetPickup(bool InPickup)
+{
+}

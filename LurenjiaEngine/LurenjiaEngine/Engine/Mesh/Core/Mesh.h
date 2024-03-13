@@ -23,6 +23,8 @@ public:
 	virtual void SetScale(const XMFLOAT3& InScale) override;
 
 	virtual void BuildMesh(const FMeshRenderingData* InRenderingData);
+	
+	virtual void SetPickup(bool bNewPickup);
 public:
 	void SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent);
 	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);

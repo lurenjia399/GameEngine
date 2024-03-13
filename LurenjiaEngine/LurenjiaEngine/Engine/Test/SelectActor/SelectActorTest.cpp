@@ -63,6 +63,7 @@ namespace SelectActorTest
 				PlaneMaterial->SetMaterialType(EMaterialType::HalfLambert);
 				PlaneMesh->SetSubMaterials(0, PlaneMaterial);
 			}
+			PlaneMesh->SetPickup(false); // 关掉拾取功能
 		}
 		
 		// 球
@@ -78,6 +79,7 @@ namespace SelectActorTest
 				SphereMaterial_1->SetMaterialType(EMaterialType::Lambert);
 				SphereMesh_1->SetSubMaterials(0, SphereMaterial_1);
 			}
+			//SphereMesh_1->SetPickup(false); // 关掉拾取功能
 		}
 
 		// 立方体
@@ -93,6 +95,7 @@ namespace SelectActorTest
 				CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
 				CubeMesh->SetSubMaterials(0, CubeMaterial);
 			}
+			//CubeMesh->SetPickup(false);
 		}
 
 		// 柱状mesh
@@ -108,6 +111,7 @@ namespace SelectActorTest
 				CylinderMaterial->SetMaterialType(EMaterialType::HalfLambert);
 				CylinderMesh->SetSubMaterials(0, CylinderMaterial);
 			}
+			//CylinderMesh->SetPickup(false);
 		}
 
 		

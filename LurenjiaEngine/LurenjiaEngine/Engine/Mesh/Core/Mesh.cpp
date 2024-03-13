@@ -54,6 +54,11 @@ void AMesh::BuildMesh(const FMeshRenderingData* InRenderingData)
 	}
 }
 
+void AMesh::SetPickup(bool bNewPickup)
+{
+	MeshComponent->SetPickup(bNewPickup);
+}
+
 void AMesh::SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent)
 {
 	MeshComponent = InMeshComponent;

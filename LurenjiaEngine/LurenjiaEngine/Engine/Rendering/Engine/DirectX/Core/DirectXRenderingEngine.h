@@ -69,8 +69,7 @@ private:
 
 	std::vector<ComPtr<ID3D12Resource>> SwapChainBuffer;			// 交换链中存放的rtv类型的资源
 	ComPtr<ID3D12Resource> DepthStencilBuffer;						// dsv类型的资源
-	D3D12_VIEWPORT ViewPortInfo;									// Describes the dimensions of a viewport
-	D3D12_RECT ViewPortRect;										// Describes the dimensions of a viewport
+
 private:
 	UINT CurrentFenceIndex;											// 当前的围栏值
 	int CurrentSwapBufferIndex;										// 当前交换链中资源索引

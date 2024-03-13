@@ -118,6 +118,10 @@ void FDynamicShadowMap::BuildViewport(const XMFLOAT3& InDirection, const XMFLOAT
 
 	// 构建orthMatrix
 	Viewport->BuildOrthMatrix(InRadius, InTargetPoint);
+
+	// 设置一下视口的大小
+	Viewport->ViewPortInfo = RenderTarget->GetViewport();
+	Viewport->ViewPortRect = RenderTarget->GetScissorRect();
 }
 
 void FDynamicShadowMap::GetViewportMatrix(XMFLOAT4X4& OutViewMatrix, XMFLOAT4X4& OutProjectMatrix)
