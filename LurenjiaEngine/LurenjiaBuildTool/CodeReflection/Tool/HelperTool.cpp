@@ -1,5 +1,27 @@
 #include "HelperTool.h"
 
+bool helper_tool_files::string_contain(const std::string& buff, const char* find_buff)
+{
+	return buff.find(find_buff) != -1;
+}
+
+bool helper_tool_files::remove_char_end(char* str, char sub_str)
+{
+	int len = (int)strlen(str);
+
+	for (int i = len; i >= 0; i--)
+	{
+		if (str[i] == sub_str)
+		{
+			//strcpy(&str[i], &str[i + 1]);
+			strcpy_s(&str[i], len - i, &str[i + 1]);
+			return true;
+		}
+	}
+
+	return false;
+}
+
 bool helper_tool_files::load_file_to_strings(const std::string& in_path, std::vector<std::string>& out_array)
 {
 	//get files size
@@ -102,7 +124,7 @@ unsigned int helper_tool_files::get_file_size_by_filename(const char* filename)
 	unsigned int file_size = 0;
 
 	FILE* f = NULL;
-	if ((f = fopen(filename, "r")) != NULL)
+	if ((fopen_s(&f, filename, "r")) != NULL)
 	{
 		file_size = get_file_size(f);
 
@@ -127,13 +149,14 @@ unsigned int helper_tool_files::get_file_size(FILE* file_handle)
 bool helper_tool_files::get_file_buf(const char* path, char* buf)
 {
 	FILE* f = NULL;
-	if ((f = fopen(path, "r")) != NULL)
+	if ((fopen_s(&f, path, "r")) != NULL)
 	{
 		char buf_tmp[2048] = { 0 };
 		int file_size = 0;
 		while ((file_size = (int)fread(buf_tmp, 1, 1024, f)) > 0)
 		{
-			strcat(buf, buf_tmp);
+			int len = strlen(buf) + strlen(buf_tmp) + 1;
+			strcat_s(buf, len, buf_tmp);
 			memset(buf_tmp, 0, sizeof(buf_tmp));
 		}
 
@@ -177,7 +200,8 @@ void helper_tool_files::remove_string_start(char* str, char const* sub_str)
 	int index = find_string(str, sub_str, 0);
 	if (index != -1)
 	{
-		strcpy(&str[index], &str[index + (int)strlen(sub_str)]);
+		int len = (int)strlen(sub_str) + 1;
+		strcpy_s(&str[index], len, &str[index + (int)strlen(sub_str)]);
 	}
 }
 
