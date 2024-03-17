@@ -1,4 +1,5 @@
 #include "HelperTool.h"
+#include <stdio.h>
 
 bool helper_tool_files::string_contain(const std::string& buff, const char* find_buff)
 {
@@ -73,10 +74,8 @@ bool helper_tool_files::load_file_to_strings(const std::string& in_path, std::ve
 						len -= end_str_line_offset;
 
 
-						char* content = strncpy(
-							pre_line,
-							&file_buff[start_offset + end_str_line_offset],
-							len);
+						//char* content = strncpy(pre_line,&file_buff[start_offset + end_str_line_offset],len);
+						strncpy_s(pre_line, len + 1,&file_buff[start_offset + end_str_line_offset],len);
 
 
 						end_str_line_offset = 1;
@@ -123,13 +122,41 @@ unsigned int helper_tool_files::get_file_size_by_filename(const char* filename)
 {
 	unsigned int file_size = 0;
 
-	FILE* f = NULL;
-	if ((fopen_s(&f, filename, "r")) != NULL)
+	FILE* f = nullptr;
+	fopen_s(&f, filename, "r");
+	
+	if (f)
 	{
 		file_size = get_file_size(f);
-
 		fclose(f);
 	}
+	//if ((fopen_s(&f, filename, "r")) != NULL)
+	//{
+	//	
+
+	//	
+	//}
+	//else
+	//{
+	//	errNum = errno;
+
+	//	//size_t errmsglen = strlen(errno) + 1;
+	//	//char errmsg[errmsglen];
+	//	//strerror_s(errmsg, errmsglen, errno);
+	//	/*
+	//		#define EPERM 1  Operation not permitted 
+	//		#define ENOENT 2  No such file or directory 
+	//		#define ESRCH 3  No such process 
+	//		#define EIO 5  I/O error 
+	//		#define ENXIO 6  No such device or address 
+	//		#define E2BIG 7  Argument list too long 
+	//		#define ENOEXEC 8  Exec format error *
+	//		#define EBADF 9  Bad file number 
+	//		#define ECHILD 10  No child processes 
+	//	*/
+	//	printf("open fail errno = %d reason = \n", errNum);
+	//	printf("open fail errno = %d reason = \n", errNum);
+	//}
 
 	return file_size;
 }
@@ -148,14 +175,15 @@ unsigned int helper_tool_files::get_file_size(FILE* file_handle)
 
 bool helper_tool_files::get_file_buf(const char* path, char* buf)
 {
-	FILE* f = NULL;
-	if ((fopen_s(&f, path, "r")) != NULL)
+	FILE* f = nullptr;
+	fopen_s(&f, path, "r");
+	if (f != nullptr)
 	{
 		char buf_tmp[2048] = { 0 };
 		int file_size = 0;
 		while ((file_size = (int)fread(buf_tmp, 1, 1024, f)) > 0)
 		{
-			int len = strlen(buf) + strlen(buf_tmp) + 1;
+			int len = (int)strlen(buf) + (int)strlen(buf_tmp) + 1;
 			strcat_s(buf, len, buf_tmp);
 			memset(buf_tmp, 0, sizeof(buf_tmp));
 		}
@@ -200,7 +228,9 @@ void helper_tool_files::remove_string_start(char* str, char const* sub_str)
 	int index = find_string(str, sub_str, 0);
 	if (index != -1)
 	{
-		int len = (int)strlen(sub_str) + 1;
+		int sub_str_len = (int)strlen(sub_str);
+		int str_len = (int)strlen(str);
+		int len = str_len - (index + sub_str_len) + 1;
 		strcpy_s(&str[index], len, &str[index + (int)strlen(sub_str)]);
 	}
 }
@@ -293,10 +323,12 @@ bool helper_tool_files::split(const char* buf, const char* str_split, char* l, c
 
 		int buf_len = (int)strlen(buf);
 
-		strncpy(l, buf, pos);
+		//strncpy(l, buf, pos);
+		strncpy_s(l, pos + 1, buf, pos);
 
 		int nest_pos = pos + str_split_len;
-		strncpy(r, &buf[nest_pos], buf_len - nest_pos);
+		//strncpy(r, &buf[nest_pos], buf_len - nest_pos);
+		strncpy_s(r, buf_len - nest_pos + 1, &buf[nest_pos], buf_len - nest_pos);
 
 		return true;
 	}
@@ -325,7 +357,10 @@ void helper_tool_files::parse_into_vector_array(const char* string_content,std::
 
 	if (pos == -1)
 	{
-		in_array.push_back(string_content);
+		if (string_content_len != 0)
+		{
+			in_array.push_back(string_content);
+		}
 	}
 	else
 	{
@@ -337,7 +372,8 @@ void helper_tool_files::parse_into_vector_array(const char* string_content,std::
 				char* in_ptr = const_cast<char*>(in_string.c_str());
 
 				//数据拷贝
-				strncpy(in_ptr, &string_content[frame_buffer.strat_pos], frame_buffer.offset);
+				//strncpy(in_ptr, &string_content[frame_buffer.strat_pos], frame_buffer.offset);
+				strncpy_s(in_ptr, frame_buffer.offset + 1, &string_content[frame_buffer.strat_pos], frame_buffer.offset);
 			};
 
 		bool bloop = false;
@@ -358,6 +394,41 @@ void helper_tool_files::parse_into_vector_array(const char* string_content,std::
 		{
 			frame_buffer.offset = string_content_len - frame_buffer.strat_pos;
 			handle_string();
+		}
+	}
+}
+
+bool helper_tool_files::remove_char_start(char* str, char sub_str)
+{
+	int len = (int)strlen(str) + 1;
+
+	//从头开始检查 然后删除对象
+	for (int i = 0; i < len; i++)
+	{
+		if (str[i] == sub_str)
+		{
+			do
+			{
+				str[i] = str[i + 1];
+				i++;
+			} while (str[i + 1] != '\0');
+			str[i] = '\0';
+
+			return true;
+		}
+	}
+
+	return false;
+}
+
+void helper_tool_files::normalization_path(char* path_buf)
+{
+	int len = (int)strlen(path_buf);
+	for (int i = 0; path_buf[i] != 0 && i < len; i++)
+	{
+		if (path_buf[i] == 92) // 字符'\'
+		{
+			path_buf[i] = '/';
 		}
 	}
 }

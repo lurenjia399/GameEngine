@@ -4,6 +4,9 @@
 
 namespace helper_tool_files
 {
+	// 替换文件中的\为/
+	void normalization_path(char* path_buf);
+
 	// 是否包含模板串
 	bool string_contain(const std::string& buff, const char* find_buff);
 	// 从前往后找模板串
@@ -28,11 +31,13 @@ namespace helper_tool_files
 
 	// 移除字符串中的子字符串
 	void remove_string_start(char* str, char const* sub_str);
-	// 移除字符,并将从字符到末尾返回
+	// 移除字符,从前往后遍历
+	bool remove_char_start(char* str, char sub_str);
+	// 移除字符,从后往前遍历
 	bool remove_char_end(char* str, char sub_str);
 	// 去除前后的空格
 	void trim_start_and_end_inline(char* buff);
-	//去除前面的空格
+	// 去除前面的空格
 	void trim_start_inline(char* buff);
 	// 去除后边的空格
 	void trim_end_inline(char* buff);

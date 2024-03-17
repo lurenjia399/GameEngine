@@ -13,11 +13,17 @@ namespace CollectClassInfo
 	const char StarString[] = "*";
 	const char ReferenceString[] = "&";
 	const char CodeTypeString[] = "CodeType";
+	const char EqualString[] = "=";
 
 	bool Collection(const string& Paths, FClassAnalysis& OutClassAnalysis);
 
 	// 获取function的CodeType
-	bool GetCodeTypeByFunc(const string& RowString, FFunctionAnalysis& FunctionAnalysis);
+	bool GetCodeTypeByFunc(const string& RowString, FFunctionAnalysis& OutFunctionAnalysis);
+	// 获取变量的CodeType
+	bool GetCodeTypeByVariable(const string& RowString, FVariableAnalysis& OutVariableAnalysis);
 	// 获取参数的类型
-	FParamElement CollectionVariableType(const string& RowString, ECollectionParamType Type);
+	FParamElement CollectionVariableType(const char* RowString, ECollectionParamType Type);
+	// 去掉参数的默认值
+	char* RemoveVariableDefaultValue(const char* RowString);
+	
 }
