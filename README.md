@@ -1,7 +1,7 @@
 # GameEngine
- directx12和游戏引擎学习
+ directx12和ue学习
 
-这边就展示gif
+这边就展示图片，加载偏慢，不定时更新，不及时更新
 
 基础光照模型：
 ![光照模型_](https://user-images.githubusercontent.com/62169763/170821706-abfcbcaa-9747-4294-8631-a3c3cad034c7.gif)
