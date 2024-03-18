@@ -128,6 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CodeReflection\Collect\CollectClassInfo.cpp" />
+    <ClCompile Include="CodeReflection\IntermediateFile\IntermediateFile.cpp" />
     <ClCompile Include="CodeReflection\Tool\HelperTool.cpp" />
     <ClCompile Include="LurenjiaBuildTool.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp" />
@@ -181,6 +182,7 @@
   <ItemGroup>
     <ClInclude Include="CodeReflection\CodeType.h" />
     <ClInclude Include="CodeReflection\Collect\CollectClassInfo.h" />
+    <ClInclude Include="CodeReflection\IntermediateFile\IntermediateFile.h" />
     <ClInclude Include="CodeReflection\Tool\HelperTool.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h" />

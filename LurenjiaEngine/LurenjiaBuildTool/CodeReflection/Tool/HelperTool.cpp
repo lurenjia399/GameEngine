@@ -432,3 +432,112 @@ void helper_tool_files::normalization_path(char* path_buf)
 		}
 	}
 }
+
+bool helper_tool_files::save_file_to_strings(const std::string& in_path, const std::vector<std::string>& in_array)
+{
+
+	if (!is_file_exists(in_path.c_str()))
+	{
+
+		char path_directory[1024] = { 0 };
+		
+		//strcpy(path_directory, in_path.c_str());
+
+		if (create_file_directory(path_directory))
+		{
+			// ±¬ºìÏÈ×¢µô
+			//create_file(in_path.c_str());
+		}
+	}
+
+
+	int final_num = 0;
+	for (auto& tmp : in_array)
+	{
+		final_num += (int)strlen(tmp.c_str());
+	}
+
+
+	final_num += (int)in_array.size();
+
+
+	std::string final_str;
+
+	final_str.resize(final_num + 1);
+
+
+	int start_pos = 0;
+	for (auto& tmp : in_array)
+	{
+		int tmp_str_len = (int)strlen(tmp.c_str());
+		//if (simple_cpp_string_algorithm::index_valid((int)final_str.size(), start_pos))
+		//{
+		//	char* ptr = &final_str[start_pos];
+		//	strcpy(ptr, tmp.c_str());
+
+		//	int offset = 0;
+		//	if (ptr[tmp_str_len - 1] == '\0')
+		//	{
+		//		int index = 1;
+		//		//check
+		//		while (ptr[tmp_str_len - index] == '\0')
+		//		{
+		//			index++;
+		//		}
+
+		//		for (int i = index; i > 0; i--)
+		//		{
+		//			ptr[tmp_str_len - i] = ' ';
+		//		}
+
+		//		ptr[tmp_str_len - index] = '\n';
+		//	}
+		//	else
+		//	{
+		//		offset++;
+		//		ptr[tmp_str_len] = '\n';
+		//	}
+
+		//	start_pos += (tmp_str_len + offset);
+		//}
+	}
+
+	final_str[final_num] = '\0';
+
+	char* buff = const_cast<char*>(final_str.c_str());
+
+	//return save_file_buff(in_path.c_str(), buff);;
+	return false;
+}
+
+bool helper_tool_files::is_file_exists(char const* filename)
+{
+	//FILE* file = fopen(filename, "r");
+	//if (file)
+	//{
+		//fclose(file);
+		//return true;
+	//}
+	return false;
+}
+
+bool helper_tool_files::create_file_directory(char const* in_path)
+{
+	std::string c_file;
+
+	char path[260] = { 0 };
+	for (int i = 0; i < c_file.size(); i++)
+	{
+		char* value = &c_file[i];
+		//strcat(value, "\\");
+		//strcat(path, value);
+		if (_access(path, 0) == -1)
+		{
+			_mkdir(path);
+		}
+	}
+
+	//destroy_string(&c_file);
+
+	return _access(path, 0) == 0;
+}

@@ -165,6 +165,9 @@
     <ClCompile Include="CodeReflection\Tool\HelperTool.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="CodeReflection\IntermediateFile\IntermediateFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h">
@@ -354,6 +357,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CodeReflection\Tool\HelperTool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CodeReflection\IntermediateFile\IntermediateFile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

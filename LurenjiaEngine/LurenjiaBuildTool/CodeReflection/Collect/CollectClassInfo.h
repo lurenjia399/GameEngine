@@ -24,6 +24,6 @@ namespace CollectClassInfo
 	// 获取参数的类型
 	FParamElement CollectionVariableType(const char* RowString, ECollectionParamType Type);
 	// 去掉参数的默认值
-	char* RemoveVariableDefaultValue(const char* RowString);
+	string RemoveVariableDefaultValue(const char* RowString);
 	
 }

@@ -1,6 +1,8 @@
 #pragma once
 #include <vector>
 #include <string>
+#include <io.h>
+#include <direct.h>
 
 namespace helper_tool_files
 {
@@ -26,6 +28,13 @@ namespace helper_tool_files
 	//bool save_file_to_strings(const std::string& in_path, const std::vector<std::string>& int_array);
 	//bool load_file_to_bytes(const std::string& in_path, std::vector<unsigned char>& out_array);
 	//bool save_file_to_bytes(const std::string& in_path, const std::vector<unsigned char>& int_array);
+
+	// 保存 将字符串保存到文件中
+	bool save_file_to_strings(const std::string& in_path, const std::vector<std::string>& in_array);
+	// 文件是否存在
+	bool is_file_exists(char const* filename);
+	// 创建文件夹
+	bool create_file_directory(char const* in_path);
 
 
 

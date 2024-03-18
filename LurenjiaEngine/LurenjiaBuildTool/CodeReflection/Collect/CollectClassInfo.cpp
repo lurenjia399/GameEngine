@@ -86,7 +86,7 @@ FParamElement CollectClassInfo::CollectionVariableType(const char* RowString, EC
 	return ReturnParam;
 }
 
-char* CollectClassInfo::RemoveVariableDefaultValue(const char* RowString)
+string CollectClassInfo::RemoveVariableDefaultValue(const char* RowString)
 {
 	char* ptr = (char*)RowString;
 
