@@ -34,7 +34,7 @@ public:
 		return fog;
 	}
 
-	
+	const vector<shared_ptr<AActor>>& GetWorldActors() const {return WorldActors;}
 
 public:
 	bool LineTraceSingleByChannel(FHitResult& OutHitResult, const XMFLOAT3& Start, const XMFLOAT3& End) const;

@@ -22,27 +22,30 @@ struct Light
 
 float3 GetLightDirection(Light InLight, float3 InObjectLocation)
 {
+    float3 result = float3(0.f, 0.f, -1.f);
     if (InLight.LightType == 0)
     {
-        return InLight.LightDirection;
+        result = InLight.LightDirection;
     }
     else if (InLight.LightType == 1)
     {
-        return InObjectLocation - InLight.Position;
+        result = InObjectLocation - InLight.Position;
     }
     else if (InLight.LightType == 2)
     {
-        return InObjectLocation - InLight.Position;
+        result = InObjectLocation - InLight.Position;
     }
-    return float3(0.f, 0.f, -1.f);
+    
+    return result;
 }
 
 float4 CalculateLightStrength(Light InLight, float3 InObjectPointNormal, float3 InObjectLocation, float3 InLightDirection)
 {
+    float4 result = float4(0.f, 0.f, 0.f, 1.f);
     
     if (InLight.LightType == 0)          //平行光
     {
-        return float4(InLight.LightIntensity, 1.f);
+        result = float4(InLight.LightIntensity, 1.f);
     }
     else if (InLight.LightType == 1)    //点光源
     {
@@ -52,40 +55,42 @@ float4 CalculateLightStrength(Light InLight, float3 InObjectPointNormal, float3 
         if (ObjectLocation2LightLocation <= InLight.EndAttenuation && ObjectLocation2LightLocation >= InLight.StartAttenuation)
         {
             float AttenuationRange = InLight.EndAttenuation - InLight.StartAttenuation;
-            return LightStrength * ((AttenuationRange - (ObjectLocation2LightLocation - InLight.StartAttenuation)) / AttenuationRange);
+            result = LightStrength * ((AttenuationRange - (ObjectLocation2LightLocation - InLight.StartAttenuation)) / AttenuationRange);
         }
 
     }
     else if (InLight.LightType == 2)    //聚光灯
     {
-        if (InLight.ConicalInnerCorner == InLight.ConicalOuterCorner)
-            return float4(0.f, 0.f, 0.f, 1.f);
-        float4 LightStrength = float4(InLight.LightIntensity, 1.f);
-        float Object2LightAngle = acos(pow(dot(InLightDirection, -InLight.LightDirection), 1));
-        if (Object2LightAngle <= InLight.ConicalInnerCorner)  //如果角度 < 内角
+        if (InLight.ConicalInnerCorner != InLight.ConicalOuterCorner)
         {
-            float ObjectLocation2LightLocation = length(InLight.Position - InObjectLocation);
-            if (ObjectLocation2LightLocation <= InLight.EndAttenuation && ObjectLocation2LightLocation >= InLight.StartAttenuation)
+            float4 LightStrength = float4(InLight.LightIntensity, 1.f);
+            float Object2LightAngle = acos(pow(dot(InLightDirection, -InLight.LightDirection), 1));
+            if (Object2LightAngle <= InLight.ConicalInnerCorner)  //如果角度 < 内角
             {
-                float AttenuationRange = InLight.EndAttenuation - InLight.StartAttenuation;
-                return LightStrength * ((AttenuationRange - (ObjectLocation2LightLocation - InLight.StartAttenuation)) / AttenuationRange);
+                float ObjectLocation2LightLocation = length(InLight.Position - InObjectLocation);
+                if (ObjectLocation2LightLocation <= InLight.EndAttenuation && ObjectLocation2LightLocation >= InLight.StartAttenuation)
+                {
+                    float AttenuationRange = InLight.EndAttenuation - InLight.StartAttenuation;
+                    result = LightStrength * ((AttenuationRange - (ObjectLocation2LightLocation - InLight.StartAttenuation)) / AttenuationRange);
+                }
             }
-        }
-        else if (Object2LightAngle < InLight.ConicalOuterCorner && Object2LightAngle > InLight.ConicalInnerCorner)
-        {
-            float InnerOuterDistance = InLight.ConicalOuterCorner - InLight.ConicalInnerCorner;
-            float CurrDistance = InLight.ConicalOuterCorner - Object2LightAngle;
-            float StrengthRatio = CurrDistance / InnerOuterDistance;
-            
-            float ObjectLocation2LightLocation = length(InLight.Position - InObjectLocation);
-            if (ObjectLocation2LightLocation <= InLight.EndAttenuation && ObjectLocation2LightLocation >= InLight.StartAttenuation)
+            else if (Object2LightAngle < InLight.ConicalOuterCorner && Object2LightAngle > InLight.ConicalInnerCorner)
             {
-                float AttenuationRange = InLight.EndAttenuation - InLight.StartAttenuation;
-                return LightStrength * StrengthRatio * ((AttenuationRange - (ObjectLocation2LightLocation - InLight.StartAttenuation)) / AttenuationRange);
+                float InnerOuterDistance = InLight.ConicalOuterCorner - InLight.ConicalInnerCorner;
+                float CurrDistance = InLight.ConicalOuterCorner - Object2LightAngle;
+                float StrengthRatio = CurrDistance / InnerOuterDistance;
+            
+                float ObjectLocation2LightLocation = length(InLight.Position - InObjectLocation);
+                if (ObjectLocation2LightLocation <= InLight.EndAttenuation && ObjectLocation2LightLocation >= InLight.StartAttenuation)
+                {
+                    float AttenuationRange = InLight.EndAttenuation - InLight.StartAttenuation;
+                    result = LightStrength * StrengthRatio * ((AttenuationRange - (ObjectLocation2LightLocation - InLight.StartAttenuation)) / AttenuationRange);
+                }
             }
         }
     }
-    return float4(0.f, 0.f, 0.f, 1.f);
+    
+    return result;
 }
 
 #endif

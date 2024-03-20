@@ -187,6 +187,20 @@ shared_ptr<CRenderingEngine> IDirectXDeviceInterface::GetRenderEngine() const
     return nullptr;
 }
 
+shared_ptr<CWorld> IDirectXDeviceInterface::GetWorld() const
+{
+    auto renderengine = GetRenderEngine();
+    if(renderengine.use_count() > 0)
+    {
+        auto dxRenderEngine = static_pointer_cast<CDirectXRenderingEngine>(renderengine);
+        if(dxRenderEngine.use_count() > 0)
+        {
+            return dxRenderEngine->GetWorld();
+        }
+    }
+    return nullptr;
+}
+
 #if (EDITOR_ENGINE == 1)
 shared_ptr<CEditorEngine> IDirectXDeviceInterface::GetEditorEngine() const
 {
@@ -291,6 +305,11 @@ CEngien* IDirectXDeviceInterface_struct::GetEngine() const
 shared_ptr<CRenderingEngine> IDirectXDeviceInterface_struct::GetRenderEngine() const
 {
     return DXDeviceInterface.GetRenderEngine();
+}
+
+shared_ptr<CWorld> IDirectXDeviceInterface_struct::GetWorld() const
+{
+    return DXDeviceInterface.GetWorld();
 }
 
 #if (EDITOR_ENGINE == 1)

@@ -7,6 +7,7 @@ class CMeshManage;
 class CLightManage;
 class CRenderingEngine;
 struct FDirectXDescriptorHeap;
+class CWorld;
 #else
 class CEngien;
 #endif
@@ -54,6 +55,8 @@ public:
 #endif
 	//获取渲染引擎
 	shared_ptr<CRenderingEngine> GetRenderEngine() const;
+	//获取world
+	shared_ptr<CWorld> GetWorld() const;
 	
 	//获取编辑器引擎
 #if (EDITOR_ENGINE == 1)
@@ -103,6 +106,8 @@ struct IDirectXDeviceInterface_struct
 #endif
 	//获取渲染引擎
 	shared_ptr<CRenderingEngine> GetRenderEngine() const;
+	//获取world
+	shared_ptr<CWorld> GetWorld() const;
 
 	//获取编辑器引擎
 #if (EDITOR_ENGINE == 1)

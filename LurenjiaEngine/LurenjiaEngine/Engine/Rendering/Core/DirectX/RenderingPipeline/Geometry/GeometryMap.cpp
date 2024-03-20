@@ -25,6 +25,7 @@ static UINT MeshObjectCount = 0;
 map<size_t, std::shared_ptr<FGeometryDescData>> FGeometry::NoRepeatMeshRenderingDataPool;
 
 vector<std::shared_ptr<FGeometryDescData>> FGeometry::MeshRenderingDataPool;
+std::map<string, int> FGeometry::RenderingDataIndices;
 
 FGeometryMap::FGeometryMap()
 {
@@ -542,6 +543,8 @@ void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const 
 		std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InMesh->GetMeshComponentLayerType());
 		vector<std::weak_ptr<FGeometryDescData>>& DescribeMeshRenderingDatas = *RenderLayer->GetGeometryDescData();
 		DescribeMeshRenderingDatas.emplace_back(PoolRenderData);
+
+		RenderingDataIndices.insert(std::make_pair<string, int>(InMesh->GetGuid(), MeshRenderingDataPool.size() - 1));
 	}
 
 	{

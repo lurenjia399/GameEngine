@@ -5,8 +5,9 @@
 
 #include "../../Engine/LurenjiaEngine.h"
 #include "../Core/EditorBase.h"
+#include "../Engine/Interface/DirectXDeviceInterface.h"
 
-class FOutlinerEditor : public FEditorBase
+class FOutlinerEditor : public FEditorBase, public IDirectXDeviceInterface
 {
 public:
 

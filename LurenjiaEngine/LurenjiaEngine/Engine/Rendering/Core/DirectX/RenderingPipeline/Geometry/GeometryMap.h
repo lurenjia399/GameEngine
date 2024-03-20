@@ -34,12 +34,13 @@ private:
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
 
 	FMeshRenderingData MeshRenderingData;					//存放了渲染所有mesh的渲染数据
-
+	
 	// 唯一渲染池，里面存放一份mesh的引用，不包含重复的
 	static map<size_t, std::shared_ptr<FGeometryDescData>> NoRepeatMeshRenderingDataPool;
 public:
 	// 场景中所有mesh渲染数据的池子，里面可以有重复的
 	static vector<std::shared_ptr<FGeometryDescData>> MeshRenderingDataPool;
+	static std::map<string, int> RenderingDataIndices;				// key是component的guid,value是在MeshRenderingDataPool数组中的索引
 };
 
 

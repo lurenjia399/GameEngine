@@ -57,7 +57,7 @@ float3 GetReflect(float3 CameraDirection, float3 InUnitWorldNormal)
 
 float3 GetReflectionSampleColor(float3 Reflect)
 {
-    return SampleTextureCubeMap.Sample(TextureSampler, Reflect);
+    return SampleTextureCubeMap.Sample(TextureSampler, Reflect).xyz;
 }
 
 float3 GetShininess(MaterialConstantBuffer MatConstBuffer)
