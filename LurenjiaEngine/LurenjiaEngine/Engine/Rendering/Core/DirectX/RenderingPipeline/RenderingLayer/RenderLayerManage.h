@@ -6,6 +6,8 @@
 #include "../../../../../Interface/DirectXDeviceInterface.h"
 #include "Core/RenderingLayer.h"
 
+
+
 class FRenderLayerManage
 {
 	friend class FRenderingLayer;

@@ -2,6 +2,7 @@
 #include "../Engine/Core/World.h"
 #include "../Engine/Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
 #include "../Engine/Rendering/Core/DirectX/RenderingPipeline/RenderingLayer/RenderLayerManage.h"
+#include "../Engine/Actor/Light/Core/Light.h"
 
 void FOutlinerEditor::BuildEditor()
 {
@@ -26,14 +27,34 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 			if (ImGui::Selectable(ObjectName, selected == i))
 			{
 				selected = i;
-				const shared_ptr<AMesh>& mesh = static_pointer_cast<AMesh>(actor);
-				// 这里选中灯光的时候会崩掉，原因是灯光actor上没有meshcomponent
-				const shared_ptr<CMeshComponent>& comp = mesh->GetMeshComponet<CMeshComponent>();
-				int index = FGeometry::RenderingDataIndices[comp->GetGuid()];
+				int index = -1;
+				const shared_ptr<AMesh>& mesh = dynamic_pointer_cast<AMesh>(actor);
 				
-				FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
-				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, FGeometry::MeshRenderingDataPool[index]);
-				Engine_Log_Success("selectable selected = %d", i)
+				if (mesh)
+				{
+
+					shared_ptr<CMeshComponent> comp = mesh->GetMeshComponet<CMeshComponent>();
+					index = FGeometry::RenderingDataIndices[comp->GetGuid()];
+				}else
+				{
+					const shared_ptr<ALight>& Light = dynamic_pointer_cast<ALight>(actor);
+					if (Light)
+					{
+						shared_ptr<CMeshComponent> comp = Light->GetMeshComponet<CMeshComponent>();
+						index = FGeometry::RenderingDataIndices[comp->GetGuid()];
+					}
+				}
+				if (index > -1)
+				{
+					FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
+					FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, FGeometry::MeshRenderingDataPool[index]);
+					Engine_Log_Success("selectable selected = %d", i)
+				}
+				else
+				{
+					Engine_Log_Error("selectable selected error", i)
+				}
+				
 			}
 		}
 		ImGui::EndChild();

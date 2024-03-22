@@ -2,7 +2,7 @@
 
 ASpotLight::ASpotLight()
 {
-	RangeLightComponent = LurenjiaEngine::CreateObject<CSpotLightComponent>(this, "PointLightComponent");
+	LightComponent = LurenjiaEngine::CreateObject<CSpotLightComponent>(this, "PointLightComponent");
 }
 
 void ASpotLight::Tick(float DeltaTime)
@@ -10,14 +10,14 @@ void ASpotLight::Tick(float DeltaTime)
 	fvector_3d rotation = fvector_3d(0.f, DeltaTime * 240, 0.f);
 	//rotation = fvector_3d(0.f, DeltaTime * 180, DeltaTime * 180);
 	SetRotation(rotation);
-	XMFLOAT3 location = RangeLightComponent->GetPosition();
+	XMFLOAT3 location = LightComponent->GetPosition();
 	location.z -= 0.05f;
 	//SetPosition(location);
 }
 
 void ASpotLight::SetConicalInnerCorner(float InConicalInnerCorner)
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(RangeLightComponent))
+	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
 	{
 		SpotLightComponent->SetConicalInnerCorner(InConicalInnerCorner);
 	}
@@ -25,7 +25,7 @@ void ASpotLight::SetConicalInnerCorner(float InConicalInnerCorner)
 
 void ASpotLight::SetConicalOuterCorner(float InConicalOuterCorner)
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(RangeLightComponent))
+	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
 	{
 		SpotLightComponent->SetConicalOuterCorner(InConicalOuterCorner);
 	}
@@ -33,7 +33,7 @@ void ASpotLight::SetConicalOuterCorner(float InConicalOuterCorner)
 
 float ASpotLight::GetConicalInnerCorner() const
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(RangeLightComponent))
+	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
 	{
 		SpotLightComponent->GetConicalInnerCorner();
 	}
@@ -42,7 +42,7 @@ float ASpotLight::GetConicalInnerCorner() const
 
 float ASpotLight::GetConicalOuterCorner() const
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(RangeLightComponent))
+	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
 	{
 		SpotLightComponent->GetConicalOuterCorner();
 	}

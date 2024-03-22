@@ -47,5 +47,14 @@ protected:
 template<typename T>
 std::shared_ptr<T> AMesh::GetMeshComponet()
 {
-	return static_pointer_cast<T>(MeshComponent);
+	if (MeshComponent)
+	{
+		std::shared_ptr<T> component = static_pointer_cast<T>(MeshComponent);
+		if (component)
+		{
+			return component;
+		}
+	}
+
+	return nullptr;
 }

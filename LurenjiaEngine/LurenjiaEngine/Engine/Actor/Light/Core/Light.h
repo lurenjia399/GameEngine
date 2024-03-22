@@ -17,6 +17,17 @@ public:
 	void SetScale(const XMFLOAT3& InScale) override;
 
 	void SetLightIntensity(const XMFLOAT3& InLightIntensity);
+
+	template<typename T>
+	std::shared_ptr<T> GetMeshComponet()
+	{
+		if (LightComponent)
+		{
+			// 这里有个报错，模板里调用模板有个数据模糊，还有待查下
+			return LightComponent->GetLightMeshComponent<T>();
+		}
+		return nullptr;
+	}
 public:
 	XMFLOAT3 GetPosition() const override;
 	fvector_3d GetRotation() const override;
@@ -27,7 +38,7 @@ public:
 
 	XMFLOAT3 GetLightIntensity();
 protected:
-	CLightComponent* LightComponent;
+	shared_ptr<CLightComponent> LightComponent;
 };
 
 #endif // !Light_H

@@ -4,7 +4,7 @@
 APointLight::APointLight()
 	: time(0)
 {
-	RangeLightComponent = LurenjiaEngine::CreateObject<CPointLightComponent>(this, "PointLightComponent");
+	LightComponent = LurenjiaEngine::CreateObject<CPointLightComponent>(this, "PointLightComponent");
 }
 
 void APointLight::Tick(float DeltaTime)
@@ -15,7 +15,7 @@ void APointLight::Tick(float DeltaTime)
 	rotation = fvector_3d(0.f, DeltaTime * 180, DeltaTime * 180);
 	//SetRotation(rotation);
 
-	XMFLOAT3 location = RangeLightComponent->GetPosition();
+	XMFLOAT3 location = LightComponent->GetPosition();
 	
 	location.y += cos(time) * 0.3f;
 	SetPosition(location);
