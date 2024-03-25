@@ -8,6 +8,7 @@
 #include "../../../Core/CoreObject/CoreMinimalObject.h"
 #include "../../../Component/Light/Core/LightType.h"
 
+class CMeshComponent;
 class CLightComponent : public CTransformationComponent, public IDirectXDeviceInterface
 {
 public:
@@ -24,6 +25,7 @@ public:
 	XMFLOAT3 GetLightIntensity();
 	ELightType GetLightType();
 
+	virtual shared_ptr<CMeshComponent> GetLightMeshComponent() {return nullptr;}
 
 protected:
 	

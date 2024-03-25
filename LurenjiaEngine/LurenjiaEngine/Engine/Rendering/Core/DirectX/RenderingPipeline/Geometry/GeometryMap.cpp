@@ -544,7 +544,7 @@ void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const 
 		vector<std::weak_ptr<FGeometryDescData>>& DescribeMeshRenderingDatas = *RenderLayer->GetGeometryDescData();
 		DescribeMeshRenderingDatas.emplace_back(PoolRenderData);
 
-		RenderingDataIndices.insert(std::make_pair<string, int>(InMesh->GetGuid(), MeshRenderingDataPool.size() - 1));
+		RenderingDataIndices.insert(std::make_pair<string, int>(InMesh->GetGuid(), (int)MeshRenderingDataPool.size() - 1));
 	}
 
 	{

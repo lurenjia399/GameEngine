@@ -24,7 +24,7 @@ public:
 		if (LightComponent)
 		{
 			// 这里有个报错，模板里调用模板有个数据模糊，还有待查下
-			return LightComponent->GetLightMeshComponent<T>();
+			return static_pointer_cast<T>(LightComponent->GetLightMeshComponent());
 		}
 		return nullptr;
 	}

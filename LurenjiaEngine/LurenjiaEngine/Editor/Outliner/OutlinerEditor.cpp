@@ -34,14 +34,21 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 				{
 
 					shared_ptr<CMeshComponent> comp = mesh->GetMeshComponet<CMeshComponent>();
-					index = FGeometry::RenderingDataIndices[comp->GetGuid()];
+					if (comp && comp->GetIsPickup())
+					{
+						index = FGeometry::RenderingDataIndices[comp->GetGuid()];
+					}
 				}else
 				{
 					const shared_ptr<ALight>& Light = dynamic_pointer_cast<ALight>(actor);
 					if (Light)
 					{
 						shared_ptr<CMeshComponent> comp = Light->GetMeshComponet<CMeshComponent>();
-						index = FGeometry::RenderingDataIndices[comp->GetGuid()];
+						if (comp && comp->GetIsPickup())
+						{
+							index = FGeometry::RenderingDataIndices[comp->GetGuid()];
+						}
+						
 					}
 				}
 				if (index > -1)
@@ -52,7 +59,7 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 				}
 				else
 				{
-					Engine_Log_Error("selectable selected error", i)
+					//Engine_Log_Error("selectable selected error", i)
 				}
 				
 			}

@@ -34,3 +34,8 @@ void CPointLightComponent::SetScale(const XMFLOAT3& InScale)
 	super::SetScale(InScale);
 	LightMeshComponent->SetScale(InScale);
 }
+
+shared_ptr<CMeshComponent> CPointLightComponent::GetLightMeshComponent()
+{
+	return LightMeshComponent;
+}
