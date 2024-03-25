@@ -21,8 +21,8 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{76700c49-5518-4600-ac91-ed8f90969cf5}</ProjectGuid>
-    <RootNamespace>LurenjiaBuildTool</RootNamespace>
+    <ProjectGuid>{3873c153-bca9-41b6-af51-9e1851f3b20d}</ProjectGuid>
+    <RootNamespace>UnLessLibrary</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)Binaries\Win64</OutDir>
-    <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
+    <IntDir>$(SolutionDir)Intermediate\Other</IntDir>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -131,10 +131,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CodeReflection\Collect\CollectClassInfo.cpp" />
-    <ClCompile Include="CodeReflection\IntermediateFile\IntermediateFile.cpp" />
-    <ClCompile Include="CodeReflection\Tool\HelperTool.cpp" />
-    <ClCompile Include="LurenjiaBuildTool.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_net_channel\simple_channel.cpp" />
     <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion.cpp" />
@@ -184,10 +180,6 @@
     <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CodeReflection\CodeType.h" />
-    <ClInclude Include="CodeReflection\Collect\CollectClassInfo.h" />
-    <ClInclude Include="CodeReflection\IntermediateFile\IntermediateFile.h" />
-    <ClInclude Include="CodeReflection\Tool\HelperTool.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h" />
     <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.h" />

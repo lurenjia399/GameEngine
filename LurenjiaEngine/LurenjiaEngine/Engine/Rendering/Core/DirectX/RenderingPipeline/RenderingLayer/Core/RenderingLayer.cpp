@@ -4,6 +4,10 @@
 
 FRenderingLayer::FRenderingLayer()
 	: RenderingLayerPriority(0)
+	, VertexShader({})
+	, PixelShader({})
+	, InputElementDesc({})
+	, GeometryDescDatas({})
 	, GeometryMap(nullptr)
 	, DirectXPiepelineState(nullptr)
 {
@@ -39,10 +43,9 @@ void FRenderingLayer::RestorePSO()
 void FRenderingLayer::BuildShaderMacro(std::vector<ShaderType::FShaderMacro>& OutShaderMacro)
 {
 	{
-		char buffer[10] = { 0 };
 		ShaderType::FShaderMacro ShaderMacro;
 		ShaderMacro.Name = "MAPCOUNT";
-		ShaderMacro.Definition = _itoa(GeometryMap->GetDrawTextureObjectCount(), buffer, 10);
+		ShaderMacro.Definition = to_string(GeometryMap->GetDrawTextureObjectCount());
 		OutShaderMacro.emplace_back(ShaderMacro);
 	}
 	{

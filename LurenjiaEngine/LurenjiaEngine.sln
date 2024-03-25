@@ -7,6 +7,10 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaEngine", "LurenjiaE
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaBuildTool", "LurenjiaBuildTool\LurenjiaBuildTool.vcxproj", "{76700C49-5518-4600-AC91-ED8F90969CF5}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaModelTool", "LurenjiaModelTool\LurenjiaModelTool.vcxproj", "{669D3C97-6B46-465C-8BDA-FB8303BB6092}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnLessLibrary", "UnLessLibrary\UnLessLibrary.vcxproj", "{3873C153-BCA9-41B6-AF51-9E1851F3B20D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +35,22 @@ Global
 		{76700C49-5518-4600-AC91-ED8F90969CF5}.Release|x64.Build.0 = Release|x64
 		{76700C49-5518-4600-AC91-ED8F90969CF5}.Release|x86.ActiveCfg = Release|Win32
 		{76700C49-5518-4600-AC91-ED8F90969CF5}.Release|x86.Build.0 = Release|Win32
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Debug|x64.ActiveCfg = Debug|x64
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Debug|x64.Build.0 = Debug|x64
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Debug|x86.ActiveCfg = Debug|Win32
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Debug|x86.Build.0 = Debug|Win32
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Release|x64.ActiveCfg = Release|x64
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Release|x64.Build.0 = Release|x64
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Release|x86.ActiveCfg = Release|Win32
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092}.Release|x86.Build.0 = Release|Win32
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Debug|x64.ActiveCfg = Debug|x64
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Debug|x64.Build.0 = Debug|x64
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Debug|x86.ActiveCfg = Debug|Win32
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Debug|x86.Build.0 = Debug|Win32
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Release|x64.ActiveCfg = Release|x64
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Release|x64.Build.0 = Release|x64
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Release|x86.ActiveCfg = Release|Win32
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

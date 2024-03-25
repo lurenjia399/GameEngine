@@ -291,12 +291,12 @@ void remove_directory_all(const char* file_dir)
 		char * in_tmp_path = get_def_c_paths_by_offset(&tmp_paths, offset);
 		offset += get_def_c_offset(in_tmp_path);
 
-		if (in_tmp_path)
-		{
-			wchar_t pathw[128] = { 0 };
-			char_to_wchar_t(pathw, 128, in_tmp_path);
-			RemoveDirectory((LPCSTR)pathw);
-		}
+		//if (in_tmp_path)
+		//{
+		//	wchar_t pathw[128] = { 0 };
+		//	char_to_wchar_t(pathw, 128, in_tmp_path);
+		//	RemoveDirectory((LPCSTR)pathw);
+		//}
 	}
 
 	destroy_def_c_paths_v2(&tmp_paths);
@@ -648,12 +648,13 @@ bool open_url_by_param_w(const wchar_t* url, const wchar_t* param)
 
 bool open_by_operation_w(const wchar_t* in_operation, const wchar_t* url, const wchar_t* param)
 {
-	return check_ShellExecute_ret(ShellExecute(NULL,
-		(LPCSTR)in_operation,
-		(LPCSTR)url,
-		(LPCSTR)param,
-		NULL,
-		SW_SHOWNORMAL));
+	//return check_ShellExecute_ret(ShellExecute(NULL,
+	//	(LPCSTR)in_operation,
+	//	(LPCSTR)url,
+	//	(LPCSTR)param,
+	//	NULL,
+	//	SW_SHOWNORMAL));
+	return false;
 }
 
 bool open_explore_w(const wchar_t* url)

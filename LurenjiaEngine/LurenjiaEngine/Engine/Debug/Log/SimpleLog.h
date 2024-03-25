@@ -7,7 +7,7 @@
 #endif
 
 #if defined(_WIN32)
-#include "../../../simple_library/public/simple_library.h"
+#include "simple_library/public/simple_library.h"
 
 
 #if (EDITOR_ENGINE == 1)

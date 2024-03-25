@@ -23,7 +23,8 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 		{
 			const shared_ptr<AActor>& actor = WorldActors[i];
 			char ObjectName[128] = { 0 };
-			sprintf(ObjectName, "%s", actor->GetName().c_str());
+			//sprintf(ObjectName, "%s", actor->GetName().c_str());
+			sprintf_s(ObjectName, "%s", actor->GetName().c_str());
 			if (ImGui::Selectable(ObjectName, selected == i))
 			{
 				selected = i;

@@ -1,7 +1,10 @@
 #pragma once
+#pragma comment(lib, "UnLessLibrary.lib")
 
+#include "string"
+using namespace std;
 
-#include "../simple_library/public/simple_library.h"
+#include "simple_library/public/simple_library.h"
 #include "Debug/EngineDebug.h"
 
 #include "../imgui/imgui.h"
