@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>17.0</VCProjectVersion>
+    <Keyword>Win32Proj</Keyword>
+    <ProjectGuid>{3873c153-bca9-41b6-af51-9e1851f3b20d}</ProjectGuid>
+    <RootNamespace>UnLessLibrary</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v143</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
+    <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="simple_library\private\simple_channel\simple_io_stream\simple_io_stream.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_channel\simple_channel.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_udp.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_net_type.cpp" />
+    <ClCompile Include="simple_library\private\simple_channel\simple_object.cpp" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_guid\simple_guid.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_helper_file\simple_file_helper.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_path\simple_c_path.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_locale_list.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_time\simple_c_time.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_register.c" />
+    <ClCompile Include="simple_library\private\simple_core_minimal\simple_c_windows\simple_c_windows_setting.c" />
+    <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.cpp" />
+    <ClCompile Include="simple_library\private\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.cpp" />
+    <ClCompile Include="simple_library\private\simple_c_log\simple_c_log.c" />
+    <ClCompile Include="simple_library\private\simple_image\Core\simple_image_bmp.cpp" />
+    <ClCompile Include="simple_library\private\simple_image\simple_image.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\math_utils.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\simple_math.c" />
+    <ClCompile Include="simple_library\private\simple_math\simple_math.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\soft_rasterization\soft_rasterization.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_2x2.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_3x3.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_4x3.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\matrix\matrix_4x4.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\primitives\line.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\primitives\triangle.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\quaternion\quat.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\rotator\rotator.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2d.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_2id.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3d.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_3id.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4d.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_4id.cpp" />
+    <ClCompile Include="simple_library\private\simple_math\transformation\vector\vector_color.cpp" />
+    <ClCompile Include="simple_library\third_party_library\tinyxml\tinystr.cpp" />
+    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="simple_library\third_party_library\tinyxml\tinyxmlparser.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_tcp.h" />
+    <ClInclude Include="simple_library\private\simple_channel\simple_net_connetion\simple_connetion_udp.h" />
+    <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_tcp.h" />
+    <ClInclude Include="simple_library\private\simple_channel\simple_net_drive\simple_net_drive_udp.h" />
+    <ClInclude Include="simple_library\public\simple_array\simple_hash_array.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_channel.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_connetion.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_io_stream.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_net_macro.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_core\simple_object.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_net_drive.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_net_protocols.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_net_type.h" />
+    <ClInclude Include="simple_library\public\simple_channel\simple_protocols_definition.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_core_minimal.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\Core\simple_array_c_macro.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_array\simple_c_array_string.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_core\simple_c_string_algorithm\string_algorithm.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_guid\simple_guid.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_helper_file\simple_file_helper.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_path\simple_path.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_locale_list.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_time\simple_c_time.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_register.h" />
+    <ClInclude Include="simple_library\public\simple_core_minimal\simple_c_windows\simple_c_windows_setting.h" />
+    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr.h" />
+    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\shared\simple_cpp_shared_ptr_type.h" />
+    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_core_minimal.h" />
+    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_helper_file\simple_cpp_helper_file.h" />
+    <ClInclude Include="simple_library\public\simple_cpp_core_minimal\simple_cpp_string_algorithm\simple_cpp_string_algorithm.h" />
+    <ClInclude Include="simple_library\public\simple_c_log\simple_c_log.h" />
+    <ClInclude Include="simple_library\public\simple_delegate\simple_delegate.h" />
+    <ClInclude Include="simple_library\public\simple_image\Core\simple_image_bmp.h" />
+    <ClInclude Include="simple_library\public\simple_image\Core\simple_image_type.h" />
+    <ClInclude Include="simple_library\public\simple_image\simple_image.h" />
+    <ClInclude Include="simple_library\public\simple_library.h" />
+    <ClInclude Include="simple_library\public\simple_library_macro.h" />
+    <ClInclude Include="simple_library\public\simple_math\math_libray.hpp" />
+    <ClInclude Include="simple_library\public\simple_math\math_utils.h" />
+    <ClInclude Include="simple_library\public\simple_math\simple_core_math.h" />
+    <ClInclude Include="simple_library\public\simple_math\simple_math.h" />
+    <ClInclude Include="simple_library\public\simple_math\soft_rasterization\soft_rasterization.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_2x2.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_3x3.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_4x3.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\matrix\matrix_4x4.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\primitives\line.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\primitives\triangle.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\quaternion\quat.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\rotator\rotator.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2d.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_2id.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3d.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_3id.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4d.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_4id.h" />
+    <ClInclude Include="simple_library\public\simple_math\transformation\vector\vector_color.h" />
+    <ClInclude Include="simple_library\third_party_library\tinyxml\tinystr.h" />
+    <ClInclude Include="simple_library\third_party_library\tinyxml\tinyxml.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

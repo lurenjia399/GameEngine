@@ -3,13 +3,27 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaEngine", "LurenjiaEngine\LurenjiaEngine.vcxproj", "{F0B20640-E9F1-4506-9F87-5662FBD76D38}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaEngine", "Source\LurenjiaEngine\LurenjiaEngine.vcxproj", "{F0B20640-E9F1-4506-9F87-5662FBD76D38}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D} = {3873C153-BCA9-41B6-AF51-9E1851F3B20D}
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092} = {669D3C97-6B46-465C-8BDA-FB8303BB6092}
+		{AA2640A9-AD80-476F-B494-DE278D640F90} = {AA2640A9-AD80-476F-B494-DE278D640F90}
+	EndProjectSection
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaBuildTool", "LurenjiaBuildTool\LurenjiaBuildTool.vcxproj", "{76700C49-5518-4600-AC91-ED8F90969CF5}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaBuildTool", "Source\LurenjiaBuildTool\LurenjiaBuildTool.vcxproj", "{76700C49-5518-4600-AC91-ED8F90969CF5}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaModelTool", "LurenjiaModelTool\LurenjiaModelTool.vcxproj", "{669D3C97-6B46-465C-8BDA-FB8303BB6092}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaModelTool", "Source\LurenjiaModelTool\LurenjiaModelTool.vcxproj", "{669D3C97-6B46-465C-8BDA-FB8303BB6092}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnLessLibrary", "UnLessLibrary\UnLessLibrary.vcxproj", "{3873C153-BCA9-41B6-AF51-9E1851F3B20D}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnLessLibrary", "Source\UnLessLibrary\UnLessLibrary.vcxproj", "{3873C153-BCA9-41B6-AF51-9E1851F3B20D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaEngineCore", "Source\LurenjiaEngineCore\LurenjiaEngineCore.vcxproj", "{AA2640A9-AD80-476F-B494-DE278D640F90}"
+	ProjectSection(ProjectDependencies) = postProject
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D} = {3873C153-BCA9-41B6-AF51-9E1851F3B20D}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Engine", "Engine", "{4F8D7A0F-4CCE-4865-B13C-F4C8D1DB6934}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Programs", "Programs", "{08597885-C88E-47AF-B32B-9A0EDEF502DC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,9 +65,24 @@ Global
 		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Release|x64.Build.0 = Release|x64
 		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Release|x86.ActiveCfg = Release|Win32
 		{3873C153-BCA9-41B6-AF51-9E1851F3B20D}.Release|x86.Build.0 = Release|Win32
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Debug|x64.ActiveCfg = Debug|x64
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Debug|x64.Build.0 = Debug|x64
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Debug|x86.ActiveCfg = Debug|Win32
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Debug|x86.Build.0 = Debug|Win32
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Release|x64.ActiveCfg = Release|x64
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Release|x64.Build.0 = Release|x64
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Release|x86.ActiveCfg = Release|Win32
+		{AA2640A9-AD80-476F-B494-DE278D640F90}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F0B20640-E9F1-4506-9F87-5662FBD76D38} = {4F8D7A0F-4CCE-4865-B13C-F4C8D1DB6934}
+		{76700C49-5518-4600-AC91-ED8F90969CF5} = {08597885-C88E-47AF-B32B-9A0EDEF502DC}
+		{669D3C97-6B46-465C-8BDA-FB8303BB6092} = {08597885-C88E-47AF-B32B-9A0EDEF502DC}
+		{3873C153-BCA9-41B6-AF51-9E1851F3B20D} = {08597885-C88E-47AF-B32B-9A0EDEF502DC}
+		{AA2640A9-AD80-476F-B494-DE278D640F90} = {08597885-C88E-47AF-B32B-9A0EDEF502DC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6BB2EF37-348F-408A-857E-F4B6317C8E07}
