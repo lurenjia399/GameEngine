@@ -31,10 +31,7 @@ CWindowsEngine::~CWindowsEngine()
 
 int CWindowsEngine::PreInit(FWinMainCommandParameters& InParameters)
 {
-	string LogPath = FEnginePathHelper::GetEngineLogsPath();
-
-	init_log_system(LogPath.c_str());
-	Engine_Log("Log Init.");
+	InitFileDirectory();
 
 	//¥¶¿Ì√¸¡Ó
 	Engine_Log("Engine pre initialization complete.");
@@ -121,6 +118,20 @@ int CWindowsEngine::PostExit()
 
 	Engine_Log("Engine post exit complete.");
 	return 1;
+}
+
+void CWindowsEngine::InitFileDirectory()
+{
+	std::function<void(const string&)> CreateFileDirectory = [](const string& path) -> void
+	{
+		create_file_directory(path.c_str());
+		Engine_Log("Create [%s] FileDirectory", path.c_str());
+	};
+
+	//CreateFileDirectory(FEnginePathHelper::GetEngineBinariesPath());
+	CreateFileDirectory(FEnginePathHelper::GetEngineLogsPath());
+	CreateFileDirectory(FEnginePathHelper::GetEngineContentPath());
+	CreateFileDirectory(FEnginePathHelper::GetEngineShadersPath());
 }
 
 bool CWindowsEngine::InitWindows(FWinMainCommandParameters InParameters)

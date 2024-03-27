@@ -28,6 +28,8 @@ public:
 //----------interface-----
 	shared_ptr<CDirectXRenderingEngine> GetRenderingEngine() { return RenderingEngine; }
 	shared_ptr<CEditorEngine> GetEditorEngine() { return EditorEngine; }
+
+	void InitFileDirectory();
 public:
 	
 

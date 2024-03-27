@@ -48,8 +48,10 @@ void FBackgroundRenderLayer::BuildShader()
 	std::vector<D3D_SHADER_MACRO> ShaderMacro;
 	bool isSuccess = ShaderType::TransD3dShaderMacro(SelfShaderMacro, ShaderMacro);
 	assert(isSuccess);
-	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/sky.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro.data());
-	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/sky.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro.data());
+	wstring SkyPath = L"/sky.hlsl";
+	wstring ShaderPath = FEnginePathHelper::GetEngineShadersWidthPath();
+	VertexShader.BuildShader(ShaderPath + SkyPath, "VertexShaderMain", "vs_5_1", ShaderMacro.data());
+	PixelShader.BuildShader(ShaderPath + SkyPath, "PixelShaderMain", "ps_5_1", ShaderMacro.data());
 	DirectXPiepelineState->BindShader(&VertexShader, &PixelShader);
 
 	//绑定输入布局

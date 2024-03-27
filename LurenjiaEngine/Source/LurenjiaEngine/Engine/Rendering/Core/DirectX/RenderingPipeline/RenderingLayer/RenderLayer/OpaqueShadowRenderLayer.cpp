@@ -15,8 +15,10 @@ void FOpaqueShadowRenderLayer::BuildShader()
 	std::vector<D3D_SHADER_MACRO> ShaderMacro;
 	bool isSuccess = ShaderType::TransD3dShaderMacro(SelfShaderMacro, ShaderMacro);
 	assert(isSuccess);
-	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/Shadow.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro.data());
-	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/Shadow.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro.data());
+	wstring ShadowPath = L"/Shadow.hlsl";
+	wstring ShaderPath = FEnginePathHelper::GetEngineShadersWidthPath();
+	VertexShader.BuildShader(ShaderPath + ShadowPath, "VertexShaderMain", "vs_5_1", ShaderMacro.data());
+	PixelShader.BuildShader(ShaderPath + ShadowPath, "PixelShaderMain", "ps_5_1", ShaderMacro.data());
 	DirectXPiepelineState->BindShader(&VertexShader, &PixelShader);
 
 	//绑定输入布局

@@ -12,8 +12,10 @@ void FSelectRenderLayer::BuildShader()
 	std::vector<D3D_SHADER_MACRO> ShaderMacro;
 	bool isSuccess = ShaderType::TransD3dShaderMacro(SelfShaderMacro, ShaderMacro);
 	assert(isSuccess);
-	VertexShader.BuildShader(L"../LurenjiaEngine/Shader/SelectActor.hlsl", "VertexShaderMain", "vs_5_1", ShaderMacro.data());
-	PixelShader.BuildShader(L"../LurenjiaEngine/Shader/SelectActor.hlsl", "PixelShaderMain", "ps_5_1", ShaderMacro.data());
+	wstring SelectActorPath = L"/SelectActor.hlsl";
+	wstring ShaderPath = FEnginePathHelper::GetEngineShadersWidthPath();
+	VertexShader.BuildShader(ShaderPath + SelectActorPath, "VertexShaderMain", "vs_5_1", ShaderMacro.data());
+	PixelShader.BuildShader(ShaderPath + SelectActorPath, "PixelShaderMain", "ps_5_1", ShaderMacro.data());
 	DirectXPiepelineState->BindShader(&VertexShader, &PixelShader);
 
 	//绑定输入布局
