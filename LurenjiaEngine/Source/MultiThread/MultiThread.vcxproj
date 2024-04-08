@@ -131,10 +131,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Threadsafe_queue\Threadsafe_queue.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MultiThreadMain.h" />
+    <ClInclude Include="MultiThreadSync\Sync.h" />
+    <ClInclude Include="Threadsafe_queue\Threadsafe_queue.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

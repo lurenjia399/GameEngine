@@ -15,12 +15,10 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Threadsafe_queue\Threadsafe_queue.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="MultiThreadMain.h">
+    <ClInclude Include="MultiThreadSync\Sync.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Threadsafe_queue\Threadsafe_queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

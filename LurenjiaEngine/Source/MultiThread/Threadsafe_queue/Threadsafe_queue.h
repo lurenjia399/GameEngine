@@ -12,7 +12,7 @@ private:
 	std::queue<T> data_queue;
 	std::condition_variable data_cond;
 public:
-	threadsafe_queue(){}
+	threadsafe_queue() {}
 	threadsafe_queue(const threadsafe_queue& other)
 	{
 		std::lock_guard<std::mutex> lk(other.mut);
@@ -32,7 +32,7 @@ public:
 	bool try_pop(T& value)
 	{
 		std::lock_guard<std::mutex> lk(mut);
-		if(data_queue.empty()) return false;
+		if (data_queue.empty()) return false;
 		value = data_queue.front();
 		data_queue.pop();
 		return true;
@@ -48,7 +48,7 @@ public:
 	void wait_and_pop(T& value)
 	{
 		std::unique_lock<std::mutex> lk(mut);
-		data_cond.wait(lk, [this]{return this->data_queue.empty();});//表达式false：解锁lk并等待。表达式true：上锁lk并返回wait()
+		data_cond.wait(lk, [this] {return this->data_queue.empty(); });//表达式false：解锁lk并等待。表达式true：上锁lk并返回wait()
 		value = data_queue.front();
 		data_queue.pop();
 	}
