@@ -10,12 +10,12 @@ class CCustomMeshComponent : public CStaticMeshComponent
 public:
 	CCustomMeshComponent();
 
-	void CreateMeshRenderData(FMeshRenderingData& InRenderingData, const string& InPath);
+	void CreateMeshRenderData(FVertexRenderingData& InRenderingData, const string& InPath);
 	void BuildKey(size_t& OutHashKey, const string& InPath);
 private:
-	bool LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData);
+	bool LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FVertexRenderingData& InRenderingData);
 
-	bool LoadFBXFileBuffer(const std::string& InPath, FMeshRenderingData& InRenderingData);
+	bool LoadFBXFileBuffer(const std::string& InPath, FVertexRenderingData& InRenderingData);
 };
 
 #endif

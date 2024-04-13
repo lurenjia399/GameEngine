@@ -42,18 +42,6 @@
     <ClCompile Include="Engine\Rendering\Core\Rendering.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Mesh\Core\Mesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\Core\MeshType.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Math\EngineMath.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\BoxMesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Shader\Core\Shader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -84,28 +72,10 @@
     <ClCompile Include="Engine\Core\World.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Mesh\SphereMesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\CylinderMesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\PlaneMesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\CustomMesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Rendering\Engine\Core\RenderingEngine.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\Core\MeshManage.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\Core\ObjectTransformation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Input\Input.cpp">
@@ -129,7 +99,7 @@
     <ClCompile Include="Engine\Core\Viewport\ViewportInfo.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Viewport\ViewportTransformation.cpp">
+    <ClCompile Include="Engine\Core\Viewport\ViewportConstantBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core\CameraType.cpp">
@@ -168,16 +138,7 @@
     <ClCompile Include="Engine\Component\Light\ParallelLightComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Mesh\Core\Material\Material.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\Light\Core\LightConstantBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Mesh\Core\Material\MaterialType.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Mesh\Core\MeshComponent.cpp">
@@ -199,9 +160,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Manage\LightManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Actor\Light\SpotLight.cpp">
@@ -268,9 +226,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Sky\FogComponent.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Component\Sky\Core\FogTransformation.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Shader\Core\ShaderType.cpp">
@@ -393,6 +348,51 @@
     <ClCompile Include="Engine\Test\LoadFBXModel\LoadFBXModelTest.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\Core\Material\Material.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\Core\Material\MaterialConstantBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\Core\Material\MaterialType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\Core\Mesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\Core\MeshManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\Core\MeshType.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\Core\ObjectConstantBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\BoxMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\CustomMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\CylinderMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\PlaneMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Mesh\SphereMesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Math\EngineMath.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Light\Core\LightManage.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Actor\Sky\Core\FogConstantBuffer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -431,16 +431,7 @@
     <ClInclude Include="Engine\Rendering\Core\Rendering.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Mesh\Core\Mesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\Core\MeshType.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Math\EngineMath.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\BoxMesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Shader\Core\Shader.h">
@@ -479,28 +470,10 @@
     <ClInclude Include="Engine\Core\World.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Mesh\SphereMesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\CylinderMesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\PlaneMesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\CustomMesh.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Rendering\Engine\DirectX\Core\DirectXRenderingEngine.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Engine\Core\RenderingEngine.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\Core\MeshManage.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\Core\ObjectTransformation.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Input\Input.h">
@@ -524,7 +497,7 @@
     <ClInclude Include="Engine\Core\Viewport\ViewportInfo.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\Viewport\ViewportTransformation.h">
+    <ClInclude Include="Engine\Core\Viewport\ViewportConstantBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\CameraType.h">
@@ -563,16 +536,7 @@
     <ClInclude Include="Engine\Component\Light\ParallelLightComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Mesh\Core\Material\Material.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component\Light\Core\LightConstantBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Mesh\Core\Material\MaterialType.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Mesh\Core\MeshComponent.h">
@@ -594,9 +558,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Manage\LightManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Actor\Light\SpotLight.h">
@@ -669,9 +630,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Sky\FogComponent.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Component\Sky\Core\FogTransformation.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Shader\Core\ShaderType.h">
@@ -807,6 +765,81 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Test\LoadFBXModel\LoadFBXModelTest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\Core\Material\Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\Core\Material\MaterialConstantBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\Core\Material\MaterialType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\Core\Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\Core\MeshManage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\Core\MeshType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\Core\ObjectConstantBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\BoxMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\CustomMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\CylinderMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\PlaneMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Mesh\SphereMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\BoxMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\Material\Material.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\Material\MaterialType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\Mesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\MeshManage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\Core\MeshType.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\CustomMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\CylinderMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\PlaneMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Mesh\SphereMesh.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Light\Core\LightManage.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Actor\Sky\Core\FogConstantBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

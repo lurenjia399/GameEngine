@@ -17,7 +17,7 @@ void FRenderingPipeline::DuplicateMeshRenderingData(std::shared_ptr<CMeshCompone
 	GeometryMap.DuplicateMeshRenderingData(InMesh, InGeometryDescData);
 }
 
-void FRenderingPipeline::BuildMeshComponent(std::shared_ptr<CMeshComponent> InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey)
+void FRenderingPipeline::BuildMeshComponent(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& InRenderingData, const size_t& HashKey)
 {
 	GeometryMap.BuildMeshDescData(InMesh, InRenderingData, HashKey);
 }

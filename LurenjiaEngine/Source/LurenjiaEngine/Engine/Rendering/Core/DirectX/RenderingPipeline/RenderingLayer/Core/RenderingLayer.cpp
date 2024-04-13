@@ -1,6 +1,6 @@
 #include "RenderingLayer.h"
 #include "../RenderLayerManage.h"
-#include "../../../../../../Mesh/Core/ObjectTransformation.h"
+#include "../../../../../../Actor/Mesh/Core/ObjectConstantBuffer.h"
 
 FRenderingLayer::FRenderingLayer()
 	: RenderingLayerPriority(0)
@@ -100,7 +100,7 @@ void FRenderingLayer::UpdateObjectConstantBuffer()
 		XMMATRIX MatrixTextureTransform = XMLoadFloat4x4(&data->TextureTransform);
 
 		//更新shader中的世界变换 常量缓冲区
-		FObjectTransformation ObjectTransformation;
+		FMeshConstantBuffer ObjectTransformation;
 		XMStoreFloat4x4(&ObjectTransformation.World, MatrixWorld);
 		XMStoreFloat4x4(&ObjectTransformation.TextureTransformation, XMMatrixTranspose(MatrixTextureTransform));
 		const shared_ptr<CMaterial> material = data->MeshComponet->GetMaterials()[0];

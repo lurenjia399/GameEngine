@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Mesh/Core/MeshManage.h"
+#include "../../Actor/Mesh/Core/MeshManage.h"
 
 namespace LurenjiaEngine
 {
@@ -21,7 +21,7 @@ namespace LurenjiaEngine
 			InMeshManage->GetRenderingPiepeline().DuplicateMeshRenderingData(InMeshComponent, OutGeometryDescData);
 		}
 		else {
-			FMeshRenderingData MeshRenderingData;
+			FVertexRenderingData MeshRenderingData;
 			InMeshComponent->CreateMeshRenderData(MeshRenderingData, std::forward<ParamTypes>(Params)...);
 			InMeshManage->GetRenderingPiepeline().BuildMeshComponent(InMeshComponent, MeshRenderingData, HashKey);
 		}

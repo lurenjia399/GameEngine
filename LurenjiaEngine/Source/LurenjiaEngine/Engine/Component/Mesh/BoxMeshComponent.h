@@ -10,7 +10,7 @@ class CBoxMeshComponent : public CStaticMeshComponent
 public:
 	CBoxMeshComponent();
 
-	void CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth);
+	void CreateMeshRenderData(FVertexRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth);
 	void BuildKey(size_t& OutHashKey, const float& Inheight, const float& Inwidth, const float& Indepth);
 };
 

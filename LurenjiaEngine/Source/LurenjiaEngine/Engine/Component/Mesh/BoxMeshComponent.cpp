@@ -4,7 +4,7 @@ CBoxMeshComponent::CBoxMeshComponent()
 {
 }
 
-void CBoxMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth)
+void CBoxMeshComponent::CreateMeshRenderData(FVertexRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const float& Indepth)
 {
 	// 世界中创建立方体
 	// x轴指向右边，y轴指向上边，z轴指向里边

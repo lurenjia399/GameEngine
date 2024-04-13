@@ -27,10 +27,24 @@
     <ClCompile Include="Editor\ToolbarEditor\ToolbarEditor.cpp" />
     <ClCompile Include="Engine\Actor\Core\Actor.cpp" />
     <ClCompile Include="Engine\Actor\Light\Core\Light.cpp" />
+    <ClCompile Include="Engine\Actor\Light\Core\LightManage.cpp" />
     <ClCompile Include="Engine\Actor\Light\Core\RangeLight.cpp" />
     <ClCompile Include="Engine\Actor\Light\ParallelLight.cpp" />
     <ClCompile Include="Engine\Actor\Light\PointLight.cpp" />
     <ClCompile Include="Engine\Actor\Light\SpotLight.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\BoxMesh.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\Core\Material\Material.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\Core\Material\MaterialConstantBuffer.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\Core\Material\MaterialType.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\Core\Mesh.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\Core\MeshManage.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\Core\MeshType.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\Core\ObjectConstantBuffer.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\CustomMesh.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\CylinderMesh.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\PlaneMesh.cpp" />
+    <ClCompile Include="Engine\Actor\Mesh\SphereMesh.cpp" />
+    <ClCompile Include="Engine\Actor\Sky\Core\FogConstantBuffer.cpp" />
     <ClCompile Include="Engine\Actor\Sky\Fog.cpp" />
     <ClCompile Include="Engine\Collision\CollisionSceneQuery.cpp" />
     <ClCompile Include="Engine\Component\Core\Component.cpp" />
@@ -51,7 +65,6 @@
     <ClCompile Include="Engine\Component\Mesh\PlaneMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\SphereMeshComponent.cpp" />
     <ClCompile Include="Engine\Component\Mesh\StaticMeshComponent.cpp" />
-    <ClCompile Include="Engine\Component\Sky\Core\FogTransformation.cpp" />
     <ClCompile Include="Engine\Component\Sky\FogComponent.cpp" />
     <ClCompile Include="Engine\Component\TransformationComponent.cpp" />
     <ClCompile Include="Engine\Config\EngineRenderConfig.cpp" />
@@ -67,7 +80,7 @@
     <ClCompile Include="Engine\Core\Viewport\ClientViewport.cpp" />
     <ClCompile Include="Engine\Core\Viewport\Viewport.cpp" />
     <ClCompile Include="Engine\Core\Viewport\ViewportInfo.cpp" />
-    <ClCompile Include="Engine\Core\Viewport\ViewportTransformation.cpp" />
+    <ClCompile Include="Engine\Core\Viewport\ViewportConstantBuffer.cpp" />
     <ClCompile Include="Engine\Core\WinMainCommandParameters.cpp" />
     <ClCompile Include="Engine\Core\World.cpp" />
     <ClCompile Include="Engine\Debug\EngineDebug.cpp" />
@@ -77,20 +90,7 @@
     <ClCompile Include="Engine\Interface\OpenGLDeviceInterface.cpp" />
     <ClCompile Include="Engine\Library\RaycastSystemLibrary.cpp" />
     <ClCompile Include="Engine\LurenjiaEngine.cpp" />
-    <ClCompile Include="Engine\Manage\LightManage.cpp" />
     <ClCompile Include="Engine\Math\EngineMath.cpp" />
-    <ClCompile Include="Engine\Mesh\BoxMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\Material\Material.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\Material\MaterialConstantBuffer.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\Material\MaterialType.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\Mesh.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\MeshManage.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\MeshType.cpp" />
-    <ClCompile Include="Engine\Mesh\Core\ObjectTransformation.cpp" />
-    <ClCompile Include="Engine\Mesh\CustomMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\CylinderMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\PlaneMesh.cpp" />
-    <ClCompile Include="Engine\Mesh\SphereMesh.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsEngine.cpp" />
     <ClCompile Include="Engine\Platform\Windows\WindowsMessageProcessing.cpp" />
     <ClCompile Include="Engine\Rendering\Core\Buffer\ConstructBuffer.cpp" />
@@ -155,10 +155,24 @@
     <ClInclude Include="Editor\ToolbarEditor\ToolbarEditor.h" />
     <ClInclude Include="Engine\Actor\Core\Actor.h" />
     <ClInclude Include="Engine\Actor\Light\Core\Light.h" />
+    <ClInclude Include="Engine\Actor\Light\Core\LightManage.h" />
     <ClInclude Include="Engine\Actor\Light\Core\RangeLight.h" />
     <ClInclude Include="Engine\Actor\Light\ParallelLight.h" />
     <ClInclude Include="Engine\Actor\Light\PointLight.h" />
     <ClInclude Include="Engine\Actor\Light\SpotLight.h" />
+    <ClInclude Include="Engine\Actor\Mesh\BoxMesh.h" />
+    <ClInclude Include="Engine\Actor\Mesh\Core\Material\Material.h" />
+    <ClInclude Include="Engine\Actor\Mesh\Core\Material\MaterialConstantBuffer.h" />
+    <ClInclude Include="Engine\Actor\Mesh\Core\Material\MaterialType.h" />
+    <ClInclude Include="Engine\Actor\Mesh\Core\Mesh.h" />
+    <ClInclude Include="Engine\Actor\Mesh\Core\MeshManage.h" />
+    <ClInclude Include="Engine\Actor\Mesh\Core\MeshType.h" />
+    <ClInclude Include="Engine\Actor\Mesh\Core\ObjectConstantBuffer.h" />
+    <ClInclude Include="Engine\Actor\Mesh\CustomMesh.h" />
+    <ClInclude Include="Engine\Actor\Mesh\CylinderMesh.h" />
+    <ClInclude Include="Engine\Actor\Mesh\PlaneMesh.h" />
+    <ClInclude Include="Engine\Actor\Mesh\SphereMesh.h" />
+    <ClInclude Include="Engine\Actor\Sky\Core\FogConstantBuffer.h" />
     <ClInclude Include="Engine\Actor\Sky\Fog.h" />
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="Engine\Collision\CollisionSceneQuery.h" />
@@ -180,7 +194,6 @@
     <ClInclude Include="Engine\Component\Mesh\PlaneMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\SphereMeshComponent.h" />
     <ClInclude Include="Engine\Component\Mesh\StaticMeshComponent.h" />
-    <ClInclude Include="Engine\Component\Sky\Core\FogTransformation.h" />
     <ClInclude Include="Engine\Component\Sky\FogComponent.h" />
     <ClInclude Include="Engine\Component\TransformationComponent.h" />
     <ClInclude Include="Engine\Config\EngineRenderConfig.h" />
@@ -197,7 +210,7 @@
     <ClInclude Include="Engine\Core\Viewport\ClientViewport.h" />
     <ClInclude Include="Engine\Core\Viewport\Viewport.h" />
     <ClInclude Include="Engine\Core\Viewport\ViewportInfo.h" />
-    <ClInclude Include="Engine\Core\Viewport\ViewportTransformation.h" />
+    <ClInclude Include="Engine\Core\Viewport\ViewportConstantBuffer.h" />
     <ClInclude Include="Engine\Core\WinMainCommandParameters.h" />
     <ClInclude Include="Engine\Core\World.h" />
     <ClInclude Include="Engine\Debug\EngineDebug.h" />
@@ -209,7 +222,6 @@
     <ClInclude Include="Engine\Interface\OpenGLDeviceInterface.h" />
     <ClInclude Include="Engine\Library\RaycastSystemLibrary.h" />
     <ClInclude Include="Engine\LurenjiaEngine.h" />
-    <ClInclude Include="Engine\Manage\LightManage.h" />
     <ClInclude Include="Engine\Math\EngineMath.h" />
     <ClInclude Include="Engine\Mesh\BoxMesh.h" />
     <ClInclude Include="Engine\Mesh\Core\Material\Material.h" />
@@ -218,7 +230,6 @@
     <ClInclude Include="Engine\Mesh\Core\Mesh.h" />
     <ClInclude Include="Engine\Mesh\Core\MeshManage.h" />
     <ClInclude Include="Engine\Mesh\Core\MeshType.h" />
-    <ClInclude Include="Engine\Mesh\Core\ObjectTransformation.h" />
     <ClInclude Include="Engine\Mesh\CustomMesh.h" />
     <ClInclude Include="Engine\Mesh\CylinderMesh.h" />
     <ClInclude Include="Engine\Mesh\PlaneMesh.h" />
@@ -351,7 +362,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
+    <IntDir>$(SolutionDir)Intermediate\Other\$(ProjectName)</IntDir>
     <IncludePath>$(SolutionDir)Source\LurenjiaModelTool;$(SolutionDir)Source\LurenjiaEngine\imgui;$(SolutionDir)Source\UnLessLibrary;$(SolutionDir)Source\LurenjiaEngineCore;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>

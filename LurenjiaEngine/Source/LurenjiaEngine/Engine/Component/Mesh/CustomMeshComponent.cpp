@@ -4,7 +4,7 @@ CCustomMeshComponent::CCustomMeshComponent()
 {
 }
 
-void CCustomMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const string& InPath)
+void CCustomMeshComponent::CreateMeshRenderData(FVertexRenderingData& InRenderingData, const string& InPath)
 {
 	//¾Ö²¿´úÂë¿é
 	{
@@ -33,7 +33,7 @@ void CCustomMeshComponent::BuildKey(size_t& OutHashKey, const string& InPath)
 	OutHashKey = stringHash(InPath);
 }
 
-bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData)
+bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FVertexRenderingData& InRenderingData)
 {
 	if (InBufferSize > 0)
 	{
@@ -119,7 +119,7 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 	return false;
 }
 
-bool CCustomMeshComponent::LoadFBXFileBuffer(const std::string& InPath, FMeshRenderingData& InRenderingData)
+bool CCustomMeshComponent::LoadFBXFileBuffer(const std::string& InPath, FVertexRenderingData& InRenderingData)
 {
 	FbxImport::FbxRenderData data = {};
 	FbxImport::LoadMeshData(InPath, data);

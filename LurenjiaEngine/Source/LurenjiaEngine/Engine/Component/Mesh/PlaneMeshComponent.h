@@ -10,7 +10,7 @@ class CPlaneMeshComponent : public CStaticMeshComponent
 public:
 	CPlaneMeshComponent();
 
-	void CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide);
+	void CreateMeshRenderData(FVertexRenderingData& InRenderingData, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide);
 	void BuildKey(size_t& OutHashKey, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide);
 };
 

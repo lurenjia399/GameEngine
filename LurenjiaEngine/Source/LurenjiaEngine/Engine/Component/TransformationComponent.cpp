@@ -1,5 +1,5 @@
 #include "TransformationComponent.h"
-#include "../Mesh/Core/ObjectTransformation.h"
+#include "../Actor/Mesh/Core/ObjectConstantBuffer.h"
 
 CTransformationComponent::CTransformationComponent()
 	: Position(0.f, 0.f, 0.f)

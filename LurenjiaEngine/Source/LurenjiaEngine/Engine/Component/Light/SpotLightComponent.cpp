@@ -1,5 +1,5 @@
 #include "SpotLightComponent.h"
-#include "../../Mesh/Core/MeshManage.h"
+#include "../../Actor/Mesh/Core/MeshManage.h"
 
 CSpotLightComponent::CSpotLightComponent()
 	: LightMeshComponent(nullptr)

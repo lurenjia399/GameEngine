@@ -1,21 +1,21 @@
 #include "GeometryMap.h"
 #include "../../../../../Rendering/Core/Buffer/ConstructBuffer.h"
-#include "../../../../../Mesh/Core/ObjectTransformation.h"
-#include "../../../../../Core/Viewport/ViewportTransformation.h"
+#include "../../../../../Actor/Mesh/Core/ObjectConstantBuffer.h"
+#include "../../../../../Core/Viewport/ViewportConstantBuffer.h"
 #include "../../../../../Core/Viewport/ViewportInfo.h"
-#include "../../../../../Mesh/Core/Material/MaterialConstantBuffer.h"
+#include "../../../../../Actor/Mesh/Core/Material/MaterialConstantBuffer.h"
 #include "../../../../../Component/Light/Core/LightConstantBuffer.h"
-#include "../../../../../Mesh/Core/Material/Material.h"
+#include "../../../../../Actor/Mesh/Core/Material/Material.h"
 #include "../../../../../Core/Camera.h"
 #include "../../../../../Core/World.h"
-#include "../../../../../Manage/LightManage.h"
+#include "../../../../../Actor/Light/Core/LightManage.h"
 #include "../../../../../Component/Light/Core/LightComponent.h"
 #include "../../../../../Component/Light/SpotLightComponent.h"
 #include "../../../../../Component/Light/ParallelLightComponent.h"
 #include "../../../../../Component/Light/PointLightComponent.h"
 #include "../../../RenderingTextureResourcesUpdate.h"
 #include "../RenderingLayer/RenderLayerManage.h"
-#include "../../../../../Component/Sky/Core/FogTransformation.h"
+#include "../../../../../Actor/Sky/Core/FogConstantBuffer.h"
 #include "../../../../Engine/DirectX/Core/DirectXRenderingEngine.h"
 #include "../../../../../Actor/Sky/Fog.h"
 
@@ -40,7 +40,7 @@ FGeometryMap::FGeometryMap()
 	CubeMapResourceView->Set_SRV_ViewDimension(D3D12_SRV_DIMENSION_TEXTURECUBE);
 }
 
-void FGeometryMap::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey)
+void FGeometryMap::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& InRenderingData, const size_t& HashKey)
 {
 	for (auto& tem : Geometrys)
 	{
@@ -129,7 +129,7 @@ int FGeometryMap::GetTextureIndex(const string& Key)
 
 void FGeometryMap::BuildMeshConstantBufferView()
 {
-	MeshConstantBufferView.CreateConstant(sizeof(FObjectTransformation), GetDrawMeshObjectCount());
+	MeshConstantBufferView.CreateConstant(sizeof(FMeshConstantBuffer), GetDrawMeshObjectCount());
 }
 
 void FGeometryMap::BuildMaterialShaderResourseView()
@@ -168,7 +168,7 @@ void FGeometryMap::BuildLightConstantBufferView()
 
 void FGeometryMap::BuildViewportConstantBufferView(UINT InViewportOffset)
 {
-	ViewportConstantBufferView.CreateConstant(sizeof(FViewportTransformation), 
+	ViewportConstantBufferView.CreateConstant(sizeof(FViewportConstantBuffer), 
 		1 + //主视口
 		GetDynamicReflectionViewportNum() + //这个是动态反射的视口
 		1 + // 阴影的视口
@@ -187,7 +187,7 @@ void FGeometryMap::BuildTextureShaderResource()
 
 void FGeometryMap::BuildFogConstantBufferView()
 {
-	FogConstantBufferView.CreateConstant(sizeof(FFogTransformation), 1);
+	FogConstantBufferView.CreateConstant(sizeof(FFogConstantBuffer), 1);
 }
 
 UINT FGeometryMap::GetDrawMeshObjectCount()
@@ -261,21 +261,21 @@ void FGeometryMap::BuildShadowMap()
 void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 {
 	//更新shader中的灯光 常量缓冲区
-	FLightConstantBuffer lightTransformation;
+	FLightConstantBuffer LightConstantBuffer;
 	int lightCount = static_cast<int>(GetLightManage()->Lights.size());
 	for (int i = 0; i < lightCount; ++i)
 	{
 		if (CLightComponent* LightComponent = GetLightManage()->Lights[i])
 		{
-			lightTransformation.SceneLight[i].LightIntensity = LightComponent->GetLightIntensity();
-			lightTransformation.SceneLight[i].Position = LightComponent->GetPosition();
+			LightConstantBuffer.SceneLight[i].LightIntensity = LightComponent->GetLightIntensity();
+			LightConstantBuffer.SceneLight[i].Position = LightComponent->GetPosition();
 			switch (LightComponent->GetLightType())
 			{
 			case ELightType::ParallelLight:
 				if (CParallelLightComponent* ParallelLightComponent = dynamic_cast<CParallelLightComponent*>(LightComponent))
 				{
-					lightTransformation.SceneLight[i].LightDirection = ParallelLightComponent->GetForward();
-					lightTransformation.SceneLight[i].LightType = (int)ELightType::ParallelLight;
+					LightConstantBuffer.SceneLight[i].LightDirection = ParallelLightComponent->GetForward();
+					LightConstantBuffer.SceneLight[i].LightType = (int)ELightType::ParallelLight;
 
 
 					
@@ -296,26 +296,26 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 					//切记需要转置，，，主列的矩阵无法乘主行的矩阵,,,这里得到的因为在片元着色器里面的值，所以也是ndc空间下[-1, 1],需要转成[0, 1]
 					XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix;
 					
-					XMStoreFloat4x4(&lightTransformation.SceneLight[i].ViewProjectionMatrix, ViewProjection);
+					XMStoreFloat4x4(&LightConstantBuffer.SceneLight[i].ViewProjectionMatrix, ViewProjection);
 				}
 				break;
 			case ELightType::PointLight:
 				if (CPointLightComponent* PointLightComponent = dynamic_cast<CPointLightComponent*>(LightComponent))
 				{
-					lightTransformation.SceneLight[i].StartAttenuation = PointLightComponent->GetStartAttenuation();
-					lightTransformation.SceneLight[i].EndAttenuation = PointLightComponent->GetEndAttenuation();
-					lightTransformation.SceneLight[i].LightType = (int)ELightType::PointLight;
+					LightConstantBuffer.SceneLight[i].StartAttenuation = PointLightComponent->GetStartAttenuation();
+					LightConstantBuffer.SceneLight[i].EndAttenuation = PointLightComponent->GetEndAttenuation();
+					LightConstantBuffer.SceneLight[i].LightType = (int)ELightType::PointLight;
 				}
 				break;
 			case ELightType::SpotLight:
 				if (CSpotLightComponent* SpotLightComponent = dynamic_cast<CSpotLightComponent*>(LightComponent))
 				{
-					lightTransformation.SceneLight[i].StartAttenuation = SpotLightComponent->GetStartAttenuation();
-					lightTransformation.SceneLight[i].EndAttenuation = SpotLightComponent->GetEndAttenuation();
-					lightTransformation.SceneLight[i].LightDirection = SpotLightComponent->GetForward();
-					lightTransformation.SceneLight[i].ConicalInnerCorner = math_utils::angle_to_radian(SpotLightComponent->GetConicalInnerCorner());
-					lightTransformation.SceneLight[i].ConicalOuterCorner = math_utils::angle_to_radian(SpotLightComponent->GetConicalOuterCorner());
-					lightTransformation.SceneLight[i].LightType = (int)ELightType::SpotLight;
+					LightConstantBuffer.SceneLight[i].StartAttenuation = SpotLightComponent->GetStartAttenuation();
+					LightConstantBuffer.SceneLight[i].EndAttenuation = SpotLightComponent->GetEndAttenuation();
+					LightConstantBuffer.SceneLight[i].LightDirection = SpotLightComponent->GetForward();
+					LightConstantBuffer.SceneLight[i].ConicalInnerCorner = math_utils::angle_to_radian(SpotLightComponent->GetConicalInnerCorner());
+					LightConstantBuffer.SceneLight[i].ConicalOuterCorner = math_utils::angle_to_radian(SpotLightComponent->GetConicalOuterCorner());
+					LightConstantBuffer.SceneLight[i].LightType = (int)ELightType::SpotLight;
 				}
 				break;
 			default:
@@ -323,45 +323,45 @@ void FGeometryMap::UpdateLightConstantBufferView(float DeltaTime)
 			}
 		}
 	}
-	LightConstantBufferView.Update(0, &lightTransformation);
+	LightConstantBufferView.Update(0, &LightConstantBuffer);
 }
 
 void FGeometryMap::UpdateMaterialShaderResourceView(float DeltaTime)
 {
-	CMaterialConstantBuffer MaterialTransformation;
+	CMaterialConstantBuffer MaterialConstantBuffer;
 	for (shared_ptr<CMaterial> InMaterial : Materials)
 	{
 		if (!InMaterial->isDirty()) continue;
 		InMaterial->SetDirty(false);
 
-		MaterialTransformation.BaseColor = InMaterial->GetBaseColor();
-		MaterialTransformation.SpecularColor = InMaterial->GetSpecularColor();
-		MaterialTransformation.MaterialType = static_cast<UINT32>(InMaterial->GetMaterialType());
-		MaterialTransformation.Roughness = InMaterial->GetRoughness();
-		MaterialTransformation.TextureMapIndex = GetTextureIndex(InMaterial->GetMaterialTextureMapKey());
-		MaterialTransformation.NormalMapIndex = GetTextureIndex(InMaterial->GetMaterialNormalMapKey());
-		MaterialTransformation.SpecularMapIndex = GetTextureIndex(InMaterial->GetMaterialSpecularMapKey());
-		MaterialTransformation.FresnelF0 = InMaterial->GetMaterialFresnelF0();
+		MaterialConstantBuffer.BaseColor = InMaterial->GetBaseColor();
+		MaterialConstantBuffer.SpecularColor = InMaterial->GetSpecularColor();
+		MaterialConstantBuffer.MaterialType = static_cast<UINT32>(InMaterial->GetMaterialType());
+		MaterialConstantBuffer.Roughness = InMaterial->GetRoughness();
+		MaterialConstantBuffer.TextureMapIndex = GetTextureIndex(InMaterial->GetMaterialTextureMapKey());
+		MaterialConstantBuffer.NormalMapIndex = GetTextureIndex(InMaterial->GetMaterialNormalMapKey());
+		MaterialConstantBuffer.SpecularMapIndex = GetTextureIndex(InMaterial->GetMaterialSpecularMapKey());
+		MaterialConstantBuffer.FresnelF0 = InMaterial->GetMaterialFresnelF0();
 		XMFLOAT4X4 materialTransform = InMaterial->GetMaterialTransform();
 		XMMATRIX MaterialTransform = XMLoadFloat4x4(&materialTransform);
-		XMStoreFloat4x4(&MaterialTransformation.TransformInformation, XMMatrixTranspose(MaterialTransform));
-		MaterialConstantBufferView.Update(InMaterial->GetMaterialTextureMapIndex(), &MaterialTransformation);
+		XMStoreFloat4x4(&MaterialConstantBuffer.TransformInformation, XMMatrixTranspose(MaterialTransform));
+		MaterialConstantBufferView.Update(InMaterial->GetMaterialTextureMapIndex(), &MaterialConstantBuffer);
 	}
 }
 
 void FGeometryMap::UpdateViewportConstantBufferView(float DeltaTime, const FViewportInfo& ViewportInfo, UINT InCBVOffset)
 {
+	FViewportConstantBuffer ViewportConstantBuffer;
 	//viewport常量缓冲区传入摄像机变换矩阵和透视投影矩阵
 	XMMATRIX ProjectMatrix = XMLoadFloat4x4(&ViewportInfo.ProjectMatrix);
 	XMMATRIX ViewMatrix = XMLoadFloat4x4(&ViewportInfo.ViewMatrix);
 	XMMATRIX ViewProjection = XMMatrixTranspose(ViewMatrix) * ProjectMatrix;//切记需要转置，，，主列的矩阵无法乘主行的矩阵
-	FViewportTransformation ViewportTransformation;
-	XMStoreFloat4x4(&ViewportTransformation.ViewProjectionMatrix, ViewProjection);//注意shader读取constBuffer中数据是按照列读取的
+	XMStoreFloat4x4(&ViewportConstantBuffer.ViewProjectionMatrix, ViewProjection);//注意shader读取constBuffer中数据是按照列读取的
 	//获取场景中摄像机位置
-	ViewportTransformation.cameraPosition = ViewportInfo.cameraPosition;
+	ViewportConstantBuffer.cameraPosition = ViewportInfo.cameraPosition;
 	//Engine_Log("cameraPisition [x] = %f, [y] = %f, [z] = %f", ViewportInfo.cameraPosition.x, ViewportInfo.cameraPosition.y, ViewportInfo.cameraPosition.z);
 
-	ViewportConstantBufferView.Update(InCBVOffset, &ViewportTransformation);
+	ViewportConstantBufferView.Update(InCBVOffset, &ViewportConstantBuffer);
 }
 
 void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime)
@@ -374,7 +374,7 @@ void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime)
 			if (!FogComponent->GetDirtyState()) return;
 			FogComponent->SetDirtyState(false);
 
-			FFogTransformation FogTransformation = {};
+			FFogConstantBuffer FogTransformation = {};
 			FogTransformation.FogColor = FogComponent->GetFogColor();
 			FogTransformation.FogStart = FogComponent->GetFogStart();
 			FogTransformation.FogRange = FogComponent->GetFogRange();
@@ -493,7 +493,7 @@ bool FGeometry::isExitDescribeMeshRenderingData(std::shared_ptr<CMeshComponent> 
 
 // 向RenderingLayer里面添加渲染数据
 // 将mesh渲染数据保存到MeshRenderingData里面
-void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FMeshRenderingData& MeshRenderData, const size_t& HashKey, const int& key)
+void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& MeshRenderData, const size_t& HashKey, const int& key)
 {
 		
 	XMVECTOR center_v = {}, extents_v = {};

@@ -1,6 +1,6 @@
 #include "TransparentTest.h"
-#include "../../Mesh/Core/Material/Material.h"
-#include "../../Mesh/SphereMesh.h"
+#include "../../Actor/Mesh/Core/Material/Material.h"
+#include "../../Actor/Mesh/SphereMesh.h"
 #include "../../Core/World.h"
 #include "../../Platform/Windows/WindowsEngine.h"
 #include "../../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"

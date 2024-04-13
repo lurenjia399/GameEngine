@@ -6,8 +6,8 @@
 #define MeshComponentH
 
 #include "../../TransformationComponent.h"
-#include "../../../Mesh/Core/Material/Material.h"
-#include "../../../Mesh/Core/MeshType.h"
+#include "../../../Actor/Mesh/Core/Material/Material.h"
+#include "../../../Actor/Mesh/Core/MeshType.h"
 #include "../../../Rendering/Core/DirectX/RenderingPipeline/RenderingLayer/Core/EMeshComponentRenderLayerType.h"
 
 class CMeshComponent : public CTransformationComponent
@@ -17,7 +17,7 @@ public:
 	CMeshComponent();
 public:
 	void Init();
-	void BuildMesh(const FMeshRenderingData* InRenderingData);
+	void BuildMesh(const FVertexRenderingData* InRenderingData);
 
 	void SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial);
 	UINT GetMaterialsCount() const;

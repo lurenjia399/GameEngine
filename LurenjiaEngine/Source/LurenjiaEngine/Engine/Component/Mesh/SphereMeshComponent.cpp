@@ -4,7 +4,7 @@ CSphereMeshComponent::CSphereMeshComponent()
 {
 }
 
-void CSphereMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
+void CSphereMeshComponent::CreateMeshRenderData(FVertexRenderingData& InRenderingData, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
 {
 	float horizontalAngle = XM_2PI / InAxialSubdivision;
 	float verticalAngle = XM_PI / InHeightSubdivision;

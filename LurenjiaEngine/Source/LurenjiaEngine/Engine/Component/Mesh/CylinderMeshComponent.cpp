@@ -5,7 +5,7 @@ CCylinderMeshComponent::CCylinderMeshComponent()
 
 }
 
-void CCylinderMeshComponent::CreateMeshRenderData(FMeshRenderingData& InRenderingData, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
+void CCylinderMeshComponent::CreateMeshRenderData(FVertexRenderingData& InRenderingData, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
 {
 	float horizontalAngle = XM_2PI / InAxialSubdivision;
 	float perHeight = InHeight / InHeightSubdivision;

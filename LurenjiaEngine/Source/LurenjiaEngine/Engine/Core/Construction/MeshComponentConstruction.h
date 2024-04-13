@@ -1,7 +1,7 @@
 #pragma once
 
 #include "MeshComponentConstruction_Inner.h"
-#include "../../Mesh/Core/Mesh.h"
+#include "../../Actor/Mesh/Core/Mesh.h"
 
 namespace LurenjiaEngine
 {

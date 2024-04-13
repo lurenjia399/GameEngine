@@ -2,7 +2,7 @@
 #include "../../Core/RenderingEngine.h"
 #include "../../../../Core/World.h"
 #include "../../../../Core/Viewport/ViewportInfo.h"
-#include "../../../../Manage/LightManage.h"
+#include "../../../../Actor/Light/Core/LightManage.h"
 #include "../../../../Rendering/Core/DirectX/RenderingPipeline/DescriptorHeap/DirectXDescriptorHeap.h"
 
 class CDirectXRenderingEngine :public CRenderingEngine

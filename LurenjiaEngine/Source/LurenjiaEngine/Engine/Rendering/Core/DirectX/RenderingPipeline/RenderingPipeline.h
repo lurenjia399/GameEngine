@@ -19,7 +19,7 @@ public:
 
 	bool FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_ptr<FGeometryDescData>& OutGeometryDescData, int InRenderingLayer = -1);
 	void DuplicateMeshRenderingData(std::shared_ptr<CMeshComponent> InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData);
-	void BuildMeshComponent(std::shared_ptr<CMeshComponent> InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey);
+	void BuildMeshComponent(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& InRenderingData, const size_t& HashKey);
 	void BuildPipeline();
 	void UpdateConstantView(float DeltaTime, const FViewportInfo& ViewportInfo);
 	void PreDraw(float DeltaTime);

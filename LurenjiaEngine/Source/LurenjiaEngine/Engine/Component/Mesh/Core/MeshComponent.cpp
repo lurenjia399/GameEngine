@@ -11,7 +11,7 @@ void CMeshComponent::Init()
 {
 }
 
-void CMeshComponent::BuildMesh(const FMeshRenderingData* InRenderingData)
+void CMeshComponent::BuildMesh(const FVertexRenderingData* InRenderingData)
 {
 }
 

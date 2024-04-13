@@ -2,7 +2,7 @@
 #include "../../../../../Core/Engine.h"
 #include "../../../../../Platform/Windows/WindowsEngine.h"
 #include "../../../../../Interface/DirectXDeviceInterface.h"
-#include "../../../../../Mesh/Core/MeshType.h"
+#include "../../../../../Actor/Mesh/Core/MeshType.h"
 #include "GeometryDescData.h"
 #include "../DescriptorHeap/DirectXDescriptorHeap.h"
 #include "../ConstantBuffer/DirectXConstBufferView.h"
@@ -15,7 +15,7 @@ struct FGeometry : public IDirectXDeviceInterface_struct, public std::enable_sha
 	friend struct FGeometryMap;
 public:
 	bool isExitDescribeMeshRenderingData(std::shared_ptr<CMeshComponent> InKey);
-	void BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FMeshRenderingData& MeshRenderData, const size_t& HashKey, const int& key);
+	void BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& MeshRenderData, const size_t& HashKey, const int& key);
 	void BuildMeshBuffer(const int& InIndex);
 	UINT GetDrawMeshObjectCount() const;
 	UINT GetDrawMaterialObjectCount() const;
@@ -33,7 +33,7 @@ private:
 	ComPtr<ID3D12Resource> VertexBufferTempPtr;				//临时mesh的顶点缓冲区
 	ComPtr<ID3D12Resource> IndexBufferTempPtr;				//临时mesh的索引缓冲区
 
-	FMeshRenderingData MeshRenderingData;					//存放了渲染所有mesh的渲染数据
+	FVertexRenderingData MeshRenderingData;					//存放了渲染所有mesh的渲染数据
 	
 	// 唯一渲染池，里面存放一份mesh的引用，不包含重复的
 	static map<size_t, std::shared_ptr<FGeometryDescData>> NoRepeatMeshRenderingDataPool;
@@ -54,7 +54,7 @@ struct FGeometryMap : public IDirectXDeviceInterface_struct
 public:
 
 	FGeometryMap();
-	void BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FMeshRenderingData& InRenderingData, const size_t& HashKey);
+	void BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& InRenderingData, const size_t& HashKey);
 	void BuildMeshBuffer();
 	void BuildDynamicReflectionMesh();
 	void BuildDescriptorHeap();

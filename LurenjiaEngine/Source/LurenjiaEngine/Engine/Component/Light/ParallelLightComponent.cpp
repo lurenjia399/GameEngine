@@ -1,5 +1,5 @@
 #include "ParallelLightComponent.h"
-#include "../../Mesh/Core/MeshManage.h"
+#include "../../Actor/Mesh/Core/MeshManage.h"
 
 CParallelLightComponent::CParallelLightComponent()
 	:LightMeshComponent(nullptr)

@@ -72,7 +72,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\Binaries\Win64\</OutDir>
-    <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
+    <IntDir>$(SolutionDir)Intermediate\Other\$(ProjectName)</IntDir>
     <IncludePath>$(SolutionDir)Source\LurenjiaEngineCore;$(SolutionDir)Source\LurenjiaModelTool\FBX\include;$(SolutionDir)Source\UnLessLibrary;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Source\LurenjiaModelTool\FBX\lib\x64\debug;$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>

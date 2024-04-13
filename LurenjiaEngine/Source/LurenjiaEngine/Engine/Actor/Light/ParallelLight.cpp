@@ -1,6 +1,6 @@
 #include "ParallelLight.h"
-#include "../../Manage/LightManage.h"
-#include "../../Mesh/Core/MeshManage.h"
+#include "../../Actor/Light/Core/LightManage.h"
+#include "../../Actor/Mesh/Core/MeshManage.h"
 
 AParallelLight::AParallelLight()
 {

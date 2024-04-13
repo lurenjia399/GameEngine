@@ -1,5 +1,5 @@
 #include "LightComponent.h"
-#include "../../../Manage/LightManage.h"
+#include "../../../Actor/Light/Core/LightManage.h"
 
 CLightComponent::CLightComponent()
 	: LightIntensity(1.f, 1.f, 1.f)
