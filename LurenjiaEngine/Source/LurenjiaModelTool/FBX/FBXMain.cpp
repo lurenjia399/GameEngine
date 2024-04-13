@@ -5,12 +5,17 @@
 #pragma comment(lib, "libfbxsdk-md.lib")
 #pragma comment(lib, "libfbxsdk-mt.lib")
 
+#pragma comment(lib, "LurenjiaEngineCore.lib")
+#include "Path/EnginePath.h"
+
 using namespace fbxsdk;
 //int main()
 //{
 //	//FbxManager* InManager = FbxManager::Create();
 //	FbxImport::FbxRenderData RenderData{};
-//	FbxImport::LoadMeshData({}, RenderData);
+//	string ContentPath = FEnginePathHelper::GetEngineContentFBXPath();
+//	std::string path = ContentPath + "/Heart.fbx";
+//	FbxImport::LoadMeshData(path, RenderData);
 //	return 0;
 //}
 

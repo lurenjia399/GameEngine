@@ -1,6 +1,12 @@
 #pragma once
 #pragma comment(lib, "UnLessLibrary.lib")
+
+// https://www.cnblogs.com/TenosDoIt/p/3203137.html 这个文章讲的很细了
+// 静态库会生成.lib文件，我们需要下面这样导入.lib。
+// 动态库会生成.lib和.dll文件，我们也需要下面这样导入.lib，动态库的lib和静态库的lib不同。
+// 在这里，我们都用动态库的这种
 #pragma comment(lib, "LurenjiaEngineCore.lib")
+#pragma comment(lib, "LurenjiaModelTool.lib")
 
 #include "string"
 using namespace std;
@@ -35,7 +41,7 @@ using namespace std;
 #include "Debug/Log/SimpleLog.h" // 这个头文件需要在 imgui.h 下边
 
 #include "Path/EnginePath.h"
-
+#include "FBX/FBXMain.h"
 
 using namespace Microsoft::WRL;
 using namespace DirectX;

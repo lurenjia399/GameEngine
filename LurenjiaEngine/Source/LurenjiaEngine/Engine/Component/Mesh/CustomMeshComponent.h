@@ -14,6 +14,8 @@ public:
 	void BuildKey(size_t& OutHashKey, const string& InPath);
 private:
 	bool LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FMeshRenderingData& InRenderingData);
+
+	bool LoadFBXFileBuffer(const std::string& InPath, FMeshRenderingData& InRenderingData);
 };
 
 #endif

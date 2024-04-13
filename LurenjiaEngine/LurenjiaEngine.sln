@@ -13,6 +13,9 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaBuildTool", "Source\LurenjiaBuildTool\LurenjiaBuildTool.vcxproj", "{76700C49-5518-4600-AC91-ED8F90969CF5}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaModelTool", "Source\LurenjiaModelTool\LurenjiaModelTool.vcxproj", "{669D3C97-6B46-465C-8BDA-FB8303BB6092}"
+	ProjectSection(ProjectDependencies) = postProject
+		{AA2640A9-AD80-476F-B494-DE278D640F90} = {AA2640A9-AD80-476F-B494-DE278D640F90}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "UnLessLibrary", "Source\UnLessLibrary\UnLessLibrary.vcxproj", "{3873C153-BCA9-41B6-AF51-9E1851F3B20D}"
 EndProject

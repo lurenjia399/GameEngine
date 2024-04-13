@@ -866,5 +866,8 @@
     <ClInclude Include="FBX\include\fbxsdk.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="FBX\FBXCoreMacro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

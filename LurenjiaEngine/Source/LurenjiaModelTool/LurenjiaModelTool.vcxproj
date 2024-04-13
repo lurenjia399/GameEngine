@@ -40,7 +40,7 @@
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
@@ -73,7 +73,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)\Binaries\Win64\</OutDir>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
-    <IncludePath>$(SolutionDir)Source\LurenjiaModelTool\FBX\include;$(SolutionDir)Source\UnLessLibrary;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Source\LurenjiaEngineCore;$(SolutionDir)Source\LurenjiaModelTool\FBX\include;$(SolutionDir)Source\UnLessLibrary;$(IncludePath)</IncludePath>
     <LibraryPath>$(SolutionDir)Source\LurenjiaModelTool\FBX\lib\x64\debug;$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -108,7 +108,7 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_DEBUG;_CONSOLE;LURENJIAMODELTOOL_API_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -136,6 +136,7 @@
     <ClCompile Include="FBX\FBXMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FBX\FBXCoreMacro.h" />
     <ClInclude Include="FBX\FBXMain.h" />
     <ClInclude Include="FBX\include\fbxsdk.h" />
     <ClInclude Include="FBX\include\fbxsdk\core\arch\fbxalloc.h" />

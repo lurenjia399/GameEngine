@@ -1,21 +1,22 @@
 #pragma once
 #include <iostream>
 //using namespace fbxsdk;
+#include "FBXCoreMacro.h"
 
 namespace FbxImport
 {
-	struct FbxRenderData
+	struct LURENJIAENMODELTOOL_API FbxRenderData
 	{
 
 	};
 
 	// 2.3.4
-	struct FbxVersion
+	struct LURENJIAENMODELTOOL_API FbxVersion
 	{
 		int Major;
 		int Minor;
 		int Revision;
 	};
 	
-	void LoadMeshData(const std::string& InPath, FbxRenderData& OutRenderData);
+	void LURENJIAENMODELTOOL_API LoadMeshData(const std::string& InPath, FbxRenderData& OutRenderData);
 }

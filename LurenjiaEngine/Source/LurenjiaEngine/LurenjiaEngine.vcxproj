@@ -130,6 +130,7 @@
     <ClCompile Include="Engine\Shader\Core\ShaderType.cpp" />
     <ClCompile Include="Engine\Shader\ShaderManage.cpp" />
     <ClCompile Include="Engine\Test\ComputeShader\ComputeShaderTest.cpp" />
+    <ClCompile Include="Engine\Test\LoadFBXModel\LoadFBXModelTest.cpp" />
     <ClCompile Include="Engine\Test\Material\MaterialTest.cpp" />
     <ClCompile Include="Engine\Test\Reflect\ReflectTest.cpp" />
     <ClCompile Include="Engine\Test\RenderLayer\TransparentTest.cpp" />
@@ -266,6 +267,7 @@
     <ClInclude Include="Engine\Shader\Core\ShaderType.h" />
     <ClInclude Include="Engine\Shader\ShaderManage.h" />
     <ClInclude Include="Engine\Test\ComputeShader\ComputeShaderTest.h" />
+    <ClInclude Include="Engine\Test\LoadFBXModel\LoadFBXModelTest.h" />
     <ClInclude Include="Engine\Test\Material\MaterialTest.h" />
     <ClInclude Include="Engine\Test\Reflect\ReflectTest.h" />
     <ClInclude Include="Engine\Test\RenderLayer\TransparentTest.h" />
@@ -350,7 +352,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)Intermediate\Other\</IntDir>
-    <IncludePath>$(SolutionDir)Source\LurenjiaEngine\imgui;$(SolutionDir)Source\UnLessLibrary;$(SolutionDir)Source\LurenjiaEngineCore;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Source\LurenjiaModelTool;$(SolutionDir)Source\LurenjiaEngine\imgui;$(SolutionDir)Source\UnLessLibrary;$(SolutionDir)Source\LurenjiaEngineCore;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>

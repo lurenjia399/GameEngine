@@ -390,6 +390,9 @@
     <ClCompile Include="Editor\Outliner\OutlinerEditor.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Test\LoadFBXModel\LoadFBXModelTest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -801,6 +804,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Editor\Outliner\OutlinerEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Test\LoadFBXModel\LoadFBXModelTest.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

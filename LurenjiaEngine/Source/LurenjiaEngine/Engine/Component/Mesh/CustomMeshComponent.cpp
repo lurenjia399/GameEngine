@@ -118,3 +118,10 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 	}
 	return false;
 }
+
+bool CCustomMeshComponent::LoadFBXFileBuffer(const std::string& InPath, FMeshRenderingData& InRenderingData)
+{
+	FbxImport::FbxRenderData data = {};
+	FbxImport::LoadMeshData(InPath, data);
+	return false;
+}

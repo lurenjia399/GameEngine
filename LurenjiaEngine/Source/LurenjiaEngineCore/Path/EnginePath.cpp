@@ -33,6 +33,15 @@ string FEnginePathHelper::GetEngineContentPath()
 	return result;
 }
 
+string FEnginePathHelper::GetEngineContentFBXPath()
+{
+	const char Path[] = "../../Content/FBX";
+
+	string result = GetAbsPath(Path);
+
+	return result;
+}
+
 string FEnginePathHelper::GetEngineShadersPath()
 {
 	const char Path[] = "../../Shaders";
