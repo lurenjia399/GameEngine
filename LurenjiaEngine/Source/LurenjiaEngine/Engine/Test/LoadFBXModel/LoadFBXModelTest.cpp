@@ -7,22 +7,25 @@
 #include "../../Actor/Mesh/PlaneMesh.h"
 #include "../../Actor/Light/ParallelLight.h"
 #include "../../Actor/Mesh/BoxMesh.h"
+#include "../../Actor/Mesh/CustomMesh.h"
 
 void LoadFBXModelTest::BuildLoadFBXModelTestData()
 {
 	shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
 	shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
 
-	string ParalLelLightPath = "/SunMesh.obj";
-	string ContentPath = FEnginePathHelper::GetEngineContentPath();
-	//LightMeshComponent = GetMeshManage()->CreateCustomMeshComponent("ParallelLightMeshComponent", ContentPath + ParalLelLightPath);
+	string customPath = "/Heart.fbx";
+	string ContentPath = FEnginePathHelper::GetEngineContentFBXPath();
 
-	//if (LightMeshComponent)
-	//{
-		//shared_ptr<CMaterial> material = LightMeshComponent->GetMaterials()[0];
-		//material->SetMaterialType(EMaterialType::BaseColor);
-		//material->SetMaterialDisplayStatusType(EMaterialDisplayStatusType::WireframeDisplay);
-		//material->SetBaseColor(XMFLOAT4(1.f, 1.f, 1.f, 1.f));
-	//}
+	if (shared_ptr<ACustomMesh> CustomFBXmesh = World->CreateActor<ACustomMesh>("CustomFBXmesh"))
+	{
+		CustomFBXmesh->SetMeshComponent("CustomFBXmeshComponent", ContentPath + customPath, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
+		if (auto CustomMaterial = make_shared<CMaterial>())
+		{
+			CustomMaterial->ResetGuid("CustomMaterial");//给创建的材质设置Guid
+			CustomMaterial->SetMaterialType(EMaterialType::HalfLambert);
+			CustomFBXmesh->SetSubMaterials(0, CustomMaterial);
+		}
+	}
 
 }

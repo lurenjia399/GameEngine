@@ -19,6 +19,14 @@ using namespace fbxsdk;
 //	return 0;
 //}
 
+void DestoryFbxObjects(FbxManager* InManager)
+{
+	if (InManager)
+	{
+		InManager->Destroy();
+	}
+}
+
 void InitializeObjects(FbxManager*& OutManager, FbxScene*& OutScene)
 {
 	OutManager = FbxManager::Create(); // 创建FbxManager
@@ -63,35 +71,71 @@ bool LoadScene(FbxManager* FbxManager, FbxScene* FbxScene, const char* FilePath)
 }
 
 // 获取多边形
-void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FbxRenderData& OutRenderDat)
+void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRenderData)
 {
 	int PolygonCount = Mesh->GetPolygonCount();//获取图元的数量,三角形的数量吧
 	FbxVector4* ControlPoints = Mesh->GetControlPoints();//获取控制点的数量
 
 	int VertexID = 0;
-	for (int i = 0; i < PolygonCount; i++)
+	for (int i = 0; i < PolygonCount; i++) // 有多少个图元
 	{
-		int PolygonSize = Mesh->GetPolygonSize(i);//图元的size，三角形就是3，四边形就是4
+		OutPolygonRenderData.VertexData.push_back(FbxImport::FFbxTriangle());
+		FbxImport::FFbxTriangle& OutTriangle = OutPolygonRenderData.VertexData.back();
+
+		int PolygonSize = Mesh->GetPolygonSize(i);//每个图元的尺寸，三角形就是3，四边形就是4
+		assert(PolygonSize == 3);
 		for (int j = 0; j < PolygonSize; j++)
 		{
+			FbxImport::FFbxVector3& OutPosition = OutTriangle.Vertexs[j].Position;
+			FbxImport::FFbxVector2& OutUV = OutTriangle.Vertexs[j].UV;
+
+			
 			int ControlPointIndex = Mesh->GetPolygonVertex(i, j);//获取点的索引
-			// 获取顶点的坐标
-			FbxVector4 Coordinates = ControlPoints[ControlPointIndex];
+
+			// position
+			{
+				FbxVector4 Coordinates = ControlPoints[ControlPointIndex];
+				OutPosition.x = static_cast<float>(Coordinates.mData[0]);
+				OutPosition.y = static_cast<float>(Coordinates.mData[1]);
+				OutPosition.z = static_cast<float>(Coordinates.mData[2]);
+			}
 
 			// uv
 			for (int k = 0; k < Mesh->GetElementUVCount(); k++)
 			{
 				fbxsdk::FbxGeometryElementUV* TextureUV = Mesh->GetElementUV(k);
-				if (TextureUV->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+				if (TextureUV->GetMappingMode() == FbxGeometryElement::eByControlPoint)
 				{
-					int TextureUVIndex = Mesh->GetTextureUVIndex(i, j);
-					if (TextureUV->GetReferenceMode() == FbxGeometryElement::eIndex)
+					if (TextureUV->GetReferenceMode() == FbxGeometryElement::eDirect)
 					{
 						// 获取顶点UV值
-						FbxVector2 UV =  TextureUV->GetDirectArray().GetAt(TextureUVIndex);
+						FbxVector2 UV =  TextureUV->GetDirectArray().GetAt(ControlPointIndex);
+						OutUV.x = static_cast<float>(UV.mData[0]);
+						OutUV.y = 1.0f - static_cast<float>(UV.mData[1]);// dx中v是反的，opengl正好相反
+
+					}else if(TextureUV->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+					{
+						int ID = TextureUV->GetIndexArray().GetAt(ControlPointIndex);
+						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ID);
+						OutUV.x = static_cast<float>(UV.mData[0]);
+						OutUV.y = 1.0f - static_cast<float>(UV.mData[1]);// dx中v是反的，opengl正好相反
+					}
+				}
+				else if (TextureUV->GetMappingMode() == FbxGeometryElement::eByPolygonVertex)
+				{
+					int TextureUVIndex = Mesh->GetTextureUVIndex(i, j);
+					FbxVector2 UV = TextureUV->GetDirectArray().GetAt(TextureUVIndex);
+					if (TextureUV->GetReferenceMode() == FbxGeometryElement::eDirect 
+						|| TextureUV->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+					{
+						FbxVector2 UV = TextureUV->GetDirectArray().GetAt(ControlPointIndex);
+						OutUV.x = static_cast<float>(UV.mData[0]);
+						OutUV.y = 1.0f - static_cast<float>(UV.mData[1]);// dx中v是反的，opengl正好相反
+
 					}
 				}
 			}
+
 			// 法线
 			for (int k = 0; k < Mesh->GetElementNormalCount(); k++)
 			{
@@ -139,10 +183,13 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FbxRenderData& OutRenderDat)
 	}
 }
 
-void GetMesh(FbxNode* Node, FbxImport::FbxRenderData& OutRenderData)
+void GetMesh(FbxNode* Node, FbxImport::FFbxModel& OutModelRenderData)
 {
 	fbxsdk::FbxMesh* NodeMesh = (fbxsdk::FbxMesh*)Node->GetNodeAttribute();
-	GetPolygons(NodeMesh, OutRenderData);
+
+	OutModelRenderData.PolygonData.push_back(FbxImport::FFbxPolygon());
+	FbxImport::FFbxPolygon& OutPolygon = OutModelRenderData.PolygonData.back();
+	GetPolygons(NodeMesh, OutPolygon);
 }
 
 void RecursiveLoadMesh(FbxNode* Node, FbxImport::FbxRenderData& OutRenderData)
@@ -152,7 +199,9 @@ void RecursiveLoadMesh(FbxNode* Node, FbxImport::FbxRenderData& OutRenderData)
 		FbxNodeAttribute::EType AttributeType = Node->GetNodeAttribute()->GetAttributeType();
 		if (AttributeType == FbxNodeAttribute::EType::eMesh)
 		{
-			GetMesh(Node, OutRenderData);
+			(*OutRenderData.ModelData).push_back(FbxImport::FFbxModel());
+			FbxImport::FFbxModel& OutModel = (*OutRenderData.ModelData).back();
+			GetMesh(Node, OutModel);
 		}
 	}
 }
@@ -174,4 +223,6 @@ void FbxImport::LoadMeshData(const std::string& InPath, FbxImport::FbxRenderData
 			RecursiveLoadMesh(Node->GetChild(i), OutRenderData);
 		}
 	}
+
+	DestoryFbxObjects(Manager);
 }

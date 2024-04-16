@@ -13,7 +13,16 @@ void CCustomMeshComponent::CreateMeshRenderData(FVertexRenderingData& InRenderin
 		char* Buffer = new char[FileSize + 1]();//永远记住字符数组的长度需要加1，，，'\0'需要占位
 		get_file_buf(InPath.c_str(), Buffer);
 
-		if (!LoadObjFileBuffer(Buffer, FileSize, InRenderingData))
+		bool bLoadSuccess = false;
+		if (InPath.find(".fbx") != -1)
+		{
+			bLoadSuccess = LoadFBXFileBuffer(InPath, InRenderingData);
+		}
+		else
+		{
+			bLoadSuccess = LoadObjFileBuffer(Buffer, FileSize, InRenderingData);
+		}
+		if (!bLoadSuccess)
 		{
 			Engine_Log_Error("load obj mesh failed !!!");
 		}

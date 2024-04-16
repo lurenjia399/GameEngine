@@ -19,6 +19,7 @@
 #include "../../../../Test/ShadowMap/ShadowMapTest.h"
 #include "../../../../Test/ComputeShader/ComputeShaderTest.h"
 #include "../../../../Test/SelectActor/SelectActorTest.h"
+#include "../../../../Test/LoadFBXModel/LoadFBXModelTest.h"
 
 enum class EMaterialType;
 CDirectXRenderingEngine::CDirectXRenderingEngine()
@@ -108,8 +109,8 @@ int CDirectXRenderingEngine::PostInit()
 	//ShadowMapTest::BuildShadowMapTestData();
 	//TransparentTest::BuildTransparentTestData();
 	//ComputeShaderTest::BuildComputeShaderTestData();
-	SelectActorTest::BuildSelectActorTestData();
-	
+	//SelectActorTest::BuildSelectActorTestData();
+	LoadFBXModelTest::BuildLoadFBXModelTestData();
 	
 
 	MeshManage->BuildRenderingPipeline();
