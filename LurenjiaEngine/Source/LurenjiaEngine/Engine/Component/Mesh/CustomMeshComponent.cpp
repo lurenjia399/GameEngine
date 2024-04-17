@@ -1,4 +1,5 @@
 #include "CustomMeshComponent.h"
+#include "FBX/FBXMain.h"
 
 CCustomMeshComponent::CCustomMeshComponent()
 {
@@ -42,7 +43,7 @@ void CCustomMeshComponent::BuildKey(size_t& OutHashKey, const string& InPath)
 	OutHashKey = stringHash(InPath);
 }
 
-bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FVertexRenderingData& InRenderingData)
+bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FVertexRenderingData& OutRenderingData)
 {
 	if (InBufferSize > 0)
 	{
@@ -69,9 +70,9 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 
 					}
 					else {						//顶点
-						InRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(), XMFLOAT4(Colors::DeepSkyBlue)));
-						int topIndex = static_cast<int>(InRenderingData.VertexData.size()) - 1;
-						XMFLOAT3& currVertexPos = InRenderingData.VertexData[topIndex].Pos;
+						OutRenderingData.VertexData.emplace_back(FVertex(XMFLOAT3(), XMFLOAT4(Colors::DeepSkyBlue)));
+						int topIndex = static_cast<int>(OutRenderingData.VertexData.size()) - 1;
+						XMFLOAT3& currVertexPos = OutRenderingData.VertexData[topIndex].Pos;
 
 						//解析顶点位置
 						LineStream >> currVertexPos.x;
@@ -96,11 +97,11 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 						int PosIndex = find_string(SaveLineString, "/", pivotIndex);
 						if (PosIndex < 0)
 						{
-							InRenderingData.IndexData.emplace_back(atoi(SaveLineString) - 1);
+							OutRenderingData.IndexData.emplace_back(atoi(SaveLineString) - 1);
 						}
 						else {
 							char* vPosIndex = string_mid(SaveLineString, TempBuffer, pivotIndex, PosIndex - pivotIndex);
-							InRenderingData.IndexData.emplace_back(atoi(vPosIndex) - 1);
+							OutRenderingData.IndexData.emplace_back(atoi(vPosIndex) - 1);
 						}
 
 						//纹理索引
@@ -128,9 +129,28 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 	return false;
 }
 
-bool CCustomMeshComponent::LoadFBXFileBuffer(const std::string& InPath, FVertexRenderingData& InRenderingData)
+bool CCustomMeshComponent::LoadFBXFileBuffer(const std::string& InPath, FVertexRenderingData& OutRenderingData)
 {
-	FbxImport::FbxRenderData data = {};
-	FbxImport::LoadMeshData(InPath, data);
+	FbxImport::FbxRenderData FbxSceneRenderData = {};
+	FbxImport::LoadMeshData(InPath, FbxSceneRenderData);
+
+	for (const FbxImport::FFbxModel& ModelData : *FbxSceneRenderData.ModelData)
+	{
+		for (const FbxImport::FFbxPolygon& PolygonData : *ModelData.PolygonData)
+		{
+			for (const FbxImport::FFbxTriangle& TriangleData : *PolygonData.VertexData)
+			{
+				for (const FbxImport::FFbxVertex& VertexData : TriangleData.Vertexs)
+				{
+					XMFLOAT3 Pos = XMFLOAT3(VertexData.Position.x, VertexData.Position.y, VertexData.Position.z);
+					XMFLOAT4 Color = XMFLOAT4(1.0f, 1.0f, 1.0f, 1.0f);
+					XMFLOAT3 Normal = XMFLOAT3(VertexData.Normal.x, VertexData.Normal.y, VertexData.Normal.z);
+					XMFLOAT3 Tangent = XMFLOAT3(VertexData.Tangent.x, VertexData.Tangent.y, VertexData.Tangent.z);;
+					XMFLOAT2 TexCoord = XMFLOAT2(VertexData.UV.x, VertexData.UV.y);
+					OutRenderingData.VertexData.emplace_back(FVertex(Pos, Color, Normal, Tangent, TexCoord));
+				}
+			}
+		}
+	}
 	return false;
 }

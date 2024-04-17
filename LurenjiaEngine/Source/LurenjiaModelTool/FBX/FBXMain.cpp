@@ -79,8 +79,8 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRender
 	int VertexID = 0;
 	for (int i = 0; i < PolygonCount; i++) // 有多少个图元
 	{
-		OutPolygonRenderData.VertexData.push_back(FbxImport::FFbxTriangle());
-		FbxImport::FFbxTriangle& OutTriangle = OutPolygonRenderData.VertexData.back();
+		OutPolygonRenderData.VertexData->push_back(FbxImport::FFbxTriangle());
+		FbxImport::FFbxTriangle& OutTriangle = OutPolygonRenderData.VertexData->back();
 
 		int PolygonSize = Mesh->GetPolygonSize(i);//每个图元的尺寸，三角形就是3，四边形就是4
 		assert(PolygonSize == 3);
@@ -88,16 +88,30 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRender
 		{
 			FbxImport::FFbxVector3& OutPosition = OutTriangle.Vertexs[j].Position;
 			FbxImport::FFbxVector2& OutUV = OutTriangle.Vertexs[j].UV;
+			FbxImport::FFbxVector3& OutNormal = OutTriangle.Vertexs[j].Normal;
+			FbxImport::FFbxVector3& OutTangent = OutTriangle.Vertexs[j].Tangent;
+			FbxImport::FFbxVector3& OutBinormal = OutTriangle.Vertexs[j].Binormal;
+
 
 			
 			int ControlPointIndex = Mesh->GetPolygonVertex(i, j);//获取点的索引
 
+
 			// position
 			{
+				// scale
+				FbxDouble3 Scaling = Mesh->GetNode()->LclScaling;
+
 				FbxVector4 Coordinates = ControlPoints[ControlPointIndex];
-				OutPosition.x = static_cast<float>(Coordinates.mData[0]);
-				OutPosition.y = static_cast<float>(Coordinates.mData[1]);
-				OutPosition.z = static_cast<float>(Coordinates.mData[2]);
+				OutPosition.x = static_cast<float>(Coordinates.mData[0]) * static_cast<float>(Scaling[0]);
+				OutPosition.y = static_cast<float>(Coordinates.mData[1]) * static_cast<float>(Scaling[1]);
+				OutPosition.z = static_cast<float>(Coordinates.mData[2]) * static_cast<float>(Scaling[2]);
+			}
+
+			// color
+			for (int k = 0; k < Mesh->GetElementVertexColorCount(); k++)
+			{
+
 			}
 
 			// uv
@@ -146,6 +160,36 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRender
 					{
 						// 获取顶点法线
 						FbxVector4 Normal = ElementNormal->GetDirectArray().GetAt(VertexID);
+						OutNormal.x = static_cast<float>(Normal.mData[0]);
+						OutNormal.y = static_cast<float>(Normal.mData[1]);
+						OutNormal.z = static_cast<float>(Normal.mData[2]);
+					}
+					else if (ElementNormal->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+					{
+						int ID = ElementNormal->GetIndexArray().GetAt(VertexID);
+						FbxVector4 Normal = ElementNormal->GetDirectArray().GetAt(ID);
+						OutNormal.x = static_cast<float>(Normal.mData[0]);
+						OutNormal.y = static_cast<float>(Normal.mData[1]);
+						OutNormal.z = static_cast<float>(Normal.mData[2]);
+					}
+				}
+				else if (ElementNormal->GetMappingMode() == FbxGeometryElement::eByControlPoint)
+				{
+					if (ElementNormal->GetReferenceMode() == FbxGeometryElement::eDirect)
+					{
+						// 获取顶点法线
+						FbxVector4 Normal = ElementNormal->GetDirectArray().GetAt(ControlPointIndex);
+						OutNormal.x = static_cast<float>(Normal.mData[0]);
+						OutNormal.y = static_cast<float>(Normal.mData[1]);
+						OutNormal.z = static_cast<float>(Normal.mData[2]);
+					}
+					else if (ElementNormal->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+					{
+						int ID = ElementNormal->GetIndexArray().GetAt(ControlPointIndex);
+						FbxVector4 Normal = ElementNormal->GetDirectArray().GetAt(ID);
+						OutNormal.x = static_cast<float>(Normal.mData[0]);
+						OutNormal.y = static_cast<float>(Normal.mData[1]);
+						OutNormal.z = static_cast<float>(Normal.mData[2]);
 					}
 				}
 			}
@@ -157,9 +201,18 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRender
 				{
 					if (ElementTangent->GetReferenceMode() == FbxGeometryElement::eDirect)
 					{
+						FbxVector4 Tangent = ElementTangent->GetDirectArray().GetAt(VertexID);
+						OutTangent.x = static_cast<float>(Tangent.mData[0]);
+						OutTangent.y = static_cast<float>(Tangent.mData[1]);
+						OutTangent.z = static_cast<float>(Tangent.mData[2]);
+					}
+					else if (ElementTangent->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+					{
 						int TangentIndex = ElementTangent->GetIndexArray().GetAt(VertexID);
-						// 获取顶点切线
-						FbxVector4 Tangent =  ElementTangent->GetDirectArray().GetAt(TangentIndex);
+						FbxVector4 Tangent = ElementTangent->GetDirectArray().GetAt(TangentIndex);
+						OutTangent.x = static_cast<float>(Tangent.mData[0]);
+						OutTangent.y = static_cast<float>(Tangent.mData[1]);
+						OutTangent.z = static_cast<float>(Tangent.mData[2]);
 					}
 				}
 			}
@@ -171,9 +224,18 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRender
 				{
 					if (ElementBinormal->GetReferenceMode() == FbxGeometryElement::eDirect)
 					{
+						FbxVector4 Binormal = ElementBinormal->GetDirectArray().GetAt(VertexID);
+						OutBinormal.x = static_cast<float>(Binormal.mData[0]);
+						OutBinormal.y = static_cast<float>(Binormal.mData[1]);
+						OutBinormal.z = static_cast<float>(Binormal.mData[2]);
+					}
+					else if (ElementBinormal->GetReferenceMode() == FbxGeometryElement::eIndexToDirect)
+					{
 						int BinormalIndex = ElementBinormal->GetIndexArray().GetAt(VertexID);
-						// 获取顶点副切线
-						//FbxVector4 Binormal = ElementBinormal->GetDirectArray().GetAt(BinormalIndex);
+						FbxVector4 Binormal = ElementBinormal->GetDirectArray().GetAt(BinormalIndex);
+						OutBinormal.x = static_cast<float>(Binormal.mData[0]);
+						OutBinormal.y = static_cast<float>(Binormal.mData[1]);
+						OutBinormal.z = static_cast<float>(Binormal.mData[2]);
 					}
 				}
 			}
@@ -187,8 +249,8 @@ void GetMesh(FbxNode* Node, FbxImport::FFbxModel& OutModelRenderData)
 {
 	fbxsdk::FbxMesh* NodeMesh = (fbxsdk::FbxMesh*)Node->GetNodeAttribute();
 
-	OutModelRenderData.PolygonData.push_back(FbxImport::FFbxPolygon());
-	FbxImport::FFbxPolygon& OutPolygon = OutModelRenderData.PolygonData.back();
+	OutModelRenderData.PolygonData->push_back(FbxImport::FFbxPolygon());
+	FbxImport::FFbxPolygon& OutPolygon = OutModelRenderData.PolygonData->back();
 	GetPolygons(NodeMesh, OutPolygon);
 }
 
@@ -199,8 +261,8 @@ void RecursiveLoadMesh(FbxNode* Node, FbxImport::FbxRenderData& OutRenderData)
 		FbxNodeAttribute::EType AttributeType = Node->GetNodeAttribute()->GetAttributeType();
 		if (AttributeType == FbxNodeAttribute::EType::eMesh)
 		{
-			(*OutRenderData.ModelData).push_back(FbxImport::FFbxModel());
-			FbxImport::FFbxModel& OutModel = (*OutRenderData.ModelData).back();
+			OutRenderData.ModelData->push_back(FbxImport::FFbxModel());
+			FbxImport::FFbxModel& OutModel = OutRenderData.ModelData->back();
 			GetMesh(Node, OutModel);
 		}
 	}

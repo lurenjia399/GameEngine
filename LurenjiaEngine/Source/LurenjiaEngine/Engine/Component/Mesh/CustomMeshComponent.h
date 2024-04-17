@@ -13,9 +13,9 @@ public:
 	void CreateMeshRenderData(FVertexRenderingData& InRenderingData, const string& InPath);
 	void BuildKey(size_t& OutHashKey, const string& InPath);
 private:
-	bool LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FVertexRenderingData& InRenderingData);
+	bool LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSize, FVertexRenderingData& OutRenderingData);
 
-	bool LoadFBXFileBuffer(const std::string& InPath, FVertexRenderingData& InRenderingData);
+	bool LoadFBXFileBuffer(const std::string& InPath, FVertexRenderingData& OutRenderingData);
 };
 
 #endif
