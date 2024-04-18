@@ -3,6 +3,8 @@
 #include <vector>
 #include <map>
 #include "FBXCoreMacro.h"
+#include <assert.h>
+
 
 namespace FbxImport
 {
@@ -39,25 +41,62 @@ namespace FbxImport
 		int MaterialID;
 	};
 	// 多边形
-	struct LURENJIAENMODELTOOL_API FFbxPolygon
+	struct FFbxPolygon_imp
 	{
-		FFbxPolygon():VertexData(new std::vector<FFbxTriangle>{}), IndexData(new std::vector<uint16_t>{}), MaterialID(0) {}
-		~FFbxPolygon()
+		FFbxPolygon_imp() :VertexData({}), IndexData({}), MaterialID(0) {}
+		void push_vertex(FFbxTriangle const& triangle)
 		{
-			if (VertexData != nullptr)
-			{
-				delete VertexData;
-			}
-			if (IndexData != nullptr)
-			{
-				delete IndexData;
-			}
-
+			VertexData.push_back(triangle);
 		}
-		std::vector<FFbxTriangle>* VertexData;
-		std::vector<uint16_t>* IndexData;
+		FFbxTriangle& pop_vertex_ref()
+		{
+			assert(!VertexData.empty());
+			return VertexData.back();
+		}
+		void push_index(uint16_t const& index)
+		{
+			IndexData.push_back(index);
+		}
+		uint16_t& pop_index_ref()
+		{
+			return IndexData.back();
+		}
+		std::vector<FFbxTriangle> VertexData;
+		std::vector<uint16_t> IndexData;
 		int MaterialID;
 	};
+	struct LURENJIAENMODELTOOL_API FFbxPolygon
+	{
+		FFbxPolygon()
+		{
+			imp = new FbxImport::FFbxPolygon_imp();
+		}
+		~FFbxPolygon()
+		{
+			if (imp != nullptr)
+			{
+				delete imp;
+			}
+		}
+		void push_vertex(FFbxTriangle const& triangle)
+		{
+			imp->push_vertex(triangle);
+		}
+		FFbxTriangle& pop_vertex_ref()
+		{
+			return imp->pop_vertex_ref();
+		}
+		void push_index(uint16_t const& index)
+		{
+			imp->push_index(index);
+		}
+		uint16_t& pop_index_ref()
+		{
+			return imp->pop_index_ref();
+		}
+		FbxImport::FFbxPolygon_imp* imp;
+	};
+	
 	// 材质
 	struct LURENJIAENMODELTOOL_API FFbxMaterial
 	{
@@ -65,39 +104,101 @@ namespace FbxImport
 		const char* DiffuseMapFileName;
 	};
 	// 模型
+	struct FFbxModel_imp
+	{
+		FFbxModel_imp() :PolygonData({}), MaterialMap({}) {}
+		void push_polygon(FFbxPolygon const& polygon)
+		{
+			PolygonData.push_back(polygon);
+		}
+		FFbxPolygon& pop_polygon_ref()
+		{
+			assert(!PolygonData.empty());
+			return PolygonData.back();
+		}
+		void push_material(int const& key, FFbxMaterial const& value)
+		{
+			MaterialMap.emplace(std::pair<int, FFbxMaterial>(key, value));
+		}
+		std::vector<FFbxPolygon> PolygonData;
+		std::map<int, FFbxMaterial> MaterialMap;
+	};
 	struct LURENJIAENMODELTOOL_API FFbxModel
 	{
-		FFbxModel() :PolygonData(new std::vector<FFbxPolygon>{}), MaterialMap(new std::map<int, FFbxMaterial>{}) {}
+		FFbxModel()
+		{
+			imp = new FbxImport::FFbxModel_imp();
+		}
+		FFbxModel(const FFbxModel& model)
+		{
+			this->imp = new FbxImport::FFbxModel_imp();
+			this->imp->PolygonData = model.imp->PolygonData;
+			this->imp->MaterialMap = model.imp->MaterialMap;
+		}
+
 		~FFbxModel()
 		{
-			if (PolygonData != nullptr)
+			if (imp != nullptr)
 			{
-				delete PolygonData;
-			}
-			if (MaterialMap != nullptr)
-			{
-				delete MaterialMap;
+				delete imp;
 			}
 
 		}
-		std::vector<FFbxPolygon>* PolygonData;
-		std::map<int, FFbxMaterial>* MaterialMap;
-	};
-
-	// 这个场景的渲染数据。场景 -> 多少个模型 -> 每个模型上多少个多边形(三角形) -> 每个三角形是三个顶点
-	struct LURENJIAENMODELTOOL_API FbxRenderData
-	{
-		FbxRenderData():ModelData(new std::vector<FFbxModel>{}){};
-		~FbxRenderData()
+		void push_polygon(FFbxPolygon const& polygon)
 		{
-			if (ModelData != nullptr)
-			{
-				delete ModelData;
-			}
-			
+			imp->push_polygon(polygon);
 		}
-		std::vector<FFbxModel>* ModelData;
+		FFbxPolygon& pop_polygon_ref()
+		{
+			return imp->pop_polygon_ref();
+		}
+		void push_material(int const& key, FFbxMaterial const& value)
+		{
+			imp->push_material(key, value);
+		}
+		FbxImport::FFbxModel_imp* imp;
 	};
+	
+	// 这个场景的渲染数据。场景 -> 多少个模型 -> 每个模型上多少个多边形(三角形) -> 每个三角形是三个顶点
+	struct FFbxRenderData_imp
+	{
+		FFbxRenderData_imp() :ModelData({}) {}
+		void push_model(const FFbxModel model)
+		{
+			ModelData.push_back(model);
+		}
+		FFbxModel& pop_model_ref()
+		{
+			assert(!ModelData.empty());
+			return ModelData.back();
+		}
+		std::vector<FFbxModel> ModelData;
+	};
+	struct LURENJIAENMODELTOOL_API FFbxRenderData
+	{
+		FFbxRenderData()
+		{
+			imp = new FbxImport::FFbxRenderData_imp();
+		};
+		~FFbxRenderData()
+		{
+			if (imp != nullptr)
+			{
+				delete imp;
+			}
+		}
+		void push_model(const FFbxModel model)
+		{
+			imp->push_model(model);
+		}
+		FFbxModel& pop_model_ref()
+		{
+			return imp->pop_model_ref();
+		}
+
+		FbxImport::FFbxRenderData_imp* imp;
+	};
+	
 
 	// 2.3.4
 	struct LURENJIAENMODELTOOL_API FbxVersion
@@ -107,5 +208,5 @@ namespace FbxImport
 		int Revision;
 	};
 	
-	void LURENJIAENMODELTOOL_API LoadMeshData(const std::string& InPath, FbxRenderData& OutRenderData);
+	void LURENJIAENMODELTOOL_API LoadMeshData(const std::string& InPath, FFbxRenderData& OutRenderData);
 }

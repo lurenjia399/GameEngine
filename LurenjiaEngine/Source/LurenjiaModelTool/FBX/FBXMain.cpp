@@ -19,6 +19,12 @@ using namespace fbxsdk;
 //	return 0;
 //}
 
+namespace FbxImport
+{
+	
+}
+
+
 void DestoryFbxObjects(FbxManager* InManager)
 {
 	if (InManager)
@@ -79,8 +85,8 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRender
 	int VertexID = 0;
 	for (int i = 0; i < PolygonCount; i++) // 有多少个图元
 	{
-		OutPolygonRenderData.VertexData->push_back(FbxImport::FFbxTriangle());
-		FbxImport::FFbxTriangle& OutTriangle = OutPolygonRenderData.VertexData->back();
+		OutPolygonRenderData.push_vertex(FbxImport::FFbxTriangle());
+		FbxImport::FFbxTriangle& OutTriangle = OutPolygonRenderData.pop_vertex_ref();
 
 		int PolygonSize = Mesh->GetPolygonSize(i);//每个图元的尺寸，三角形就是3，四边形就是4
 		assert(PolygonSize == 3);
@@ -249,26 +255,27 @@ void GetMesh(FbxNode* Node, FbxImport::FFbxModel& OutModelRenderData)
 {
 	fbxsdk::FbxMesh* NodeMesh = (fbxsdk::FbxMesh*)Node->GetNodeAttribute();
 
-	OutModelRenderData.PolygonData->push_back(FbxImport::FFbxPolygon());
-	FbxImport::FFbxPolygon& OutPolygon = OutModelRenderData.PolygonData->back();
+	OutModelRenderData.push_polygon(FbxImport::FFbxPolygon());
+	FbxImport::FFbxPolygon& OutPolygon = OutModelRenderData.pop_polygon_ref();
 	GetPolygons(NodeMesh, OutPolygon);
 }
 
-void RecursiveLoadMesh(FbxNode* Node, FbxImport::FbxRenderData& OutRenderData)
+void RecursiveLoadMesh(FbxNode* Node, FbxImport::FFbxRenderData& OutRenderData)
 {
 	if (Node->GetNodeAttribute() != NULL)
 	{
 		FbxNodeAttribute::EType AttributeType = Node->GetNodeAttribute()->GetAttributeType();
 		if (AttributeType == FbxNodeAttribute::EType::eMesh)
 		{
-			OutRenderData.ModelData->push_back(FbxImport::FFbxModel());
-			FbxImport::FFbxModel& OutModel = OutRenderData.ModelData->back();
+			FbxImport::FFbxModel model = FbxImport::FFbxModel();
+			OutRenderData.push_model(model);
+			FbxImport::FFbxModel& OutModel = OutRenderData.pop_model_ref();
 			GetMesh(Node, OutModel);
 		}
 	}
 }
 
-void FbxImport::LoadMeshData(const std::string& InPath, FbxImport::FbxRenderData& OutRenderData)
+void FbxImport::LoadMeshData(const std::string& InPath, FbxImport::FFbxRenderData& OutRenderData)
 {
 	FbxManager* Manager = nullptr;
 	FbxScene* Scene = nullptr;

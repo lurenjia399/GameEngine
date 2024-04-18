@@ -131,14 +131,14 @@ bool CCustomMeshComponent::LoadObjFileBuffer(char* InBuffer, uint32_t InBufferSi
 
 bool CCustomMeshComponent::LoadFBXFileBuffer(const std::string& InPath, FVertexRenderingData& OutRenderingData)
 {
-	FbxImport::FbxRenderData FbxSceneRenderData = {};
+	FbxImport::FFbxRenderData FbxSceneRenderData = {};
 	FbxImport::LoadMeshData(InPath, FbxSceneRenderData);
 
-	for (const FbxImport::FFbxModel& ModelData : *FbxSceneRenderData.ModelData)
+	for (const FbxImport::FFbxModel& ModelData : FbxSceneRenderData.imp->ModelData)
 	{
-		for (const FbxImport::FFbxPolygon& PolygonData : *ModelData.PolygonData)
+		for (const FbxImport::FFbxPolygon& PolygonData : ModelData.imp->PolygonData)
 		{
-			for (const FbxImport::FFbxTriangle& TriangleData : *PolygonData.VertexData)
+			for (const FbxImport::FFbxTriangle& TriangleData : PolygonData.imp->VertexData)
 			{
 				for (const FbxImport::FFbxVertex& VertexData : TriangleData.Vertexs)
 				{
