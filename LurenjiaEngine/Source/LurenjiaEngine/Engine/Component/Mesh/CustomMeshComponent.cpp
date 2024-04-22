@@ -150,7 +150,8 @@ bool CCustomMeshComponent::LoadFBXFileBuffer(const std::string& InPath, FVertexR
 					OutRenderingData.VertexData.emplace_back(FVertex(Pos, Color, Normal, Tangent, TexCoord));
 				}
 			}
+			OutRenderingData.IndexData = PolygonData.imp->IndexData;
 		}
 	}
-	return false;
+	return true;
 }

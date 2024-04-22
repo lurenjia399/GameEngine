@@ -6,6 +6,8 @@
 #include <assert.h>
 
 
+// https://www.cnblogs.com/YZFHKMS-X/p/11834989.html 导出dll，写的方式
+
 namespace FbxImport
 {
 	// 二维向量
@@ -69,7 +71,14 @@ namespace FbxImport
 	{
 		FFbxPolygon()
 		{
-			imp = new FbxImport::FFbxPolygon_imp();
+			imp = new FFbxPolygon_imp();
+		}
+		FFbxPolygon(const FFbxPolygon& polygon)
+		{
+			this->imp = new FFbxPolygon_imp();
+			this->imp->VertexData = polygon.imp->VertexData;
+			this->imp->IndexData = polygon.imp->IndexData;
+			this->imp->MaterialID = polygon.imp->MaterialID;
 		}
 		~FFbxPolygon()
 		{
@@ -94,7 +103,7 @@ namespace FbxImport
 		{
 			return imp->pop_index_ref();
 		}
-		FbxImport::FFbxPolygon_imp* imp;
+		FFbxPolygon_imp* imp;
 	};
 	
 	// 材质
@@ -103,6 +112,7 @@ namespace FbxImport
 		FFbxMaterial() :DiffuseMapFileName("") {}
 		const char* DiffuseMapFileName;
 	};
+
 	// 模型
 	struct FFbxModel_imp
 	{
@@ -127,11 +137,11 @@ namespace FbxImport
 	{
 		FFbxModel()
 		{
-			imp = new FbxImport::FFbxModel_imp();
+			imp = new FFbxModel_imp();
 		}
 		FFbxModel(const FFbxModel& model)
 		{
-			this->imp = new FbxImport::FFbxModel_imp();
+			this->imp = new FFbxModel_imp();
 			this->imp->PolygonData = model.imp->PolygonData;
 			this->imp->MaterialMap = model.imp->MaterialMap;
 		}
@@ -156,14 +166,14 @@ namespace FbxImport
 		{
 			imp->push_material(key, value);
 		}
-		FbxImport::FFbxModel_imp* imp;
+		FFbxModel_imp* imp;
 	};
 	
 	// 这个场景的渲染数据。场景 -> 多少个模型 -> 每个模型上多少个多边形(三角形) -> 每个三角形是三个顶点
 	struct FFbxRenderData_imp
 	{
 		FFbxRenderData_imp() :ModelData({}) {}
-		void push_model(const FFbxModel model)
+		void push_model(const FFbxModel& model)
 		{
 			ModelData.push_back(model);
 		}
@@ -178,7 +188,12 @@ namespace FbxImport
 	{
 		FFbxRenderData()
 		{
-			imp = new FbxImport::FFbxRenderData_imp();
+			imp = new FFbxRenderData_imp();
+		};
+		FFbxRenderData(FFbxRenderData const& renderData)
+		{
+			this->imp = new FFbxRenderData_imp();
+			this->imp->ModelData = renderData.imp->ModelData;
 		};
 		~FFbxRenderData()
 		{
@@ -187,7 +202,7 @@ namespace FbxImport
 				delete imp;
 			}
 		}
-		void push_model(const FFbxModel model)
+		void push_model(const FFbxModel& model)
 		{
 			imp->push_model(model);
 		}
@@ -196,7 +211,7 @@ namespace FbxImport
 			return imp->pop_model_ref();
 		}
 
-		FbxImport::FFbxRenderData_imp* imp;
+		FFbxRenderData_imp* imp;
 	};
 	
 

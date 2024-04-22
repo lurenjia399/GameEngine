@@ -22,6 +22,8 @@ using namespace fbxsdk;
 namespace FbxImport
 {
 	
+	
+	
 }
 
 
@@ -251,6 +253,16 @@ void GetPolygons(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRender
 	}
 }
 
+void GetIndex(fbxsdk::FbxMesh* Mesh, FbxImport::FFbxPolygon& OutPolygonRenderData)
+{
+	uint16_t IndexDataSize = static_cast<uint16_t>(OutPolygonRenderData.imp->VertexData.size()) * 3;
+	OutPolygonRenderData.imp->IndexData.resize(IndexDataSize);
+	for (uint16_t i = 0; i < IndexDataSize; ++i)
+	{
+		OutPolygonRenderData.imp->IndexData[i] = i;
+	}
+}
+
 void GetMesh(FbxNode* Node, FbxImport::FFbxModel& OutModelRenderData)
 {
 	fbxsdk::FbxMesh* NodeMesh = (fbxsdk::FbxMesh*)Node->GetNodeAttribute();
@@ -258,6 +270,7 @@ void GetMesh(FbxNode* Node, FbxImport::FFbxModel& OutModelRenderData)
 	OutModelRenderData.push_polygon(FbxImport::FFbxPolygon());
 	FbxImport::FFbxPolygon& OutPolygon = OutModelRenderData.pop_polygon_ref();
 	GetPolygons(NodeMesh, OutPolygon);
+	GetIndex(NodeMesh, OutPolygon);
 }
 
 void RecursiveLoadMesh(FbxNode* Node, FbxImport::FFbxRenderData& OutRenderData)
@@ -267,8 +280,8 @@ void RecursiveLoadMesh(FbxNode* Node, FbxImport::FFbxRenderData& OutRenderData)
 		FbxNodeAttribute::EType AttributeType = Node->GetNodeAttribute()->GetAttributeType();
 		if (AttributeType == FbxNodeAttribute::EType::eMesh)
 		{
-			FbxImport::FFbxModel model = FbxImport::FFbxModel();
-			OutRenderData.push_model(model);
+			//FbxImport::FFbxModel model = ;
+			OutRenderData.push_model(FbxImport::FFbxModel());
 			FbxImport::FFbxModel& OutModel = OutRenderData.pop_model_ref();
 			GetMesh(Node, OutModel);
 		}
@@ -284,6 +297,9 @@ void FbxImport::LoadMeshData(const std::string& InPath, FbxImport::FFbxRenderDat
 
 	FbxString FBXPath(InPath.c_str());
 	bool Result = LoadScene(Manager, Scene, FBXPath.Buffer());//通过Fbxanager把fbx模型加载到FbxScene里面了
+
+	// 将fbx场景转成dx的场景
+	//FbxAxisSystem::DirectX.ConvertScene(Scene);//这边一堆的编译错，等下看
 
 	if (FbxNode* Node = Scene->GetRootNode())
 	{
