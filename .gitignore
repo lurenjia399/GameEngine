@@ -4,7 +4,7 @@
 
 
 /.gitignore
-/.obsidian
+
 /LurenjiaEngine/.vs
 /LurenjiaEngine/Binaries
 /LurenjiaEngine/Intermediate
