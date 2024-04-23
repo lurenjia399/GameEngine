@@ -15,6 +15,7 @@ void LoadFBXModelTest::BuildLoadFBXModelTestData()
 	shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
 
 	string customPath = "/SK_Mannequin.fbx";
+	//string customPath = "/56-fbx/Audi/Models/Audi_R8.fbx";
 	string ContentPath = FEnginePathHelper::GetEngineContentFBXPath();
 
 	if (shared_ptr<ACustomMesh> CustomFBXmesh = World->CreateActor<ACustomMesh>("CustomFBXmesh"))
