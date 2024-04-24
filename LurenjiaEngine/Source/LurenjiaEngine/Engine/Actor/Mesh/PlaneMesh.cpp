@@ -24,7 +24,7 @@ void APlaneMesh::SetMeshComponent(string InName, const float& InHeight, const fl
 
 	//给MeshComponet注入数据，使用前必须保证MeshComponet已经创建完毕
 	//也就是需要保证meshComponent里面的参数都设定好（比如，层级等）
-	INJECT_DATA_INTO_MESHCOMPONENT(CPlaneMeshComponent, InHeight, InWidth, InHeightSubdivide, InWidthSubdivide);
+	InjectComponentRenderDataByMesh(CPlaneMeshComponent, InHeight, InWidth, InHeightSubdivide, InWidthSubdivide);
 }
 
 void APlaneMesh::BuildMesh(const FVertexRenderingData* InRenderingData)

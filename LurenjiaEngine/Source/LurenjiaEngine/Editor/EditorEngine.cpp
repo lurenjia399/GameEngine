@@ -2,13 +2,15 @@
 #include "ToolbarEditor/ToolbarEditor.h"
 #include "LogEditor/LogEditor.h"
 #include "Outliner/OutlinerEditor.h"
+#include "SelectEditor/SelectEditor.h"
 
 CEditorEngine::CEditorEngine()
     : ToolbarEditor(new FToolbarEditor())
     , LogEditor(new FLogEditor())
     , OutlinerEditor(new FOutlinerEditor())
+    , SelectEditor(new FSelectEditor())
 {
-    // 注意这个地方，new了3个变量，没地方把他销毁
+    // 注意这个地方，new了变量，没地方把他销毁
     
     //ToolbarEditor->ResetGuid("Editor::ToolbarEditor");
     //LogEditor->ResetGuid("Editor::LogEditor");
@@ -57,6 +59,7 @@ void CEditorEngine::BuildEditor()
     ToolbarEditor->BuildEditor();
     LogEditor->BuildEditor();
     OutlinerEditor->BuildEditor();
+    SelectEditor->BuildEditor();
 }
 
 void CEditorEngine::DrawEditor(float DeltaTime)
@@ -70,6 +73,7 @@ void CEditorEngine::DrawEditor(float DeltaTime)
     ToolbarEditor->DrawEditor(DeltaTime);
     LogEditor->DrawEditor(DeltaTime);
     OutlinerEditor->DrawEditor(DeltaTime);
+    SelectEditor->DrawEditor(DeltaTime);
 }
 
 void CEditorEngine::ExitEditor()
@@ -77,6 +81,7 @@ void CEditorEngine::ExitEditor()
     ToolbarEditor->ExitEditor();
     LogEditor->ExitEditor();
     OutlinerEditor->ExitEditor();
+    SelectEditor->ExitEditor();
 }
 
 void CEditorEngine::DrawLayer(float DeltaTime)

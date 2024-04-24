@@ -393,6 +393,15 @@
     <ClCompile Include="Engine\Actor\Sky\Core\FogConstantBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Editor\SelectEditor\SelectEditor.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\SelectEditor\OperationHandle\Core\OperationHandleBase.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\SelectEditor\OperationHandle\OperationHandle_Move.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -840,6 +849,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Actor\Sky\Core\FogConstantBuffer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\SelectEditor\SelectEditor.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\SelectEditor\OperationHandle\Core\OperationHandleBase.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\SelectEditor\OperationHandle\OperationHandle_Move.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

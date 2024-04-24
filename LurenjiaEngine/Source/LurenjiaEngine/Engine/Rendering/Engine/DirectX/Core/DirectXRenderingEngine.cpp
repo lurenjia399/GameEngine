@@ -109,8 +109,8 @@ int CDirectXRenderingEngine::PostInit()
 	//ShadowMapTest::BuildShadowMapTestData();
 	//TransparentTest::BuildTransparentTestData();
 	//ComputeShaderTest::BuildComputeShaderTestData();
-	//SelectActorTest::BuildSelectActorTestData();
-	LoadFBXModelTest::BuildLoadFBXModelTestData();
+	SelectActorTest::BuildSelectActorTestData();
+	//LoadFBXModelTest::BuildLoadFBXModelTestData();
 	
 
 	MeshManage->BuildRenderingPipeline();

@@ -24,7 +24,7 @@ void ACustomMesh::SetMeshComponent(string InName, const string& InPath, EMeshCom
 
 
 
-	INJECT_DATA_INTO_MESHCOMPONENT(CCustomMeshComponent, InPath);
+	InjectComponentRenderDataByMesh(CCustomMeshComponent, InPath);
 }
 
 void ACustomMesh::BuildMesh(const FVertexRenderingData* InRenderingData)

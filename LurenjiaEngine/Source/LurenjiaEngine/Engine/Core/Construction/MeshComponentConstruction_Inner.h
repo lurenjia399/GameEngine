@@ -8,7 +8,7 @@ namespace LurenjiaEngine
 	/// 通过注入数据，完成MeshComponet的创建
 	/// </summary>
 	template<typename T, typename ...ParamTypes>
-	std::shared_ptr<T> CreateMeshComponet_Inner(shared_ptr<CMeshManage> InMeshManage, std::shared_ptr<T> InMeshComponent, ParamTypes&&... Params)
+	std::shared_ptr<T> CreateMeshComponetRenderData_Inner(shared_ptr<CMeshManage> InMeshManage, std::shared_ptr<T> InMeshComponent, ParamTypes&&... Params)
 	{
 		if (InMeshManage.use_count() == 0) return nullptr;
 
@@ -35,7 +35,7 @@ namespace LurenjiaEngine
 	/// CMeshManage.cpp里会走这些
 	/// </summary>
 	template<typename T, typename S, typename ...ParamTypes>
-	std::shared_ptr<T> CreateMeshComponet_Inner(CMeshManage* InMeshManage, const S& name, ParamTypes&&... Params)
+	std::shared_ptr<T> CreateMeshComponetRenderData_Inner(CMeshManage* InMeshManage, const S& name, ParamTypes&&... Params)
 	{
 		std::shared_ptr<CMeshManage> InMeshManage_shared = static_pointer_cast<CMeshManage>(InMeshManage->shared_from_this());
 
@@ -44,6 +44,6 @@ namespace LurenjiaEngine
 		meshComponent->SetOuter(InMeshManage);
 		
 
-		return CreateMeshComponet_Inner<T>(InMeshManage_shared, meshComponent, Params...);
+		return CreateMeshComponetRenderData_Inner<T>(InMeshManage_shared, meshComponent, Params...);
 	}
 }

@@ -22,7 +22,7 @@ void ABoxMesh::SetMeshComponent(string InName, const float& Inheight, const floa
 	MeshComponent = LurenjiaEngine::CreateObject<CBoxMeshComponent>(this, InName);
 	MeshComponent->SetMeshComponentLayerType(InType);
 
-	INJECT_DATA_INTO_MESHCOMPONENT(CBoxMeshComponent, Inheight, Inwidth, Indepth);
+	InjectComponentRenderDataByMesh(CBoxMeshComponent, Inheight, Inwidth, Indepth);
 }
 
 void ABoxMesh::BuildMesh(const FVertexRenderingData* InRenderingData)

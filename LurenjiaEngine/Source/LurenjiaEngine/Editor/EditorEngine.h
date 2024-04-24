@@ -9,6 +9,7 @@
 class FToolbarEditor;
 class FLogEditor;
 class FOutlinerEditor;
+class FSelectEditor;
 
 class CEditorEngine : public CEngine, public FEditorBase
 {
@@ -47,6 +48,7 @@ private:
 	FToolbarEditor* ToolbarEditor;
 	FLogEditor* LogEditor;
 	FOutlinerEditor* OutlinerEditor;
+	FSelectEditor* SelectEditor;
 
 
 };

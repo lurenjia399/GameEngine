@@ -1,5 +1,8 @@
 #pragma once
 #include "MeshComponentConstruction.h"
 
-#define INJECT_DATA_INTO_MESHCOMPONENT(T, ...)\
-LurenjiaEngine::CreateMeshComponet<T>(GetMeshManage(), this, __VA_ARGS__);
+#define InjectComponentRenderDataByMesh(T, ...)\
+LurenjiaEngine::CreateMeshComponetRenderDataByMesh<T>(GetMeshManage(), this, __VA_ARGS__);
+
+#define InjectComponentRenderDataByComponent(T, Component, ...)\
+LurenjiaEngine::CreateMeshComponetRenderDataByComponent<T>(GetMeshManage(), Component , __VA_ARGS__);

@@ -24,7 +24,7 @@ void ASphereMesh::SetMeshComponent(string InName, const float& InRadius, const u
 
 	//给MeshComponet注入数据，使用前必须保证MeshComponet已经创建完毕
 	//也就是需要保证meshComponent里面的参数都设定好（比如，层级等）
-	INJECT_DATA_INTO_MESHCOMPONENT(CSphereMeshComponent, InRadius, InAxialSubdivision, InHeightSubdivision)
+	InjectComponentRenderDataByMesh(CSphereMeshComponent, InRadius, InAxialSubdivision, InHeightSubdivision)
 
 }
 
