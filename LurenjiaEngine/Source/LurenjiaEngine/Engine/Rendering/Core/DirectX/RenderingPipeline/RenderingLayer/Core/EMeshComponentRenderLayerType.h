@@ -8,6 +8,7 @@
 /// </summary>
 enum class EMeshComponentRenderLayerType
 {
+	RENDERLAYER_OPERATIONHANDLE,	//操作箭头		priority = 3200
 	RENDERLAYER_SELECT,				//选择			priority = 3100
 	RENDERLAYER_TRANSPARENT,		//透明			priority = 3000
 	RENDERLAYER_ALPHATEST,			//测试			priority = 2450

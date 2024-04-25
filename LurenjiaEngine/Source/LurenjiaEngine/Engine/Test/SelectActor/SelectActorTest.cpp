@@ -22,7 +22,7 @@ namespace SelectActorTest
 		if (auto Arrow = World->CreateActor<AOperationHandle_Move>("AOperationHandle_Move"))
 		{
 			Arrow->CreateComponent();
-			Arrow->SetPosition(XMFLOAT3(0,0,40.f));
+			Arrow->SetPosition(XMFLOAT3(0,0,20.f));
 			// 这个明天要看下，设置actor上的位置，身上挂的component位置也要改变
 			// 调整下，每次在设置component位置的时候设上相对位置把
 		}
@@ -94,20 +94,20 @@ namespace SelectActorTest
 		}
 
 		// 立方体
-		//if (auto CubeMesh = World->CreateActor<ABoxMesh>("SelectActorTest::ABoxMesh2"))
-		//{
-		//	CubeMesh->SetMeshComponent("SelectActorTest::ABoxMeshComponent2", 4, 4, 4, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
-		//	CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 3.f));
-		//	CubeMesh->SetComponentScale(XMFLOAT3(1.f, 1.f, 1.f));
-		//	if (auto CubeMaterial = make_shared<CMaterial>())
-		//	{
-		//		CubeMaterial->ResetGuid("SelectActorTest::CubeMaterial2");//给创建的材质设置Guid
-		//		CubeMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
-		//		CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
-		//		CubeMesh->SetSubMaterials(0, CubeMaterial);
-		//	}
-		//	//CubeMesh->SetPickup(false);
-		//}
+		if (auto CubeMesh = World->CreateActor<ABoxMesh>("SelectActorTest::ABoxMesh2"))
+		{
+			CubeMesh->SetMeshComponent("SelectActorTest::ABoxMeshComponent2", 4, 4, 4, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
+			CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 3.f));
+			CubeMesh->SetComponentScale(XMFLOAT3(1.f, 1.f, 1.f));
+			if (auto CubeMaterial = make_shared<CMaterial>())
+			{
+				CubeMaterial->ResetGuid("SelectActorTest::CubeMaterial2");//给创建的材质设置Guid
+				CubeMaterial->SetBaseColor(XMFLOAT4(0.5f, 0.5f, 0.5f, 1.0f));
+				CubeMaterial->SetMaterialType(EMaterialType::HalfLambert);
+				CubeMesh->SetSubMaterials(0, CubeMaterial);
+			}
+			//CubeMesh->SetPickup(false);
+		}
 
 		// 柱状mesh
 		if (auto CylinderMesh = World->CreateActor<ACylinderMesh>("SelectActorTest::ACylinderMesh"))

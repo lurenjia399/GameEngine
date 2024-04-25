@@ -3,6 +3,19 @@
 #include "../Engine/Component/Mesh/CustomMeshComponent.h"
 #include "../Engine/Core/Construction/MacroConstruction.h"
 
+void AOperationHandle_Move::SetPosition(const XMFLOAT3& InPosition)
+{
+	Super::SetPosition(InPosition);
+	
+	assert(XAxisComponent);
+	assert(YAxisComponent);
+	assert(ZAxisComponent);
+
+	XAxisComponent->SetPosition(InPosition);
+	YAxisComponent->SetPosition(InPosition);
+	ZAxisComponent->SetPosition(InPosition);
+}
+
 AOperationHandle_Move::AOperationHandle_Move()
 {
 	XAxisComponent = LurenjiaEngine::CreateObject<CCustomMeshComponent>(this, "XAxisComponent");

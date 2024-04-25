@@ -13,6 +13,7 @@ enum class EPiepelineStateType
 	GRAYMODEL = 5,		//模型pso
 	SHADOW = 6,			//阴影pso
 	SELECT = 7,			//选择pso
+	OPERATIONHANDLE = 8,//操作箭头pso
 };
 
 #endif

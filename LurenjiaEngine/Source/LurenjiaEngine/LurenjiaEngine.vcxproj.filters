@@ -402,6 +402,9 @@
     <ClCompile Include="Editor\SelectEditor\OperationHandle\OperationHandle_Move.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OperationHandleRenderLayer.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">
@@ -858,6 +861,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Editor\SelectEditor\OperationHandle\OperationHandle_Move.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OperationHandleRenderLayer.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
