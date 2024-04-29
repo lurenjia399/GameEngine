@@ -21,5 +21,8 @@
     <ClInclude Include="Threadsafe_queue\Threadsafe_queue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="[5] 线程闩线程卡\main.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
