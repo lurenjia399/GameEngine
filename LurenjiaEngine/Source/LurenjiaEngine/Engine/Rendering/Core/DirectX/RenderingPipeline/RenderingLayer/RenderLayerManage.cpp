@@ -6,6 +6,7 @@
 #include "RenderLayer/OpaqueReflectorRenderLayer.h"
 #include "RenderLayer/OpaqueShadowRenderLayer.h"
 #include "RenderLayer/SelectRenderLayer.h"
+#include "RenderLayer/OperationHandleRenderLayer.h"
 
 FRenderLayerManage* FRenderLayerManage::RenderLayerManage = nullptr;
 std::vector<std::shared_ptr<FRenderingLayer>> FRenderLayerManage::RenderingLayers;
@@ -36,6 +37,7 @@ FRenderLayerManage::FRenderLayerManage()
 	CreateRenderLayer<FOpaqueReflectorRenderLayer>();
 	CreateRenderLayer<FOpaqueShadowRenderLayer>();
 	CreateRenderLayer<FSelectRenderLayer>();
+	CreateRenderLayer<FOperationHandleRenderLayer>();
 }
 
 std::shared_ptr<FRenderingLayer> FRenderLayerManage::FindRenderingLayerByInt(int InRenderLayer)

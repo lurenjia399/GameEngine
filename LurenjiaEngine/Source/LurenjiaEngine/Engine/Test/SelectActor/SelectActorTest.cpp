@@ -23,8 +23,12 @@ namespace SelectActorTest
 		{
 			Arrow->CreateComponent();
 			Arrow->SetPosition(XMFLOAT3(0,0,20.f));
-			// 这个明天要看下，设置actor上的位置，身上挂的component位置也要改变
-			// 调整下，每次在设置component位置的时候设上相对位置把
+			if (auto Material = make_shared<CMaterial>())
+			{
+				Material->ResetGuid("SelectActorTest::AOperationHandle_Move");//给创建的材质设置Guid
+				Material->SetBaseColor(XMFLOAT4(1.0, 0.f, 0.f, 1.0f));
+				Arrow->SetSubMaterials(0, Material);
+			}
 		}
 
 

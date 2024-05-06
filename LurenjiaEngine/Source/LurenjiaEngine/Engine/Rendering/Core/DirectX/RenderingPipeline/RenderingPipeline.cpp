@@ -201,7 +201,7 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_ALPHATEST, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, DeltaTime);
-
+	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPERATIONHANDLE, DeltaTime);
 #if (OPENCOMPUTEPIPELINE == 1)
 	// ¼ÆËã×ÅÉ«Æ÷
 	ComputePipeline.Draw();

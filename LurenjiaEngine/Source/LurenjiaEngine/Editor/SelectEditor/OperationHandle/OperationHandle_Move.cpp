@@ -21,6 +21,9 @@ AOperationHandle_Move::AOperationHandle_Move()
 	XAxisComponent = LurenjiaEngine::CreateObject<CCustomMeshComponent>(this, "XAxisComponent");
 	YAxisComponent = LurenjiaEngine::CreateObject<CCustomMeshComponent>(this, "YAxisComponent");
 	ZAxisComponent = LurenjiaEngine::CreateObject<CCustomMeshComponent>(this, "ZAxisComponent");
+
+	SetMeshComponentLayerType(EMeshComponentRenderLayerType::RENDERLAYER_OPERATIONHANDLE);
+	
 }
 
 void AOperationHandle_Move::CreateComponent()
@@ -34,4 +37,19 @@ void AOperationHandle_Move::CreateComponent()
 
 	XAxisComponent->SetRotation(fvector_3d(0, 90, 0));
 	YAxisComponent->SetRotation(fvector_3d(-90, 0, 0));
+}
+
+void AOperationHandle_Move::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)
+{
+	// ÉèÖÃäÖÈ¾²ã¼¶
+	XAxisComponent->SetMeshComponentLayerType(InType);
+	YAxisComponent->SetMeshComponentLayerType(InType);
+	ZAxisComponent->SetMeshComponentLayerType(InType);
+}
+
+void AOperationHandle_Move::SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial)
+{
+	XAxisComponent->SetSubMaterials(index, InMaterial);
+	YAxisComponent->SetSubMaterials(index, InMaterial);
+	ZAxisComponent->SetSubMaterials(index, InMaterial);
 }
