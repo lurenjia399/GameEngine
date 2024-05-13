@@ -46,10 +46,3 @@ void AOperationHandle_Move::SetMeshComponentLayerType(EMeshComponentRenderLayerT
 	YAxisComponent->SetMeshComponentLayerType(InType);
 	ZAxisComponent->SetMeshComponentLayerType(InType);
 }
-
-void AOperationHandle_Move::SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial)
-{
-	XAxisComponent->SetSubMaterials(index, InMaterial);
-	YAxisComponent->SetSubMaterials(index, InMaterial);
-	ZAxisComponent->SetSubMaterials(index, InMaterial);
-}

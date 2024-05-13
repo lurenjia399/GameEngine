@@ -22,12 +22,18 @@ namespace SelectActorTest
 		if (auto Arrow = World->CreateActor<AOperationHandle_Move>("AOperationHandle_Move"))
 		{
 			Arrow->CreateComponent();
-			Arrow->SetPosition(XMFLOAT3(0,0,20.f));
-			if (auto Material = make_shared<CMaterial>())
+			Arrow->SetPosition(XMFLOAT3(0,0,3.f));
 			{
-				Material->ResetGuid("SelectActorTest::AOperationHandle_Move");//给创建的材质设置Guid
-				Material->SetBaseColor(XMFLOAT4(1.0, 0.f, 0.f, 1.0f));
-				Arrow->SetSubMaterials(0, Material);
+				shared_ptr<CMaterial> MaterialX = make_shared<CMaterial>();
+				shared_ptr<CMaterial> MaterialY = make_shared<CMaterial>();
+				shared_ptr<CMaterial> MaterialZ = make_shared<CMaterial>();
+
+				MaterialX->ResetGuid("SelectActorTest::AOperationHandle_Move_XAxis");
+				MaterialY->ResetGuid("SelectActorTest::AOperationHandle_Move_YAxis");
+				MaterialZ->ResetGuid("SelectActorTest::AOperationHandle_Move_ZAxis");
+				Arrow->SetSubMaterials(0, MaterialX, MaterialY, MaterialZ);
+
+				Arrow->SetBaseColor();
 			}
 		}
 

@@ -195,7 +195,7 @@ void FRenderingPipeline::Draw(float DeltaTime)
 	// 这里面全是根据根签名的序号，设置gpu内存地址，也就是告诉着色器相应的资源放在哪个寄存器里面了
 	GeometryMap.DrawCubeMapTexture(DeltaTime);
 
-	// Draw每个渲染层级 背景 -> 不透明物体 -> 透明物体 -> AlphaTest -> Select
+	// Draw每个渲染层级 背景 -> 不透明物体 -> 透明物体 -> AlphaTest -> Select -> OperationHandle
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE, DeltaTime);
 	FRenderLayerManage::GetRenderLayerManage()->Draw((int)EMeshComponentRenderLayerType::RENDERLAYER_TRANSPARENT, DeltaTime);

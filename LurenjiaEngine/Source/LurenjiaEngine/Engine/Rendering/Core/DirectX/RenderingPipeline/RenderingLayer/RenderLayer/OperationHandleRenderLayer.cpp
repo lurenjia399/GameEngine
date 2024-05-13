@@ -8,6 +8,21 @@ FOperationHandleRenderLayer::FOperationHandleRenderLayer()
 void FOperationHandleRenderLayer::BuildPSO()
 {
 	super::BuildPSO();
+	
+
+	D3D12_RASTERIZER_DESC RasterizerDesc = D3D12_RASTERIZER_DESC();
+	RasterizerDesc.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_SOLID;// 以固体来渲染
+	//RasterizerDesc.FillMode = D3D12_FILL_MODE::D3D12_FILL_MODE_WIREFRAME;// 以线框来渲染
+	RasterizerDesc.CullMode = D3D12_CULL_MODE::D3D12_CULL_MODE_BACK;
+	DirectXPiepelineState->SetRasterizerState(RasterizerDesc);
+
+
+	CD3DX12_DEFAULT params = {};
+	CD3DX12_DEPTH_STENCIL_DESC DepthStencilDesc = CD3DX12_DEPTH_STENCIL_DESC(params);
+	//DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_LESS_EQUAL;//当前像素深度值 <= 缓冲区深度值，通过 
+	//DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_GREATER_EQUAL;//当前像素深度值 >= 缓冲区深度值，通过 
+	DepthStencilDesc.DepthFunc = D3D12_COMPARISON_FUNC_ALWAYS;//直接通过
+	DirectXPiepelineState->SetDepthStencilState(DepthStencilDesc);
 
 	DirectXPiepelineState->Build((int)EPiepelineStateType::OPERATIONHANDLE);
 }
@@ -36,8 +51,7 @@ void FOperationHandleRenderLayer::BuildShader()
 
 void FOperationHandleRenderLayer::Draw(float DeltaTime)
 {
-	// 这边每次在draw的时候，需要切换pso，
-	// 这个地方没有注意过，看下这个阴影是否需要切换把
+	// 这边每次在draw的时候，需要切换pso
 	DirectXPiepelineState->isTemporaryResetPSO((int)EPiepelineStateType::OPERATIONHANDLE);
 
 	super::Draw(DeltaTime);
