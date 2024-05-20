@@ -6,4 +6,5 @@
 struct FRaycastSystemLibrary
 {
 	static bool HitResultByScreen(shared_ptr<CWorld> InWorld, int ScreenX, int ScreenY, FHitResult& OutHitResult);
+	static bool HitSpecificObjectsResultByScreen(shared_ptr<CWorld> InWorld, AActor* InSpecificObject, int ScreenX, int ScreenY, FHitResult& OutHitResult);
 };

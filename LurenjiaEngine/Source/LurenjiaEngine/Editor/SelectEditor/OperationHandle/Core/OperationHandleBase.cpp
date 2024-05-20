@@ -1,18 +1,21 @@
 #include "OperationHandleBase.h"
 #include "../Engine/Component/Mesh/CustomMeshComponent.h"
+#include "../Engine/Component/InputComponent.h"
+#include "../Engine/Library/RaycastSystemLibrary.h"
+#include "../Engine/Collision/CollisionSceneQuery.h"
 
 AOperationHandleBase::AOperationHandleBase()
 	: XAxisComponent({})
 	, YAxisComponent({})
 	, ZAxisComponent({})
+	, InputComponent({})
 {
+	InputComponent = LurenjiaEngine::CreateObject<CInputComponent>(this, "AOperationHandleBaseInputComponent");
 }
 
 void AOperationHandleBase::SetBaseColor()
 {
-	SetBaseColor(XAxisComponent, XMFLOAT4(1.0f, 0.0f, 0.f, 1.0f));
-	SetBaseColor(YAxisComponent, XMFLOAT4(0.0f, 1.0f, 0.f, 1.0f));
-	SetBaseColor(ZAxisComponent, XMFLOAT4(0.0f, 0.0f, 1.f, 1.0f));
+	ResetColor();
 }
 
 void AOperationHandleBase::SetBaseColor(std::shared_ptr<CCustomMeshComponent> InCustomComponent, XMFLOAT4 const& InColor)
@@ -24,6 +27,54 @@ void AOperationHandleBase::SetBaseColor(std::shared_ptr<CCustomMeshComponent> In
 			Material->SetBaseColor(InColor);
 		}
 	}
+}
+
+void AOperationHandleBase::ResetColor()
+{
+	SetBaseColor(XAxisComponent, XMFLOAT4(1.0f, 0.0f, 0.f, 1.0f));
+	SetBaseColor(YAxisComponent, XMFLOAT4(0.0f, 1.0f, 0.f, 1.0f));
+	SetBaseColor(ZAxisComponent, XMFLOAT4(0.0f, 0.0f, 1.f, 1.0f));
+}
+
+void AOperationHandleBase::BeginInit()
+{
+	Super::BeginInit();
+
+	InputComponent->OnMouseMoveDelegate.Bind(this, &AOperationHandleBase::OnMouseMove);
+	InputComponent->OnLMouseButtonDownDelegate.Bind(this, &AOperationHandleBase::OnLeftMouseButtonDown);
+	InputComponent->OnLMouseButtonUpDelegate.Bind(this, &AOperationHandleBase::OnLeftMouseButtonUp);
+
+}
+
+void AOperationHandleBase::OnMouseMove(int X, int Y, string buttonType)
+{
+	FHitResult HitResult = {};
+	bool bHit = FRaycastSystemLibrary::HitSpecificObjectsResultByScreen(GetWorld(), this, X, Y, HitResult);
+
+	ResetColor();
+
+	if (bHit)
+	{
+		if (!HitResult.Component_.expired())
+		{
+			std::shared_ptr<CCustomMeshComponent> component = static_pointer_cast<CCustomMeshComponent>(HitResult.Component_.lock());
+			SetBaseColor(component, XMFLOAT4(1.0f, 1.0f, 0.f, 1.0f)); 
+		}
+	}
+	else
+	{
+	}
+	
+}
+
+void AOperationHandleBase::OnLeftMouseButtonDown(int X, int Y)
+{
+	//Engine_Log("AOperationHandleBase::OnLeftMouseButtonDown x = [%d], y = [%d]", X, Y)
+}
+
+void AOperationHandleBase::OnLeftMouseButtonUp(int X, int Y)
+{
+	//Engine_Log("AOperationHandleBase::OnLeftMouseButtonUp x = [%d], y = [%d]", X, Y)
 }
 
 void AOperationHandleBase::SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterialX, shared_ptr<CMaterial> InMaterialY, shared_ptr<CMaterial> InMaterialZ)

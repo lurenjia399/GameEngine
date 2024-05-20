@@ -4,3 +4,5 @@ FCaptureOnMousesDelegate MouseDownDelegate;
 FCaptureOnMousesDelegate MouseUpDelegate;
 FCaptureOnMousesDelegate MouseMoveDelegate;
 FCaptureOnMousesWheelDelegate MouseWheelDelegate;
+FCaptureOnLMousesDownlDelegate LMouseDownDelegate;
+FCaptureOnLMousesUplDelegate LMouseUpDelegate;

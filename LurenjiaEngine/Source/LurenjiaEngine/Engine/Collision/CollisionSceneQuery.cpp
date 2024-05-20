@@ -75,3 +75,46 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 
     return OutHitResult.bHit;
 }
+
+bool FCollisionSceneQuery::RaycastSingle(shared_ptr<class CWorld> InWorld, AActor* SpecificObject, const XMVECTOR& ViewOriginPoint, const XMVECTOR& ViewDirection, const XMMATRIX& World2ViewMatrixInverse, FHitResult& OutHitResult)
+{
+	for (std::weak_ptr<FGeometryDescData> data_weak : FGeometry::MeshRenderingDataPool)
+	{
+		auto GeometryDescData = data_weak.lock();
+
+		if (!GeometryDescData->MeshComponet->GetIsPickup()) continue;
+
+		XMMATRIX Local2WorldMatrix = XMLoadFloat4x4(&GeometryDescData->WorldMatrix);// 这个世界矩阵是主行的
+		XMVECTOR Local2WorldMatrixDeterminant = DirectX::XMMatrixDeterminant(Local2WorldMatrix);
+		XMMATRIX Local2WorldMatrixInverse = DirectX::XMMatrixInverse(&Local2WorldMatrixDeterminant, Local2WorldMatrix); // 求出世界变矩阵的逆
+
+
+		// 注意这个顺序，这个顺序对么？ 摄像机矩阵的逆 * 世界矩阵的逆 ,,,存储的矩阵长相是一样的，但是代码这是主行，shader是主列
+		XMMATRIX View2LocalMatrix = XMMatrixMultiply(World2ViewMatrixInverse, Local2WorldMatrixInverse);
+
+		XMVECTOR LocalOriginPoint = DirectX::XMVector3TransformCoord(ViewOriginPoint, View2LocalMatrix);
+		XMVECTOR LocalDirection = DirectX::XMVector3TransformNormal(ViewDirection, View2LocalMatrix);
+		LocalDirection = DirectX::XMVector3Normalize(LocalDirection);
+
+		float BoundTime = 0.f; //碰撞到AABB的时间
+		float TriangleTime = FLT_MAX;
+		// 找到和模型AABB有交点的模型
+		if (GeometryDescData->AABB_box.Intersects(LocalOriginPoint, LocalDirection, BoundTime))
+		{
+			if (BoundTime > 0 && BoundTime < TriangleTime)
+			{
+				TriangleTime = BoundTime;
+			}
+			weak_ptr<AActor> HitActor = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
+			if (HitActor.lock().get() == SpecificObject)
+			{
+				OutHitResult.bHit = true;
+				OutHitResult.Component_ = GeometryDescData->MeshComponet;
+				OutHitResult.Time = TriangleTime;
+				OutHitResult.GeometryDescData = GeometryDescData;
+				OutHitResult.Actor_ = HitActor;
+			}
+		}
+	}
+	return OutHitResult.bHit;
+}
