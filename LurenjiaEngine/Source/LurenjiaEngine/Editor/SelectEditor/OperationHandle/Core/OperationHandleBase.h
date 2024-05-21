@@ -2,6 +2,13 @@
 #include "../Engine/Actor/Core/Actor.h"
 #include "../Engine/Interface/DirectXDeviceInterface.h"
 
+enum class ESelectAxisType
+{
+	SELECTAXISTYPE_NONE,
+	SELECTAXISTYPE_X,
+	SELECTAXISTYPE_Y,
+	SELECTAXISTYPE_Z,
+};
 
 class CCustomMeshComponent;
 enum class EMeshComponentRenderLayerType;
@@ -10,6 +17,7 @@ class CInputComponent;
 class AOperationHandleBase : public AActor, public IDirectXDeviceInterface
 {
 	typedef AActor Super;
+	
 public:
 	AOperationHandleBase();
 
@@ -19,7 +27,8 @@ public:
 	void SetBaseColor();
 	void SetBaseColor(std::shared_ptr<CCustomMeshComponent> InCustomComponent, XMFLOAT4 const& InColor);
 	void ResetColor();
-	
+	ESelectAxisType GetSelectAxis();
+
 	virtual void BeginInit() override;
 protected:
 	virtual void OnMouseMove(int X, int Y, string buttonType);
@@ -31,4 +40,7 @@ protected:
 	std::shared_ptr<CCustomMeshComponent> ZAxisComponent;
 
 	std::shared_ptr<CInputComponent> InputComponent;
+public:
+	static std::weak_ptr<AActor> SelectedActor;
+	static std::weak_ptr<CCustomMeshComponent> SelectedAxisComponent;
 };

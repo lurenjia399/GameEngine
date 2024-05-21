@@ -4,6 +4,10 @@
 #include "../Engine/Library/RaycastSystemLibrary.h"
 #include "../Engine/Collision/CollisionSceneQuery.h"
 
+
+std::weak_ptr<AActor> AOperationHandleBase::SelectedActor;
+std::weak_ptr<CCustomMeshComponent> AOperationHandleBase::SelectedAxisComponent;
+
 AOperationHandleBase::AOperationHandleBase()
 	: XAxisComponent({})
 	, YAxisComponent({})
@@ -36,6 +40,24 @@ void AOperationHandleBase::ResetColor()
 	SetBaseColor(ZAxisComponent, XMFLOAT4(0.0f, 0.0f, 1.f, 1.0f));
 }
 
+ESelectAxisType AOperationHandleBase::GetSelectAxis()
+{
+	ESelectAxisType result = ESelectAxisType::SELECTAXISTYPE_NONE;
+	if (AOperationHandleBase::SelectedAxisComponent.lock() == XAxisComponent)
+	{
+		result = ESelectAxisType::SELECTAXISTYPE_X;
+	}
+	else if (AOperationHandleBase::SelectedAxisComponent.lock() == YAxisComponent)
+	{
+		result = ESelectAxisType::SELECTAXISTYPE_Y;
+	}
+	else if (AOperationHandleBase::SelectedAxisComponent.lock() == ZAxisComponent)
+	{
+		result = ESelectAxisType::SELECTAXISTYPE_Z;
+	}
+	return result;
+}
+
 void AOperationHandleBase::BeginInit()
 {
 	Super::BeginInit();
@@ -59,10 +81,13 @@ void AOperationHandleBase::OnMouseMove(int X, int Y, string buttonType)
 		{
 			std::shared_ptr<CCustomMeshComponent> component = static_pointer_cast<CCustomMeshComponent>(HitResult.Component_.lock());
 			SetBaseColor(component, XMFLOAT4(1.0f, 1.0f, 0.f, 1.0f)); 
+
+			AOperationHandleBase::SelectedAxisComponent = component;
 		}
 	}
 	else
 	{
+		AOperationHandleBase::SelectedAxisComponent.reset();
 	}
 	
 }

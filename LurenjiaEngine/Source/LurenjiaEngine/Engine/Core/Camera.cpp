@@ -7,6 +7,7 @@
 #include "../EngineType.h"
 #include "../Rendering/Engine/DirectX/Core/DirectXRenderingEngine.h"
 #include "../Rendering/Core/DirectX/RenderingPipeline/RenderingLayer/RenderLayerManage.h"
+#include "../Editor/SelectEditor/OperationHandle/Core/OperationHandleBase.h"
 
 ACamera::ACamera()
 {
@@ -36,8 +37,15 @@ void ACamera::Tick(float DeltaTime)
 	Super::Tick(DeltaTime);
 }
 
+
 void ACamera::OnClickedScreen(int X, int Y)
 {
+	if (AOperationHandleBase::SelectedAxisComponent.lock())
+	{
+		// 如果当前选中了操作轴，就不让选择物体了
+		return;
+	}
+
 	shared_ptr<CDirectXRenderingEngine> DXRenderingEngine = static_pointer_cast<CDirectXRenderingEngine>(GetRenderEngine());
 	if (DXRenderingEngine != nullptr)
 	{
@@ -52,11 +60,13 @@ void ACamera::OnClickedScreen(int X, int Y)
 
 				FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
 				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, HitResult.GeometryDescData);
+				AOperationHandleBase::SelectedActor = HitResult.Actor_;
 			}
 		}
 		else
 		{
 			FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
+			AOperationHandleBase::SelectedActor.reset();
 			Engine_Log("No Hit Actor");
 		}
 	}
