@@ -107,7 +107,7 @@ namespace SelectActorTest
 		if (auto CubeMesh = World->CreateActor<ABoxMesh>("SelectActorTest::ABoxMesh2"))
 		{
 			CubeMesh->SetMeshComponent("SelectActorTest::ABoxMeshComponent2", 4, 4, 4, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
-			CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 3.f));
+			CubeMesh->SetPosition(XMFLOAT3(0.f, 0.f, 3.f));
 			CubeMesh->SetComponentScale(XMFLOAT3(1.f, 1.f, 1.f));
 			if (auto CubeMaterial = make_shared<CMaterial>())
 			{

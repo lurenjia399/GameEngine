@@ -33,17 +33,39 @@ void AMesh::PostDraw(float DeltaTime)
 
 void AMesh::SetPosition(const XMFLOAT3& InPosition)
 {
-	TransformationComponent->SetPosition(InPosition);
+	if (TransformationComponent.use_count() > 0)
+	{
+		TransformationComponent->SetPosition(InPosition);
+	}
+	else
+	{
+		MeshComponent->SetPosition(InPosition);
+	}
+	
 }
 
 void AMesh::SetRotation(const fvector_3d& InRotation)
 {
-	TransformationComponent->SetRotation(InRotation);
+	if (TransformationComponent.use_count() > 0)
+	{
+		TransformationComponent->SetRotation(InRotation);
+	}
+	else
+	{
+		MeshComponent->SetRotation(InRotation);
+	}
 }
 
 void AMesh::SetScale(const XMFLOAT3& InScale)
 {
-	TransformationComponent->SetScale(InScale);
+	if (TransformationComponent.use_count() > 0)
+	{
+		TransformationComponent->SetScale(InScale);
+	}
+	else
+	{
+		MeshComponent->SetScale(InScale);
+	}
 }
 
 void AMesh::BuildMesh(const FVertexRenderingData* InRenderingData)
@@ -62,6 +84,8 @@ void AMesh::SetPickup(bool bNewPickup)
 void AMesh::SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent)
 {
 	MeshComponent = InMeshComponent;
+
+	MeshComponent->AttachToComponent(TransformationComponent);
 }
 
 void AMesh::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)

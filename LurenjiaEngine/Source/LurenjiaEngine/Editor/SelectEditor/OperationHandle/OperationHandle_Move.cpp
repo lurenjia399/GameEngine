@@ -52,6 +52,7 @@ void AOperationHandle_Move::SetMeshComponentLayerType(EMeshComponentRenderLayerT
 void AOperationHandle_Move::OnMouseMove(int X, int Y, string buttonType)
 {
 	Super::OnMouseMove(X, Y, buttonType);
+	return; // 这里先关掉，测试别的功能
 
 	if (std::shared_ptr<AActor> SelectedActor_SharedPtr = Super::SelectedActor.lock())
 	{
