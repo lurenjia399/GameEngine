@@ -17,7 +17,7 @@ void ACylinderMesh::SetMeshComponent(string InName, const float& InTopRadius, co
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
 	if (MeshComponent.get()) MeshComponent.reset();
-	MeshComponent = LurenjiaEngine::CreateObject<CCylinderMeshComponent>(this, InName);
+	Super::SetMeshComponent(LurenjiaEngine::CreateObject<CCylinderMeshComponent>(this, InName));
 	MeshComponent->SetMeshComponentLayerType(InType);
 
 	//给MeshComponet注入数据，使用前必须保证MeshComponet已经创建完毕

@@ -26,8 +26,13 @@ public:
 	std::weak_ptr<CTransformationComponent> GetAttachParent();
 	virtual void AttachToComponent(std::weak_ptr<CTransformationComponent> Parent);
 	virtual void SetAttachParent(std::weak_ptr<CTransformationComponent> Parent);
-	virtual void UpdateComponentToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InPosition);
-	virtual void UpdateChildTransforms(const XMFLOAT3& InPosition, const fvector_3d& InRotation, const XMFLOAT3& InScale);
+	virtual void UpdateComponentPositionToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InPosition);
+	virtual void UpdateComponentRotationToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const fvector_3d& InRotation);
+	virtual void UpdateComponentScaleToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InScale);
+	virtual void UpdateChildPosition(const XMFLOAT3& InPosition);
+	virtual void UpdateChildRotation(const fvector_3d& InRotation);
+	virtual void UpdateChildScale(const XMFLOAT3& InScale);
+	
 private:
 	XMFLOAT3 Position;
 	XMFLOAT3 Rotation;

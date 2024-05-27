@@ -19,7 +19,7 @@ void ACustomMesh::SetMeshComponent(string InName, const string& InPath, EMeshCom
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
 	if (MeshComponent.get()) MeshComponent.reset();
-	MeshComponent = LurenjiaEngine::CreateObject<CCustomMeshComponent>(this, InName);
+	Super::SetMeshComponent(LurenjiaEngine::CreateObject<CCustomMeshComponent>(this, InName));
 	MeshComponent->SetMeshComponentLayerType(InType);
 
 

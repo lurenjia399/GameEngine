@@ -95,17 +95,18 @@ void AMesh::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)
 
 void AMesh::SetComponentPosition(const XMFLOAT3& InPosition)
 {
-	MeshComponent->SetPosition(InPosition);
+
+	MeshComponent->UpdateComponentPositionToWorldWithParent(MeshComponent->GetAttachParent(), InPosition);
 }
 
 void AMesh::SetComponentRotation(const fvector_3d& InRotation)
 {
-	MeshComponent->SetRotation(InRotation);
+	MeshComponent->UpdateComponentRotationToWorldWithParent(MeshComponent->GetAttachParent(), InRotation);
 }
 
 void AMesh::SetComponentScale(const XMFLOAT3& InScale)
 {
-	MeshComponent->SetScale(InScale);
+	MeshComponent->UpdateComponentScaleToWorldWithParent(MeshComponent->GetAttachParent(), InScale);
 }
 
 void AMesh::SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial)

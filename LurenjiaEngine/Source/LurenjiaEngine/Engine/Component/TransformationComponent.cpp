@@ -15,42 +15,17 @@ CTransformationComponent::CTransformationComponent()
 
 void CTransformationComponent::SetPosition(const XMFLOAT3& InPosition)
 {
-	UpdateComponentToWorldWithParent(GetAttachParent(), InPosition);
+	UpdateComponentPositionToWorldWithParent(GetAttachParent(), InPosition);
 }
 
 void CTransformationComponent::SetRotation(const fvector_3d& InRotation)
 {
-	Rotation = XMFLOAT3(InRotation.x, InRotation.y, InRotation.z);
-
-	float pitchRadians = XMConvertToRadians(InRotation.x);
-	float yawRadians = XMConvertToRadians(InRotation.y);
-	float rollRadians = XMConvertToRadians(InRotation.z);
-	XMMATRIX RotateMatrix = XMMatrixRotationRollPitchYaw(pitchRadians, yawRadians, rollRadians);
-	XMVECTOR right = XMLoadFloat3(&RightVector);
-	XMVECTOR up = XMLoadFloat3(&UpVector);
-	XMVECTOR forward = XMLoadFloat3(&ForwardVector);
-	XMStoreFloat3(&RightVector, XMVector3TransformNormal(right, RotateMatrix));
-	XMStoreFloat3(&UpVector, XMVector3TransformNormal(up, RotateMatrix));
-	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(forward, RotateMatrix));
-	NormalizeTransformationVector();
-
-
-	// 孩子旋转
-	if (!AttachChildren.empty())
-	{
-		for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
-		{
-			children.lock()->UpdateChildTransforms(XMFLOAT3(0, 0, 0), InRotation, XMFLOAT3(0, 0, 0));
-		}
-	}
+	UpdateComponentRotationToWorldWithParent(GetAttachParent(), InRotation);
 }
 
 void CTransformationComponent::SetScale(const XMFLOAT3& InScale)
 {
-	Scale = InScale;
-	//Scale.y = InScale.z;
-	//Scale.z = InScale.x;
-	//Scale.x = InScale.y;
+	UpdateComponentScaleToWorldWithParent(GetAttachParent(), InScale);
 }
 
 void CTransformationComponent::SetForward(const XMFLOAT3& InForward)
@@ -102,7 +77,7 @@ void CTransformationComponent::SetAttachParent(std::weak_ptr<CTransformationComp
 	AttachParent = Parent;
 }
 
-void CTransformationComponent::UpdateComponentToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InPosition)
+void CTransformationComponent::UpdateComponentPositionToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InPosition)
 {
 
 	//if (Parent.lock())
@@ -116,32 +91,76 @@ void CTransformationComponent::UpdateComponentToWorldWithParent(std::weak_ptr<CT
 	{
 		for (std::weak_ptr<CTransformationComponent> children: AttachChildren)
 		{
-			children.lock()->UpdateChildTransforms(InPosition, fvector_3d(0, 0,0), XMFLOAT3(0, 0, 0));
+			children.lock()->UpdateChildPosition(InPosition);
 		}
 	}
 }
 
-void CTransformationComponent::UpdateChildTransforms(const XMFLOAT3& InPosition, const fvector_3d& InRotation, const XMFLOAT3& InScale)
+void CTransformationComponent::UpdateComponentRotationToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const fvector_3d& InRotation)
+{
+	Rotation = XMFLOAT3(InRotation.x, InRotation.y, InRotation.z);
+
+	float pitchRadians = XMConvertToRadians(InRotation.x);
+	float yawRadians = XMConvertToRadians(InRotation.y);
+	float rollRadians = XMConvertToRadians(InRotation.z);
+	XMMATRIX RotateMatrix = XMMatrixRotationRollPitchYaw(pitchRadians, yawRadians, rollRadians);
+	XMVECTOR right = XMLoadFloat3(&RightVector);
+	XMVECTOR up = XMLoadFloat3(&UpVector);
+	XMVECTOR forward = XMLoadFloat3(&ForwardVector);
+	XMStoreFloat3(&RightVector, XMVector3TransformNormal(right, RotateMatrix));
+	XMStoreFloat3(&UpVector, XMVector3TransformNormal(up, RotateMatrix));
+	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(forward, RotateMatrix));
+	NormalizeTransformationVector();
+
+
+	// 孩子旋转
+	if (!AttachChildren.empty())
+	{
+		for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
+		{
+			children.lock()->UpdateChildRotation(InRotation);
+		}
+	}
+}
+
+void CTransformationComponent::UpdateComponentScaleToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InScale)
+{
+	Scale = InScale;
+
+	if (!AttachChildren.empty())
+	{
+		for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
+		{
+			children.lock()->UpdateChildScale(InScale);
+		}
+	}
+}
+
+void CTransformationComponent::UpdateChildPosition(const XMFLOAT3& InPosition)
 {
 	XMFLOAT3 newLoation = XMFLOAT3(Position.x + InPosition.x, Position.y + InPosition.y, Position.z + InPosition.z);
 	Position = newLoation;
+}
 
+void CTransformationComponent::UpdateChildRotation(const fvector_3d& InRotation)
+{
 	fvector_3d newRotation = fvector_3d(Rotation.x + InRotation.x, Rotation.y + InRotation.y, Rotation.z + InRotation.z);
 	Rotation = XMFLOAT3(newRotation.x, newRotation.y, newRotation.z);
-	{
-		float pitchRadians = XMConvertToRadians(InRotation.x);
-		float yawRadians = XMConvertToRadians(InRotation.y);
-		float rollRadians = XMConvertToRadians(InRotation.z);
-		XMMATRIX RotateMatrix = XMMatrixRotationRollPitchYaw(pitchRadians, yawRadians, rollRadians);
-		XMVECTOR right = XMLoadFloat3(&RightVector);
-		XMVECTOR up = XMLoadFloat3(&UpVector);
-		XMVECTOR forward = XMLoadFloat3(&ForwardVector);
-		XMStoreFloat3(&RightVector, XMVector3TransformNormal(right, RotateMatrix));
-		XMStoreFloat3(&UpVector, XMVector3TransformNormal(up, RotateMatrix));
-		XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(forward, RotateMatrix));
-		NormalizeTransformationVector();
-	}
+	float pitchRadians = XMConvertToRadians(InRotation.x);
+	float yawRadians = XMConvertToRadians(InRotation.y);
+	float rollRadians = XMConvertToRadians(InRotation.z);
+	XMMATRIX RotateMatrix = XMMatrixRotationRollPitchYaw(pitchRadians, yawRadians, rollRadians);
+	XMVECTOR right = XMLoadFloat3(&RightVector);
+	XMVECTOR up = XMLoadFloat3(&UpVector);
+	XMVECTOR forward = XMLoadFloat3(&ForwardVector);
+	XMStoreFloat3(&RightVector, XMVector3TransformNormal(right, RotateMatrix));
+	XMStoreFloat3(&UpVector, XMVector3TransformNormal(up, RotateMatrix));
+	XMStoreFloat3(&ForwardVector, XMVector3TransformNormal(forward, RotateMatrix));
+	NormalizeTransformationVector();
+}
 
-	XMFLOAT3 newScale = XMFLOAT3(Scale.x + InScale.x, Scale.y + InScale.y, Scale.z + InScale.z);
+void CTransformationComponent::UpdateChildScale(const XMFLOAT3& InScale)
+{
+	XMFLOAT3 newScale = XMFLOAT3(InScale.x, InScale.y, InScale.z);
 	Scale = newScale;
 }

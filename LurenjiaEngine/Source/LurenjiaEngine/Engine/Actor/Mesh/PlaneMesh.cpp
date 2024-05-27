@@ -19,7 +19,7 @@ void APlaneMesh::SetMeshComponent(string InName, const float& InHeight, const fl
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
 	if (MeshComponent.get()) MeshComponent.reset();
-	MeshComponent = LurenjiaEngine::CreateObject<CPlaneMeshComponent>(this, InName);
+	Super::SetMeshComponent(LurenjiaEngine::CreateObject<CPlaneMeshComponent>(this, InName));
 	MeshComponent->SetMeshComponentLayerType(InType);
 
 	//给MeshComponet注入数据，使用前必须保证MeshComponet已经创建完毕

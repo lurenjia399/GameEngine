@@ -42,8 +42,8 @@ namespace SelectActorTest
 		if (auto CubeMesh = World->CreateActor<ABoxMesh>("SelectActorTest::ABoxMesh"))
 		{
 			CubeMesh->SetMeshComponent("SelectActorTest::ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
-			CubeMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, 0.f));
-			CubeMesh->SetComponentScale(XMFLOAT3(100.f, 100.f, 100.f));
+			CubeMesh->SetPosition(XMFLOAT3(0.f, 0.f, 0.f));
+			CubeMesh->SetScale(XMFLOAT3(100.f, 100.f, 100.f));
 			if (auto CubeMaterial = make_shared<CMaterial>())
 			{
 				CubeMaterial->ResetGuid("SelectActorTest::CubeMaterial");//给创建的材质设置Guid
@@ -75,8 +75,8 @@ namespace SelectActorTest
 		if (auto PlaneMesh = World->CreateActor<APlaneMesh>("SelectActorTest::PlaneMesh"))
 		{
 			PlaneMesh->SetMeshComponent("SelectActorTest::PlaneMeshComponent", 4.f, 3.f, 20, 20, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
-			PlaneMesh->SetComponentPosition(XMFLOAT3(0.f, 0.f, -2.f));
-			PlaneMesh->SetComponentScale(XMFLOAT3(30.f, 1.f, 30.f));
+			PlaneMesh->SetPosition(XMFLOAT3(0.f, 0.f, -2.f));
+			PlaneMesh->SetScale(XMFLOAT3(30.f, 1.f, 30.f));
 			if (auto PlaneMaterial = make_shared<CMaterial>())
 			{
 				PlaneMaterial->ResetGuid("SelectActorTest::PlaneMateria");
@@ -91,7 +91,7 @@ namespace SelectActorTest
 		if (auto SphereMesh_1 = World->CreateActor<ASphereMesh>("SelectActorTest::SphereMesh"))
 		{
 			SphereMesh_1->SetMeshComponent("SelectActorTest::SphereMesh", 2.f, 20, 20);
-			SphereMesh_1->SetComponentPosition(XMFLOAT3(0.f, -7.f, 2.f));
+			SphereMesh_1->SetPosition(XMFLOAT3(0.f, -7.f, 2.f));
 			if (auto SphereMaterial_1 = make_shared<CMaterial>())
 			{
 				SphereMaterial_1->ResetGuid("SelectActorTest::SphereMaterial");//给创建的材质设置Guid
@@ -108,7 +108,7 @@ namespace SelectActorTest
 		{
 			CubeMesh->SetMeshComponent("SelectActorTest::ABoxMeshComponent2", 4, 4, 4, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
 			CubeMesh->SetPosition(XMFLOAT3(0.f, 0.f, 3.f));
-			CubeMesh->SetComponentScale(XMFLOAT3(1.f, 1.f, 1.f));
+			CubeMesh->SetScale(XMFLOAT3(1.f, 1.f, 1.f));
 			if (auto CubeMaterial = make_shared<CMaterial>())
 			{
 				CubeMaterial->ResetGuid("SelectActorTest::CubeMaterial2");//给创建的材质设置Guid
@@ -123,8 +123,8 @@ namespace SelectActorTest
 		if (auto CylinderMesh = World->CreateActor<ACylinderMesh>("SelectActorTest::ACylinderMesh"))
 		{
 			CylinderMesh->SetMeshComponent("SelectActorTest::ACylinderMeshComponent", 6, 4, 20, 10, 20, EMeshComponentRenderLayerType::RENDERLAYER_OPAQUE);
-			CylinderMesh->SetComponentPosition(XMFLOAT3(0.f, 8.f, 3.f));
-			CylinderMesh->SetComponentScale(XMFLOAT3(1.f, 1.f, 1.f));
+			CylinderMesh->SetPosition(XMFLOAT3(0.f, 8.f, 3.f));
+			CylinderMesh->SetScale(XMFLOAT3(1.f, 1.f, 1.f));
 			if (auto CylinderMaterial = make_shared<CMaterial>())
 			{
 				CylinderMaterial->ResetGuid("SelectActorTest::CylinderMaterial");//给创建的材质设置Guid
