@@ -52,17 +52,18 @@ void AOperationHandle_Move::SetMeshComponentLayerType(EMeshComponentRenderLayerT
 void AOperationHandle_Move::OnMouseMove(int X, int Y, string buttonType)
 {
 	Super::OnMouseMove(X, Y, buttonType);
-	return; // 这里先关掉，测试别的功能
+	//return; // 这里先关掉，测试别的功能
 
 	if (std::shared_ptr<AActor> SelectedActor_SharedPtr = Super::SelectedActor.lock())
 	{
 		ESelectAxisType SelectAxisType = GetSelectAxis();
 		if (SelectAxisType == ESelectAxisType::SELECTAXISTYPE_NONE)
 		{
-			Engine_Log_Error("ESelectAxisType::SELECTAXISTYPE_NONE");
+			//Engine_Log_Error("ESelectAxisType::SELECTAXISTYPE_NONE");
 			return;
 		}
 
+		//Engine_Log_Success("OnMouseMove,,,x = [%d], y = [%d]", X, Y);
 		XMVECTOR ViewOriginPoint = {};
 		XMVECTOR ViewDirection = {};
 		XMMATRIX World2ViewMatrixInverse = {};
@@ -79,31 +80,36 @@ void AOperationHandle_Move::OnMouseMove(int X, int Y, string buttonType)
 			switch (SelectAxisType)
 			{
 			case ESelectAxisType::SELECTAXISTYPE_X:
-				SelectActorDir = SelectedActor_SharedPtr->GetForward();
+				SelectActorDir = SelectedActor_SharedPtr->GetForward(); // GetForward
 				break;
 			case ESelectAxisType::SELECTAXISTYPE_Y:
-				SelectActorDir = SelectedActor_SharedPtr->GetRight();
+				SelectActorDir = SelectedActor_SharedPtr->GetRight(); // GetRight
 				break;
 			case ESelectAxisType::SELECTAXISTYPE_Z:
-				SelectActorDir = SelectedActor_SharedPtr->GetUp();
+				SelectActorDir = SelectedActor_SharedPtr->GetUp(); // GetUp
 				break;
 			default:
 				Engine_Log_Error("switch (GetSelectAxis()) error");
 				break;
 			}
 			XMVECTOR SelectActorDirection = XMLoadFloat3(&SelectActorDir);
+			SelectActorDirection = DirectX::XMVector3Normalize(SelectActorDirection);
 
 			XMVECTOR v1_Corss_v2 = DirectX::XMVector3Cross(WorldDirection, SelectActorDirection);
 			float v1_Corss_v2_len = DirectX::XMVector3Length(v1_Corss_v2).m128_f32[0];
+			float v1_Corss_v2_len_pow2 = DirectX::XMVector3LengthSq(v1_Corss_v2).m128_f32[0];
 			float t1 = DirectX::XMVector3Dot(
-							DirectX::XMVector3Cross(DirectX::XMVectorSubtract(SelectActorPostion ,WorldOriginPoint), 
-										SelectActorDirection),
-							v1_Corss_v2).m128_f32[0]
-						/ (v1_Corss_v2_len * v1_Corss_v2_len);
-			XMVECTOR ResultPos = DirectX::XMVectorAdd(WorldOriginPoint, DirectX::XMVectorScale(WorldDirection, t1));
+							v1_Corss_v2,
+							DirectX::XMVector3Cross(WorldDirection,DirectX::XMVectorSubtract(WorldOriginPoint, SelectActorPostion))
+							).m128_f32[0]
+						/ v1_Corss_v2_len_pow2;
+
+			XMVECTOR ResultPos = DirectX::XMVectorAdd(SelectActorPostion, DirectX::XMVectorScale(SelectActorDirection, t1));
 			XMFLOAT3 ResultPostion = XMFLOAT3();
 			XMStoreFloat3(&ResultPostion, ResultPos);
 			SelectedActor_SharedPtr->SetPosition(ResultPostion);
+			XMFLOAT3 SelectedActor_position = SelectedActor_SharedPtr->GetPosition();
+			//Engine_Log_Success("OnMouseMove,,,x = [%f], y = [%f], z = [%f]", SelectedActor_position.x, SelectedActor_position.y, SelectedActor_position.z);
 		}
 		else {
 			Engine_Log_Error("FRaycastSystemLibrary::GetRaycastByScreenParam is error");

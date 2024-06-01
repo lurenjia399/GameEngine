@@ -8,6 +8,7 @@ CTransformationComponent::CTransformationComponent()
 	, ForwardVector(1.f, 0.f, 0.f)
 	, RightVector(0.f, 1.f, 0.0f)
 	, UpVector(0.f, 0.0f, 1.f)
+	, PositionOffset(0.f, 0.f, 0.f)
 	, AttachParent({})
 	, AttachChildren({})
 {
@@ -41,6 +42,25 @@ void CTransformationComponent::SetRight(const XMFLOAT3& InRight)
 void CTransformationComponent::SetUp(const XMFLOAT3& InUp)
 {
 	UpVector = InUp;
+}
+
+void CTransformationComponent::SetPositionOffset(const XMFLOAT3& InPosition)
+{
+	PositionOffset = InPosition;
+}
+
+XMFLOAT3& CTransformationComponent::GetPosition()
+{
+	//if (!AttachChildren.empty())
+	//{
+	//	for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
+	//	{
+	//		XMFLOAT3 ChildrenPosition = children.lock()->GetPosition();
+	//		Engine_Log_Error("CTransformationComponent::ChildrenPosition position x[%f], y[%f], z[%f]", ChildrenPosition.x, ChildrenPosition.y, ChildrenPosition.z)
+	//	}
+	//}
+
+	return Position;
 }
 
 void CTransformationComponent::NormalizeTransformationVector()
@@ -138,7 +158,7 @@ void CTransformationComponent::UpdateComponentScaleToWorldWithParent(std::weak_p
 
 void CTransformationComponent::UpdateChildPosition(const XMFLOAT3& InPosition)
 {
-	XMFLOAT3 newLoation = XMFLOAT3(Position.x + InPosition.x, Position.y + InPosition.y, Position.z + InPosition.z);
+	XMFLOAT3 newLoation = XMFLOAT3(PositionOffset.x + InPosition.x, PositionOffset.y + InPosition.y, PositionOffset.z + InPosition.z);
 	Position = newLoation;
 }
 

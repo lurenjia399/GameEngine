@@ -95,7 +95,7 @@ void AMesh::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)
 
 void AMesh::SetComponentPosition(const XMFLOAT3& InPosition)
 {
-
+	MeshComponent->SetPositionOffset(InPosition);
 	MeshComponent->UpdateComponentPositionToWorldWithParent(MeshComponent->GetAttachParent(), InPosition);
 }
 

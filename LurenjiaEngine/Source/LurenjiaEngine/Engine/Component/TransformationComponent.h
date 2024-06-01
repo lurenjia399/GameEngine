@@ -14,7 +14,9 @@ public:
 	virtual void SetRight(const XMFLOAT3& InRight);
 	virtual void SetUp(const XMFLOAT3& InUp);
 
-	XMFLOAT3& GetPosition(){ return Position; }
+	virtual void SetPositionOffset(const XMFLOAT3& InPosition);
+
+	XMFLOAT3& GetPosition();
 	fvector_3d GetRotation(){ return fvector_3d(Rotation.x, Rotation.y, Rotation.z); }
 	XMFLOAT3& GetScale() { return Scale; }
 	XMFLOAT3& GetForward(){ return ForwardVector; }
@@ -41,6 +43,8 @@ private:
 	XMFLOAT3 ForwardVector;
 	XMFLOAT3 RightVector;
 	XMFLOAT3 UpVector;
+
+	XMFLOAT3 PositionOffset;//子compoent相对于父component的位置偏移
 
 	std::weak_ptr<CTransformationComponent> AttachParent;
 	std::vector<std::weak_ptr<CTransformationComponent>> AttachChildren;

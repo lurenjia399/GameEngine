@@ -134,8 +134,31 @@ namespace SelectActorTest
 			}
 			//CylinderMesh->SetPickup(false);
 		}
+		XMFLOAT3 a = XMFLOAT3(1, 1, 1);
+		XMVECTOR WorldDirection = XMLoadFloat3(&a);
+		XMFLOAT3 b = XMFLOAT3(1, 2, 3);
+		XMVECTOR SelectActorDirection = XMLoadFloat3(&b);
 
-		
+		XMVECTOR v1_Corss_v2 = DirectX::XMVector3Cross(WorldDirection, SelectActorDirection);
+		XMVECTOR v1_Corss_v2_vector = DirectX::XMVector3Length(v1_Corss_v2);
+		XMVECTOR WorldDirection_vector = DirectX::XMVector3Length(WorldDirection);
+		XMVECTOR SelectActorDirection_vector = DirectX::XMVector3Length(SelectActorDirection);
+		float v1_Corss_v2_len = DirectX::XMVector3LengthSq(v1_Corss_v2).m128_f32[0];
+		float WorldDirection_len = DirectX::XMVector3LengthSq(WorldDirection).m128_f32[0];
+		float SelectActorDirection_len = DirectX::XMVector3LengthSq(SelectActorDirection).m128_f32[0];
+		XMVECTOR v1_dot_v2 = DirectX::XMVector3Dot(WorldDirection, SelectActorDirection);
+
+
+		XMVECTOR SelectActorDirection2 = XMLoadFloat3(&b);
+		//float t1 = DirectX::XMVector3Dot(
+		//	DirectX::XMVector3Cross(DirectX::XMVectorSubtract(SelectActorPostion, WorldOriginPoint),
+		//		SelectActorDirection),
+		//	v1_Corss_v2).m128_f32[0]
+		//	/ (v1_Corss_v2_len * v1_Corss_v2_len);
+		//XMVECTOR ResultPos = DirectX::XMVectorAdd(WorldOriginPoint, DirectX::XMVectorScale(WorldDirection, t1));
+		//XMFLOAT3 ResultPostion = XMFLOAT3();
+		//XMStoreFloat3(&ResultPostion, ResultPos);
+		//SelectedActor_SharedPtr->SetPosition(ResultPostion);
 
 	}
 }
