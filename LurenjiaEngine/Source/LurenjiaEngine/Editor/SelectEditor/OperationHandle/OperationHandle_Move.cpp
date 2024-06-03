@@ -18,6 +18,27 @@ void AOperationHandle_Move::SetPosition(const XMFLOAT3& InPosition)
 	ZAxisComponent->SetPosition(InPosition);
 }
 
+void AOperationHandle_Move::SetVisible(bool InVisible)
+{
+	if (RootComponent.use_count() > 0)
+	{
+		RootComponent->SetVisible(InVisible);
+	}
+	else
+	{
+		XAxisComponent->SetVisible(InVisible);
+		YAxisComponent->SetVisible(InVisible);
+		ZAxisComponent->SetVisible(InVisible);
+	}
+}
+
+void AOperationHandle_Move::SetPickup(bool InVisible)
+{
+	XAxisComponent->SetPickup(InVisible);
+	YAxisComponent->SetPickup(InVisible);
+	ZAxisComponent->SetPickup(InVisible);
+}
+
 AOperationHandle_Move::AOperationHandle_Move()
 {
 	XAxisComponent = LurenjiaEngine::CreateObject<CCustomMeshComponent>(this, "XAxisComponent");
@@ -32,13 +53,17 @@ void AOperationHandle_Move::CreateComponent()
 {
 	string ContentPath = FEnginePathHelper::GetEngineContentFBXPath();
 	string CustomPath = "/MoveArrow.fbx";
-	
+
 	InjectComponentRenderDataByComponent(CCustomMeshComponent, XAxisComponent, ContentPath + CustomPath);
 	InjectComponentRenderDataByComponent(CCustomMeshComponent, YAxisComponent, ContentPath + CustomPath);
 	InjectComponentRenderDataByComponent(CCustomMeshComponent, ZAxisComponent, ContentPath + CustomPath);
 
 	XAxisComponent->SetRotation(fvector_3d(0, 90, 0));
 	YAxisComponent->SetRotation(fvector_3d(-90, 0, 0));
+
+	XAxisComponent->AttachToComponent(RootComponent);
+	YAxisComponent->AttachToComponent(RootComponent);
+	ZAxisComponent->AttachToComponent(RootComponent);
 }
 
 void AOperationHandle_Move::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)
@@ -60,6 +85,11 @@ void AOperationHandle_Move::OnMouseMove(int X, int Y, string buttonType)
 		if (SelectAxisType == ESelectAxisType::SELECTAXISTYPE_NONE)
 		{
 			//Engine_Log_Error("ESelectAxisType::SELECTAXISTYPE_NONE");
+			return;
+		}
+
+		if (!AOperationHandleBase::bOperationHandleSelect)
+		{
 			return;
 		}
 
@@ -121,9 +151,13 @@ void AOperationHandle_Move::OnMouseMove(int X, int Y, string buttonType)
 void AOperationHandle_Move::OnLeftMouseButtonDown(int X, int Y)
 {
 	Super::OnLeftMouseButtonDown(X, Y);
+
+	AOperationHandleBase::bOperationHandleSelect = true;
 }
 
 void AOperationHandle_Move::OnLeftMouseButtonUp(int X, int Y)
 {
 	Super::OnLeftMouseButtonUp(X, Y);
+
+	AOperationHandleBase::bOperationHandleSelect = false;
 }

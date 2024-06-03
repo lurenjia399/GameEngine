@@ -249,6 +249,9 @@ void FRenderingLayer::DrawAllObjectsByLayer(float DeltaTime)
 			continue;
 		}
 		std::shared_ptr<FGeometryDescData> data = data_weak.lock();
-		DrawObject(DeltaTime, data);
+		if (data->MeshComponet->GetIsVisible())
+		{
+			DrawObject(DeltaTime, data);
+		}
 	}
 }

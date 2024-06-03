@@ -152,8 +152,8 @@ void ACamera::FocusMeshUpdateCameraInfo(float InValue)
 	if (InValue > 0)	//进入观察模式
 	{
 		CameraType = ECameraType::ObservationObject;
-		XMFLOAT3 cameraForward = TransformationComponent->GetForward();
-		XMFLOAT3 cameraPosition = TransformationComponent->GetPosition();
+		XMFLOAT3 cameraForward = RootComponent->GetForward();
+		XMFLOAT3 cameraPosition = RootComponent->GetPosition();
 
 		cameraPosition.x = Radius * sinf(verticalAngle) * cosf(horizontalAngle);
 		cameraPosition.z = Radius * cosf(verticalAngle);
@@ -313,8 +313,8 @@ void ACamera::OnMouseWheel(int X, int Y, float InValue)
 
 void ACamera::MoveForward(float InValue)
 {
-	XMFLOAT3& newPos = TransformationComponent->GetPosition();
-	XMFLOAT3& forward = TransformationComponent->GetForward();
+	XMFLOAT3& newPos = RootComponent->GetPosition();
+	XMFLOAT3& forward = RootComponent->GetForward();
 
 	XMVECTOR AmountMovement = XMVectorReplicate(InValue * KeyboardSensitity);
 	XMVECTOR Forward = XMLoadFloat3(&forward);
@@ -325,8 +325,8 @@ void ACamera::MoveForward(float InValue)
 
 void ACamera::MoveRight(float InValue)
 {
-	XMFLOAT3& newPos = TransformationComponent->GetPosition();
-	XMFLOAT3& right = TransformationComponent->GetRight();
+	XMFLOAT3& newPos = RootComponent->GetPosition();
+	XMFLOAT3& right = RootComponent->GetRight();
 
 	XMVECTOR AmountMovement = XMVectorReplicate(InValue * KeyboardSensitity);
 	XMVECTOR Right = XMLoadFloat3(&right);
@@ -336,8 +336,8 @@ void ACamera::MoveRight(float InValue)
 
 void ACamera::MoveUp(float InValue)
 {
-	XMFLOAT3& newPos = TransformationComponent->GetPosition();
-	XMFLOAT3& up = TransformationComponent->GetUp();
+	XMFLOAT3& newPos = RootComponent->GetPosition();
+	XMFLOAT3& up = RootComponent->GetUp();
 
 	XMVECTOR AmountMovement = XMVectorReplicate(InValue * KeyboardSensitity);
 	XMVECTOR Up = XMLoadFloat3(&up);
@@ -351,16 +351,16 @@ void ACamera::RotateAroundPitchAxis(float InRotateDegrees)
 	* 注意：摄像机在旋转的时候，Pitch方向选转->>>>>始终围绕的摄像机的局部坐标系中的Pitch方向
 	*/
 
-	XMFLOAT3 pitch = TransformationComponent->GetRight();
-	XMFLOAT3 yaw = TransformationComponent->GetUp();
-	XMFLOAT3 roll = TransformationComponent->GetForward();
+	XMFLOAT3 pitch = RootComponent->GetRight();
+	XMFLOAT3 yaw = RootComponent->GetUp();
+	XMFLOAT3 roll = RootComponent->GetForward();
 	
 
 	XMVECTOR PitchAxis = XMLoadFloat3(&pitch);
 	XMMATRIX RotatePitchMatrix = XMMatrixRotationAxis(PitchAxis, InRotateDegrees);
 
-	XMStoreFloat3(&TransformationComponent->GetUp(), XMVector3TransformNormal(XMLoadFloat3(&yaw), RotatePitchMatrix));
-	XMStoreFloat3(&TransformationComponent->GetForward(), XMVector3TransformNormal(XMLoadFloat3(&roll), RotatePitchMatrix));
+	XMStoreFloat3(&RootComponent->GetUp(), XMVector3TransformNormal(XMLoadFloat3(&yaw), RotatePitchMatrix));
+	XMStoreFloat3(&RootComponent->GetForward(), XMVector3TransformNormal(XMLoadFloat3(&roll), RotatePitchMatrix));
 }
 
 void ACamera::RotateAroundYawAxis(float InRotateDegrees)
@@ -369,13 +369,13 @@ void ACamera::RotateAroundYawAxis(float InRotateDegrees)
 	* 注意：摄像机在旋转的时候，Yaw方向选转->>>>>始终围绕的世界坐标系中的Yaw方向
 	*/
 
-	XMFLOAT3 pitch = TransformationComponent->GetRight();
-	XMFLOAT3 roll = TransformationComponent->GetForward();
+	XMFLOAT3 pitch = RootComponent->GetRight();
+	XMFLOAT3 roll = RootComponent->GetForward();
 
 	// 这里绕着z轴旋转已经是UE坐标系了
 	XMMATRIX RotateYawMatrix = XMMatrixRotationZ(InRotateDegrees);
 	//XMMATRIX RotateYawMatrix = XMMatrixRotationY(InRotateDegrees);
 
-	XMStoreFloat3(&TransformationComponent->GetRight(), XMVector3TransformNormal(XMLoadFloat3(&pitch), RotateYawMatrix));
-	XMStoreFloat3(&TransformationComponent->GetForward(), XMVector3TransformNormal(XMLoadFloat3(&roll), RotateYawMatrix));
+	XMStoreFloat3(&RootComponent->GetRight(), XMVector3TransformNormal(XMLoadFloat3(&pitch), RotateYawMatrix));
+	XMStoreFloat3(&RootComponent->GetForward(), XMVector3TransformNormal(XMLoadFloat3(&roll), RotateYawMatrix));
 }

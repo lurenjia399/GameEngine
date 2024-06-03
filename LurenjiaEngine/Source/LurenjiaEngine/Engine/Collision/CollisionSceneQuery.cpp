@@ -9,7 +9,9 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 	{
 		auto GeometryDescData = data_weak.lock();
 
-		if(!GeometryDescData->MeshComponet->GetIsPickup()) continue;
+		if(!GeometryDescData->MeshComponet->GetIsPickup() || !GeometryDescData->MeshComponet->GetIsVisible()) continue;
+
+		string name = GeometryDescData->MeshComponet->GetName();
 
 		XMMATRIX Local2WorldMatrix = XMLoadFloat4x4(&GeometryDescData->WorldMatrix);// 这个世界矩阵是主行的
 		XMVECTOR Local2WorldMatrixDeterminant = DirectX::XMMatrixDeterminant(Local2WorldMatrix);
@@ -52,8 +54,10 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 							XMVECTOR V2 = XMLoadFloat3(&Vertex2);
 
 							float TriangleTestTime = 0.f;//碰撞到AABB中的三角形时间
+							
 							if (DirectX::TriangleTests::Intersects(LocalOriginPoint, LocalDirection, V0, V1, V2, TriangleTestTime))
 							{
+								Engine_Log("%f", TriangleTestTime)
 								if (TriangleTestTime > 0 && TriangleTestTime < TriangleTime)
 								{
 									TriangleTime = TriangleTestTime;

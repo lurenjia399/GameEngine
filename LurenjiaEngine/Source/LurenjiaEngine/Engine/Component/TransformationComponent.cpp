@@ -11,6 +11,7 @@ CTransformationComponent::CTransformationComponent()
 	, PositionOffset(0.f, 0.f, 0.f)
 	, AttachParent({})
 	, AttachChildren({})
+	, bIsVisible(true)
 {
 }
 
@@ -183,4 +184,22 @@ void CTransformationComponent::UpdateChildScale(const XMFLOAT3& InScale)
 {
 	XMFLOAT3 newScale = XMFLOAT3(InScale.x, InScale.y, InScale.z);
 	Scale = newScale;
+}
+
+void CTransformationComponent::SetVisible(bool bNewVisible)
+{
+	bIsVisible = bNewVisible;
+
+	if (!AttachChildren.empty())
+	{
+		for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
+		{
+			children.lock()->SetVisible(bNewVisible);
+		}
+	}
+}
+
+bool CTransformationComponent::GetIsVisible() const
+{
+	return bIsVisible;
 }

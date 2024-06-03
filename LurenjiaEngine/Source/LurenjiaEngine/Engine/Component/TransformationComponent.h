@@ -35,6 +35,8 @@ public:
 	virtual void UpdateChildRotation(const fvector_3d& InRotation);
 	virtual void UpdateChildScale(const XMFLOAT3& InScale);
 	
+	void SetVisible(bool bNewVisible);
+	bool GetIsVisible() const;
 private:
 	XMFLOAT3 Position;
 	XMFLOAT3 Rotation;
@@ -48,4 +50,6 @@ private:
 
 	std::weak_ptr<CTransformationComponent> AttachParent;
 	std::vector<std::weak_ptr<CTransformationComponent>> AttachChildren;
+
+	bool bIsVisible;//是否可见，也就是是否渲染
 };

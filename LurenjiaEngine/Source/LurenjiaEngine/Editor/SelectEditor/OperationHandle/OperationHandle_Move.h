@@ -6,6 +6,8 @@ class AOperationHandle_Move : public AOperationHandleBase
 	typedef AOperationHandleBase Super;
 public:
 	void SetPosition(const XMFLOAT3& InPosition) override;
+	virtual void SetVisible(bool InVisible) override;
+	virtual void SetPickup(bool InVisible) override;
 	AOperationHandle_Move();
 	void CreateComponent();
 

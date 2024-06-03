@@ -99,6 +99,6 @@ void CInputComponent::OnLMouseButtonUp(int X, int Y)
 {
 	if (OnLMouseButtonUpDelegate.IsBound())
 	{
-		OnLMouseButtonDownDelegate.Execute(X, Y);
+		OnLMouseButtonUpDelegate.Execute(X, Y);
 	}
 }

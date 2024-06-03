@@ -3,70 +3,80 @@
 
 AActor::AActor()
 {
-	TransformationComponent = LurenjiaEngine::CreateObject<CTransformationComponent>(this, "AActor::TransformationComponent");
+	RootComponent = LurenjiaEngine::CreateObject<CTransformationComponent>(this, "AActor::RootComponent");
 }
 
 
 void AActor::SetPosition(const XMFLOAT3& InPosition)
 {
-	TransformationComponent->SetPosition(InPosition);
+	RootComponent->SetPosition(InPosition);
 }
 
 void AActor::SetRotation(const fvector_3d& InRotation)
 {
-	TransformationComponent->SetRotation(InRotation);
+	RootComponent->SetRotation(InRotation);
 }
 
 void AActor::SetScale(const XMFLOAT3& InScale)
 {
-	TransformationComponent->SetScale(InScale);
+	RootComponent->SetScale(InScale);
 }
 
 XMFLOAT3 AActor::GetPosition() const
 {
-	return TransformationComponent->GetPosition();
+	return RootComponent->GetPosition();
 }
 
 fvector_3d AActor::GetRotation() const
 {
-	return TransformationComponent->GetRotation();
+	return RootComponent->GetRotation();
 }
 
 XMFLOAT3 AActor::GetScale() const
 {
-	return TransformationComponent->GetScale();
+	return RootComponent->GetScale();
 }
 
 void AActor::SetForward(const XMFLOAT3& Forward) const
 {
-	TransformationComponent->SetForward(Forward);
+	RootComponent->SetForward(Forward);
 }
 
 void AActor::SetRight(const XMFLOAT3& Right) const
 {
-	TransformationComponent->SetRight(Right);
+	RootComponent->SetRight(Right);
 }
 
 void AActor::SetUp(const XMFLOAT3& Up) const
 {
-	TransformationComponent->SetUp(Up);
+	RootComponent->SetUp(Up);
 }
 
 XMFLOAT3 AActor::GetForward() const
 {
-	return TransformationComponent->GetForward();
+	return RootComponent->GetForward();
 }
 
 XMFLOAT3 AActor::GetRight() const
 {
-	return TransformationComponent->GetRight();
+	return RootComponent->GetRight();
 }
 
 XMFLOAT3 AActor::GetUp() const
 {
-	return TransformationComponent->GetUp();
+	return RootComponent->GetUp();
 }
 
 void AActor::SetPickup(bool InPickup)
 {
+}
+
+void AActor::SetVisible(bool InVisible)
+{
+	return RootComponent->SetVisible(InVisible);
+}
+
+bool AActor::GetVisible()
+{
+	return RootComponent->GetIsVisible();
 }

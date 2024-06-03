@@ -43,4 +43,5 @@ protected:
 public:
 	static std::weak_ptr<AActor> SelectedActor;
 	static std::weak_ptr<CCustomMeshComponent> SelectedAxisComponent;
+	static bool bOperationHandleSelect;// 是否按住了操作手柄
 };

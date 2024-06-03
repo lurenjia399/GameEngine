@@ -25,6 +25,9 @@ public:
 	virtual void BuildMesh(const FVertexRenderingData* InRenderingData);
 	
 	virtual void SetPickup(bool bNewPickup);
+
+	virtual void SetVisible(bool InVisible) override;
+	virtual bool GetVisible() override;
 public:
 	void SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent);
 	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);

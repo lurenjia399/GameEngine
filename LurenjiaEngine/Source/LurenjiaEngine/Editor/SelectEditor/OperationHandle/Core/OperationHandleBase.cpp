@@ -7,6 +7,7 @@
 
 std::weak_ptr<AActor> AOperationHandleBase::SelectedActor;
 std::weak_ptr<CCustomMeshComponent> AOperationHandleBase::SelectedAxisComponent;
+bool AOperationHandleBase::bOperationHandleSelect = false;
 
 AOperationHandleBase::AOperationHandleBase()
 	: XAxisComponent({})
@@ -94,12 +95,12 @@ void AOperationHandleBase::OnMouseMove(int X, int Y, string buttonType)
 
 void AOperationHandleBase::OnLeftMouseButtonDown(int X, int Y)
 {
-	//Engine_Log("AOperationHandleBase::OnLeftMouseButtonDown x = [%d], y = [%d]", X, Y)
+	Engine_Log("AOperationHandleBase::OnLeftMouseButtonDown x = [%d], y = [%d]", X, Y)
 }
 
 void AOperationHandleBase::OnLeftMouseButtonUp(int X, int Y)
 {
-	//Engine_Log("AOperationHandleBase::OnLeftMouseButtonUp x = [%d], y = [%d]", X, Y)
+	Engine_Log("AOperationHandleBase::OnLeftMouseButtonUp x = [%d], y = [%d]", X, Y)
 }
 
 void AOperationHandleBase::SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterialX, shared_ptr<CMaterial> InMaterialY, shared_ptr<CMaterial> InMaterialZ)

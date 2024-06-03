@@ -27,12 +27,15 @@ public:
 	virtual XMFLOAT3 GetRight() const;
 	virtual XMFLOAT3 GetUp() const;
 
-	virtual FORCEINLINE shared_ptr<CTransformationComponent> GetTransformationComponent() { return TransformationComponent; }
+	virtual FORCEINLINE shared_ptr<CTransformationComponent> GetRootComponent() { return RootComponent; }
 
 	virtual void SetPickup(bool InPickup);
+
+	virtual void SetVisible(bool InVisible);
+	virtual bool GetVisible();
 protected:
 	CVARIABLE()
-	shared_ptr<CTransformationComponent> TransformationComponent;
+	shared_ptr<CTransformationComponent> RootComponent;
 };
 
 #endif

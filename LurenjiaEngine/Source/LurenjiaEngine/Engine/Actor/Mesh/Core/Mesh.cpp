@@ -33,9 +33,9 @@ void AMesh::PostDraw(float DeltaTime)
 
 void AMesh::SetPosition(const XMFLOAT3& InPosition)
 {
-	if (TransformationComponent.use_count() > 0)
+	if (RootComponent.use_count() > 0)
 	{
-		TransformationComponent->SetPosition(InPosition);
+		RootComponent->SetPosition(InPosition);
 	}
 	else
 	{
@@ -46,9 +46,9 @@ void AMesh::SetPosition(const XMFLOAT3& InPosition)
 
 void AMesh::SetRotation(const fvector_3d& InRotation)
 {
-	if (TransformationComponent.use_count() > 0)
+	if (RootComponent.use_count() > 0)
 	{
-		TransformationComponent->SetRotation(InRotation);
+		RootComponent->SetRotation(InRotation);
 	}
 	else
 	{
@@ -58,9 +58,9 @@ void AMesh::SetRotation(const fvector_3d& InRotation)
 
 void AMesh::SetScale(const XMFLOAT3& InScale)
 {
-	if (TransformationComponent.use_count() > 0)
+	if (RootComponent.use_count() > 0)
 	{
-		TransformationComponent->SetScale(InScale);
+		RootComponent->SetScale(InScale);
 	}
 	else
 	{
@@ -81,11 +81,28 @@ void AMesh::SetPickup(bool bNewPickup)
 	MeshComponent->SetPickup(bNewPickup);
 }
 
+void AMesh::SetVisible(bool InVisible)
+{
+	if (RootComponent.use_count() > 0)
+	{
+		RootComponent->SetVisible(InVisible);
+	}
+	else
+	{
+		MeshComponent->SetVisible(InVisible);
+	}
+}
+
+bool AMesh::GetVisible()
+{
+	return RootComponent->GetIsVisible();
+}
+
 void AMesh::SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent)
 {
 	MeshComponent = InMeshComponent;
 
-	MeshComponent->AttachToComponent(TransformationComponent);
+	MeshComponent->AttachToComponent(RootComponent);
 }
 
 void AMesh::SetMeshComponentLayerType(EMeshComponentRenderLayerType InType)

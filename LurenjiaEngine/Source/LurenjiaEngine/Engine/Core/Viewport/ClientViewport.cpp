@@ -14,11 +14,11 @@ AClientViewport::AClientViewport()
 
 void AClientViewport::BulidViewMatrix(float DeltaTime)
 {
-	TransformationComponent->NormalizeTransformationVector();
-	XMFLOAT3 RightVector = TransformationComponent->GetRight();
-	XMFLOAT3 UpVector = TransformationComponent->GetUp();
-	XMFLOAT3 ForwardVector = TransformationComponent->GetForward();
-	XMFLOAT3 PositionVector = TransformationComponent->GetPosition();
+	RootComponent->NormalizeTransformationVector();
+	XMFLOAT3 RightVector = RootComponent->GetRight();
+	XMFLOAT3 UpVector = RootComponent->GetUp();
+	XMFLOAT3 ForwardVector = RootComponent->GetForward();
+	XMFLOAT3 PositionVector = RootComponent->GetPosition();
 
 	// 注意这个旋转矩阵表示的是，在世界空间下，摄像机的旋转
 	XMMATRIX rotateMatrix =

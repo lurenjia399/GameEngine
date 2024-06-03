@@ -5,6 +5,7 @@ CMeshComponent::CMeshComponent()
 {
 	Materials.emplace_back(LurenjiaEngine::CreateObject<CMaterial>(this, "CMeshComponent::Material"));
 	bPickup = true;
+	
 }
 
 void CMeshComponent::Init()
@@ -63,3 +64,5 @@ bool CMeshComponent::GetIsPickup() const
 {
 	return bPickup;
 }
+
+
