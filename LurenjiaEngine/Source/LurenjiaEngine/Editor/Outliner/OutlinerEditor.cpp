@@ -30,11 +30,11 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 			char ObjectName[128] = { 0 };
 			sprintf_s(ObjectName, "%s", actor->GetName().c_str());
 
-			if (selected < 0)
-			{
-				ImGui::Selectable(ObjectName, false);
-				continue;
-			}
+			//if (selected < 0)
+			//{
+			//	ImGui::Selectable(ObjectName, false);
+			//	continue;
+			//}
 
 			if (ImGui::Selectable(ObjectName, selected == i))
 			{
