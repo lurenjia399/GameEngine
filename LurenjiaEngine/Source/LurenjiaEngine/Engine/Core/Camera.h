@@ -5,6 +5,9 @@
 #include "../Actor/Core/Actor.h"
 #include "Viewport/ClientViewport.h"
 
+
+DEFINITION_MULTICAST_SINGLE_DELEGATE(FSelectedActorDelegate, void, bool);
+
 enum ECameraType;
 struct FInputKey;
 class CTransformationComponent;
@@ -26,6 +29,8 @@ public:
 	
 public:
 	FORCEINLINE shared_ptr<CInputComponent> GetInputComponent() { return InputComponent; }
+public:
+	FSelectedActorDelegate SelectedActorDelegate; // 选中Actor的代理
 private:
 	//代理的执行函数
 	void ExecuteKeyboard(const FInputKey& InputKey);

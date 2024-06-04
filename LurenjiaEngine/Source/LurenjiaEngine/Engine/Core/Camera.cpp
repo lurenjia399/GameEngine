@@ -61,6 +61,7 @@ void ACamera::OnClickedScreen(int X, int Y)
 				FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
 				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, HitResult.GeometryDescData);
 				AOperationHandleBase::SelectedActor = HitResult.Actor_;
+				
 			}
 		}
 		else
@@ -69,6 +70,8 @@ void ACamera::OnClickedScreen(int X, int Y)
 			AOperationHandleBase::SelectedActor.reset();
 			Engine_Log("No Hit Actor");
 		}
+
+		SelectedActorDelegate.Broadcast(bHit);
 	}
 	
 }

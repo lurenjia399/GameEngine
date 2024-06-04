@@ -3,9 +3,15 @@
 #include "../Engine/Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
 #include "../Engine/Rendering/Core/DirectX/RenderingPipeline/RenderingLayer/RenderLayerManage.h"
 #include "../Engine/Actor/Light/Core/Light.h"
+#include "../Engine/Core/Camera.h"
+#include "../Editor/SelectEditor/OperationHandle/Core/OperationHandleBase.h"
+
+
+int FOutlinerEditor::selected = -1;
 
 void FOutlinerEditor::BuildEditor()
 {
+	GetWorld()->GetCamera()->SelectedActorDelegate.AddFunction(this, &FOutlinerEditor::OnSelectedActor);
 }
 
 void FOutlinerEditor::DrawEditor(float DeltaTime)
@@ -18,13 +24,18 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 
 		const vector<shared_ptr<AActor>>& WorldActors = world->GetWorldActors();
 
-		static int selected = 0;
 		for (int i = 0; i < WorldActors.size(); i++)
 		{
 			const shared_ptr<AActor>& actor = WorldActors[i];
 			char ObjectName[128] = { 0 };
-			//sprintf(ObjectName, "%s", actor->GetName().c_str());
 			sprintf_s(ObjectName, "%s", actor->GetName().c_str());
+
+			if (selected < 0)
+			{
+				ImGui::Selectable(ObjectName, false);
+				continue;
+			}
+
 			if (ImGui::Selectable(ObjectName, selected == i))
 			{
 				selected = i;
@@ -49,7 +60,6 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 						{
 							index = FGeometry::RenderingDataIndices[comp->GetGuid()];
 						}
-						
 					}
 				}
 				if (index > -1)
@@ -72,4 +82,31 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 
 void FOutlinerEditor::ExitEditor()
 {
+}
+
+void FOutlinerEditor::OnSelectedActor(bool bSelected)
+{
+	if (shared_ptr<CWorld> world = GetWorld())
+	{
+		if (bSelected)
+		{
+			if (!AOperationHandleBase::SelectedActor.expired())
+			{
+				const vector<shared_ptr<AActor>>& WorldActors = world->GetWorldActors();
+				for (int i = 0; i < WorldActors.size(); i++)
+				{
+					const shared_ptr<AActor>& actor = WorldActors[i];
+					if (AOperationHandleBase::SelectedActor.lock()->GetGuid() == actor->GetGuid())
+					{
+						selected = i;
+					}
+				}
+			}
+		}
+		else
+		{
+			selected = -1;
+		}
+		
+	}
 }

@@ -46,9 +46,9 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 							Indices.y = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 1];
 							Indices.z = GeometryDescData->MeshRenderingData->IndexData[GeometryDescData->IndexoffsetPosition + i * 3 + 2];
 
-							XMFLOAT3 Vertex0 = GeometryDescData->MeshRenderingData->VertexData[Indices.x].Pos;
-							XMFLOAT3 Vertex1 = GeometryDescData->MeshRenderingData->VertexData[Indices.y].Pos;
-							XMFLOAT3 Vertex2 = GeometryDescData->MeshRenderingData->VertexData[Indices.z].Pos;
+							XMFLOAT3 Vertex0 = GeometryDescData->MeshRenderingData->VertexData[GeometryDescData->VertexoffsetPostion + Indices.x].Pos;
+							XMFLOAT3 Vertex1 = GeometryDescData->MeshRenderingData->VertexData[GeometryDescData->VertexoffsetPostion + Indices.y].Pos;
+							XMFLOAT3 Vertex2 = GeometryDescData->MeshRenderingData->VertexData[GeometryDescData->VertexoffsetPostion + Indices.z].Pos;
 							XMVECTOR V0 = XMLoadFloat3(&Vertex0);
 							XMVECTOR V1 = XMLoadFloat3(&Vertex1);
 							XMVECTOR V2 = XMLoadFloat3(&Vertex2);
@@ -57,7 +57,6 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 							
 							if (DirectX::TriangleTests::Intersects(LocalOriginPoint, LocalDirection, V0, V1, V2, TriangleTestTime))
 							{
-								Engine_Log("%f", TriangleTestTime)
 								if (TriangleTestTime > 0 && TriangleTestTime < TriangleTime)
 								{
 									TriangleTime = TriangleTestTime;
@@ -86,7 +85,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<class CWorld> InWorld, AActo
 	{
 		auto GeometryDescData = data_weak.lock();
 
-		if (!GeometryDescData->MeshComponet->GetIsPickup()) continue;
+		if (!GeometryDescData->MeshComponet->GetIsPickup() || !GeometryDescData->MeshComponet->GetIsVisible()) continue;
 
 		XMMATRIX Local2WorldMatrix = XMLoadFloat4x4(&GeometryDescData->WorldMatrix);// 这个世界矩阵是主行的
 		XMVECTOR Local2WorldMatrixDeterminant = DirectX::XMMatrixDeterminant(Local2WorldMatrix);

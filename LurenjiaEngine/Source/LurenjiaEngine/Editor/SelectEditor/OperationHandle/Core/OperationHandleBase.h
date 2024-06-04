@@ -10,6 +10,8 @@ enum class ESelectAxisType
 	SELECTAXISTYPE_Z,
 };
 
+
+
 class CCustomMeshComponent;
 enum class EMeshComponentRenderLayerType;
 class CMaterial;
@@ -34,14 +36,18 @@ protected:
 	virtual void OnMouseMove(int X, int Y, string buttonType);
 	virtual void OnLeftMouseButtonDown(int X, int Y);
 	virtual void OnLeftMouseButtonUp(int X, int Y);
+	void OnSelectedActor(bool bSelected);
 protected:
 	std::shared_ptr<CCustomMeshComponent> XAxisComponent;
 	std::shared_ptr<CCustomMeshComponent> YAxisComponent;
 	std::shared_ptr<CCustomMeshComponent> ZAxisComponent;
 
 	std::shared_ptr<CInputComponent> InputComponent;
+	XMFLOAT3 SelectDir;
+	XMFLOAT3 MousePos2SelectPosOffset;//鼠标选中位置和选中物体间的偏移
 public:
 	static std::weak_ptr<AActor> SelectedActor;
 	static std::weak_ptr<CCustomMeshComponent> SelectedAxisComponent;
 	static bool bOperationHandleSelect;// 是否按住了操作手柄
+
 };
