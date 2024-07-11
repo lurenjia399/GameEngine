@@ -11,9 +11,9 @@ public:
 	void AddChildren(CComponent* InChildren);
 
 public:
-	FORCEINLINE std::vector<CComponent*>& GetChildrens() { return Children; }
+	FORCEINLINE std::vector<CComponent*>& GetChildrens() const { return *Children; }
 
 protected:
 	CComponent* Parent;
-	std::vector<CComponent*> Children;
+	std::vector<CComponent*>* Children;
 };

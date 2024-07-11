@@ -48,9 +48,6 @@
     <ClCompile Include="Engine\Shader\ShaderManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\CoreObject\CoreMinimalObject.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Component\TransformationComponent.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -64,9 +61,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Component\Input\InputType.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="Engine\Core\CoreObject\GuidInterface.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="Engine\Core\World.cpp">
@@ -452,9 +446,6 @@
     <ClInclude Include="Engine\Shader\ShaderManage.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\CoreObject\CoreMinimalObject.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Component\TransformationComponent.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -474,9 +465,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Component\Input\InputType.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\CoreObject\GuidInterface.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\World.h">

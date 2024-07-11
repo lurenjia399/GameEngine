@@ -14,15 +14,5 @@ namespace LurenjiaEngine
 	/// <param name="InMesh">模型</param>
 	/// <param name="...Params">参数</param>
 	/// <returns></returns>
-	template<typename T, typename ...ParamTypes>
-	std::shared_ptr<T> CreateMeshComponetRenderDataByMesh(shared_ptr<CMeshManage> InMeshManage, AMesh* InMesh, ParamTypes&&... Params)
-	{
-		return CreateMeshComponetRenderData_Inner<T>(InMeshManage, InMesh->GetMeshComponet<T>(), Params...);
-	}
 
-	template<typename T, typename ...ParamTypes>
-	std::shared_ptr<T> CreateMeshComponetRenderDataByComponent(shared_ptr<CMeshManage> InMeshManage, shared_ptr<T> InComponent, ParamTypes&&... Params)
-	{
-		return CreateMeshComponetRenderData_Inner<T>(InMeshManage, InComponent, Params...);
-	}
 }

@@ -1,5 +1,5 @@
 #pragma once
-#include "../../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 #include "../../../Rendering/Core/RenderingResourcesUpdate.h"
 #include "MeshType.h"
 #include "../../../Shader/Core/Shader.h"

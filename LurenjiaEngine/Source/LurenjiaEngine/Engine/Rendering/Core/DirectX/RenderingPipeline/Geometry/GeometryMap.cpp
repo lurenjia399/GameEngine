@@ -40,7 +40,7 @@ FGeometryMap::FGeometryMap()
 	CubeMapResourceView->Set_SRV_ViewDimension(D3D12_SRV_DIMENSION_TEXTURECUBE);
 }
 
-void FGeometryMap::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& InRenderingData, const size_t& HashKey)
+void FGeometryMap::BuildMeshDescData(CMeshComponent* InMesh, const FVertexRenderingData& InRenderingData, const size_t& HashKey)
 {
 	for (auto& tem : Geometrys)
 	{
@@ -237,7 +237,7 @@ bool FGeometryMap::FindMeshRenderingDataByHash(const size_t& InHashKey, std::wea
 	return false;
 }
 
-void FGeometryMap::DuplicateMeshRenderingData(std::shared_ptr<CMeshComponent> InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData)
+void FGeometryMap::DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData)
 {
 	for (auto& tem : Geometrys)
 	{
@@ -467,7 +467,7 @@ bool FGeometryMap::IsStartUpFog()
 	return false;
 }
 
-bool FGeometry::isExitDescribeMeshRenderingData(std::shared_ptr<CMeshComponent> InKey)
+bool FGeometry::isExitDescribeMeshRenderingData(CMeshComponent* InKey)
 {
 	//根据meshcomponent所处的层级，添加geometryDescdata
 	std::shared_ptr<FRenderingLayer> RenderLayer = FRenderLayerManage::FindRenderingLayerByInt((int)InKey->GetMeshComponentLayerType());
@@ -493,9 +493,8 @@ bool FGeometry::isExitDescribeMeshRenderingData(std::shared_ptr<CMeshComponent> 
 
 // 向RenderingLayer里面添加渲染数据
 // 将mesh渲染数据保存到MeshRenderingData里面
-void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const FVertexRenderingData& MeshRenderData, const size_t& HashKey, const int& key)
+void FGeometry::BuildMeshDescData(CMeshComponent* InMesh, const FVertexRenderingData& MeshRenderData, const size_t& HashKey, const int& key)
 {
-		
 	XMVECTOR center_v = {}, extents_v = {};
 	{
 		// 求AABB包围盒
@@ -521,7 +520,7 @@ void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const 
 		center_v = XMLoadFloat3(&center);
 		extents_v = XMLoadFloat3(&extents);
 	}
-		
+
 	{
 		// 渲染用的数据存储
 		// 将渲染数据添加到重复池子里
@@ -567,7 +566,6 @@ void FGeometry::BuildMeshDescData(std::shared_ptr<CMeshComponent> InMesh, const 
 		MeshRenderingData.IndexData.insert(MeshRenderingData.IndexData.end(), MeshRenderData.IndexData.begin(), MeshRenderData.IndexData.end());
 		MeshRenderingData.VertexData.insert(MeshRenderingData.VertexData.end(), MeshRenderData.VertexData.begin(), MeshRenderData.VertexData.end());
 	}
-
 }
 
 void FGeometry::BuildMeshBuffer(const int& InIndex)
@@ -635,7 +633,7 @@ bool FGeometry::FindMeshRenderingDataByHash(const size_t& InHashKey, std::weak_p
 	return false;
 }
 
-void FGeometry::DuplicateMeshRenderingData(std::shared_ptr<CMeshComponent> InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData_weak, const int& key)
+void FGeometry::DuplicateMeshRenderingData(CMeshComponent* InMesh, std::weak_ptr<FGeometryDescData>& InGeometryDescData_weak, const int& key)
 {
 	if (InGeometryDescData_weak.expired())
 	{

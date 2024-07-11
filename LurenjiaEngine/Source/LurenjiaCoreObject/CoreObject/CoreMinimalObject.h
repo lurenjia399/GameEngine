@@ -1,6 +1,7 @@
 #pragma once
 
 #include "GuidInterface.h"
+#include "../Construction/ObjectConstruction.h"
 
 class LURENJIACOREOBJECT_API CCoreMinimalObject : public IGuidInterface//, public enable_shared_from_this<CCoreMinimalObject>
 {

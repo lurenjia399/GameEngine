@@ -1,41 +1,45 @@
 #pragma once
 #include "../CoreObjectMacro.h"
 #include "../CoreObjectMinimal.h"
+#include "../Construction/ConstructionComponents.h"
 
 class CCoreMinimalObject;
 
-struct LURENJIACOREOBJECT_API FStaticConstructObjectParameters
+struct LURENJIACOREOBJECT_API FCreateObjectParam
 {
-	FStaticConstructObjectParameters(CCoreMinimalObject* InOuter, const shared_ptr<CCoreMinimalObject> InClass, const string InName)
+	FCreateObjectParam(CCoreMinimalObject* InOuter, CCoreMinimalObject* InClass, const char* InName)
 		: Outer(InOuter)
 		, Class(InClass)
 		, Name(InName)
 	{}
 	CCoreMinimalObject* Outer;
-	std::shared_ptr<CCoreMinimalObject> Class;
-	string Name;				//对象的名称
+	CCoreMinimalObject* Class;
+	const char* Name;				//对象的名称
 };
 
 
 //----------模板实现-----
 template<typename T>
-shared_ptr<T> CreateObject(CCoreMinimalObject* InOuter, string objName)
+T* CreateObject(const FCreateObjectParam& InObjectParam, string objName)
 {
-	//CCoreMinimalObject* NewObject = new T();	//创建对象
-	const shared_ptr<CCoreMinimalObject> NewObject = std::make_shared<T>();
-	NewObject->SetOuter(InOuter);
-	NewObject->ResetGuid(objName);				//重新设置对象的guid
-	FStaticConstructObjectParameters Params = FStaticConstructObjectParameters(InOuter, NewObject, objName);
+	CCoreMinimalObject* NewObject = new T();	//创建对象
 
-	return static_pointer_cast<T>(NewObject);
+	//检测是不是组件 是组件按照组件规则注册
+	ConstructionComponent::ConstructionComponents(InObjectParam.Outer, NewObject);
+
+	T* Obj = dynamic_cast<T*>(NewObject);
+	Obj->SetOuter(InObjectParam.Outer);
+	Obj->ResetGuid(objName);				//重新设置对象的guid
+
+	return Obj;
 }
 
-template<typename T, typename ...ParamTypes>
-T* ConstructionObject(CCoreMinimalObject* InOuter, ParamTypes&&... Params)
-{
-	CCoreMinimalObject* NewObject = new T(Params...);
-	//还需要设置Outer
-	//还需要设置guid
-
-	return dynamic_cast<T*>(NewObject);
-}
+//template<typename T, typename ...ParamTypes>
+//T* ConstructionObject(CCoreMinimalObject* InOuter, ParamTypes&&... Params)
+//{
+//	CCoreMinimalObject* NewObject = new T(Params...);
+//	//还需要设置Outer
+//	//还需要设置guid
+//
+//	return dynamic_cast<T*>(NewObject);
+//}
