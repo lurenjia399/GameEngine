@@ -36,6 +36,9 @@
     <ClInclude Include="CodeReflection\CodeReflectionMacroTag.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Construction\ConstructionComponents.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CoreObject\CoreMinimalObject.cpp">
@@ -48,6 +51,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Component\Component.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Construction\ConstructionComponents.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

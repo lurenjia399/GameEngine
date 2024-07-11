@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClInclude Include="CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="Component\Component.h" />
+    <ClInclude Include="Construction\ConstructionComponents.h" />
     <ClInclude Include="Construction\ObjectConstruction.h" />
     <ClInclude Include="CoreObjectMacro.h" />
     <ClInclude Include="CoreObjectMinimal.h" />
@@ -143,6 +144,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Component\Component.cpp" />
+    <ClCompile Include="Construction\ConstructionComponents.cpp" />
     <ClCompile Include="Construction\ObjectConstruction.cpp" />
     <ClCompile Include="CoreObject\CoreMinimalObject.cpp" />
     <ClCompile Include="CoreObject\GuidInterface.cpp" />
