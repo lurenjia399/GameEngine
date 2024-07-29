@@ -3,8 +3,8 @@
 #ifndef CFogComponent_H
 #define CFogComponent_H
 
-#include "../../Core/CoreObject/CoreMinimalObject.h"
-#include "../Core/Component.h"
+#include "CoreObject/CoreMinimalObject.h"
+#include "Component/Component.h"
 
 class CFogComponent : public CComponent
 {

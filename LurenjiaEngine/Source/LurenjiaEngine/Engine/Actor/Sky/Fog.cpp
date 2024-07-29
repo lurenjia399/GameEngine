@@ -42,7 +42,7 @@ void AFog::SetFogIsValid(const bool& bValid)
 	FogComponent->SetFogValid(bValid);
 }
 
-shared_ptr<CFogComponent> AFog::GetComponent() const
+CFogComponent* AFog::GetComponent() const
 {
 	return FogComponent;
 }

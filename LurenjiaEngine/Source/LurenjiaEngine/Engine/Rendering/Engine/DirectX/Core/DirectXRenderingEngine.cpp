@@ -260,12 +260,12 @@ UINT CDirectXRenderingEngine::GetDXGISampleQuality() const
 	return bMSAA4XEnabled ? (M4XQualityLevels - 1) : 0;
 }
 
-void CDirectXRenderingEngine::SetWorld(shared_ptr<CWorld> InWorld)
+void CDirectXRenderingEngine::SetWorld(CWorld* InWorld)
 {
 	World = InWorld;
 }
 
-shared_ptr<CWorld> CDirectXRenderingEngine::GetWorld() const
+CWorld* CDirectXRenderingEngine::GetWorld() const
 {
 	return World;
 }

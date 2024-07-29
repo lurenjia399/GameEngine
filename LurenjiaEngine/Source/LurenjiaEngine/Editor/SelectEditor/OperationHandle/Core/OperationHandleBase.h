@@ -27,7 +27,7 @@ public:
 	virtual void SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterial){}
 	virtual void SetSubMaterials(const int& index, shared_ptr<CMaterial> InMaterialX, shared_ptr<CMaterial> InMaterialY, shared_ptr<CMaterial> InMaterialZ);
 	void SetBaseColor();
-	void SetBaseColor(std::shared_ptr<CCustomMeshComponent> InCustomComponent, XMFLOAT4 const& InColor);
+	void SetBaseColor(CCustomMeshComponent* InCustomComponent, XMFLOAT4 const& InColor);
 	void ResetColor();
 	ESelectAxisType GetSelectAxis();
 
@@ -38,16 +38,16 @@ protected:
 	virtual void OnLeftMouseButtonUp(int X, int Y);
 	void OnSelectedActor(bool bSelected);
 protected:
-	std::shared_ptr<CCustomMeshComponent> XAxisComponent;
-	std::shared_ptr<CCustomMeshComponent> YAxisComponent;
-	std::shared_ptr<CCustomMeshComponent> ZAxisComponent;
+	CCustomMeshComponent* XAxisComponent;
+	CCustomMeshComponent* YAxisComponent;
+	CCustomMeshComponent* ZAxisComponent;
 
-	std::shared_ptr<CInputComponent> InputComponent;
+	CInputComponent* InputComponent;
 	XMFLOAT3 SelectDir;
 	XMFLOAT3 MousePos2SelectPosOffset;//鼠标选中位置和选中物体间的偏移
 public:
-	static std::weak_ptr<AActor> SelectedActor;
-	static std::weak_ptr<CCustomMeshComponent> SelectedAxisComponent;
+	static AActor* SelectedActor;
+	static CCustomMeshComponent* SelectedAxisComponent;
 	static bool bOperationHandleSelect;// 是否按住了操作手柄
 
 };

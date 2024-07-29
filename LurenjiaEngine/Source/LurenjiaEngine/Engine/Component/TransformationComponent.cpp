@@ -81,24 +81,24 @@ void CTransformationComponent::NormalizeTransformationVector()
 
 }
 
-std::weak_ptr<CTransformationComponent> CTransformationComponent::GetAttachParent()
+CTransformationComponent* CTransformationComponent::GetAttachParent()
 {
 	return AttachParent;
 }
 
-void CTransformationComponent::AttachToComponent(std::weak_ptr<CTransformationComponent> Parent)
+void CTransformationComponent::AttachToComponent(CTransformationComponent* Parent)
 {
 	SetAttachParent(Parent);
 
-	Parent.lock()->AttachChildren.push_back(std::static_pointer_cast<CTransformationComponent>(shared_from_this()));
+	Parent->AttachChildren.push_back(this);
 }
 
-void CTransformationComponent::SetAttachParent(std::weak_ptr<CTransformationComponent> Parent)
+void CTransformationComponent::SetAttachParent(CTransformationComponent* Parent)
 {
 	AttachParent = Parent;
 }
 
-void CTransformationComponent::UpdateComponentPositionToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InPosition)
+void CTransformationComponent::UpdateComponentPositionToWorldWithParent(CTransformationComponent* Parent, const XMFLOAT3& InPosition)
 {
 
 	//if (Parent.lock())
@@ -110,14 +110,14 @@ void CTransformationComponent::UpdateComponentPositionToWorldWithParent(std::wea
 
 	if (!AttachChildren.empty())
 	{
-		for (std::weak_ptr<CTransformationComponent> children: AttachChildren)
+		for (CTransformationComponent* children: AttachChildren)
 		{
-			children.lock()->UpdateChildPosition(InPosition);
+			children->UpdateChildPosition(InPosition);
 		}
 	}
 }
 
-void CTransformationComponent::UpdateComponentRotationToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const fvector_3d& InRotation)
+void CTransformationComponent::UpdateComponentRotationToWorldWithParent(CTransformationComponent* Parent, const fvector_3d& InRotation)
 {
 	Rotation = XMFLOAT3(InRotation.x, InRotation.y, InRotation.z);
 
@@ -137,22 +137,22 @@ void CTransformationComponent::UpdateComponentRotationToWorldWithParent(std::wea
 	// КЂзга§зЊ
 	if (!AttachChildren.empty())
 	{
-		for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
+		for (CTransformationComponent* children : AttachChildren)
 		{
-			children.lock()->UpdateChildRotation(InRotation);
+			children->UpdateChildRotation(InRotation);
 		}
 	}
 }
 
-void CTransformationComponent::UpdateComponentScaleToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InScale)
+void CTransformationComponent::UpdateComponentScaleToWorldWithParent(CTransformationComponent* Parent, const XMFLOAT3& InScale)
 {
 	Scale = InScale;
 
 	if (!AttachChildren.empty())
 	{
-		for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
+		for (CTransformationComponent* children : AttachChildren)
 		{
-			children.lock()->UpdateChildScale(InScale);
+			children->UpdateChildScale(InScale);
 		}
 	}
 }
@@ -192,9 +192,9 @@ void CTransformationComponent::SetVisible(bool bNewVisible)
 
 	if (!AttachChildren.empty())
 	{
-		for (std::weak_ptr<CTransformationComponent> children : AttachChildren)
+		for (CTransformationComponent* children : AttachChildren)
 		{
-			children.lock()->SetVisible(bNewVisible);
+			children->SetVisible(bNewVisible);
 		}
 	}
 }

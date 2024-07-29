@@ -3,7 +3,7 @@
 #ifndef LightManageH
 #define LightManageH
 
-#include "../../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 
 class CLightComponent;
 class CLightManage : public CCoreMinimalObject

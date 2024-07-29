@@ -3,7 +3,7 @@
 #ifndef Material_H
 #define Material_H
 
-#include "../../../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 #include "MaterialType.h"
 
 class CMaterial : public CCoreMinimalObject

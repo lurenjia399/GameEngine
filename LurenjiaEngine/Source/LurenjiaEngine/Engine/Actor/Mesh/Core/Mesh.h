@@ -29,10 +29,10 @@ public:
 	virtual void SetVisible(bool InVisible) override;
 	virtual bool GetVisible() override;
 public:
-	void SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent);
+	void SetMeshComponent(CMeshComponent* InMeshComponent);
 	void SetMeshComponentLayerType(EMeshComponentRenderLayerType InType);
 	template<typename T>
-	std::shared_ptr<T> GetMeshComponet();
+	T* GetMeshComponet();
 public:
 	//获取组件变换相关
 	void SetComponentPosition(const XMFLOAT3& InPosition);
@@ -44,19 +44,15 @@ public:
 	UINT GetMaterialsCount() const;
 	const vector<shared_ptr<CMaterial>> GetMaterials() const;
 protected:
-	std::shared_ptr<CMeshComponent> MeshComponent;
+	CMeshComponent* MeshComponent;
 };
 
 template<typename T>
-std::shared_ptr<T> AMesh::GetMeshComponet()
+T* AMesh::GetMeshComponet()
 {
 	if (MeshComponent)
 	{
-		std::shared_ptr<T> component = static_pointer_cast<T>(MeshComponent);
-		if (component)
-		{
-			return component;
-		}
+		return MeshComponent;
 	}
 
 	return nullptr;

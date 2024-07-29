@@ -1,7 +1,7 @@
 #include "LurenjiaEngine.h"
 #include "EngineFactory.h"
 
-static int Init(shared_ptr<CEngine> InEngine, HINSTANCE InhInstance, HINSTANCE InprevInstance, PSTR IncmdLine, int InshowCmd)
+static int Init(CEngine* InEngine, HINSTANCE InhInstance, HINSTANCE InprevInstance, PSTR IncmdLine, int InshowCmd)
 {
 #if defined(_WIN32)
 	FWinMainCommandParameters WinMainParameters(InhInstance, InprevInstance, IncmdLine, InshowCmd);
@@ -19,14 +19,14 @@ static int Init(shared_ptr<CEngine> InEngine, HINSTANCE InhInstance, HINSTANCE I
 	return ReturnValue;
 }
 
-static void Tick(shared_ptr<CEngine> InEngine)
+static void Tick(CEngine* InEngine)
 {
 	float DeltaTime = 0.03f;
 	InEngine->Tick(DeltaTime);
 	Sleep(30);
 }
 
-static int Exit(shared_ptr<CEngine> InEngine)
+static int Exit(CEngine* InEngine)
 {
 	//int ReturnValue = InEngine->PreExit();
 	//if (ReturnValue != 0)
@@ -49,7 +49,7 @@ static int Exit(shared_ptr<CEngine> InEngine)
 	return ReturnValue;
 }
 
-shared_ptr<CEngine> Engine = {};
+CEngine* Engine = nullptr;
 /*
 * hInstance 自己的实列
 * prevInstance 上次的实例

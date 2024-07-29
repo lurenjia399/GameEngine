@@ -33,7 +33,7 @@ void AMesh::PostDraw(float DeltaTime)
 
 void AMesh::SetPosition(const XMFLOAT3& InPosition)
 {
-	if (RootComponent.use_count() > 0)
+	if (RootComponent)
 	{
 		RootComponent->SetPosition(InPosition);
 	}
@@ -46,7 +46,7 @@ void AMesh::SetPosition(const XMFLOAT3& InPosition)
 
 void AMesh::SetRotation(const fvector_3d& InRotation)
 {
-	if (RootComponent.use_count() > 0)
+	if (RootComponent)
 	{
 		RootComponent->SetRotation(InRotation);
 	}
@@ -58,7 +58,7 @@ void AMesh::SetRotation(const fvector_3d& InRotation)
 
 void AMesh::SetScale(const XMFLOAT3& InScale)
 {
-	if (RootComponent.use_count() > 0)
+	if (RootComponent)
 	{
 		RootComponent->SetScale(InScale);
 	}
@@ -83,7 +83,7 @@ void AMesh::SetPickup(bool bNewPickup)
 
 void AMesh::SetVisible(bool InVisible)
 {
-	if (RootComponent.use_count() > 0)
+	if (RootComponent)
 	{
 		RootComponent->SetVisible(InVisible);
 	}
@@ -98,7 +98,7 @@ bool AMesh::GetVisible()
 	return RootComponent->GetIsVisible();
 }
 
-void AMesh::SetMeshComponent(shared_ptr<CMeshComponent> InMeshComponent)
+void AMesh::SetMeshComponent(CMeshComponent* InMeshComponent)
 {
 	MeshComponent = InMeshComponent;
 

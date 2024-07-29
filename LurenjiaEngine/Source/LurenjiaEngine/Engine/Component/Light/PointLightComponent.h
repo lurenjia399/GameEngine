@@ -18,10 +18,10 @@ public:
 	void SetScale(const XMFLOAT3& InScale) override;
 
 	//template<typename T>
-	shared_ptr<CMeshComponent> GetLightMeshComponent() override;
+	CMeshComponent* GetLightMeshComponent() override;
 	
 private:
-	std::shared_ptr<CMeshComponent> LightMeshComponent;
+	CMeshComponent* LightMeshComponent;
 };
 
 #endif

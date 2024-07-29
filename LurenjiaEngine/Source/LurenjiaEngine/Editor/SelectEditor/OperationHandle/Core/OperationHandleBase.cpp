@@ -6,15 +6,15 @@
 #include "../Engine/Core/Camera.h"
 
 
-std::weak_ptr<AActor> AOperationHandleBase::SelectedActor;
-std::weak_ptr<CCustomMeshComponent> AOperationHandleBase::SelectedAxisComponent;
+AActor* AOperationHandleBase::SelectedActor;
+CCustomMeshComponent* AOperationHandleBase::SelectedAxisComponent;
 bool AOperationHandleBase::bOperationHandleSelect = false;
 
 AOperationHandleBase::AOperationHandleBase()
-	: XAxisComponent({})
-	, YAxisComponent({})
-	, ZAxisComponent({})
-	, InputComponent({})
+	: XAxisComponent(nullptr)
+	, YAxisComponent(nullptr)
+	, ZAxisComponent(nullptr)
+	, InputComponent(nullptr)
 	, SelectDir(XMFLOAT3(0, 0, 0))
 	, MousePos2SelectPosOffset(XMFLOAT3(0,0,0))
 {
@@ -26,9 +26,9 @@ void AOperationHandleBase::SetBaseColor()
 	ResetColor();
 }
 
-void AOperationHandleBase::SetBaseColor(std::shared_ptr<CCustomMeshComponent> InCustomComponent, XMFLOAT4 const& InColor)
+void AOperationHandleBase::SetBaseColor(CCustomMeshComponent* InCustomComponent, XMFLOAT4 const& InColor)
 {
-	if (InCustomComponent.get())
+	if (InCustomComponent)
 	{
 		if (shared_ptr<CMaterial> Material = InCustomComponent->GetMaterials()[0])
 		{
@@ -47,15 +47,15 @@ void AOperationHandleBase::ResetColor()
 ESelectAxisType AOperationHandleBase::GetSelectAxis()
 {
 	ESelectAxisType result = ESelectAxisType::SELECTAXISTYPE_NONE;
-	if (AOperationHandleBase::SelectedAxisComponent.lock() == XAxisComponent)
+	if (AOperationHandleBase::SelectedAxisComponent == XAxisComponent)
 	{
 		result = ESelectAxisType::SELECTAXISTYPE_X;
 	}
-	else if (AOperationHandleBase::SelectedAxisComponent.lock() == YAxisComponent)
+	else if (AOperationHandleBase::SelectedAxisComponent == YAxisComponent)
 	{
 		result = ESelectAxisType::SELECTAXISTYPE_Y;
 	}
-	else if (AOperationHandleBase::SelectedAxisComponent.lock() == ZAxisComponent)
+	else if (AOperationHandleBase::SelectedAxisComponent == ZAxisComponent)
 	{
 		result = ESelectAxisType::SELECTAXISTYPE_Z;
 	}
@@ -83,7 +83,7 @@ void AOperationHandleBase::OnMouseMove(int X, int Y, string buttonType)
 		ResetColor();
 		if (!HitResult.Component_.expired())
 		{
-			std::shared_ptr<CCustomMeshComponent> component = static_pointer_cast<CCustomMeshComponent>(HitResult.Component_.lock());
+			CCustomMeshComponent* component = static_cast<CCustomMeshComponent*>(HitResult.Component_.lock().get());
 			SetBaseColor(component, XMFLOAT4(1.0f, 1.0f, 0.f, 1.0f)); 
 
 			AOperationHandleBase::SelectedAxisComponent = component;
@@ -94,7 +94,7 @@ void AOperationHandleBase::OnMouseMove(int X, int Y, string buttonType)
 		if (!AOperationHandleBase::bOperationHandleSelect)
 		{
 			ResetColor();
-			AOperationHandleBase::SelectedAxisComponent.reset();
+			AOperationHandleBase::SelectedAxisComponent=nullptr;
 		}
 	}
 	
@@ -104,19 +104,19 @@ void AOperationHandleBase::OnLeftMouseButtonDown(int X, int Y)
 {
 	AOperationHandleBase::bOperationHandleSelect = true;
 
-	if (!AOperationHandleBase::SelectedAxisComponent.expired())
+	if (AOperationHandleBase::SelectedAxisComponent)
 	{
-		if (AOperationHandleBase::SelectedAxisComponent.lock() == XAxisComponent)
+		if (AOperationHandleBase::SelectedAxisComponent == XAxisComponent)
 		{
 			YAxisComponent->SetVisible(false);
 			ZAxisComponent->SetVisible(false);
 		}
-		else if (AOperationHandleBase::SelectedAxisComponent.lock() == YAxisComponent)
+		else if (AOperationHandleBase::SelectedAxisComponent == YAxisComponent)
 		{
 			XAxisComponent->SetVisible(false);
 			ZAxisComponent->SetVisible(false);
 		}
-		else if (AOperationHandleBase::SelectedAxisComponent.lock() == ZAxisComponent)
+		else if (AOperationHandleBase::SelectedAxisComponent == ZAxisComponent)
 		{
 			XAxisComponent->SetVisible(false);
 			YAxisComponent->SetVisible(false);
@@ -128,10 +128,10 @@ void AOperationHandleBase::OnLeftMouseButtonDown(int X, int Y)
 void AOperationHandleBase::OnLeftMouseButtonUp(int X, int Y)
 {
 	AOperationHandleBase::bOperationHandleSelect = false;
-	if (!AOperationHandleBase::SelectedAxisComponent.expired())
+	if (AOperationHandleBase::SelectedAxisComponent)
 	{
 		ResetColor();
-		AOperationHandleBase::SelectedAxisComponent.reset();
+		AOperationHandleBase::SelectedAxisComponent = nullptr;
 
 		SetVisible(true);
 	}
@@ -141,9 +141,9 @@ void AOperationHandleBase::OnSelectedActor(bool bSelected)
 {
 	SetVisible(bSelected);
 
-	if (!AOperationHandleBase::SelectedActor.expired())
+	if (AOperationHandleBase::SelectedActor)
 	{
-		const XMFLOAT3 SelectActorPosition = AOperationHandleBase::SelectedActor.lock()->GetPosition();
+		const XMFLOAT3 SelectActorPosition = AOperationHandleBase::SelectedActor->GetPosition();
 		SetPosition(SelectActorPosition);
 	}
 }

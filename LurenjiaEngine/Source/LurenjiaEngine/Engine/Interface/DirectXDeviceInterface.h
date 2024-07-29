@@ -36,9 +36,9 @@ public:
 	//获取windowsHandle
 	HWND GetMainWindowsHandle() const;
 	//获取mesh管理器
-	shared_ptr<CMeshManage> GetMeshManage() const;
+	CMeshManage* GetMeshManage() const;
 	//获取light管理器
-	shared_ptr<CLightManage> GetLightManage() const;
+	CLightManage* GetLightManage() const;
 	//获取RTV描述符堆
 	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
 	//获取DSV描述符堆
@@ -49,18 +49,18 @@ public:
 	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 	//获取引擎
 #if defined(_WIN32)
-	shared_ptr<CWindowsEngine> GetEngine() const;
+	CWindowsEngine* GetEngine() const;
 #else
 	CEngien* GetEngine() const;
 #endif
 	//获取渲染引擎
-	shared_ptr<CRenderingEngine> GetRenderEngine() const;
+	CRenderingEngine* GetRenderEngine() const;
 	//获取world
-	shared_ptr<CWorld> GetWorld() const;
+	CWorld* GetWorld() const;
 	
 	//获取编辑器引擎
 #if (EDITOR_ENGINE == 1)
-	shared_ptr<CEditorEngine> GetEditorEngine() const;
+	CEditorEngine* GetEditorEngine() const;
 #endif
 	
 };
@@ -88,9 +88,9 @@ struct IDirectXDeviceInterface_struct
 	//获取windowsHandle
 	HWND GetMainWindowsHandle() const;
 	//获取mesh管理器
-	shared_ptr<CMeshManage> GetMeshManage() const;
+	CMeshManage* GetMeshManage() const;
 	//获取light管理器
-	shared_ptr<CLightManage> GetLightManage() const;
+	CLightManage* GetLightManage() const;
 	//获取RTV描述符堆
 	ComPtr<ID3D12DescriptorHeap> GetRTVHeap() const;
 	//获取DSV描述符堆
@@ -100,18 +100,18 @@ struct IDirectXDeviceInterface_struct
 	//获取某种描述符大小
 	UINT GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE InDescriptorHeapType) const;
 #if defined(_WIN32)
-	shared_ptr<CWindowsEngine> GetEngine() const;
+	CWindowsEngine* GetEngine() const;
 #else
 	Engien* GetEngine() const;
 #endif
 	//获取渲染引擎
-	shared_ptr<CRenderingEngine> GetRenderEngine() const;
+	CRenderingEngine* GetRenderEngine() const;
 	//获取world
-	shared_ptr<CWorld> GetWorld() const;
+	CWorld* GetWorld() const;
 
 	//获取编辑器引擎
 #if (EDITOR_ENGINE == 1)
-	shared_ptr<CEditorEngine> GetEditorEngine() const;
+	CEditorEngine* GetEditorEngine() const;
 #endif
 	
 private:

@@ -7,7 +7,7 @@ ARangeLight::ARangeLight()
 
 void ARangeLight::SetLightStartAttenuation(const float& InStartAttenuation)
 {
-	std::shared_ptr<CRangeLightComponent> RangeLightComponent = static_pointer_cast<CRangeLightComponent>(LightComponent);
+	CRangeLightComponent* RangeLightComponent = static_cast<CRangeLightComponent*>(LightComponent);
 	if (RangeLightComponent)
 	{
 		RangeLightComponent->SetStartAttenuation(InStartAttenuation);
@@ -17,7 +17,7 @@ void ARangeLight::SetLightStartAttenuation(const float& InStartAttenuation)
 
 void ARangeLight::SetLightEndAttenuation(const float& InEndAttenuation)
 {
-	std::shared_ptr<CRangeLightComponent> RangeLightComponent = static_pointer_cast<CRangeLightComponent>(LightComponent);
+	CRangeLightComponent* RangeLightComponent = static_cast<CRangeLightComponent*>(LightComponent);
 	if (RangeLightComponent)
 	{
 		RangeLightComponent->SetEndAttenuation(InEndAttenuation);
@@ -26,7 +26,7 @@ void ARangeLight::SetLightEndAttenuation(const float& InEndAttenuation)
 
 float ARangeLight::GetLightStartAttenuation()
 {
-	std::shared_ptr<CRangeLightComponent> RangeLightComponent = static_pointer_cast<CRangeLightComponent>(LightComponent);
+	CRangeLightComponent* RangeLightComponent = static_cast<CRangeLightComponent*>(LightComponent);
 	if (RangeLightComponent)
 	{
 		return RangeLightComponent->GetStartAttenuation();
@@ -37,7 +37,7 @@ float ARangeLight::GetLightStartAttenuation()
 
 float ARangeLight::GetLightEndAttenuation()
 {
-	std::shared_ptr<CRangeLightComponent> RangeLightComponent = static_pointer_cast<CRangeLightComponent>(LightComponent);
+	CRangeLightComponent* RangeLightComponent = static_cast<CRangeLightComponent*>(LightComponent);
 	if (RangeLightComponent)
 	{
 		return RangeLightComponent->GetEndAttenuation();

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../CodeReflection/CodeReflectionMacroTag.h"
 #include "GuidInterface.h"
 #include "../Construction/ObjectConstruction.h"
 

@@ -51,29 +51,33 @@ void CMeshManage::UpdateConstantView(float DeltaTime, const FViewportInfo& Viewp
 	RenderingPipeline.UpdateConstantView(DeltaTime, ViewportInfo);
 }
 
-std::shared_ptr<CMeshComponent> CMeshManage::CreateBoxMeshComponent(string InName, const float& Inheight, const float& Inwidth, const float& Indepth)
+CMeshComponent* CMeshManage::CreateBoxMeshComponent(string InName, const float& Inheight, const float& Inwidth, const float& Indepth)
 {
-	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CBoxMeshComponent>(this, InName, Inheight, Inwidth, Indepth);
+	return nullptr;
+	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CBoxMeshComponent>(this, InName, Inheight, Inwidth, Indepth);
 }
 
-std::shared_ptr<CMeshComponent> CMeshManage::CreatePlaneMeshComponent(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
+CMeshComponent* CMeshManage::CreatePlaneMeshComponent(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
 {
-	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CPlaneMeshComponent>(this, InName, Inheight, Inwidth, InHeightSubdivide, InwidthSubdivide);
+	return nullptr;
+	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CPlaneMeshComponent>(this, InName, Inheight, Inwidth, InHeightSubdivide, InwidthSubdivide);
 }
 
-std::shared_ptr<CMeshComponent> CMeshManage::CreateCylinderMeshComponent(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
+CMeshComponent* CMeshManage::CreateCylinderMeshComponent(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
 {
-	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCylinderMeshComponent>(this, InName, InTopRadius, InBottomRadius, InAxialSubdivision, InHeight, InHeightSubdivision);
+	return nullptr;
+	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCylinderMeshComponent>(this, InName, InTopRadius, InBottomRadius, InAxialSubdivision, InHeight, InHeightSubdivision);
 }
 
-std::shared_ptr<CMeshComponent> CMeshManage::CreateCustomMeshComponent(string InName, const string& InPath)
+CMeshComponent* CMeshManage::CreateCustomMeshComponent(string InName, const string& InPath)
 {
-	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCustomMeshComponent>(this, InName, InPath);
+	return nullptr;
+	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCustomMeshComponent>(this, InName, InPath);
 }
 
-std::shared_ptr<CMeshComponent> CMeshManage::CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
+CMeshComponent* CMeshManage::CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
 {
-	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CSphereMeshComponent>(this, InName, InRadius, InAxialSubdivision, InHeightSubdivision);
+	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CSphereMeshComponent>(this, InName, InRadius, InAxialSubdivision, InHeightSubdivision);
 }
 
 FRenderingPipeline& CMeshManage::GetRenderingPiepeline()

@@ -21,11 +21,11 @@ public:
 	void SetFogTransparentCoefficient(const float& FogTransparentCoefficient);
 	void SetDirtyState(const bool& DirtyState);
 	void SetFogIsValid(const bool& bValid);
-	shared_ptr<CFogComponent> GetComponent() const;
+	CFogComponent* GetComponent() const;
 	bool GetFogIsValid() const;
 private:
 	CVARIABLE()
-	shared_ptr<CFogComponent> FogComponent;
+	CFogComponent* FogComponent;
 };
 
 

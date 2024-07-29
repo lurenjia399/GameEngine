@@ -17,7 +17,7 @@ void ASpotLight::Tick(float DeltaTime)
 
 void ASpotLight::SetConicalInnerCorner(float InConicalInnerCorner)
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
+	if (CSpotLightComponent* SpotLightComponent = static_cast<CSpotLightComponent*>(LightComponent))
 	{
 		SpotLightComponent->SetConicalInnerCorner(InConicalInnerCorner);
 	}
@@ -25,7 +25,7 @@ void ASpotLight::SetConicalInnerCorner(float InConicalInnerCorner)
 
 void ASpotLight::SetConicalOuterCorner(float InConicalOuterCorner)
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
+	if (CSpotLightComponent* SpotLightComponent = static_cast<CSpotLightComponent*>(LightComponent))
 	{
 		SpotLightComponent->SetConicalOuterCorner(InConicalOuterCorner);
 	}
@@ -33,7 +33,7 @@ void ASpotLight::SetConicalOuterCorner(float InConicalOuterCorner)
 
 float ASpotLight::GetConicalInnerCorner() const
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
+	if (CSpotLightComponent* SpotLightComponent = static_cast<CSpotLightComponent*>(LightComponent))
 	{
 		SpotLightComponent->GetConicalInnerCorner();
 	}
@@ -42,7 +42,7 @@ float ASpotLight::GetConicalInnerCorner() const
 
 float ASpotLight::GetConicalOuterCorner() const
 {
-	if (shared_ptr<CSpotLightComponent> SpotLightComponent = static_pointer_cast<CSpotLightComponent>(LightComponent))
+	if (CSpotLightComponent* SpotLightComponent = static_cast<CSpotLightComponent*>(LightComponent))
 	{
 		SpotLightComponent->GetConicalOuterCorner();
 	}

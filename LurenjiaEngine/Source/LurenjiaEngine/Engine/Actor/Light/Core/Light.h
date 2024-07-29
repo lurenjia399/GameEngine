@@ -19,12 +19,11 @@ public:
 	void SetLightIntensity(const XMFLOAT3& InLightIntensity);
 
 	template<typename T>
-	std::shared_ptr<T> GetMeshComponet()
+	T* GetMeshComponet()
 	{
 		if (LightComponent)
 		{
-			// 这里有个报错，模板里调用模板有个数据模糊，还有待查下
-			return static_pointer_cast<T>(LightComponent->GetLightMeshComponent());
+			return LightComponent->GetLightMeshComponent();
 		}
 		return nullptr;
 	}
@@ -38,7 +37,7 @@ public:
 
 	XMFLOAT3 GetLightIntensity();
 protected:
-	shared_ptr<CLightComponent> LightComponent;
+	CLightComponent* LightComponent;
 };
 
 #endif // !Light_H

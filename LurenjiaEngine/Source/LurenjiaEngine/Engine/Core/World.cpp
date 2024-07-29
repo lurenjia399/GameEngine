@@ -8,7 +8,7 @@ CWorld::CWorld()
 	fog = nullptr;
 }
 
-std::shared_ptr<AFog> CWorld::GetFog() const
+AFog* CWorld::GetFog() const
 {
 	return fog;
 }

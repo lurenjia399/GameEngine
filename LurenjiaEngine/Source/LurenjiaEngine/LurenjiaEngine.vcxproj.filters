@@ -614,9 +614,6 @@
     <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Engine\Core\Construction\MacroConstruction.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Test\RenderLayer\TransparentTest.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -852,6 +849,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OperationHandleRenderLayer.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Core\Construction\MacroConstruction.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

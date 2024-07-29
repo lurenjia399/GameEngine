@@ -1,5 +1,5 @@
 #include "SphereMesh.h"
-#include "../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 #include "../Mesh/Core/MeshManage.h"
 #include "../../Core/Construction/MacroConstruction.h"
 #include "../../Component/Mesh/SphereMeshComponent.h"
@@ -18,7 +18,7 @@ void ASphereMesh::SetMeshComponent(string InName, const float& InRadius, const u
 {
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
-	if (MeshComponent.get()) MeshComponent.reset();
+	if (MeshComponent) delete MeshComponent;
 	Super::SetMeshComponent(LurenjiaEngine::CreateObject<CSphereMeshComponent>(this, InName));
 	MeshComponent->SetMeshComponentLayerType(InType);
 

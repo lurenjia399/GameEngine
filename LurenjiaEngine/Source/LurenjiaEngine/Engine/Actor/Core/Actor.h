@@ -3,7 +3,7 @@
 #ifndef Actor
 #define Actor
 #include "../../LurenjiaEngine.h"
-#include "../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 #include "../../Component/TransformationComponent.h"
 
 class AActor : public CCoreMinimalObject
@@ -27,7 +27,7 @@ public:
 	virtual XMFLOAT3 GetRight() const;
 	virtual XMFLOAT3 GetUp() const;
 
-	virtual FORCEINLINE shared_ptr<CTransformationComponent> GetRootComponent() { return RootComponent; }
+	virtual FORCEINLINE CTransformationComponent* GetRootComponent() { return RootComponent; }
 
 	virtual void SetPickup(bool InPickup);
 
@@ -35,7 +35,7 @@ public:
 	virtual bool GetVisible();
 protected:
 	CVARIABLE()
-	shared_ptr<CTransformationComponent> RootComponent;
+	CTransformationComponent* RootComponent;
 };
 
 #endif

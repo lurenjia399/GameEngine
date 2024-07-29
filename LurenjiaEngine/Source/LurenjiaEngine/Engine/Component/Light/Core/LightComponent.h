@@ -5,7 +5,7 @@
 #define LightComponent_H
 
 #include "../../../Interface/DirectXDeviceInterface.h"
-#include "../../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 #include "../../../Component/Light/Core/LightType.h"
 
 class CMeshComponent;
@@ -25,7 +25,7 @@ public:
 	XMFLOAT3 GetLightIntensity();
 	ELightType GetLightType();
 
-	virtual shared_ptr<CMeshComponent> GetLightMeshComponent() {return nullptr;}
+	virtual CMeshComponent* GetLightMeshComponent() {return nullptr;}
 
 protected:
 	

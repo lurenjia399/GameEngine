@@ -20,7 +20,7 @@ void AOperationHandle_Move::SetPosition(const XMFLOAT3& InPosition)
 
 void AOperationHandle_Move::SetVisible(bool InVisible)
 {
-	if (RootComponent.use_count() > 0)
+	if (RootComponent)
 	{
 		RootComponent->SetVisible(InVisible);
 	}
@@ -78,7 +78,7 @@ void AOperationHandle_Move::OnMouseMove(int X, int Y, string buttonType)
 {
 	Super::OnMouseMove(X, Y, buttonType);
 
-	if (std::shared_ptr<AActor> SelectedActor_SharedPtr = Super::SelectedActor.lock())
+	if (AActor* SelectedActor_SharedPtr = Super::SelectedActor)
 	{
 		ESelectAxisType SelectAxisType = GetSelectAxis();
 		if (SelectAxisType == ESelectAxisType::SELECTAXISTYPE_NONE)
@@ -168,7 +168,7 @@ void AOperationHandle_Move::OnLeftMouseButtonDown(int X, int Y)
 
 	
 
-	if (std::shared_ptr<AActor> SelectedActor_SharedPtr = Super::SelectedActor.lock())
+	if (AActor* SelectedActor_SharedPtr = Super::SelectedActor)
 	{
 		ESelectAxisType SelectAxisType = GetSelectAxis();
 		if (SelectAxisType == ESelectAxisType::SELECTAXISTYPE_NONE)

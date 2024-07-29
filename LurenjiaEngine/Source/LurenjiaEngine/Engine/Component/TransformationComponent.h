@@ -1,5 +1,5 @@
 #pragma once
-#include "Core/Component.h"
+#include "Component/Component.h"
 
 class CTransformationComponent : public CCoreMinimalObject
 {
@@ -25,12 +25,12 @@ public:
 
 	void NormalizeTransformationVector();
 
-	std::weak_ptr<CTransformationComponent> GetAttachParent();
-	virtual void AttachToComponent(std::weak_ptr<CTransformationComponent> Parent);
-	virtual void SetAttachParent(std::weak_ptr<CTransformationComponent> Parent);
-	virtual void UpdateComponentPositionToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InPosition);
-	virtual void UpdateComponentRotationToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const fvector_3d& InRotation);
-	virtual void UpdateComponentScaleToWorldWithParent(std::weak_ptr<CTransformationComponent> Parent, const XMFLOAT3& InScale);
+	CTransformationComponent* GetAttachParent();
+	virtual void AttachToComponent(CTransformationComponent* Parent);
+	virtual void SetAttachParent(CTransformationComponent* Parent);
+	virtual void UpdateComponentPositionToWorldWithParent(CTransformationComponent* Parent, const XMFLOAT3& InPosition);
+	virtual void UpdateComponentRotationToWorldWithParent(CTransformationComponent* Parent, const fvector_3d& InRotation);
+	virtual void UpdateComponentScaleToWorldWithParent(CTransformationComponent* Parent, const XMFLOAT3& InScale);
 	virtual void UpdateChildPosition(const XMFLOAT3& InPosition);
 	virtual void UpdateChildRotation(const fvector_3d& InRotation);
 	virtual void UpdateChildScale(const XMFLOAT3& InScale);
@@ -48,8 +48,8 @@ private:
 
 	XMFLOAT3 PositionOffset;//子compoent相对于父component的位置偏移
 
-	std::weak_ptr<CTransformationComponent> AttachParent;
-	std::vector<std::weak_ptr<CTransformationComponent>> AttachChildren;
+	CTransformationComponent* AttachParent;
+	std::vector<CTransformationComponent*> AttachChildren;
 
 	bool bIsVisible;//是否可见，也就是是否渲染
 };

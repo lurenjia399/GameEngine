@@ -16,10 +16,10 @@ CWindowsEngine::CWindowsEngine()
 #endif
 	
 {
-	RenderingEngine = make_shared<CDirectXRenderingEngine>();
+	RenderingEngine = new CDirectXRenderingEngine();
 	RenderingEngine->ResetGuid("RenderingEngine");
 #if (EDITOR_ENGINE == 1) 
-	EditorEngine = make_shared<CEditorEngine>();
+	EditorEngine = new CEditorEngine();
 	EditorEngine->ResetGuid("EditorEngine");
 #endif
 }
@@ -50,7 +50,7 @@ int CWindowsEngine::Init(FWinMainCommandParameters InParameters)
 	RenderingEngine->SetMainWindowsHandle(MyWindowsHandle);
 	RenderingEngine->Init(InParameters);
 
-	shared_ptr<CWorld> world = LurenjiaEngine::CreateObject<CWorld>(this, "World");
+	CWorld* world = LurenjiaEngine::CreateObject<CWorld>(this, "World");
 	RenderingEngine->SetWorld(world);
 	Engine_Log("Engine initialization complete.");
 
@@ -84,7 +84,7 @@ void CWindowsEngine::Tick(float DeltaTime)
 
 	if (RenderingEngine->GetWorld() && RenderingEngine->GetWorld()->GetCamera())
 	{
-		shared_ptr<CWorld> world = RenderingEngine->GetWorld();
+		CWorld* world = RenderingEngine->GetWorld();
 		FViewportInfo ViewportInfo = {};
 		ViewportInfo.cameraPosition = XMFLOAT4(world->GetCamera()->GetPosition().x, world->GetCamera()->GetPosition().y, world->GetCamera()->GetPosition().z, 1.0f);
 		ViewportInfo.ViewMatrix = world->GetCamera()->ViewMatrix;

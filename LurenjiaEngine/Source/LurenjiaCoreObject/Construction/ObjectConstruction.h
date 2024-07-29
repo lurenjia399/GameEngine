@@ -19,19 +19,36 @@ struct LURENJIACOREOBJECT_API FCreateObjectParam
 
 
 //----------模板实现-----
-template<typename T>
-T* CreateObject(const FCreateObjectParam& InObjectParam, string objName)
+namespace LurenjiaEngine
 {
-	CCoreMinimalObject* NewObject = new T();	//创建对象
+	template<typename T>
+	T* CreateObject(const FCreateObjectParam& InObjectParam)
+	{
+		CCoreMinimalObject* NewObject = new T();	//创建对象
 
-	//检测是不是组件 是组件按照组件规则注册
-	ConstructionComponent::ConstructionComponents(InObjectParam.Outer, NewObject);
+		//检测是不是组件 是组件按照组件规则注册
+		ConstructionComponent::ConstructionComponents(InObjectParam.Outer, NewObject);
 
-	T* Obj = dynamic_cast<T*>(NewObject);
-	Obj->SetOuter(InObjectParam.Outer);
-	Obj->ResetGuid(objName);				//重新设置对象的guid
+		T* Obj = dynamic_cast<T*>(NewObject);
+		Obj->SetOuter(InObjectParam.Outer);
+		Obj->ResetGuid(InObjectParam.Name);				//重新设置对象的guid
 
-	return Obj;
+		return Obj;
+	}
+	template<typename T>
+	T* CreateObject(CCoreMinimalObject* Outer, string objName)
+	{
+		CCoreMinimalObject* NewObject = new T();	//创建对象
+
+		//检测是不是组件 是组件按照组件规则注册
+		ConstructionComponent::ConstructionComponents(Outer, NewObject);
+
+		T* Obj = dynamic_cast<T*>(NewObject);
+		Obj->SetOuter(Outer);
+		Obj->ResetGuid(objName.c_str());				//重新设置对象的guid
+
+		return Obj;
+	}
 }
 
 //template<typename T, typename ...ParamTypes>

@@ -22,13 +22,13 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 		// 这里的大小写 00，可以自动适应文本大小
 		ImGui::BeginChild("OutLine panel", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar);
 
-		const vector<shared_ptr<AActor>>& WorldActors = world->GetWorldActors();
+		const vector<AActor*>& WorldActors = world->GetWorldActors();
 
 		for (int i = 0; i < WorldActors.size(); i++)
 		{
-			const shared_ptr<AActor>& actor = WorldActors[i];
+			AActor* actor = WorldActors[i];
 			char ObjectName[128] = { 0 };
-			sprintf_s(ObjectName, "%s", actor->GetName().c_str());
+			sprintf_s(ObjectName, "%s", actor->GetName());
 
 			//if (selected < 0)
 			//{
@@ -40,22 +40,22 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 			{
 				selected = i;
 				int index = -1;
-				const shared_ptr<AMesh>& mesh = dynamic_pointer_cast<AMesh>(actor);
+				AMesh* mesh = dynamic_cast<AMesh*>(actor);
 				
 				if (mesh)
 				{
 
-					shared_ptr<CMeshComponent> comp = mesh->GetMeshComponet<CMeshComponent>();
+					CMeshComponent* comp = mesh->GetMeshComponet<CMeshComponent>();
 					if (comp && comp->GetIsPickup())
 					{
 						index = FGeometry::RenderingDataIndices[comp->GetGuid()];
 					}
 				}else
 				{
-					const shared_ptr<ALight>& Light = dynamic_pointer_cast<ALight>(actor);
+					ALight* Light = dynamic_cast<ALight*>(actor);
 					if (Light)
 					{
-						shared_ptr<CMeshComponent> comp = Light->GetMeshComponet<CMeshComponent>();
+						CMeshComponent* comp = Light->GetMeshComponet<CMeshComponent>();
 						if (comp && comp->GetIsPickup())
 						{
 							index = FGeometry::RenderingDataIndices[comp->GetGuid()];
@@ -90,13 +90,13 @@ void FOutlinerEditor::OnSelectedActor(bool bSelected)
 	{
 		if (bSelected)
 		{
-			if (!AOperationHandleBase::SelectedActor.expired())
+			if (!AOperationHandleBase::SelectedActor)
 			{
-				const vector<shared_ptr<AActor>>& WorldActors = world->GetWorldActors();
+				const vector<AActor*>& WorldActors = world->GetWorldActors();
 				for (int i = 0; i < WorldActors.size(); i++)
 				{
-					const shared_ptr<AActor>& actor = WorldActors[i];
-					if (AOperationHandleBase::SelectedActor.lock()->GetGuid() == actor->GetGuid())
+					const AActor* actor = WorldActors[i];
+					if (AOperationHandleBase::SelectedActor->GetGuid() == actor->GetGuid())
 					{
 						selected = i;
 					}

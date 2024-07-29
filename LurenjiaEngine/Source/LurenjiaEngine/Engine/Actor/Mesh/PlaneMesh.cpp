@@ -1,5 +1,5 @@
 #include "PlaneMesh.h"
-#include "../../Core/CoreObject/CoreMinimalObject.h"
+#include "CoreObject/CoreMinimalObject.h"
 #include "../Mesh/Core/MeshManage.h"
 #include "../../Component/Mesh/PlaneMeshComponent.h"
 #include "../../Core/Construction/MacroConstruction.h"
@@ -18,7 +18,7 @@ void APlaneMesh::SetMeshComponent(string InName, const float& InHeight, const fl
 {
 	//重新赋值meshcomponent，在构造amesh的时候就创建过meshComponent
 	//如果meshComponent有值，则首先delete掉
-	if (MeshComponent.get()) MeshComponent.reset();
+	if (MeshComponent) delete MeshComponent;
 	Super::SetMeshComponent(LurenjiaEngine::CreateObject<CPlaneMeshComponent>(this, InName));
 	MeshComponent->SetMeshComponentLayerType(InType);
 
