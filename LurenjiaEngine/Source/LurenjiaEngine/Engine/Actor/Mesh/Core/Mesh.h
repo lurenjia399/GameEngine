@@ -52,7 +52,7 @@ T* AMesh::GetMeshComponet()
 {
 	if (MeshComponent)
 	{
-		return MeshComponent;
+		return dynamic_cast<T*>(MeshComponent);
 	}
 
 	return nullptr;

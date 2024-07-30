@@ -10,9 +10,9 @@
 #include "WindowsMessageProcessing.h"
 CWindowsEngine::CWindowsEngine()
 	: MyWindowsHandle(nullptr)
-	, RenderingEngine({})
+	, RenderingEngine(nullptr)
 #if (EDITOR_ENGINE == 1) 
-	, EditorEngine({})
+	, EditorEngine(nullptr)
 #endif
 	
 {

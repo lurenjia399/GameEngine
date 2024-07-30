@@ -17,6 +17,6 @@ public:
 private:
 
 	simple_c_guid Guid;			//生成的guid
-	const char* name;				//对象的名称
-	const char* RealityGuid;			//由对象名称和guid的组合（真实的对象标识符）
+	char* name;				//对象的名称
+	char* RealityGuid;			//由对象名称和guid的组合（真实的对象标识符）
 };

@@ -13,8 +13,8 @@ namespace ReflectTest
 {
 	void ReflectTest::BuildReflectTestData()
 	{
-		shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
-		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
+		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
 		// Ìì¿ÕºÐ
 		if (auto CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))
 		{

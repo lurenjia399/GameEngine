@@ -1,8 +1,11 @@
 #pragma once
 
+
+
 #ifndef Material_H
 #define Material_H
 
+#include "../Engine/LurenjiaEngine.h"
 #include "CoreObject/CoreMinimalObject.h"
 #include "MaterialType.h"
 

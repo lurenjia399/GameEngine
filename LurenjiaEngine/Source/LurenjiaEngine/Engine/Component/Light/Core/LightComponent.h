@@ -1,9 +1,10 @@
 #pragma once
-#include "../../TransformationComponent.h"
+
 
 #ifndef LightComponent_H
 #define LightComponent_H
 
+#include "../../TransformationComponent.h"
 #include "../../../Interface/DirectXDeviceInterface.h"
 #include "CoreObject/CoreMinimalObject.h"
 #include "../../../Component/Light/Core/LightType.h"

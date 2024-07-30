@@ -43,7 +43,7 @@ protected:
 	void BuildRenderTargetSRV();
 
 protected:
-	shared_ptr<AClientViewport> Viewport;
+	AClientViewport* Viewport;
 };
 
 #endif

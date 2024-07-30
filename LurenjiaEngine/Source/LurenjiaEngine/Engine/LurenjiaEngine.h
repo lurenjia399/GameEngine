@@ -7,6 +7,7 @@
 // 在这里，我们都用动态库的这种
 #pragma comment(lib, "LurenjiaEngineCore.lib")
 #pragma comment(lib, "LurenjiaModelTool.lib")
+#pragma comment(lib, "LurenjiaCoreObject")
 
 #include "string"
 using namespace std;
@@ -45,4 +46,4 @@ using namespace std;
 using namespace Microsoft::WRL;
 using namespace DirectX;
 
-extern shared_ptr<class CEngine> Engine;
+extern class CEngine* Engine;

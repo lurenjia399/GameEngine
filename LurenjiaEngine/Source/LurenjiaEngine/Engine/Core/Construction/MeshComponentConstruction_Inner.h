@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Actor/Mesh/Core/MeshManage.h"
+#include "Construction/ObjectConstruction.h"
 
 namespace LurenjiaEngine
 {
@@ -32,13 +33,13 @@ namespace LurenjiaEngine
 		return InMeshComponent;
 	}
 
-	//template<typename T, typename S, typename ...ParamTypes>
-	//T* CreateMeshComponetRenderData_Inner(const FCreateObjectParam& InObjectParam, CMeshManage* InMeshManage, const S& name, ParamTypes&&... Params)
-	//{
-	//	if (InMeshManage)
-	//	{
-	//		T* MeshComponet = LurenjiaEngine::CreateObject<T>(InObjectParam, name);//NewObject
-	//		return CreateMeshComponetRenderData_Inner<T>(InMeshManage, MeshComponet, Params...);
-	//	}
-	//}
+	template<typename T, typename S, typename ...ParamTypes>
+	T* CreateMeshComponetRenderData_Inner(CMeshManage* InMeshManage, const S& name, ParamTypes&&... Params)
+	{
+		if (InMeshManage)
+		{
+			T* MeshComponet = LurenjiaEngine::CreateObject<T>(InMeshManage, name);//NewObject
+			return CreateMeshComponetRenderData_Inner<T>(InMeshManage, MeshComponet, Params...);
+		}
+	}
 }

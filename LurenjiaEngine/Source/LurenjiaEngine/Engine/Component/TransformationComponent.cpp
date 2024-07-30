@@ -9,7 +9,7 @@ CTransformationComponent::CTransformationComponent()
 	, RightVector(0.f, 1.f, 0.0f)
 	, UpVector(0.f, 0.0f, 1.f)
 	, PositionOffset(0.f, 0.f, 0.f)
-	, AttachParent({})
+	, AttachParent(nullptr)
 	, AttachChildren({})
 	, bIsVisible(true)
 {

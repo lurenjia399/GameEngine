@@ -7,13 +7,13 @@ namespace LurenjiaEngine
 {
 
 	template<typename T, typename ...ParamTypes>
-	std::shared_ptr<T> CreateMeshComponetRenderDataByMesh(shared_ptr<CMeshManage> InMeshManage, AMesh* InMesh, ParamTypes&&... Params)
+	T* CreateMeshComponetRenderDataByMesh(CMeshManage* InMeshManage, AMesh* InMesh, ParamTypes&&... Params)
 	{
 		return CreateMeshComponetRenderData_Inner<T>(InMeshManage, InMesh->GetMeshComponet<T>(), Params...);
 	}
 
 	template<typename T, typename ...ParamTypes>
-	std::shared_ptr<T> CreateMeshComponetRenderDataByComponent(CMeshManage* InMeshManage, shared_ptr<T> InComponent, ParamTypes&&... Params)
+	T* CreateMeshComponetRenderDataByComponent(CMeshManage* InMeshManage, T* InComponent, ParamTypes&&... Params)
 	{
 		return CreateMeshComponetRenderData_Inner<T>(InMeshManage, InComponent, Params...);
 	}

@@ -17,7 +17,7 @@ void FOutlinerEditor::BuildEditor()
 void FOutlinerEditor::DrawEditor(float DeltaTime)
 {
 	ImGui::Begin("Out Line");
-	if (shared_ptr<CWorld> world = GetWorld())
+	if (CWorld* world = GetWorld())
 	{
 		// 这里的大小写 00，可以自动适应文本大小
 		ImGui::BeginChild("OutLine panel", ImVec2(0, 0), true, ImGuiWindowFlags_HorizontalScrollbar);
@@ -29,6 +29,8 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 			AActor* actor = WorldActors[i];
 			char ObjectName[128] = { 0 };
 			sprintf_s(ObjectName, "%s", actor->GetName());
+			
+			if (ObjectName == "") continue;
 
 			//if (selected < 0)
 			//{
@@ -86,7 +88,7 @@ void FOutlinerEditor::ExitEditor()
 
 void FOutlinerEditor::OnSelectedActor(bool bSelected)
 {
-	if (shared_ptr<CWorld> world = GetWorld())
+	if (CWorld* world = GetWorld())
 	{
 		if (bSelected)
 		{

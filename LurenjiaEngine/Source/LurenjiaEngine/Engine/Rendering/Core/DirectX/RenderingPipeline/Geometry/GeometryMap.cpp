@@ -368,7 +368,7 @@ void FGeometryMap::UpdateFogConstantBufferView(float DeltaTime)
 {
 	if (IsStartUpFog())
 	{
-		shared_ptr<CFogComponent> FogComponent = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog()->GetComponent();
+		CFogComponent* FogComponent = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog()->GetComponent();
 		if (FogComponent != nullptr)
 		{
 			if (!FogComponent->GetDirtyState()) return;
@@ -460,7 +460,7 @@ void FGeometryMap::DrawShadowMapTexture(float DeltaTime)
 
 bool FGeometryMap::IsStartUpFog()
 {
-	if (shared_ptr<AFog> temp = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog())
+	if (AFog* temp = GetEngine()->GetRenderingEngine()->GetWorld()->GetFog())
 	{
 		return temp->GetFogIsValid();
 	}

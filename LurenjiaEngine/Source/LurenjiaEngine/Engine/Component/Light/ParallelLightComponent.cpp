@@ -47,7 +47,7 @@ void CParallelLightComponent::SetScale(const XMFLOAT3& InScale)
 	LightMeshComponent->SetScale(InScale);
 }
 
-shared_ptr<CMeshComponent> CParallelLightComponent::GetLightMeshComponent()
+CMeshComponent* CParallelLightComponent::GetLightMeshComponent()
 {
 	return LightMeshComponent;
 }

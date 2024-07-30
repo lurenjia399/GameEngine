@@ -1,8 +1,7 @@
 #include "Component.h"
 
-CComponent::CComponent()
+CComponent::CComponent(): Parent(nullptr), Children(nullptr)
 {
-	Parent = nullptr;
 }
 
 void CComponent::AddChildren(CComponent* InChildren)

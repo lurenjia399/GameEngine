@@ -1,7 +1,7 @@
 #include "CollisionSceneQuery.h"
 #include "../Rendering/Core/DirectX/RenderingPipeline/Geometry/GeometryMap.h"
 
-bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVECTOR& ViewOriginPoint, const XMVECTOR& ViewDirection, const XMMATRIX& World2ViewMatrixInverse, FHitResult& OutHitResult)
+bool FCollisionSceneQuery::RaycastSingle(CWorld* InWorld, const XMVECTOR& ViewOriginPoint, const XMVECTOR& ViewDirection, const XMMATRIX& World2ViewMatrixInverse, FHitResult& OutHitResult)
 {
 	float FinalTime = FLT_MAX;
 	// 遍历池子中的所有模型
@@ -65,7 +65,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
 									OutHitResult.Component_ = GeometryDescData->MeshComponet;
 									OutHitResult.Time = TriangleTestTime;
 									OutHitResult.GeometryDescData = GeometryDescData;
-									OutHitResult.Actor_ = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
+									OutHitResult.Actor_ = static_cast<AActor*>(GeometryDescData->MeshComponet->GetOuter());
 								}
 							}
 						}
@@ -79,7 +79,7 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<CWorld> InWorld, const XMVEC
     return OutHitResult.bHit;
 }
 
-bool FCollisionSceneQuery::RaycastSingle(shared_ptr<class CWorld> InWorld, AActor* SpecificObject, const XMVECTOR& ViewOriginPoint, const XMVECTOR& ViewDirection, const XMMATRIX& World2ViewMatrixInverse, FHitResult& OutHitResult)
+bool FCollisionSceneQuery::RaycastSingle(CWorld* InWorld, AActor* SpecificObject, const XMVECTOR& ViewOriginPoint, const XMVECTOR& ViewDirection, const XMMATRIX& World2ViewMatrixInverse, FHitResult& OutHitResult)
 {
 	for (std::weak_ptr<FGeometryDescData> data_weak : FGeometry::MeshRenderingDataPool)
 	{
@@ -108,8 +108,8 @@ bool FCollisionSceneQuery::RaycastSingle(shared_ptr<class CWorld> InWorld, AActo
 			{
 				TriangleTime = BoundTime;
 			}
-			weak_ptr<AActor> HitActor = static_pointer_cast<AActor>(GeometryDescData->MeshComponet->GetOuter()->shared_from_this());
-			if (HitActor.lock().get() == SpecificObject)
+			AActor* HitActor = static_cast<AActor*>(GeometryDescData->MeshComponet->GetOuter());
+			if (HitActor == SpecificObject)
 			{
 				OutHitResult.bHit = true;
 				OutHitResult.Component_ = GeometryDescData->MeshComponet;

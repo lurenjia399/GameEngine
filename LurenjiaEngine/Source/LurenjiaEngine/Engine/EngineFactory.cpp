@@ -12,7 +12,6 @@ CEngine* FEngineFactory::CreateEngine()
 #if defined(_WIN32)
 	 CWindowsEngine * wEngine = new CWindowsEngine();
 	 wEngine->ResetGuid("wEngine");
-	 //return static_pointer_cast<CEngine>(wEngine);
 	 return wEngine;
 #elif defined(__linux__)
 

@@ -15,8 +15,8 @@ namespace SelectActorTest
 {
 	void SelectActorTest::BuildSelectActorTestData()
 	{
-		shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
-		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
+		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
 
 		// 选择箭头
 		if (auto Arrow = World->CreateActor<AOperationHandle_Move>("AOperationHandle_Move"))
@@ -41,6 +41,7 @@ namespace SelectActorTest
 		// cubeMap
 		if (auto CubeMesh = World->CreateActor<ABoxMesh>("SelectActorTest::ABoxMesh"))
 		{
+			
 			CubeMesh->SetMeshComponent("SelectActorTest::ABoxMeshComponent", 10, 10, 10, EMeshComponentRenderLayerType::RENDERLAYER_BACKGROUND);
 			CubeMesh->SetPosition(XMFLOAT3(0.f, 0.f, 0.f));
 			CubeMesh->SetScale(XMFLOAT3(100.f, 100.f, 100.f));
@@ -56,6 +57,7 @@ namespace SelectActorTest
 		//平行光
 		if (auto ParallelLight = World->CreateActor<AParallelLight>("SelectActorTest::AParallelLight"))
 		{
+			//Engine_Log("ParallelLight name = %s",ParallelLight->GetName())
 			ParallelLight->SetLightIntensity(XMFLOAT3(1.0f, 1.0f, 1.0f));
 			ParallelLight->SetPosition(XMFLOAT3(-20.f, 0.f, 40.f));
 			ParallelLight->SetRotateFunction([=](float time) ->void

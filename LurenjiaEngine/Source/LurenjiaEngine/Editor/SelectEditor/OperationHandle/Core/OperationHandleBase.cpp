@@ -81,9 +81,9 @@ void AOperationHandleBase::OnMouseMove(int X, int Y, string buttonType)
 	if (bHit)
 	{
 		ResetColor();
-		if (!HitResult.Component_.expired())
+		if (HitResult.Component_)
 		{
-			CCustomMeshComponent* component = static_cast<CCustomMeshComponent*>(HitResult.Component_.lock().get());
+			CCustomMeshComponent* component = static_cast<CCustomMeshComponent*>(HitResult.Component_);
 			SetBaseColor(component, XMFLOAT4(1.0f, 1.0f, 0.f, 1.0f)); 
 
 			AOperationHandleBase::SelectedAxisComponent = component;

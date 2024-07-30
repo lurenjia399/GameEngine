@@ -16,8 +16,8 @@ struct FHitResult
 	float Distance; // 射线从起始点到击中点的距离
 	float Time;// 射线从起始点到击中点经过的时间
 
-	weak_ptr<CMeshComponent> Component_; // 击中的Component是哪个
-	weak_ptr<AActor> Actor_;//击中的actor是哪个
+	CMeshComponent* Component_; // 击中的Component是哪个
+	AActor* Actor_;//击中的actor是哪个
 
 	weak_ptr<FGeometryDescData> GeometryDescData; // 击中mesh的渲染数据
 

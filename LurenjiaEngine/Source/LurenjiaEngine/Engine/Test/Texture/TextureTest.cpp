@@ -11,8 +11,8 @@ namespace TextureTest
 {
 	void TextureTest::BuildTextureTestData()
 	{
-		shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
-		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
+		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
 		if (auto PlaneMesh = World->CreateActor<APlaneMesh>("PlaneMesh"))
 		{
 			PlaneMesh->SetMeshComponent("PlaneMeshComponent", 4.f, 3.f, 20, 20);

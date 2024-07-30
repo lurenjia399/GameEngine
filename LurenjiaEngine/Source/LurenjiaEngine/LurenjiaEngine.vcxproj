@@ -50,7 +50,6 @@
     <ClCompile Include="Engine\Actor\Sky\Core\FogConstantBuffer.cpp" />
     <ClCompile Include="Engine\Actor\Sky\Fog.cpp" />
     <ClCompile Include="Engine\Collision\CollisionSceneQuery.cpp" />
-    <ClCompile Include="Engine\Component\Core\Component.cpp" />
     <ClCompile Include="Engine\Component\InputComponent.cpp" />
     <ClCompile Include="Engine\Component\Input\Input.cpp" />
     <ClCompile Include="Engine\Component\Input\InputType.cpp" />
@@ -181,7 +180,6 @@
     <ClInclude Include="Engine\Actor\Sky\Fog.h" />
     <ClInclude Include="Engine\CodeReflection\CodeReflectionMacroTag.h" />
     <ClInclude Include="Engine\Collision\CollisionSceneQuery.h" />
-    <ClInclude Include="Engine\Component\Core\Component.h" />
     <ClInclude Include="Engine\Component\InputComponent.h" />
     <ClInclude Include="Engine\Component\Input\Input.h" />
     <ClInclude Include="Engine\Component\Input\InputType.h" />

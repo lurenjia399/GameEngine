@@ -28,7 +28,7 @@ public:
 	void OnClickedScreen(int X, int Y);
 	
 public:
-	FORCEINLINE shared_ptr<CInputComponent> GetInputComponent() { return InputComponent; }
+	FORCEINLINE CInputComponent* GetInputComponent() { return InputComponent; }
 public:
 	FSelectedActorDelegate SelectedActorDelegate; // 选中Actor的代理
 private:
@@ -51,7 +51,7 @@ private:
 	void FocusMeshUpdateCameraInfo(float InValue);
 private:
 	CVARIABLE()
-	shared_ptr<CInputComponent> InputComponent;
+	CInputComponent* InputComponent;
 private:
 	POINT LastMousePosition = {};
 	bool bRightMouseDown = false;

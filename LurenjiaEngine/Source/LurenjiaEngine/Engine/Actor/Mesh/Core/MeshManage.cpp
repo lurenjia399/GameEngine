@@ -53,31 +53,32 @@ void CMeshManage::UpdateConstantView(float DeltaTime, const FViewportInfo& Viewp
 
 CMeshComponent* CMeshManage::CreateBoxMeshComponent(string InName, const float& Inheight, const float& Inwidth, const float& Indepth)
 {
-	return nullptr;
-	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CBoxMeshComponent>(this, InName, Inheight, Inwidth, Indepth);
+	FCreateObjectParam param(this, this, InName.c_str());
+	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CBoxMeshComponent>(this, InName, Inheight, Inwidth, Indepth);
 }
 
 CMeshComponent* CMeshManage::CreatePlaneMeshComponent(string InName, const float& Inheight, const float& Inwidth, const uint32_t& InHeightSubdivide, const uint32_t& InwidthSubdivide)
 {
-	return nullptr;
-	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CPlaneMeshComponent>(this, InName, Inheight, Inwidth, InHeightSubdivide, InwidthSubdivide);
+	FCreateObjectParam param(this, this, InName.c_str());
+	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CPlaneMeshComponent>(this, InName, Inheight, Inwidth, InHeightSubdivide, InwidthSubdivide);
 }
 
 CMeshComponent* CMeshManage::CreateCylinderMeshComponent(string InName, const float& InTopRadius, const float& InBottomRadius, const uint32_t& InAxialSubdivision, const float& InHeight, const uint32_t& InHeightSubdivision)
 {
-	return nullptr;
-	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCylinderMeshComponent>(this, InName, InTopRadius, InBottomRadius, InAxialSubdivision, InHeight, InHeightSubdivision);
+	FCreateObjectParam param(this, this, InName.c_str());
+	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCylinderMeshComponent>(this, InName, InTopRadius, InBottomRadius, InAxialSubdivision, InHeight, InHeightSubdivision);
 }
 
 CMeshComponent* CMeshManage::CreateCustomMeshComponent(string InName, const string& InPath)
 {
-	return nullptr;
-	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCustomMeshComponent>(this, InName, InPath);
+	FCreateObjectParam param(this,this, InName.c_str());
+	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CCustomMeshComponent>(this, InName, InPath);
 }
 
 CMeshComponent* CMeshManage::CreateSphereMeshComponent(string InName, const float& InRadius, const uint32_t& InAxialSubdivision, const uint32_t& InHeightSubdivision)
 {
-	//return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CSphereMeshComponent>(this, InName, InRadius, InAxialSubdivision, InHeightSubdivision);
+	FCreateObjectParam param(this, this, InName.c_str());
+	return LurenjiaEngine::CreateMeshComponetRenderData_Inner<CSphereMeshComponent>(this, InName, InRadius, InAxialSubdivision, InHeightSubdivision);
 }
 
 FRenderingPipeline& CMeshManage::GetRenderingPiepeline()

@@ -50,13 +50,3 @@ namespace LurenjiaEngine
 		return Obj;
 	}
 }
-
-//template<typename T, typename ...ParamTypes>
-//T* ConstructionObject(CCoreMinimalObject* InOuter, ParamTypes&&... Params)
-//{
-//	CCoreMinimalObject* NewObject = new T(Params...);
-//	//还需要设置Outer
-//	//还需要设置guid
-//
-//	return dynamic_cast<T*>(NewObject);
-//}

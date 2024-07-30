@@ -12,8 +12,8 @@ namespace MaterialTest
 {
 	void MaterialTest::BuildMaterialTestData()
 	{
-		shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
-		shared_ptr<CWorld> World = WindowsEngine->GetRenderingEngine()->GetWorld();
+		CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
+		CWorld* World = WindowsEngine->GetRenderingEngine()->GetWorld();
 		// 注意这个天空盒，我们渲染流程开始的LoadTexture方法中就将天空盒的贴图资源传递到了SRV中
 		// 也就是静态反射就会生效，和这里创建出天空盒Actor无关，这里只是能看到天空盒的贴图样子
 		if (auto CubeMesh = World->CreateActor<ABoxMesh>("ABoxMesh"))

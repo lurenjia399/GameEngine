@@ -1,5 +1,6 @@
 #pragma once
 #include "Component/Component.h"
+#include "../../Engine/LurenjiaEngine.h"
 
 class CTransformationComponent : public CCoreMinimalObject
 {

@@ -123,8 +123,8 @@ CLightManage* IDirectXDeviceInterface::GetLightManage() const
 
 ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetRTVHeap() const
 {
-    shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
-    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
+    CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->RTVHeap;
     }
@@ -133,8 +133,8 @@ ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetRTVHeap() const
 
 ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetDSVHeap() const
 {
-    shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
-    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
+    CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
     {
         return WindowsEngine->GetRenderingEngine()->DSVHeap;
     }
@@ -143,8 +143,8 @@ ComPtr<ID3D12DescriptorHeap> IDirectXDeviceInterface::GetDSVHeap() const
 
 FDirectXDescriptorHeap* IDirectXDeviceInterface::GetCBV_SRV_UAVHeap() const
 {
-    shared_ptr<CWindowsEngine> WindowsEngine = static_pointer_cast<CWindowsEngine>(Engine);
-    if (WindowsEngine.use_count() != 0 && WindowsEngine->GetRenderingEngine())
+    CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
+    if (WindowsEngine && WindowsEngine->GetRenderingEngine())
     {
         return &WindowsEngine->GetRenderingEngine()->DescriptorHeap;
     }
@@ -161,7 +161,7 @@ CWindowsEngine* IDirectXDeviceInterface::GetEngine() const
 {
     if (Engine != nullptr)
     {
-        CWindowsEngine* WindowsEngine = dynamic_cast<CWindowsEngine*>(Engine);
+        CWindowsEngine* WindowsEngine = static_cast<CWindowsEngine*>(Engine);
         if (WindowsEngine)
         {
             return WindowsEngine;

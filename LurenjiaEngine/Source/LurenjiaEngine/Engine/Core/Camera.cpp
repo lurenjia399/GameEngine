@@ -40,23 +40,23 @@ void ACamera::Tick(float DeltaTime)
 
 void ACamera::OnClickedScreen(int X, int Y)
 {
-	if (AOperationHandleBase::SelectedAxisComponent.lock())
+	if (AOperationHandleBase::SelectedAxisComponent)
 	{
 		// 如果当前选中了操作轴，就不让选择物体了
 		return;
 	}
 
-	shared_ptr<CDirectXRenderingEngine> DXRenderingEngine = static_pointer_cast<CDirectXRenderingEngine>(GetRenderEngine());
+	CDirectXRenderingEngine* DXRenderingEngine = static_cast<CDirectXRenderingEngine*>(GetRenderEngine());
 	if (DXRenderingEngine != nullptr)
 	{
 		FHitResult HitResult = {};
 		bool bHit = FRaycastSystemLibrary::HitResultByScreen(DXRenderingEngine->GetWorld(), X, Y, HitResult);
 		if (bHit)
 		{
-			if (!HitResult.Component_.expired())
+			if (HitResult.Component_)
 			{
-				std::shared_ptr<CMeshComponent> component = HitResult.Component_.lock();
-				Engine_Log_Success("HitResult name[%s]", component->GetName().c_str());
+				CMeshComponent* component = HitResult.Component_;
+				Engine_Log_Success("HitResult name[%s]", component->GetName());
 
 				FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
 				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, HitResult.GeometryDescData);
@@ -67,7 +67,7 @@ void ACamera::OnClickedScreen(int X, int Y)
 		else
 		{
 			FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
-			AOperationHandleBase::SelectedActor.reset();
+			AOperationHandleBase::SelectedActor = nullptr;
 			Engine_Log("No Hit Actor");
 		}
 

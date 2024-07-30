@@ -30,9 +30,9 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	, BackBufferFormat(DXGI_FORMAT_R8G8B8A8_UNORM)
 	, DepthStencilFormat(DXGI_FORMAT_D24_UNORM_S8_UINT)//24位深度缓冲区，映射到 0 - 1 之间。8位模板缓冲区，映射到0 - 255 之间。
 	, RTVDescriptorSize(0)
-	, MeshManage({})
-	, LightManage({})
-	, World({})
+	, MeshManage(nullptr)
+	, LightManage(nullptr)
+	, World(nullptr)
 {
 	for (int i = 0; i < FEngineRenderConfig::GetRenderConfig()->SwapChainCount; i++)
 	{
@@ -42,7 +42,7 @@ CDirectXRenderingEngine::CDirectXRenderingEngine()
 	MeshManage = LurenjiaEngine::CreateObject<CMeshManage>(this, "MeshManage");
 	LightManage = LurenjiaEngine::CreateObject<CLightManage>(this, "LightManage");
 
-	World = {};
+	World = nullptr;
 
 	FRenderLayerManage::GetRenderLayerManage();//创建层级必须在渲染模型之前
 }

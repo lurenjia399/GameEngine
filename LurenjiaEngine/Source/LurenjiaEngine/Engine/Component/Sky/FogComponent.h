@@ -5,6 +5,7 @@
 
 #include "CoreObject/CoreMinimalObject.h"
 #include "Component/Component.h"
+#include "../Engine/LurenjiaEngine.h"
 
 class CFogComponent : public CComponent
 {

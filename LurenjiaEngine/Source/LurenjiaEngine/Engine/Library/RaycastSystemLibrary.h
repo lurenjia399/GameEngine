@@ -5,9 +5,9 @@
 
 struct FRaycastSystemLibrary
 {
-	static bool GetRaycastByScreenParam(shared_ptr<CWorld> InWorld, XMVECTOR& OutViewOriginPoint,
+	static bool GetRaycastByScreenParam(CWorld* InWorld, XMVECTOR& OutViewOriginPoint,
 		XMVECTOR& OutViewDirection,
 		XMMATRIX& OutWorld2ViewMatrixInverse, int ScreenX, int ScreenY);
-	static bool HitResultByScreen(shared_ptr<CWorld> InWorld, int ScreenX, int ScreenY, FHitResult& OutHitResult);
-	static bool HitSpecificObjectsResultByScreen(shared_ptr<CWorld> InWorld, AActor* InSpecificObject, int ScreenX, int ScreenY, FHitResult& OutHitResult);
+	static bool HitResultByScreen(CWorld* InWorld, int ScreenX, int ScreenY, FHitResult& OutHitResult);
+	static bool HitSpecificObjectsResultByScreen(CWorld* InWorld, AActor* InSpecificObject, int ScreenX, int ScreenY, FHitResult& OutHitResult);
 };
