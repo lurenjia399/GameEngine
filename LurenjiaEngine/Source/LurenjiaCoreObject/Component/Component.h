@@ -2,6 +2,7 @@
 
 #include "../CoreObject/CoreMinimalObject.h"
 
+
 class LURENJIACOREOBJECT_API CComponent : public CCoreMinimalObject
 {
 public:

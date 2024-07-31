@@ -42,7 +42,7 @@ private:
 public:
 	// 场景中所有mesh渲染数据的池子，里面可以有重复的
 	static vector<std::shared_ptr<FGeometryDescData>> MeshRenderingDataPool;
-	static std::map<string, int> RenderingDataIndices;				// key是component的guid,value是在MeshRenderingDataPool数组中的索引
+	static std::map<const string, int> RenderingDataIndices;				// key是component的guid,value是在MeshRenderingDataPool数组中的索引
 };
 
 

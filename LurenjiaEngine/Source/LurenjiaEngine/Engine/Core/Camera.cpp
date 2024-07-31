@@ -56,7 +56,7 @@ void ACamera::OnClickedScreen(int X, int Y)
 			if (HitResult.Component_)
 			{
 				CMeshComponent* component = HitResult.Component_;
-				Engine_Log_Success("HitResult name[%s]", component->GetName());
+				Engine_Log_Success("HitResult name[%s]", component->GetName().c_str());
 
 				FRenderLayerManage::GetRenderLayerManage()->ClearGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT);
 				FRenderLayerManage::GetRenderLayerManage()->AddGeometryDescData((int)EMeshComponentRenderLayerType::RENDERLAYER_SELECT, HitResult.GeometryDescData);

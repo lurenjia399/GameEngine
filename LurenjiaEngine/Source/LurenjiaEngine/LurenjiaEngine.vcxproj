@@ -74,7 +74,6 @@
     <ClCompile Include="Engine\Core\CameraType.cpp" />
     <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction.cpp" />
     <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction_Inner.cpp" />
-    <ClCompile Include="Engine\Core\Construction\ObjectConstruction.cpp" />
     <ClCompile Include="Engine\Core\Construction\SingleInstanceConstruction.cpp" />
     <ClCompile Include="Engine\Core\Engine.cpp" />
     <ClCompile Include="Engine\Core\Viewport\ClientViewport.cpp" />
@@ -205,7 +204,6 @@
     <ClInclude Include="Engine\Core\Construction\MacroConstruction.h" />
     <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction.h" />
     <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction_Inner.h" />
-    <ClInclude Include="Engine\Core\Construction\ObjectConstruction.h" />
     <ClInclude Include="Engine\Core\Construction\SingleInstanceConstruction.h" />
     <ClInclude Include="Engine\Core\Engine.h" />
     <ClInclude Include="Engine\Core\Viewport\ClientViewport.h" />

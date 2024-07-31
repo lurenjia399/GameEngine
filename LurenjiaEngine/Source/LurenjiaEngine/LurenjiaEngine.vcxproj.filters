@@ -198,9 +198,6 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayerManage.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Engine\Core\Construction\ObjectConstruction.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Core\Construction\MeshComponentConstruction_Inner.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -600,9 +597,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction_Inner.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="Engine\Core\Construction\ObjectConstruction.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="Engine\Core\Construction\MeshComponentConstruction.h">

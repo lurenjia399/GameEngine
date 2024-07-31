@@ -28,7 +28,7 @@ void FOutlinerEditor::DrawEditor(float DeltaTime)
 		{
 			AActor* actor = WorldActors[i];
 			char ObjectName[128] = { 0 };
-			sprintf_s(ObjectName, "%s", actor->GetName());
+			sprintf_s(ObjectName, "%s", actor->GetName().c_str());
 			
 			if (ObjectName == "") continue;
 
@@ -97,7 +97,7 @@ void FOutlinerEditor::OnSelectedActor(bool bSelected)
 				const vector<AActor*>& WorldActors = world->GetWorldActors();
 				for (int i = 0; i < WorldActors.size(); i++)
 				{
-					const AActor* actor = WorldActors[i];
+					AActor* actor = WorldActors[i];
 					if (AOperationHandleBase::SelectedActor->GetGuid() == actor->GetGuid())
 					{
 						selected = i;

@@ -41,5 +41,6 @@ namespace LurenjiaEngine
 			T* MeshComponet = LurenjiaEngine::CreateObject<T>(InMeshManage, name);//NewObject
 			return CreateMeshComponetRenderData_Inner<T>(InMeshManage, MeshComponet, Params...);
 		}
+		return nullptr;
 	}
 }
