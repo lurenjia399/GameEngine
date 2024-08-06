@@ -134,6 +134,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="CodeReflection\CodeReflectionMacroTag.h" />
+    <ClInclude Include="CodeReflection\CodeReflectionScript.h" />
+    <ClInclude Include="CodeReflection\Frame.h" />
+    <ClInclude Include="CodeReflection\FuntionManager.h" />
+    <ClInclude Include="CodeReflection\ScriptCommand.h" />
+    <ClInclude Include="CodeReflection\ScriptMacro.h" />
     <ClInclude Include="Component\Component.h" />
     <ClInclude Include="Construction\ConstructionComponents.h" />
     <ClInclude Include="Construction\ObjectConstruction.h" />
@@ -149,6 +154,10 @@
     <ClInclude Include="CoreObject\Struct.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="CodeReflection\CodeReflectionScript.cpp" />
+    <ClCompile Include="CodeReflection\Frame.cpp" />
+    <ClCompile Include="CodeReflection\FuntionManager.cpp" />
+    <ClCompile Include="CodeReflection\ScriptCommand.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Construction\ConstructionComponents.cpp" />
     <ClCompile Include="Construction\ObjectConstruction.cpp" />
@@ -160,6 +169,9 @@
     <ClCompile Include="CoreObject\GuidInterface.cpp" />
     <ClCompile Include="CoreObject\Property.cpp" />
     <ClCompile Include="CoreObject\Struct.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
