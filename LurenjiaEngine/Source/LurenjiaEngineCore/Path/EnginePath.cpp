@@ -51,6 +51,33 @@ string FEnginePathHelper::GetEngineShadersPath()
 	return result;
 }
 
+string FEnginePathHelper::GetEngineSourcePath()
+{
+	const char Path[] = "../../Source";
+
+	string result = GetAbsPath(Path);
+
+	return result;
+}
+
+string FEnginePathHelper::GetEngineIntermediatePath()
+{
+	const char Path[] = "../../Intermediate";
+
+	string result = GetAbsPath(Path);
+
+	return result;
+}
+
+string FEnginePathHelper::GetEngineCodeReflectionPath()
+{
+	const char Path[] = "../../Intermediate/CodeReflection";
+
+	string result = GetAbsPath(Path);
+
+	return result;
+}
+
 wstring FEnginePathHelper::GetEngineShadersWidthPath()
 {
 	const char Path[] = "../../Shaders";

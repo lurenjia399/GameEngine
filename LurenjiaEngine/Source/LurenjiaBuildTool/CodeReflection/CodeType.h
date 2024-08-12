@@ -61,3 +61,5 @@ enum class ECollectionParamType
 	TYPE_PARAM,	// 作为参数
 	TYPE_RETURN, // 作为返回值
 };
+
+bool bIsCheckAllowCodeReflection(const std::vector<std::string>& InContent);

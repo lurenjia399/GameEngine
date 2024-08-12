@@ -5,9 +5,11 @@
 #include "../../LurenjiaEngine.h"
 #include "CoreObject/CoreMinimalObject.h"
 #include "../../Component/TransformationComponent.h"
+#include "Actor.generated.h"
 
 class AActor : public CCoreMinimalObject
 {
+	GENERATED_BODY()
 public:
 	AActor();
 

@@ -19,6 +19,12 @@ struct LURENJIAENGINE_API FEnginePathHelper
 
 	static string GetEngineShadersPath();
 
+	static string GetEngineSourcePath();
+
+	static string GetEngineIntermediatePath();
+
+	static string GetEngineCodeReflectionPath();
+
 	static wstring GetEngineShadersWidthPath();
 
 	static wstring s2ws(const string& str);

@@ -29,11 +29,11 @@ namespace helper_tool_files
 	//bool load_file_to_bytes(const std::string& in_path, std::vector<unsigned char>& out_array);
 	//bool save_file_to_bytes(const std::string& in_path, const std::vector<unsigned char>& int_array);
 
-	// 保存 将字符串保存到文件中
+	// 保存 将字符串保存到文件中(不好使，还没写)
 	bool save_file_to_strings(const std::string& in_path, const std::vector<std::string>& in_array);
-	// 文件是否存在
+	// 文件是否存在(不好使，还没写)
 	bool is_file_exists(char const* filename);
-	// 创建文件夹
+	// 创建文件夹(不好使，还没写)
 	bool create_file_directory(char const* in_path);
 
 

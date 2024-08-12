@@ -4,3 +4,5 @@
 #define CDIAPER(...)
 
 #define GENERATED_BODY(...)
+#define UPROPERTY(...)
+#define UFUNCTION(...)

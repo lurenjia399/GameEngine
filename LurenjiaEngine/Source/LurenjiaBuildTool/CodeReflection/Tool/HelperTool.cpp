@@ -439,14 +439,15 @@ bool helper_tool_files::save_file_to_strings(const std::string& in_path, const s
 	if (!is_file_exists(in_path.c_str()))
 	{
 
-		char path_directory[1024] = { 0 };
-		
-		//strcpy(path_directory, in_path.c_str());
-
-		if (create_file_directory(path_directory))
+		if (helper_tool_files::create_file_directory(in_path.c_str()))
 		{
-			// ±¬ºìÏÈ×¢µô
-			//create_file(in_path.c_str());
+			FILE* f = NULL;
+			if ((fopen_s(&f, in_path.c_str(), "w+")) != NULL)
+			{
+				fclose(f);
+
+				return true;
+			}
 		}
 	}
 
@@ -512,32 +513,23 @@ bool helper_tool_files::save_file_to_strings(const std::string& in_path, const s
 
 bool helper_tool_files::is_file_exists(char const* filename)
 {
-	//FILE* file = fopen(filename, "r");
-	//if (file)
-	//{
-		//fclose(file);
-		//return true;
-	//}
+	FILE* file;
+	fopen_s(&file, filename, "r");
+	if (file)
+	{
+		fclose(file);
+		return true;
+	}
 	return false;
 }
 
 bool helper_tool_files::create_file_directory(char const* in_path)
 {
-	std::string c_file;
-
-	char path[260] = { 0 };
-	for (int i = 0; i < c_file.size(); i++)
+	if (_access(in_path, 0) == -1)
 	{
-		char* value = &c_file[i];
-		//strcat(value, "\\");
-		//strcat(path, value);
-		if (_access(path, 0) == -1)
-		{
-			_mkdir(path);
-		}
+		_mkdir(in_path);
 	}
+	
 
-	//destroy_string(&c_file);
-
-	return _access(path, 0) == 0;
+	return _access(in_path, 0) == 0;
 }

@@ -363,7 +363,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <IntDir>$(SolutionDir)Intermediate\Other\$(ProjectName)</IntDir>
-    <IncludePath>$(SolutionDir)Source\LurenjiaCoreObject;$(SolutionDir)Source\LurenjiaModelTool;$(SolutionDir)Source\LurenjiaEngine\imgui;$(SolutionDir)Source\UnLessLibrary;$(SolutionDir)Source\LurenjiaEngineCore;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)Intermediate\CodeReflection;$(SolutionDir)Source\LurenjiaCoreObject;$(SolutionDir)Source\LurenjiaModelTool;$(SolutionDir)Source\LurenjiaEngine\imgui;$(SolutionDir)Source\UnLessLibrary;$(SolutionDir)Source\LurenjiaEngineCore;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)Binaries\Win64\</OutDir>
     <LibraryPath>$(SolutionDir)Binaries\Win64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
