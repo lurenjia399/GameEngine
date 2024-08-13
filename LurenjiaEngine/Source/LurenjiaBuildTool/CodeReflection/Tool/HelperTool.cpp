@@ -533,3 +533,20 @@ bool helper_tool_files::create_file_directory(char const* in_path)
 
 	return _access(in_path, 0) == 0;
 }
+
+
+std::string helper_tool_files::printf(const char* format, ...)
+{
+	char buf[STRING_SIZE_PRINTF] = { 0 };
+	memset(buf, 0, sizeof(char) * STRING_SIZE_PRINTF);
+	va_list args;
+	va_start(args, format);
+	_vsnprintf_s(buf, STRING_SIZE_PRINTF - 1, STRING_SIZE_PRINTF, format, args);
+	va_end(args);
+	buf[STRING_SIZE_PRINTF - 1] = 0;
+
+	char out_buf[STRING_SIZE_PRINTF] = { 0 };
+	strcat_s(out_buf, STRING_SIZE_PRINTF, buf);
+
+	return std::string(out_buf);
+}

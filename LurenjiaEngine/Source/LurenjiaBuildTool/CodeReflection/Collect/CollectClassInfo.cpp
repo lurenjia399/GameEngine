@@ -31,6 +31,16 @@ bool CollectClassInfo::GetCodeTypeByFunc(const string& RowString, FFunctionAnaly
 			OutFunctionAnalysis.CodeType = "Describe";
 			return true;
 		}
+		else if (Emements[0].find("Function") != -1)
+		{
+			OutFunctionAnalysis.CodeType = "Function";
+			return true;
+		}
+		else if (Emements[0].find("PureFunction") != -1)
+		{
+			OutFunctionAnalysis.CodeType = "PureFunction";
+			return true;
+		}
 	}
 	return false;
 }
@@ -140,6 +150,9 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 	helper_tool_files::load_file_to_strings(Paths, StringArray);
 	//simple_cpp_helper_file::load_file_to_strings(Paths, StringArray);
 
+	//收集filname
+	OutClassAnalysis.Filename = Paths;
+
 	for (int i = 0; i < StringArray.size(); ++i)
 	{
 		string& row = StringArray[i];
@@ -195,7 +208,7 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 				// Emements = {"AActor", "public CCoreMinimalObject"}
 				helper_tool_files::trim_start_and_end_inline(const_cast<char*>(Emements[0].c_str()));//去除前后空格
 				OutClassAnalysis.ClassName = Emements[0]; // 存储类名
-
+				OutClassAnalysis.CodeCPPName = Emements[0];
 				// 还需要考虑多继承的问题
 				//Emements = { "CLightComponent", "public CTransformationComponent, public IDirectXDeviceInterface" }
 				if (Emements.size() >= 2)

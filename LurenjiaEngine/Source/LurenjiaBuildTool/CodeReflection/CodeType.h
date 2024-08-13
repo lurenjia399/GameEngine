@@ -52,6 +52,8 @@ struct FClassAnalysis
 	string ClassName;//类名称
 
 	std::vector<string> InheritName;//继承者名称
+	string CodeCPPName;//CPP名字
+	string Filename;//.h文件路径
 	int CodeLine;//反射宏在哪一行？
 };
 

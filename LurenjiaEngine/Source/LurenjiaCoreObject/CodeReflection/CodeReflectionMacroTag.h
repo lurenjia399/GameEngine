@@ -1,8 +1,11 @@
 #pragma once
 
-#define CVARIABLE(...)
-#define CDIAPER(...)
+//#define CVARIABLE(...)
+//#define CDIAPER(...)
 
-#define GENERATED_BODY(...)
+#define CODE_REFLECTOR_MACRO_INNER(A,B,C,D) A##B##C##D
+#define CODE_REFLECTOR_MACRO(A,B,C,D) CODE_REFLECTOR_MACRO_INNER(A,B,C,D)
+
+#define GENERATED_BODY(...) CODE_REFLECTOR_MACRO(CURRENT_FILE_ID_BT,_,NewLine,_GENERATED_BODY_BT)
 #define UPROPERTY(...)
 #define UFUNCTION(...)
