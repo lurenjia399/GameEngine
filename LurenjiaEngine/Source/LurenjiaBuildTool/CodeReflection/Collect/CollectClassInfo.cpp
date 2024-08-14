@@ -225,7 +225,7 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 						helper_tool_files::remove_string_start(temp, "private");
 						helper_tool_files::trim_start_inline(temp); // 去除前边空格
 
-						OutClassAnalysis.InheritName.push_back(temp);//存储继承者的名字
+						OutClassAnalysis.FatherName.push_back(temp);//存储继承者的名字
 					}
 				}
 			}

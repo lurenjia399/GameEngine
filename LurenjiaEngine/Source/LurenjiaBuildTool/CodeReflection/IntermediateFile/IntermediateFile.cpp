@@ -18,10 +18,14 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
     OutAnalysisRaw.push_back("#include \"CodeReflection/ScriptMacro.h\"");
     OutAnalysisRaw.push_back("");
 
-    std::string MyClassName = " Z_BT_" + InClassAnalysis.ClassName;// Z_BT_UParticleSystem
+    std::string MyClassName = "Z_LRJ_" + InClassAnalysis.ClassName;// Z_LRJ_UParticleSystem
 
-    OutAnalysisRaw.push_back(std::string("#define ") + MyClassName + (InClassAnalysis.Functions.size() > 0 ? " \\" : ""));
+    //#define Z_LRJ_UParticleSystem \ 
+    string temp = InClassAnalysis.Functions.size() > 0 ? "\\" : "";
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+            "#define %s %s",MyClassName.c_str(),temp.c_str()));
 
+    // 这部分没用
     std::string ClearClassName = InClassAnalysis.ClassName;
     {
         char* ClearClassNamePtr = (char*)ClearClassName.c_str();
@@ -29,11 +33,11 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
         helper_tool_files::trim_start_and_end_inline(ClearClassNamePtr);
         helper_tool_files::remove_char_start(ClearClassNamePtr, 'A');
         helper_tool_files::remove_char_start(ClearClassNamePtr, 'C');
-        //helper_tool_files::remove_char_start(ClearClassNamePtr, 'I');
-        //helper_tool_files::remove_char_start(ClearClassNamePtr, 'F');
+        helper_tool_files::remove_char_start(ClearClassNamePtr, 'I');
+        helper_tool_files::remove_char_start(ClearClassNamePtr, 'F');
 
     }
-    // 处理函数
+    // 处理函数,处理那种反射函数，蓝图可以调用的
     if (InClassAnalysis.Functions.size() > 0)
     {
         for (const FFunctionAnalysis& Function : InClassAnalysis.Functions)
@@ -125,21 +129,67 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
         }
         helper_tool_files::remove_char_end((char*)OutAnalysisRaw.back().c_str(), '\\');//移除最后的\，宏的最后一行不用\;
         OutAnalysisRaw.push_back("");
-
-        // #define Z_BT_UParticleSystem_12_GENERATED_BODY_BT 
-        OutAnalysisRaw.push_back(
-            helper_tool_files::printf(
-                "#define %s_%i_GENERATED_BODY_BT \\",
-                InClassAnalysis.ClassName.c_str(),
-                InClassAnalysis.CodeLine));
-        //
-        OutAnalysisRaw.push_back(MyClassName);
-        OutAnalysisRaw.push_back("");
-
-        OutAnalysisRaw.push_back("#define " + string("CURRENT_FILE_ID_BT ") + InClassAnalysis.ClassName);
-
-        OutAnalysisRaw.push_back("#define " + string("NewLine ") + to_string(InClassAnalysis.CodeLine));
     }
+
+    std::string MyInternalFuncName = helper_tool_files::printf(
+        "%s_%i_Internal_Fun",
+        InClassAnalysis.ClassName.c_str(), InClassAnalysis.CodeLine);// UParticleSystem_14_Internal_Fun
+    //#define UParticleSystem_14_Internal_Fun \ 
+    //typedef UFXSystemAsset Super0; \ 
+    //protected: \ 
+    //virtual void InitReflectionContent(); \ 
+    //private:
+    //
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+        "#define %s_%i_Internal_Fun \\", 
+        InClassAnalysis.ClassName.c_str(), InClassAnalysis.CodeLine));
+    for (int i = 0; i < InClassAnalysis.FatherName.size(); i++)
+    {
+        OutAnalysisRaw.push_back(helper_tool_files::printf(
+            "typedef %s Super%i; \\",
+            InClassAnalysis.FatherName[i].c_str(), i));
+    }
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+        "protected: \\"));
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+        "virtual void InitReflectionContent(); \\"));
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+        "private: \\"));
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+        ""));
+
+    //#define Z_BT_UParticleSystem_12_GENERATED_BODY_BT \
+    //Z_LRJ_UParticleSystem \
+    //UParticleSystem_14_Internal_Fun
+    //
+    
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+            "#define %s_%i_GENERATED_BODY_LRJ \\",InClassAnalysis.ClassName.c_str(),InClassAnalysis.CodeLine));
+    OutAnalysisRaw.push_back(helper_tool_files::printf(
+        "%s \\", MyClassName.c_str()));
+    OutAnalysisRaw.push_back(MyInternalFuncName);
+    OutAnalysisRaw.push_back("");
+
+    //#ifdef CURRENT_FILE_ID_LRJ
+    //#undef CURRENT_FILE_ID_LRJ
+    //#endif
+    //
+    //#ifdef NewLine
+    //#undef NewLine
+    //#endif
+    //
+    //#define CURRENT_FILE_ID_LRJ UParticleSystem
+    //#define NewLine 14
+    OutAnalysisRaw.push_back("#ifdef CURRENT_FILE_ID_LRJ");
+    OutAnalysisRaw.push_back("#undef CURRENT_FILE_ID_LRJ");
+    OutAnalysisRaw.push_back("#endif");
+    OutAnalysisRaw.push_back("");
+    OutAnalysisRaw.push_back("#ifdef NewLine");
+    OutAnalysisRaw.push_back("#undef NewLine");
+    OutAnalysisRaw.push_back("#endif");
+    OutAnalysisRaw.push_back("");
+    OutAnalysisRaw.push_back("#define " + string("CURRENT_FILE_ID_LRJ ") + InClassAnalysis.ClassName);
+    OutAnalysisRaw.push_back("#define " + string("NewLine ") + to_string(InClassAnalysis.CodeLine));
 }
 
 void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, vector<string>& StaticRegistration, vector<string>& OutAnalysisRaw)

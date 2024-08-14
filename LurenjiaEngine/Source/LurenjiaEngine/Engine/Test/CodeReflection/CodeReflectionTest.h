@@ -9,7 +9,7 @@
 #include "ParticleSystem.generated.h"
 
 UCLASS()
-class UParticleSystem : public UFXSystemAsset
+class UParticleSystem : public UFXSystemAsset, public TestFather
 {
 	GENERATED_BODY()
 
@@ -50,6 +50,8 @@ class UParticleSystem : public UFXSystemAsset
 
 	UFUNCTION(CodeType = PureFunction)
 	static void Hello2() {}
+
+	virtual void InitReflectionContent();
 };
 
 // /**/这种注释里别出现反射宏，暂时还没有去掉
