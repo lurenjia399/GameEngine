@@ -6,6 +6,9 @@
 #include "../CodeReflection/ScriptCommand.h"
 #include "../CodeReflection/ScriptMacro.h"
 
+// ²»Å×³ö4251¾¯¸æ
+#pragma warning(push)
+#pragma warning(disable:4251)
 class UFunction;
 class LURENJIACOREOBJECT_API CCoreMinimalObject : public IGuidInterface//, public enable_shared_from_this<CCoreMinimalObject>
 {
@@ -34,6 +37,7 @@ public:
 protected:
 	/** Looks for a given function name */
 	UFunction* FindFunctionByName(std::string InName) const;
+	static UFunction* StaticFindFunctionByName(std::string InName) { return nullptr; };
 	/** Internal VM method for executing a function (ue no use staic)*/
 	static void CallFunction(FFrame& Stack, void const* Data, UFunction* Function);
 	/** Called by VM to execute a UFunction with a filled in UStruct of parameters */
@@ -48,3 +52,4 @@ protected:
 };
 
 extern LURENJIACOREOBJECT_API vector<CCoreMinimalObject*> ObjectPool;
+#pragma warning(pop)

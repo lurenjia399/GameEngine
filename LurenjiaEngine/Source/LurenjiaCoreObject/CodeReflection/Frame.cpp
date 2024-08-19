@@ -20,7 +20,7 @@ FFrame::FFrame(UFunction* InNewFunction)
 
 float FFrame::ReadFloat()
 {
-	return Read<int>();
+	return Read<float>();
 }
 
 int FFrame::ReadInt()
@@ -74,7 +74,7 @@ FUNCTION_IMPLEMENTATION(CCoreMinimalObject::Script_Int)
 //void CCoreMinimalObject::Script_Float(CCoreMinimalObject* Context, FFrame* FrameStack, void const* RefData)
 FUNCTION_IMPLEMENTATION(CCoreMinimalObject::Script_Float)
 {
-	*(float*)RefData = FrameStack->ReadInt();
+	*(float*)RefData = FrameStack->ReadFloat();
 }
 //void CCoreMinimalObject::Script_Function(CCoreMinimalObject* Context, FFrame* FrameStack, void const* RefData)
 FUNCTION_IMPLEMENTATION(CCoreMinimalObject::Script_Function)

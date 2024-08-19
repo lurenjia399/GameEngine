@@ -4,6 +4,9 @@
 #include "../CoreObjectMinimal.h"
 #include "../CoreObject/CoreMinimalObject.h"
 #include "Frame.h"
+// ²»Å×³ö4251¾¯¸æ
+#pragma warning(push)
+#pragma warning(disable:4251)
 
 class UFunction;
 
@@ -29,3 +32,5 @@ struct LURENJIACOREOBJECT_API FFunctionManage
 private:
 	static vector<FFunctionID> FunctionList;
 };
+
+#pragma warning(pop)

@@ -7,6 +7,7 @@
 #include "../../Component/TransformationComponent.h"
 #include "Actor.generated.h"
 
+UCLASS()
 class AActor : public CCoreMinimalObject
 {
 	GENERATED_BODY()
@@ -36,7 +37,7 @@ public:
 	virtual void SetVisible(bool InVisible);
 	virtual bool GetVisible();
 protected:
-	CVARIABLE()
+	UPROPERTY()
 	CTransformationComponent* RootComponent;
 };
 

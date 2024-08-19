@@ -34,4 +34,6 @@ FNativeFuntionPtr& FFunctionManage::GetNativeFuncPtr(UFunction* InFunction)
 int FFunctionManage::SetNativeFuncPtr(const FFunctionID& InFFunctionID)
 {
 	FunctionList.push_back(InFFunctionID);
+
+	return (int)FunctionList.size();
 }

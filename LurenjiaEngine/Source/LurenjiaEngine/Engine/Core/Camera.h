@@ -50,7 +50,6 @@ private:
 	void BulidViewMatrix(float DeltaTime);
 	void FocusMeshUpdateCameraInfo(float InValue);
 private:
-	CVARIABLE()
 	CInputComponent* InputComponent;
 private:
 	POINT LastMousePosition = {};

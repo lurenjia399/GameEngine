@@ -24,7 +24,6 @@ public:
 	CFogComponent* GetComponent() const;
 	bool GetFogIsValid() const;
 private:
-	CVARIABLE()
 	CFogComponent* FogComponent;
 };
 

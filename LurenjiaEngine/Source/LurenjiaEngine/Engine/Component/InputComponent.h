@@ -12,25 +12,18 @@ DEFINITION_SIMPLE_SINGLE_DELEGATE(FCaptureOnLMouseButtonUpDelegate, void, int, i
 class CInputComponent : public CComponent
 {
 public:
-	CVARIABLE()
 	FCaptureKeyboardInforDelegate CaptureKeyboardInforDelegate;
 
-	CVARIABLE()
 	FCaptureOnMouseDelegate OnMouseButtonDownDelegate;
 
-	CVARIABLE()
 	FCaptureOnMouseDelegate OnMouseButtonUpDelegate;
 
-	CVARIABLE()
 	FCaptureOnMouseDelegate OnMouseMoveDelegate;
 
-	CVARIABLE()
 	FCaptureOnMouseWheelDelegate OnMouseWheelDelegate;
 
-	CVARIABLE()
 	FCaptureOnLMouseButtonDownDelegate OnLMouseButtonDownDelegate;
 
-	CVARIABLE()
 	FCaptureOnLMouseButtonUpDelegate OnLMouseButtonUpDelegate;
 
 public:

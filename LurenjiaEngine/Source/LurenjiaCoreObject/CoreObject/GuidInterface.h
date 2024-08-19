@@ -17,6 +17,7 @@ public:
 
 	const string GetGuid() const { return RealityGuid; }
 	string GetName() { return name; }
+	void ReName(string newName) { name = newName; }
 	void ResetGuid(string inName);
 private:
 

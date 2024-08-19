@@ -8,4 +8,5 @@
 
 #define GENERATED_BODY(...) CODE_REFLECTOR_MACRO(CURRENT_FILE_ID_LRJ,_,NewLine,_GENERATED_BODY_LRJ)
 #define UPROPERTY(...)
+#define UCLASS(...)
 #define UFUNCTION(...)

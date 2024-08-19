@@ -20,23 +20,22 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
 
     std::string MyClassName = "Z_LRJ_" + InClassAnalysis.ClassName;// Z_LRJ_UParticleSystem
 
-    //#define Z_LRJ_UParticleSystem \ 
-    string temp = InClassAnalysis.Functions.size() > 0 ? "\\" : "";
+    //#define Z_LRJ_UParticleSystem \
+    //public: \ 
     OutAnalysisRaw.push_back(helper_tool_files::printf(
-            "#define %s %s",MyClassName.c_str(),temp.c_str()));
-
+        "#define %s \\", MyClassName.c_str()));
+    string temp = InClassAnalysis.Functions.size() > 0 ? "\\" : "";
+    OutAnalysisRaw.push_back(helper_tool_files::printf("public: %s", temp.c_str()));
     // 这部分没用
-    std::string ClearClassName = InClassAnalysis.ClassName;
+    /*std::string ClearClassName = InClassAnalysis.ClassName;
     {
         char* ClearClassNamePtr = (char*)ClearClassName.c_str();
-
         helper_tool_files::trim_start_and_end_inline(ClearClassNamePtr);
         helper_tool_files::remove_char_start(ClearClassNamePtr, 'A');
         helper_tool_files::remove_char_start(ClearClassNamePtr, 'C');
         helper_tool_files::remove_char_start(ClearClassNamePtr, 'I');
         helper_tool_files::remove_char_start(ClearClassNamePtr, 'F');
-
-    }
+    }*/
     // 处理函数,处理那种反射函数，蓝图可以调用的
     if (InClassAnalysis.Functions.size() > 0)
     {
@@ -55,12 +54,7 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
             else if (Function.CodeType == "Function" ||
                 Function.CodeType == "PureFunction")
             {
-                /*
-                    UFUNCTION(CodeType = Function)
-	                static void Hello1(int c, float b) {}
-                */
-                //Script_Hello1
-                std::string VMString = "Script_" + Function.FunctionName;
+                std::string VMString = "Script_" + Function.FunctionName;//Script_Hello1
                 //FUNCTION_DEFINITION(Script_Hello1) \
                 //{\ 
                 OutAnalysisRaw.push_back("FUNCTION_DEFINITION(" + VMString + ") \\");
@@ -121,13 +115,13 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
                 StaticRegistration.push_back(
                     helper_tool_files::printf(
                         "\tFFuntionManage::SetNativeFuncPtr(FFuntionID((\"%s\"),(\"%s\"),%s::%s));",
-                        ClearClassName.c_str(),
+                        InClassAnalysis.CodeCPPName.c_str(),
                         Function.FunctionName.c_str(),
                         InClassAnalysis.ClassName.c_str(),
                         VMString.c_str()));
             }
         }
-        helper_tool_files::remove_char_end((char*)OutAnalysisRaw.back().c_str(), '\\');//移除最后的\，宏的最后一行不用\;
+        OutAnalysisRaw.push_back(helper_tool_files::printf("private: \\"));
         OutAnalysisRaw.push_back("");
     }
 
@@ -154,7 +148,7 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
     OutAnalysisRaw.push_back(helper_tool_files::printf(
         "virtual void InitReflectionContent(); \\"));
     OutAnalysisRaw.push_back(helper_tool_files::printf(
-        "private: \\"));
+        "private: "));
     OutAnalysisRaw.push_back(helper_tool_files::printf(
         ""));
 
@@ -213,7 +207,6 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
     OutAnalysisRaw.push_back("#pragma warning (push)");
     OutAnalysisRaw.push_back("#pragma warning (disable : 4883)");
     OutAnalysisRaw.push_back("#endif");
-    OutAnalysisRaw.push_back("PRAGMA_DISABLE_DEPRECATION_WARNINGS");
     OutAnalysisRaw.push_back("");
 
     {
@@ -248,7 +241,7 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
                                         Param.Name;
 
                                     //int32 A,int32 B,int32 c
-                                    ParamString += (",") + NewParam;
+                                    ParamString += NewParam + (",");
 
                                     ParamArray.push_back(NewParam);
                                 }
@@ -268,10 +261,12 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
 
                     // void UParticleSystem::Hello(int c, float b)
                     // {
-                    OutAnalysisRaw.push_back(Function.ReturnParam.Type +
-                        (Function.ReturnParam.bPointer ? ("*") : (Function.ReturnParam.bReference ? ("&") : (" "))) +
-                        InClassAnalysis.ClassName + ("::") + Function.FunctionName +
-                        ("(") + GetParmString(ParamStr) + (")"));
+                    string ReturnParamTypeStr = Function.ReturnParam.Type + (Function.ReturnParam.bPointer ? ("*") : (Function.ReturnParam.bReference ? ("&") : ("")));
+                    string InParamTypeStr = GetParmString(ParamStr);
+                    OutAnalysisRaw.push_back(
+                        helper_tool_files::printf("%s %s::%s(%s)", ReturnParamTypeStr.c_str(),
+                            InClassAnalysis.ClassName.c_str(), Function.FunctionName.c_str(),
+                            InParamTypeStr.c_str()));
                     OutAnalysisRaw.push_back(("{"));
 
                     std::string StructName = ("Parm_") + Function.FunctionName;
@@ -300,14 +295,28 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
                             OutAnalysisRaw.push_back(std::string(("\t")) + StructName + (".") + Param.Name + (" = ") + Param.Name + (";"));
                         }
                     }
-                    //  ExecutionScript(FindScriptFuntion(Hello),&Parm_Hello);
-                    OutAnalysisRaw.push_back(std::string(("\t")) + ("ExecutionScript(FindScriptFuntion(") +
+                    //  ExecutionScript(StaticFindFunctionByName(Hello),&Parm_Hello);
+                    OutAnalysisRaw.push_back(std::string(("\t")) + ("ExecutionScript(StaticFindFunctionByName(") +
                         FunctionName + ("),") + (Function.ParamArray.size() == 0 ? ("NULL") : (("&") + StructName)) + (");"));
                     //}
                     OutAnalysisRaw.push_back(("} "));
                 }
             }
         }
+        OutAnalysisRaw.push_back((""));
+
+        //void UParticleSystem::InitReflectionContent()
+        //{
+        //  Rename("UParticleSystem");
+        //}
+        OutAnalysisRaw.push_back(
+            helper_tool_files::printf("void %s::InitReflectionContent()", InClassAnalysis.ClassName.c_str()));
+        OutAnalysisRaw.push_back(
+            helper_tool_files::printf("{"));
+        OutAnalysisRaw.push_back(
+            helper_tool_files::printf("\tRename(\"%s\");", InClassAnalysis.CodeCPPName.c_str()));
+        OutAnalysisRaw.push_back(
+            helper_tool_files::printf("}"));
         OutAnalysisRaw.push_back((""));
 
         std::string Register_Func =
@@ -342,7 +351,6 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
     }
 
     OutAnalysisRaw.push_back("");
-    OutAnalysisRaw.push_back("PRAGMA_ENABLE_DEPRECATION_WARNINGS");
     OutAnalysisRaw.push_back("#ifdef _MSC_VER");
     OutAnalysisRaw.push_back("#pragma warning (pop)");
     OutAnalysisRaw.push_back("#endif");

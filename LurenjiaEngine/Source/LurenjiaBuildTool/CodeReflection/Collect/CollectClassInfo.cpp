@@ -209,6 +209,16 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 				helper_tool_files::trim_start_and_end_inline(const_cast<char*>(Emements[0].c_str()));//去除前后空格
 				OutClassAnalysis.ClassName = Emements[0]; // 存储类名
 				OutClassAnalysis.CodeCPPName = Emements[0];
+				//去除C和G前缀
+				{
+					char* ClearClassNamePtr = const_cast<char*>(OutClassAnalysis.CodeCPPName.c_str());
+
+					helper_tool_files::trim_start_and_end_inline(ClearClassNamePtr);
+
+					// 移除头部C开头或者G开头
+					helper_tool_files::remove_char_start(ClearClassNamePtr, 'A');
+					helper_tool_files::remove_char_start(ClearClassNamePtr, 'U');
+				}
 				// 还需要考虑多继承的问题
 				//Emements = { "CLightComponent", "public CTransformationComponent, public IDirectXDeviceInterface" }
 				if (Emements.size() >= 2)

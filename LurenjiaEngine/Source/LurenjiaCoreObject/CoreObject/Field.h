@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include "CoreMinimalObject.h"
 
 class LURENJIACOREOBJECT_API UField : public CCoreMinimalObject

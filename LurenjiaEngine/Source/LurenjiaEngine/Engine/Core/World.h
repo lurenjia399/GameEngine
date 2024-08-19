@@ -39,14 +39,11 @@ public:
 public:
 	bool LineTraceSingleByChannel(FHitResult& OutHitResult, const XMFLOAT3& Start, const XMFLOAT3& End) const;
 private:
-	CVARIABLE()
 	ACamera* camera;
 
-	CVARIABLE()
 	AFog* fog;
 
 	//世界中的actor
-	CVARIABLE()
 	vector<AActor*> WorldActors;
 };
 

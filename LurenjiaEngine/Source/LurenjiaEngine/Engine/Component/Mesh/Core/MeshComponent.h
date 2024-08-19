@@ -33,7 +33,6 @@ public:
 protected:
 	bool bPickup;
 private:
-	CVARIABLE()
 	vector<shared_ptr<CMaterial>> Materials;
 
 	EMeshComponentRenderLayerType MeshCompLayerType;

@@ -68,8 +68,11 @@ int main()
 				helper_tool_files::remove_char_end(Buff, '.');
 
 				// 将.generate.h和.gen.cpp文件保存到相应的位置上去
-				string h_path = CodeReflectionPath + "/" + Buff + ".generated.h";
-				string cpp_path = CodeReflectionPath + "/" + Buff + ".gen.cpp";
+				
+				string h_path = 
+					helper_tool_files::printf("%s/%s.generated.h", CodeReflectionPath.c_str(), ClassAnalysis.CodeCPPName.c_str());
+				string cpp_path = 
+					helper_tool_files::printf("%s/%s.gen.cpp", CodeReflectionPath.c_str(), ClassAnalysis.CodeCPPName.c_str());
 				simple_cpp_helper_file::save_file_to_strings(h_path, OutAnalysisRawH);
 				simple_cpp_helper_file::save_file_to_strings(cpp_path, OutAnalysisRawCPP);
 			}

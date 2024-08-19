@@ -4,7 +4,7 @@
 class UProperty;
 class LURENJIACOREOBJECT_API UProperty : public UField
 {
-	typedef UField UField;
+	typedef UField Super;
 public:
 	UProperty();
 
