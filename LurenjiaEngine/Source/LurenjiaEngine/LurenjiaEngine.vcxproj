@@ -145,6 +145,7 @@
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
     <ClCompile Include="imgui\libs\usynergy\uSynergy.c" />
+    <ClCompile Include="Link.gen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Editor\Core\EditorBase.h" />

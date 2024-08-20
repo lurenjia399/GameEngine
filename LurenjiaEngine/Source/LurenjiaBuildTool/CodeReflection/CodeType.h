@@ -52,9 +52,11 @@ struct FClassAnalysis
 	string ClassName;//类名称
 
 	std::vector<string> FatherName;//父类名称
-	string CodeCPPName;//CPP名字
+	string CodeCPPName;//类名称去掉前缀的
 	string Filename;//.h文件路径
 	int CodeLine;//反射宏在哪一行？
+
+	string ModulePath;//模块路径
 };
 
 // 收集的参数类型

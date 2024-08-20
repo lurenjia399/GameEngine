@@ -393,6 +393,9 @@
     <ClCompile Include="Engine\Rendering\Core\DirectX\RenderingPipeline\RenderingLayer\RenderLayer\OperationHandleRenderLayer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="Link.gen.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Core\Engine.h">

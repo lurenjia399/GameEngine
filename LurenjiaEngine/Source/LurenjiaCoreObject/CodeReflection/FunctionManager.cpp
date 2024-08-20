@@ -1,4 +1,4 @@
-#include "FuntionManager.h"
+#include "FunctionManager.h"
 #include "../CoreObject/Function.h"
 
 namespace NativeFunctionMess

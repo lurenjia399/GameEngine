@@ -63,7 +63,7 @@
     <ClInclude Include="CodeReflection\Frame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="CodeReflection\FuntionManager.h">
+    <ClInclude Include="CodeReflection\FunctionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="CodeReflection\ScriptCommand.h">
@@ -113,7 +113,7 @@
     <ClCompile Include="CodeReflection\Frame.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="CodeReflection\FuntionManager.cpp">
+    <ClCompile Include="CodeReflection\FunctionManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CodeReflection\ScriptCommand.cpp">

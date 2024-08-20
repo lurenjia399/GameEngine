@@ -34,7 +34,21 @@ int main()
 	init_def_c_paths(&Paths);
 	find_files(SourcePath.c_str(), &Paths, true, true);
 
-	// 开始遍历
+	// 收集module的路径，遍历Source文件夹下的.vcxproj文件
+	map<string, vector<string>> Modules;
+	for (int i = 0; i < Paths.index; i++)
+	{
+		if (helper_tool_files::find_string(Paths.paths[i], ".vcxproj", 0) != -1
+			&& helper_tool_files::find_string(Paths.paths[i], ".vcxproj.", 0) == -1)
+		{
+			helper_tool_files::normalization_path(Paths.paths[i]);
+			char Buff[1024] = {0};
+			helper_tool_files::get_path_directory(Buff,1024, Paths.paths[i]);
+			Modules.insert(make_pair(Buff, vector<string>()));
+		}
+	}
+
+	// 开始遍历source文件夹的.h文件
 	for (int i = 0; i < Paths.index; i++)
 	{
 		// 找到代码中的.h文件
@@ -52,7 +66,18 @@ int main()
 				// 收集类信息
 				FClassAnalysis ClassAnalysis;
 				CollectClassInfo::Collection(Paths.paths[i], ClassAnalysis);
-			
+				// 收集module信息
+				vector<string>* GenCpp_FilesPath = nullptr;
+				for (auto& temp : Modules)
+				{
+					if (helper_tool_files::string_contain(Paths.paths[i], temp.first.c_str()))
+					{
+						ClassAnalysis.ModulePath = temp.first;
+						GenCpp_FilesPath = &temp.second;
+						break;
+					}
+				}
+
 				// .generated.h文件
 				vector<string> OutAnalysisRawH;
 				// .gen.cpp文件
@@ -68,14 +93,30 @@ int main()
 				helper_tool_files::remove_char_end(Buff, '.');
 
 				// 将.generate.h和.gen.cpp文件保存到相应的位置上去
-				
 				string h_path = 
 					helper_tool_files::printf("%s/%s.generated.h", CodeReflectionPath.c_str(), ClassAnalysis.CodeCPPName.c_str());
 				string cpp_path = 
 					helper_tool_files::printf("%s/%s.gen.cpp", CodeReflectionPath.c_str(), ClassAnalysis.CodeCPPName.c_str());
 				simple_cpp_helper_file::save_file_to_strings(h_path, OutAnalysisRawH);
 				simple_cpp_helper_file::save_file_to_strings(cpp_path, OutAnalysisRawCPP);
+				
+				if (GenCpp_FilesPath != nullptr)
+				{
+					GenCpp_FilesPath->push_back(helper_tool_files::printf("#include \"%s\"",cpp_path.c_str()));
+				}
+			
 			}
+		}
+	}
+
+	// 创建文件,用来链接我们的.gen.cpp文件
+	for (auto& temp : Modules)
+	{
+		if (temp.second.size() > 0)
+		{
+			string link_path = 
+				helper_tool_files::printf("%sLink.gen.cpp", temp.first.c_str());
+			simple_cpp_helper_file::save_file_to_strings(link_path, temp.second);
 		}
 	}
 

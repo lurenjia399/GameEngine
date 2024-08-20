@@ -37,6 +37,8 @@ namespace helper_tool_files
 	bool is_file_exists(char const* filename);
 	// 创建文件夹(不好使，还没写)
 	bool create_file_directory(char const* in_path);
+	// 获取据
+	void get_path_directory(char* buf, int length, const char* path_buf);
 
 
 

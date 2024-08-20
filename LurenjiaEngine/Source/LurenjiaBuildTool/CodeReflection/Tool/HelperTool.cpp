@@ -534,6 +534,18 @@ bool helper_tool_files::create_file_directory(char const* in_path)
 	return _access(in_path, 0) == 0;
 }
 
+void helper_tool_files::get_path_directory(char* buf,int length, const char* path_buf)
+{
+
+	strcpy_s(buf, length, path_buf);
+	normalization_path(buf);// \\ /
+
+	char filename[1024] = { 0 };
+	int index = find_string_from_end(buf, "/", 0);
+	strcpy_s(filename, 1024, &buf[index + 1]);
+
+	remove_string_start(buf, filename);
+}
 
 std::string helper_tool_files::printf(const char* format, ...)
 {

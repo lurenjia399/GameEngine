@@ -16,6 +16,7 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
     OutAnalysisRaw.push_back("#include \"CoreObject/CoreMinimalObject.h\"");
     OutAnalysisRaw.push_back("#include \"CodeReflection/Frame.h\"");
     OutAnalysisRaw.push_back("#include \"CodeReflection/ScriptMacro.h\"");
+    OutAnalysisRaw.push_back("#include \"CodeReflection/ScriptMacro.h\"");
     OutAnalysisRaw.push_back("");
 
     std::string MyClassName = "Z_LRJ_" + InClassAnalysis.ClassName;// Z_LRJ_UParticleSystem
@@ -188,7 +189,7 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
 
 void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, vector<string>& StaticRegistration, vector<string>& OutAnalysisRaw)
 {
-    OutAnalysisRaw.push_back("===========================================================================*/");
+    OutAnalysisRaw.push_back("/*===========================================================================*/");
     
     // #include "CodeReflectionTest.h"
     OutAnalysisRaw.push_back(helper_tool_files::printf(
@@ -200,7 +201,7 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
         "#include \"%s.generated.h\"",
         InClassAnalysis.CodeCPPName.c_str()));
 
-    OutAnalysisRaw.push_back("#include \"CodeReflection/FunctionManage.h\"");
+    OutAnalysisRaw.push_back("#include \"CodeReflection/FunctionManager.h\"");
 
     OutAnalysisRaw.push_back("");
     OutAnalysisRaw.push_back("#ifdef _MSC_VER");
@@ -307,14 +308,14 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
 
         //void UParticleSystem::InitReflectionContent()
         //{
-        //  Rename("UParticleSystem");
+        //  ReName("UParticleSystem");
         //}
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("void %s::InitReflectionContent()", InClassAnalysis.ClassName.c_str()));
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("{"));
         OutAnalysisRaw.push_back(
-            helper_tool_files::printf("\tRename(\"%s\");", InClassAnalysis.CodeCPPName.c_str()));
+            helper_tool_files::printf("\tReName(\"%s\");", InClassAnalysis.CodeCPPName.c_str()));
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("}"));
         OutAnalysisRaw.push_back((""));
