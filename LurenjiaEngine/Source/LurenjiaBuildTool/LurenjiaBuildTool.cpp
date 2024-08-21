@@ -74,6 +74,7 @@ int main()
 					{
 						ClassAnalysis.ModulePath = temp.first;
 						GenCpp_FilesPath = &temp.second;
+						GenCpp_FilesPath->push_back(helper_tool_files::printf("\/* 这个文件是由LurenjiaBuildTool.cpp生成的，需要将其include到项目中 *\/"));
 						break;
 					}
 				}
@@ -114,6 +115,7 @@ int main()
 	{
 		if (temp.second.size() > 0)
 		{
+			
 			string link_path = 
 				helper_tool_files::printf("%sLink.gen.cpp", temp.first.c_str());
 			simple_cpp_helper_file::save_file_to_strings(link_path, temp.second);

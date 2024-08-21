@@ -6,7 +6,7 @@
 #include "RHIDefinitions.h"
 #include "PSOPrecache.h"
 
-#include "ParticleSystem.generated.h"
+
 
 UCLASS()
 class UParticleSystem : public UFXSystemAsset, public TestFather
