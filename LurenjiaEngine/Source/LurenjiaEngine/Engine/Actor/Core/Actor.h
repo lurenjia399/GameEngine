@@ -39,6 +39,15 @@ public:
 protected:
 	UPROPERTY()
 	CTransformationComponent* RootComponent;
+
+	UPROPERTY()
+	vector<int> test_vector;
+
+	UPROPERTY()
+	std::vector<int> test_stdvector;
+
+	UPROPERTY()
+	vector<int>* test_vectorPtr;
 };
 
 #endif

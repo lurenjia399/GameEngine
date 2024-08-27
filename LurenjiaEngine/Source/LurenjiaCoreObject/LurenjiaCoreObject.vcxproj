@@ -137,6 +137,7 @@
     <ClInclude Include="CodeReflection\CodeReflectionScript.h" />
     <ClInclude Include="CodeReflection\Frame.h" />
     <ClInclude Include="CodeReflection\FunctionManager.h" />
+    <ClInclude Include="CodeReflection\NativeClass.h" />
     <ClInclude Include="CodeReflection\ScriptCommand.h" />
     <ClInclude Include="CodeReflection\ScriptMacro.h" />
     <ClInclude Include="Component\Component.h" />
@@ -157,6 +158,7 @@
     <ClCompile Include="CodeReflection\CodeReflectionScript.cpp" />
     <ClCompile Include="CodeReflection\Frame.cpp" />
     <ClCompile Include="CodeReflection\FunctionManager.cpp" />
+    <ClCompile Include="CodeReflection\NativeClass.cpp" />
     <ClCompile Include="CodeReflection\ScriptCommand.cpp" />
     <ClCompile Include="Component\Component.cpp" />
     <ClCompile Include="Construction\ConstructionComponents.cpp" />

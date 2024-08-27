@@ -13,6 +13,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaEngine", "Source\Lu
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LurenjiaBuildTool", "Source\LurenjiaBuildTool\LurenjiaBuildTool.vcxproj", "{76700C49-5518-4600-AC91-ED8F90969CF5}"
 	ProjectSection(ProjectDependencies) = postProject
+		{3A63CD84-C71A-4F12-A4AA-BD39DE312BB0} = {3A63CD84-C71A-4F12-A4AA-BD39DE312BB0}
 		{AA2640A9-AD80-476F-B494-DE278D640F90} = {AA2640A9-AD80-476F-B494-DE278D640F90}
 	EndProjectSection
 EndProject

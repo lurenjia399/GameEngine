@@ -5,6 +5,7 @@
 #include "../Construction/ObjectConstruction.h"
 #include "../CodeReflection/ScriptCommand.h"
 #include "../CodeReflection/ScriptMacro.h"
+#include "../CodeReflection/NativeClass.h"
 
 // ²»Å×³ö4251¾¯¸æ
 #pragma warning(push)
@@ -15,6 +16,7 @@ class LURENJIACOREOBJECT_API CCoreMinimalObject : public IGuidInterface//, publi
 public:
 	virtual void BeginInit() {}
 	virtual void Tick(float DeltaTime) {}
+	virtual void InitMinimalObject();
 public:
 
 	CCoreMinimalObject();
@@ -42,9 +44,15 @@ protected:
 	static void CallFunction(FFrame& Stack, void const* Data, UFunction* Function);
 	/** Called by VM to execute a UFunction with a filled in UStruct of parameters */
 	static void ProcessEvent(UFunction* Function, void* Parms);
+
+protected:
+	virtual void InitReflectionContent() {};
+
 private:
-	/** Map of all functions by name contained in this class */
-	std::map<std::string, UFunction*> FunctionMap;
+	///** Map of all functions by name contained in this class */
+	//std::map<std::string, UFunction*> FunctionMap;
+protected:
+	FNativeClass NativeClass;
 
 protected:
 	bool isCanTick;

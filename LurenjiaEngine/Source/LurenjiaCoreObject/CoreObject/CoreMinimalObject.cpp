@@ -5,6 +5,13 @@
 
 vector<CCoreMinimalObject*> ObjectPool;
 
+void CCoreMinimalObject::InitMinimalObject()
+{
+	NativeClass.Outer = this;
+
+	InitReflectionContent();
+}
+
 CCoreMinimalObject::CCoreMinimalObject()
 {
 	isCanTick = true;
@@ -27,8 +34,8 @@ CCoreMinimalObject::~CCoreMinimalObject()
 UFunction* CCoreMinimalObject::FindFunctionByName(std::string InName) const
 {
 	UFunction* NewFunction = nullptr;
-	auto It = FunctionMap.find(InName);
-	if (It != FunctionMap.end())
+	auto It = NativeClass.FunctionMap.find(InName);
+	if (It != NativeClass.FunctionMap.end())
 	{
 		NewFunction = It->second;
 	}

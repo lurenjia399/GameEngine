@@ -390,7 +390,7 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 					Name = "nullptr";
 				}
 
-				helper_tool_files::trim_start_and_end_inline(const_cast<char*>(row.c_str()));
+				helper_tool_files::trim_start_and_end_inline(const_cast<char*>(R));
 
 				VariableAnalysis.bConst = bIsConstVariableParam;
 				VariableAnalysis.Type = L;

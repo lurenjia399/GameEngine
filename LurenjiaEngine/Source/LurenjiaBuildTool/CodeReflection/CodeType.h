@@ -12,8 +12,16 @@ struct FParamElement
 	bool bPointer;			//指针参数？
 	bool bReference;		//引用参数？
 	string Type;			//参数类型
+	vector<FParamElement> InternalType;//内部类型,vector<int>这种的
+	string Category;		//参数分类
 
-	FParamElement():Name("null"), bConst(false), bPointer(false), bReference(false), Type("null")
+	FParamElement()
+		: Name("null")
+		, bConst(false)
+		, bPointer(false)
+		, bReference(false)
+		, Type("null")
+		, Category("Default")
 	{}
 };
 
@@ -36,8 +44,15 @@ struct FFunctionAnalysis
 	bool bStatic;//静态函数？
 	bool bVirtual;//虚函数？
 	string CodeType;//代码类型，类似ue里面ufunction里面写的参数
-
-	FFunctionAnalysis(): ParamArray({}), ReturnParam({}), FunctionName(""), bStatic(false), bVirtual(false), CodeType("")
+	string Category;//函数分类
+	FFunctionAnalysis()
+		: ParamArray({})
+		, ReturnParam({})
+		, FunctionName("")
+		, bStatic(false)
+		, bVirtual(false)
+		, CodeType("")
+		, Category("Default")
 	{}
 
 };

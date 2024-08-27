@@ -16,7 +16,7 @@ void IntermediateFile::GenerateFile_H(const FClassAnalysis& InClassAnalysis, vec
     OutAnalysisRaw.push_back("#include \"CoreObject/CoreMinimalObject.h\"");
     OutAnalysisRaw.push_back("#include \"CodeReflection/Frame.h\"");
     OutAnalysisRaw.push_back("#include \"CodeReflection/ScriptMacro.h\"");
-    OutAnalysisRaw.push_back("#include \"CodeReflection/ScriptMacro.h\"");
+    OutAnalysisRaw.push_back("#include \"CodeReflection/NativeClass.h\"");
     OutAnalysisRaw.push_back("");
 
     std::string MyClassName = "Z_LRJ_" + InClassAnalysis.ClassName;// Z_LRJ_UParticleSystem
@@ -308,17 +308,32 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
 
         //void UParticleSystem::InitReflectionContent()
         //{
+        //  Super::InitReflectionContent();
+        //  
         //  ReName("UParticleSystem");
+        //  
+        //  NativeClass.AddProperty("",\"%s\",1,sizeof(%s),&%s);
         //}
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("void %s::InitReflectionContent()", InClassAnalysis.ClassName.c_str()));
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("{"));
         OutAnalysisRaw.push_back(
+            helper_tool_files::printf("\tSuper0::InitReflectionContent();"));
+        OutAnalysisRaw.push_back((""));
+        OutAnalysisRaw.push_back(
             helper_tool_files::printf("\tReName(\"%s\");", InClassAnalysis.CodeCPPName.c_str()));
+        OutAnalysisRaw.push_back((""));
+        for (const FVariableAnalysis& Temp : InClassAnalysis.Variable)
+        {
+            OutAnalysisRaw.push_back(
+                helper_tool_files::printf("\tNativeClass.AddProperty(\"%s\",\"%s\",1,sizeof(%s),&%s);"
+                    , Temp.Name.c_str(), Temp.Type.c_str(), Temp.Type.c_str(), Temp.Name.c_str()));
+        }
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("}"));
         OutAnalysisRaw.push_back((""));
+
 
         std::string Register_Func =
             helper_tool_files::printf("Register_%s()",
