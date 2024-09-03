@@ -321,8 +321,8 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("\tSuper0::InitReflectionContent();"));
         OutAnalysisRaw.push_back((""));
-        OutAnalysisRaw.push_back(
-            helper_tool_files::printf("\tReName(\"%s\");", InClassAnalysis.CodeCPPName.c_str()));
+        //OutAnalysisRaw.push_back(
+            //helper_tool_files::printf("\tReName(\"%s\");", InClassAnalysis.CodeCPPName.c_str()));
         OutAnalysisRaw.push_back((""));
         for (const FVariableAnalysis& Temp : InClassAnalysis.Variable)
         {

@@ -62,6 +62,12 @@ ESelectAxisType AOperationHandleBase::GetSelectAxis()
 	return result;
 }
 
+bool AOperationHandleBase::bIsCaptureInSceneMouse()
+{
+	ImGuiIO& io = ImGui::GetIO();
+	return !io.WantCaptureMouseUnlessPopupClose;
+}
+
 void AOperationHandleBase::BeginInit()
 {
 	Super::BeginInit();

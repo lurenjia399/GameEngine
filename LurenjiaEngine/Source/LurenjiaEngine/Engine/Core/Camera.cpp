@@ -46,6 +46,13 @@ void ACamera::OnClickedScreen(int X, int Y)
 		return;
 	}
 
+	if (!AOperationHandleBase::bIsCaptureInSceneMouse())
+	{
+		// 鼠标在ui界面上了，不允许向场景中打入射线
+		Engine_Log_Success("mouse click imgui, not emit ray");
+		return;
+	}
+
 	CDirectXRenderingEngine* DXRenderingEngine = static_cast<CDirectXRenderingEngine*>(GetRenderEngine());
 	if (DXRenderingEngine != nullptr)
 	{

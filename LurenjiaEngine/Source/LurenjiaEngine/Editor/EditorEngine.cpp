@@ -3,12 +3,14 @@
 #include "LogEditor/LogEditor.h"
 #include "Outliner/OutlinerEditor.h"
 #include "SelectEditor/SelectEditor.h"
+#include "DetailEditor/DetailsEditor.h"
 
 CEditorEngine::CEditorEngine()
     : ToolbarEditor(new FToolbarEditor())
     , LogEditor(new FLogEditor())
     , OutlinerEditor(new FOutlinerEditor())
     , SelectEditor(new FSelectEditor())
+    , DetailsEditor(new FDetailsEditor())
 {
     // 注意这个地方，new了变量，没地方把他销毁
     
@@ -60,6 +62,7 @@ void CEditorEngine::BuildEditor()
     LogEditor->BuildEditor();
     OutlinerEditor->BuildEditor();
     SelectEditor->BuildEditor();
+    DetailsEditor->BuildEditor();
 }
 
 void CEditorEngine::DrawEditor(float DeltaTime)
@@ -74,6 +77,7 @@ void CEditorEngine::DrawEditor(float DeltaTime)
     LogEditor->DrawEditor(DeltaTime);
     OutlinerEditor->DrawEditor(DeltaTime);
     SelectEditor->DrawEditor(DeltaTime);
+    DetailsEditor->DrawEditor(DeltaTime);
 }
 
 void CEditorEngine::ExitEditor()
@@ -82,6 +86,7 @@ void CEditorEngine::ExitEditor()
     LogEditor->ExitEditor();
     OutlinerEditor->ExitEditor();
     SelectEditor->ExitEditor();
+    DetailsEditor->ExitEditor();
 }
 
 void CEditorEngine::DrawLayer(float DeltaTime)

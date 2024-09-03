@@ -47,6 +47,7 @@ namespace LurenjiaEngine
 		T* Obj = dynamic_cast<T*>(NewObject);
 		Obj->SetOuter(Outer);
 		Obj->ResetGuid(objName);				//重新设置对象的guid
+		Obj->InitMinimalObject();
 
 		return Obj;
 	}

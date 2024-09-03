@@ -16,8 +16,7 @@ public:
 	{
 		return (T*)Data;
 	}
-	FORCEINLINE void* GetData() const { return Data;
-	}
+	FORCEINLINE void* GetData() const { return Data; }
 	FORCEINLINE int GetCount() const { return Count; }
 	FORCEINLINE int GetSize() const { return Size; }
 	FORCEINLINE const string& GetType() const { return Type; }

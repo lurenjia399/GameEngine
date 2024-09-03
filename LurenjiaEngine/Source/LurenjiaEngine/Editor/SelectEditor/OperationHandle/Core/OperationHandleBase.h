@@ -31,6 +31,8 @@ public:
 	void ResetColor();
 	ESelectAxisType GetSelectAxis();
 
+	static bool bIsCaptureInSceneMouse();
+
 	virtual void BeginInit() override;
 protected:
 	virtual void OnMouseMove(int X, int Y, string buttonType);

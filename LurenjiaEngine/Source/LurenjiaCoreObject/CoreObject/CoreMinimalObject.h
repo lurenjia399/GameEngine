@@ -45,6 +45,9 @@ protected:
 	/** Called by VM to execute a UFunction with a filled in UStruct of parameters */
 	static void ProcessEvent(UFunction* Function, void* Parms);
 
+
+public:
+	FNativeClass& GetNativeClass() {return NativeClass;}
 protected:
 	virtual void InitReflectionContent() {};
 

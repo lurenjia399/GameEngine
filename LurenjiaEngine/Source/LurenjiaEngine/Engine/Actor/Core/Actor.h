@@ -41,13 +41,19 @@ protected:
 	CTransformationComponent* RootComponent;
 
 	UPROPERTY()
-	vector<int> test_vector;
+	float test_float;
 
 	UPROPERTY()
-	std::vector<int> test_stdvector;
+	int test_int;
 
 	UPROPERTY()
-	vector<int>* test_vectorPtr;
+	bool test_bool;
+
+	UPROPERTY()
+	string test_string;
+
+	UPROPERTY()
+	XMFLOAT3 test_xmfloat3;
 };
 
 #endif
