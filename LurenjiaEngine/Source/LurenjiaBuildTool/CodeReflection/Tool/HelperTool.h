@@ -57,8 +57,10 @@ namespace helper_tool_files
 
 
 
-	// 拆分，将字符串按照划线，拆分成做优两部分,包含的划线在左半部分
+	// 拆分，以正向寻找str_split并作为轴，拆分成左右两部分,轴会包含在左半部分
 	bool split(const char* buf, const char* str_split, char* l, char* r, bool bcontain_str_split);
+	// 拆分，以反向寻找str_split并作为轴，拆分成左右两部分,轴会包含在左半部分
+	bool split_end(const char* buf, const char* str_split, char* l, char* r, bool bcontain_str_split);
 	// 拆分，将字符串按照模板切割，并将两侧都存在数组中返回，不保存模板
 	void parse_into_vector_array(const char* string_content, std::vector<std::string>& in_array, const char* parse_string);
 

@@ -22,6 +22,8 @@ namespace CollectClassInfo
 	bool GetCodeTypeByVariable(const string& RowString, FVariableAnalysis& OutVariableAnalysis);
 	// 获取参数的类型
 	FParamElement CollectionVariableType(const char* RowString, ECollectionParamType Type);
+	// 
+	void AnalysisParameters(char* Str, std::vector<FParamElement>& OutParam);
 	// 去掉参数的默认值
 	string RemoveVariableDefaultValue(const char* RowString);
 	

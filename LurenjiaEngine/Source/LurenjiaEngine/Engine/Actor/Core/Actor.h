@@ -37,6 +37,7 @@ public:
 	virtual void SetVisible(bool InVisible);
 	virtual bool GetVisible();
 protected:
+
 	UPROPERTY()
 	CTransformationComponent* RootComponent;
 
@@ -54,6 +55,12 @@ protected:
 
 	UPROPERTY()
 	XMFLOAT3 test_xmfloat3;
+
+	UPROPERTY()
+	std::map<string, int> testmap;
+
+	UPROPERTY()
+	std::vector<int> testvector;
 };
 
 #endif

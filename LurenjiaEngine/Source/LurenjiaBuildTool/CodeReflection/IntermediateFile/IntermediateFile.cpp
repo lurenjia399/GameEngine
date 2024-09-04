@@ -326,9 +326,37 @@ void IntermediateFile::GenerateFile_CPP(const FClassAnalysis& InClassAnalysis, v
         OutAnalysisRaw.push_back((""));
         for (const FVariableAnalysis& Temp : InClassAnalysis.Variable)
         {
-            OutAnalysisRaw.push_back(
-                helper_tool_files::printf("\tNativeClass.AddProperty(\"%s\",\"%s\",1,sizeof(%s),&%s);"
-                    , Temp.Name.c_str(), Temp.Type.c_str(), Temp.Type.c_str(), Temp.Name.c_str()));
+            if (Temp.Type == "map" || Temp.Type == "std::map")
+            {
+                if (Temp.InternalType.size() >= 2)
+                {
+                    OutAnalysisRaw.push_back(
+                        helper_tool_files::printf(
+                            "\tNativeClass.AddProperty(\"%s\",\"%s\",1,sizeof(%s<%s,%s>),&%s);",
+                            Temp.Name.c_str(),
+                            Temp.Type.c_str(),
+                            Temp.Type.c_str(),
+                            Temp.InternalType[0].Type.c_str(),
+                            Temp.InternalType[1].Type.c_str(),
+                            Temp.Name.c_str()));
+                }
+            }
+            else if (Temp.Type == "vector" || Temp.Type == "std::vector")
+            {
+                if (Temp.InternalType.size() >= 1)
+                {
+                    OutAnalysisRaw.push_back(
+                        helper_tool_files::printf("\tNativeClass.AddProperty(\"%s\",\"%s\",1,sizeof(%s),&%s);"
+                            , Temp.Name.c_str(), Temp.Type.c_str(), Temp.InternalType[0].Type.c_str(), Temp.Name.c_str()));
+                }
+            }
+            else
+            {
+                OutAnalysisRaw.push_back(
+                    helper_tool_files::printf("\tNativeClass.AddProperty(\"%s\",\"%s\",1,sizeof(%s),&%s);"
+                        , Temp.Name.c_str(), Temp.Type.c_str(), Temp.Type.c_str(), Temp.Name.c_str()));
+            }
+            
         }
         OutAnalysisRaw.push_back(
             helper_tool_files::printf("}"));

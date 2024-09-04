@@ -222,6 +222,33 @@ int helper_tool_files::find_string(const char* str, char const* sub_str, int sta
 	return index;
 }
 
+int helper_tool_files::find_string_from_end(const char* str, char const* sub_str, int start_pos)
+{
+	int str_len = (int)strlen(str);
+	int len = (int)strlen(sub_str);
+	int index = -1;
+	for (int i = (str_len - start_pos); i > 0; i--)
+	{
+		if (sub_str[0] == str[i])
+		{
+			int tmp_index = i;
+			int l = 1;//第一个是成功
+			while (sub_str[l] == str[i + l] && sub_str[l] != '\0')
+			{
+				l++;
+			}
+
+			if (len == l)
+			{
+				index = tmp_index;
+				break;
+			}
+		}
+	}
+
+	return index;
+}
+
 
 void helper_tool_files::remove_string_start(char* str, char const* sub_str)
 {
@@ -283,36 +310,37 @@ void helper_tool_files::trim_end_inline(char* buff)
 	}
 }
 
-int helper_tool_files::find_string_from_end(const char* str, char const* sub_str, int start_pos)
-{
-	int str_len = (int)strlen(str);
-	int len = (int)strlen(sub_str);
-	int index = -1;
-	for (int i = (str_len - start_pos); str[i] != str[0]; i--)
-	{
-		if (sub_str[0] == str[i])
-		{
-			int tmp_index = i;
-			int l = 1;//第一个是成功
-			while (sub_str[l] == str[i + l] && sub_str[l] != '\0')
-			{
-				l++;
-			}
 
-			if (len == l)
-			{
-				index = tmp_index;
-				break;
-			}
-		}
-	}
-
-	return index;
-}
 
 bool helper_tool_files::split(const char* buf, const char* str_split, char* l, char* r, bool bcontain_str_split)
 {
 	int pos = find_string(buf, str_split, 0);
+	if (pos != -1)
+	{
+		int str_split_len = 0;
+		if (!bcontain_str_split)
+		{
+			str_split_len = (int)strlen(str_split);
+		}
+
+		int buf_len = (int)strlen(buf);
+
+		//strncpy(l, buf, pos);
+		strncpy_s(l, pos + 1, buf, pos);
+
+		int nest_pos = pos + str_split_len;
+		//strncpy(r, &buf[nest_pos], buf_len - nest_pos);
+		strncpy_s(r, buf_len - nest_pos + 1, &buf[nest_pos], buf_len - nest_pos);
+
+		return true;
+	}
+
+	return false;
+}
+
+bool helper_tool_files::split_end(const char* buf, const char* str_split, char* l, char* r, bool bcontain_str_split)
+{
+	int pos = find_string_from_end(buf, str_split, 0);
 	if (pos != -1)
 	{
 		int str_split_len = 0;

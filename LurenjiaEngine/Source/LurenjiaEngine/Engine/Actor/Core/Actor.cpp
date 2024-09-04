@@ -4,6 +4,8 @@
 AActor::AActor()
 {
 	RootComponent = LurenjiaEngine::CreateObject<CTransformationComponent>(this, "AActor::RootComponent");
+
+	test_xmfloat3 = XMFLOAT3(1.2f, 34.f, 41.0f);
 }
 
 

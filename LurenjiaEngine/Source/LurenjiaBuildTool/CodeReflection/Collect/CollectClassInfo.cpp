@@ -85,6 +85,11 @@ FParamElement CollectClassInfo::CollectionVariableType(const char* RowString, EC
 			ReturnParam.Type = (char*)Elements[0].c_str();
 			ReturnParam.Name = Elements[1];
 		}
+		else if (Elements.size() == 1)
+		{
+			ReturnParam.Type = (char*)Elements[0].c_str();
+			ReturnParam.Name = "HiddenParamName";//没有参数名
+		}
 	}
 	else if (Type == ECollectionParamType::TYPE_RETURN)
 	{
@@ -94,6 +99,20 @@ FParamElement CollectClassInfo::CollectionVariableType(const char* RowString, EC
 		
 	}
 	return ReturnParam;
+}
+
+void CollectClassInfo::AnalysisParameters(char* Str, std::vector<FParamElement>& OutParam)
+{
+	// 处理参数，函数中的参数列表
+
+	vector<string> Elements = {};
+	helper_tool_files::parse_into_vector_array(Str, Elements, CommaString);
+	// Emements = {"float DeltaTime", "const FViewportInfo& ViewportInfo"}
+	for (string& element : Elements)
+	{
+		FParamElement param = CollectionVariableType(element.c_str(), ECollectionParamType::TYPE_PARAM);//存储返回值参数
+		OutParam.push_back(param);//存储参数数组
+	}
 }
 
 string CollectClassInfo::RemoveVariableDefaultValue(const char* RowString)
@@ -309,22 +328,15 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 					helper_tool_files::trim_end_inline(R);
 					helper_tool_files::remove_char_end(R, ';');
 					helper_tool_files::remove_char_end(R, ')');
-					// lurenjiaTestFunction(float DeltaTime, const FViewportInfo& ViewportInfo)
+					// lurenjiaTestFunction(float DeltaTime, const FViewportInfo& ViewportInfo
 					char L_halfradius[1024] = { 0 };
 					char R_halfradius[1024] = { 0 };
 					helper_tool_files::split(R, LeftHalfRadius, L_halfradius, R_halfradius, false);
 					// 左半部分L_halfradius ---- lurenjiaTestFunction
-					// 右半部分R_halfradius ---- float DeltaTime, const FViewportInfo& ViewportInfo)
+					// 右半部分R_halfradius ---- float DeltaTime, const FViewportInfo& ViewportInfo
 					FunctionAnalysis.FunctionName = L_halfradius;//存储函数名称
-					// 右半部分R_halfradius ---- float DeltaTime, const FViewportInfo& ViewportInfo)
-					vector<string> Elements = {};
-					helper_tool_files::parse_into_vector_array(R_halfradius, Elements, CommaString);
-					// Emements = {"float DeltaTime", "const FViewportInfo& ViewportInfo"}
-					for (string& element : Elements)
-					{
-						FParamElement param = CollectionVariableType(element.c_str(), ECollectionParamType::TYPE_PARAM);//存储返回值参数
-						FunctionAnalysis.ParamArray.push_back(param);//存储参数数组
-					}
+					// 右半部分R_halfradius ---- float DeltaTime, const FViewportInfo& ViewportInfo
+					AnalysisParameters(R_halfradius, FunctionAnalysis.ParamArray);
 					OutClassAnalysis.Functions.push_back(FunctionAnalysis);//存储类的函数
 				}
 			}
@@ -379,7 +391,7 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 					}
 				}else if (containFunc(SpaceString))
 				{
-					helper_tool_files::split(const_cast<char*>(row.c_str()), SpaceString, L, R, false);
+					helper_tool_files::split_end(const_cast<char*>(row.c_str()), SpaceString, L, R, false);
 					if (containFunc(EqualString))
 					{
 						string temp = RemoveVariableDefaultValue(R);
@@ -393,7 +405,30 @@ bool CollectClassInfo::Collection(const string& Paths, FClassAnalysis& OutClassA
 				helper_tool_files::trim_start_and_end_inline(const_cast<char*>(R));
 
 				VariableAnalysis.bConst = bIsConstVariableParam;
-				VariableAnalysis.Type = L;
+
+				if (containFunc("<") && containFunc(">"))
+				{
+					// std::map<string, int> test
+					char TempL[1024] = { 0 };
+					char TempR[1024] = { 0 };
+					
+					helper_tool_files::split(L, "<", TempL, TempR, false);
+					// 左半部分L ---- std::map
+					// 右半部分R ---- string, int> test
+
+					VariableAnalysis.Type = TempL;
+
+					//string, int> test
+					helper_tool_files::remove_char_end(TempR, '>');
+					//string, int test
+
+					AnalysisParameters(TempR, VariableAnalysis.InternalType);
+				}
+				else
+				{
+					VariableAnalysis.Type = L;
+				}
+				
 				VariableAnalysis.Name = R;
 				OutClassAnalysis.Variable.push_back(VariableAnalysis);
 			}
