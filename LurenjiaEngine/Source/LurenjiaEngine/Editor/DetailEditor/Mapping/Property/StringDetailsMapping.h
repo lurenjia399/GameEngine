@@ -3,7 +3,7 @@
 #ifndef STRINGDETAILSMAPPING_H
 #define STRINGDETAILSMAPPING_H
 
-#include "../Core/PropertyDetailsMapping.h"
+#include "../../Core/PropertyDetailsMapping.h"
 
 class FStringDetailsMapping : public FPropertyDetailsMapping
 {

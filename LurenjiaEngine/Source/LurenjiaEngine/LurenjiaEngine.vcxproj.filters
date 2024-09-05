@@ -408,28 +408,31 @@
     <ClCompile Include="Editor\DetailEditor\Core\PropertyDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\DetailEditor\Mapping\BoolDetailsMapping.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="Editor\DetailEditor\Core\RegisterDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\DetailEditor\Mapping\FloatDetailsMapping.cpp">
+    <ClCompile Include="Editor\DetailEditor\Mapping\Property\ArrayDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\DetailEditor\Mapping\IntDetailsMapping.cpp">
+    <ClCompile Include="Editor\DetailEditor\Mapping\Property\BoolDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\DetailEditor\Mapping\StringDetailsMapping.cpp">
+    <ClCompile Include="Editor\DetailEditor\Mapping\Property\FloatDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\DetailEditor\Mapping\ArrayDetailsMapping.cpp">
+    <ClCompile Include="Editor\DetailEditor\Mapping\Property\IntDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\DetailEditor\Mapping\MapDetailsMapping.cpp">
+    <ClCompile Include="Editor\DetailEditor\Mapping\Property\MapDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="Editor\DetailEditor\Mapping\Vector3DetailsMapping.cpp">
+    <ClCompile Include="Editor\DetailEditor\Mapping\Property\StringDetailsMapping.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\DetailEditor\Mapping\Property\Vector3DetailsMapping.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="Editor\DetailEditor\Mapping\Class\ActorDetailsMapping.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
@@ -893,28 +896,31 @@
     <ClInclude Include="Editor\DetailEditor\Core\PropertyDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\DetailEditor\Mapping\BoolDetailsMapping.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="Editor\DetailEditor\Core\RegisterDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\DetailEditor\Mapping\FloatDetailsMapping.h">
+    <ClInclude Include="Editor\DetailEditor\Mapping\Property\ArrayDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\DetailEditor\Mapping\IntDetailsMapping.h">
+    <ClInclude Include="Editor\DetailEditor\Mapping\Property\BoolDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\DetailEditor\Mapping\StringDetailsMapping.h">
+    <ClInclude Include="Editor\DetailEditor\Mapping\Property\FloatDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\DetailEditor\Mapping\ArrayDetailsMapping.h">
+    <ClInclude Include="Editor\DetailEditor\Mapping\Property\IntDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\DetailEditor\Mapping\MapDetailsMapping.h">
+    <ClInclude Include="Editor\DetailEditor\Mapping\Property\MapDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="Editor\DetailEditor\Mapping\Vector3DetailsMapping.h">
+    <ClInclude Include="Editor\DetailEditor\Mapping\Property\StringDetailsMapping.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\DetailEditor\Mapping\Property\Vector3DetailsMapping.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="Editor\DetailEditor\Mapping\Class\ActorDetailsMapping.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

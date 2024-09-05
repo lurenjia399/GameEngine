@@ -3,7 +3,7 @@
 #ifndef VECTOR3DETAILSMAPPING_H
 #define VECTOR3DETAILSMAPPING_H
 
-#include "../Core/PropertyDetailsMapping.h"
+#include "../../Core/PropertyDetailsMapping.h"
 
 class FVector3DetailsMapping : public FPropertyDetailsMapping
 {

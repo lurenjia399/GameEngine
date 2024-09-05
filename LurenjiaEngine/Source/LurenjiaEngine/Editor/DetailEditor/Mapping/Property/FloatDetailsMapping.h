@@ -3,7 +3,7 @@
 #ifndef FLOATDETAILSMAPPING_H
 #define FLOATDETAILSMAPPING_H
 
-#include "../Core/PropertyDetailsMapping.h"
+#include "../../Core/PropertyDetailsMapping.h"
 
 class FFloatDetailsMapping : public FPropertyDetailsMapping
 {

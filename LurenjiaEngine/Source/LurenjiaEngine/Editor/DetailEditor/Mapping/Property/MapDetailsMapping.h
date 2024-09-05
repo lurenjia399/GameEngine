@@ -3,7 +3,7 @@
 #ifndef MAPDETAILSMAPPING_H
 #define MAPDETAILSMAPPING_H
 
-#include "../Core/PropertyDetailsMapping.h"
+#include "../../Core/PropertyDetailsMapping.h"
 
 class FMapDetailsMapping : public FPropertyDetailsMapping
 {

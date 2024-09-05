@@ -3,7 +3,7 @@
 #ifndef BOOLDETAILSMAPPING_H
 #define BOOLDETAILSMAPPING_H
 
-#include "../Core/PropertyDetailsMapping.h"
+#include "../../Core/PropertyDetailsMapping.h"
 
 class FBoolDetailsMapping : public FPropertyDetailsMapping
 {

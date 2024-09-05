@@ -3,7 +3,7 @@
 #ifndef ARRAYDETAILSMAPPING_H
 #define ARRAYDETAILSMAPPING_H
 
-#include "../Core/PropertyDetailsMapping.h"
+#include "../../Core/PropertyDetailsMapping.h"
 
 class FArrayDetailsMapping : public FPropertyDetailsMapping
 {

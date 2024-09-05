@@ -1,11 +1,12 @@
 #include "DetailsEditor.h"
-#include "Mapping/BoolDetailsMapping.h"
-#include "Mapping/FloatDetailsMapping.h"
-#include "Mapping/IntDetailsMapping.h"
-#include "Mapping/StringDetailsMapping.h"
-#include "Mapping/MapDetailsMapping.h"
-#include "Mapping/ArrayDetailsMapping.h"
-#include "Mapping/Vector3DetailsMapping.h"
+#include "Mapping/Property/BoolDetailsMapping.h"
+#include "Mapping/Property/FloatDetailsMapping.h"
+#include "Mapping/Property/IntDetailsMapping.h"
+#include "Mapping/Property/StringDetailsMapping.h"
+#include "Mapping/Property/MapDetailsMapping.h"
+#include "Mapping/Property/ArrayDetailsMapping.h"
+#include "Mapping/Property/Vector3DetailsMapping.h"
+#include "Mapping/Class/ActorDetailsMapping.h"
 #include "Core/RegisterDetailsMapping.h"
 #include "../../Engine/Actor/Core/Actor.h"
 #include "../SelectEditor/OperationHandle/Core/OperationHandleBase.h"
@@ -13,6 +14,7 @@
 
 void FDetailsEditor::BuildEditor()
 {
+
 	FRegisterDetailsMapping::RegisterPropertyDetails("bool", FBoolDetailsMapping::MakeDetilsMapping());
 	FRegisterDetailsMapping::RegisterPropertyDetails("float", FFloatDetailsMapping::MakeDetilsMapping());
 	FRegisterDetailsMapping::RegisterPropertyDetails("int", FIntDetailsMapping::MakeDetilsMapping());
@@ -20,6 +22,8 @@ void FDetailsEditor::BuildEditor()
 	FRegisterDetailsMapping::RegisterPropertyDetails("map", FMapDetailsMapping::MakeDetilsMapping());
 	FRegisterDetailsMapping::RegisterPropertyDetails("vector", FArrayDetailsMapping::MakeDetilsMapping());
 	FRegisterDetailsMapping::RegisterPropertyDetails("XMFLOAT3", FVector3DetailsMapping::MakeDetilsMapping());
+
+	FRegisterDetailsMapping::RegisterClassDetails("AActor", FActorDetailsMapping::MakeDetailsMapping());
 }
 
 void FDetailsEditor::DrawEditor(float DeltaTime)

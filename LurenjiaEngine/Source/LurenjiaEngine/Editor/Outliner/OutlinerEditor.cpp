@@ -92,7 +92,7 @@ void FOutlinerEditor::OnSelectedActor(bool bSelected)
 	{
 		if (bSelected)
 		{
-			if (!AOperationHandleBase::SelectedActor)
+			if (AOperationHandleBase::SelectedActor)
 			{
 				const vector<AActor*>& WorldActors = world->GetWorldActors();
 				for (int i = 0; i < WorldActors.size(); i++)
