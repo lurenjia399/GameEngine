@@ -3,6 +3,8 @@
 
 这边就展示图片，加载偏慢，不定时更新，不及时更新
 
+反射属性
+![img](https://github.com/lurenjia399/GameEngine/blob/master/%E8%A7%86%E9%A2%91/%E5%8F%8D%E5%B0%84%E5%8F%98%E9%87%8F.gif)
 捕获场景
 ![img](https://github.com/lurenjia399/GameEngine/blob/master/%E8%A7%86%E9%A2%91/%E6%8D%95%E8%8E%B7Actor.gif)
 模糊，计算着色器
